@@ -1,0 +1,33 @@
+services:
+  mastra:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - '4111:4111'
+    env_file:
+      - .env
+
+  bff:
+    build:
+      context: ./bff
+      dockerfile: Dockerfile
+    ports:
+      - '3000:3000'
+    environment:
+      PORT: 3000
+      MASTRA_BASE_URL: http://mastra:4111
+      RESUME_MAX_FILE_SIZE_BYTES: 2097152
+      DEMO_USERNAME: demo
+      DEMO_PASSWORD: demo123
+    depends_on:
+      - mastra
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - '8080:80'
+    depends_on:
+      - bff

@@ -1,0 +1,84 @@
+export type ChatRole = 'user' | 'assistant';
+
+export interface AgentChatMessage {
+  readonly id: string;
+  readonly role: ChatRole;
+  readonly content: string;
+}
+
+export type InterviewRoundPreference = 'no-skip' | 'skip-professional-skills' | 'skip-project-experience';
+export type ProfessionalQuestionMode = 'per-skill-default' | 'custom-count';
+
+export interface InterviewSystemSettings {
+  readonly reviewIncorrectOrMissingPoints: boolean;
+  readonly skipProfessionalSkillsRound: boolean;
+  readonly skipProjectExperienceRound: boolean;
+  readonly enableFlowTestMode: boolean;
+  readonly professionalQuestionMode: ProfessionalQuestionMode;
+  readonly professionalQuestionCount: number;
+  readonly projectQuestionCount: number;
+}
+
+export type InterviewProgressStage = 'main-question' | 'follow-up' | 'completed';
+
+export interface InterviewProgressSummary {
+  readonly totalQuestionCount: number;
+  readonly completedQuestionCount: number;
+  readonly remainingQuestionCount: number;
+  readonly currentQuestionIndex: number | null;
+  readonly currentRoundType: 'professional-skills' | 'project-experience' | null;
+  readonly currentRoundLabel: string | null;
+  readonly currentStage: InterviewProgressStage;
+  readonly currentFollowUpIndex: number | null;
+  readonly currentQuestionText: string | null;
+  readonly currentNodeTopic: string | null;
+}
+
+export interface InterviewStateSnapshot {
+  readonly assistantReply: string;
+  readonly flowTestMockUserReply: string | null;
+  readonly phase: string;
+  readonly activeRoundType: string | null;
+  readonly activeNodeTopic: string | null;
+  readonly finalReportReady: boolean;
+  readonly progress: InterviewProgressSummary;
+}
+
+export interface StartInterviewRequest {
+  readonly threadId: string;
+  readonly startInterview: true;
+  readonly resumeMarkdown: string;
+  readonly jobDescriptionMarkdown: string;
+  readonly settings: InterviewSystemSettings;
+}
+
+export interface ContinueInterviewRequest {
+  readonly threadId: string;
+  readonly message: string;
+}
+
+export type InterviewStreamRequest = StartInterviewRequest | ContinueInterviewRequest;
+
+export interface StreamState {
+  readonly isStarted: boolean;
+  readonly streamingAssistantId: string | null;
+}
+
+export interface StreamCompletionResult {
+  readonly authoritativeAssistantReply: string | null;
+  readonly flowTestMockUserReply: string | null;
+  readonly interviewState: InterviewStateSnapshot | null;
+}
+
+export interface InterviewFeedbackRequest {
+  readonly threadId: string;
+  readonly overallExperienceScore: number;
+  readonly questionFitScore: number;
+  readonly difficultyScore: number;
+  readonly comment: string;
+}
+
+export interface InterviewFeedbackResponse {
+  readonly success: true;
+  readonly savedAt: string;
+}

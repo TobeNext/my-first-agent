@@ -1,0 +1,2562 @@
+{
+  "schemaVersion": 1,
+  "createdAt": "2026-05-03T14:22:47.936Z",
+  "updatedAt": "2026-05-03T14:22:47.936Z",
+  "threadId": "d4a66452-7fce-4253-b55c-ebad6c60fa7d",
+  "targetRole": "通用技术岗位",
+  "recalls": [
+    {
+      "timestamp": "2026-05-03T14:22:47.098Z",
+      "roundType": "professional-skills",
+      "skill": "熟练掌握 TypeScript",
+      "queryText": "Target role: 通用技术岗位\nRound type: professional-skills\nQuestion lens: implementation depth and reasoning\nPrimary skill: 熟练掌握 TypeScript\nRelated resume skills: C#, 具备 Java 工程开发能力, 能够独立完成 AI Agent 系统, 工作流引擎与平台服务开发。深入理解 LLM 应用架构",
+      "logContext": "initialization:professional-skills:熟练掌握 TypeScript",
+      "candidateQuestionIds": [
+        "f22f42dd-48c1-4afe-acdc-d43d89028830",
+        "4b27cbf3-c7be-496a-b790-3724f2a49aab",
+        "b0dbff04-26ac-4a42-8e8c-7fc6b5f8232d",
+        "2b6ff69e-9077-4e22-a579-fbeef01f88ee",
+        "d4e9507b-9be1-4c18-98a9-7c92e32bc303",
+        "0aef3a95-c6fc-4190-90a1-99f1b1fb3206",
+        "dfdd3983-0dc1-4c28-84ad-4b34ce04312b",
+        "118268e9-1edf-4718-a9b9-5a42d10e3a1a",
+        "c8700b66-02dc-4940-8bb1-f5ead73dc7de",
+        "9fd63a1f-2d8b-462b-8ec4-90a2f61037bc",
+        "69208e62-d5f6-4ddb-96b0-17bd4b002174",
+        "7ae0d7c3-da6f-4dfc-a5b1-120f1408a6c9",
+        "f9a2c46e-6f10-4089-a786-eda98feabc56",
+        "941bc94a-8d36-4b2e-84a1-697df26db81f",
+        "d93f4e7e-081c-410a-a3e5-ec8cdcebc335",
+        "399aa449-0e73-411d-b361-1abe05ac4d10",
+        "6dd09175-2550-40ad-83dc-0efe552e2778",
+        "c35a4e33-bb18-4956-b1c6-61c49fc58ac3",
+        "6b271857-55fb-4ca4-a713-d75f0c5d1e40",
+        "1ca8cf44-d72e-49e1-8b7f-854bec136fc2"
+      ],
+      "selectedQuestionIds": [
+        "dfdd3983-0dc1-4c28-84ad-4b34ce04312b"
+      ],
+      "candidates": [
+        {
+          "id": "f22f42dd-48c1-4afe-acdc-d43d89028830",
+          "questionText": "如果让你用 TypeScript 或 C# 设计一个 Agent 平台的模块分层，你会怎么拆？",
+          "vectorScore": 0.7616,
+          "bm25Score": 24.4303,
+          "hybridScore": 0.9587,
+          "rerankRank": 1,
+          "finalSelectionRank": null,
+          "filterReason": "not-selected-after-final-randomization"
+        },
+        {
+          "id": "4b27cbf3-c7be-496a-b790-3724f2a49aab",
+          "questionText": "Skill 内部是否可以封装 workflow 或 SOP？怎么设计边界？",
+          "vectorScore": 0.729,
+          "bm25Score": 2.3722,
+          "hybridScore": 0.3664,
+          "rerankRank": 8,
+          "finalSelectionRank": null,
+          "filterReason": "not-selected-after-final-randomization"
+        },
+        {
+          "id": "b0dbff04-26ac-4a42-8e8c-7fc6b5f8232d",
+          "questionText": "跨 Agent 的任务委派协议里，至少要包含哪些字段？",
+          "vectorScore": 0.7244,
+          "bm25Score": 0.0736,
+          "hybridScore": 0.297,
+          "rerankRank": 9,
+          "finalSelectionRank": null,
+          "filterReason": "not-selected-after-final-randomization"
+        },
+        {
+          "id": "2b6ff69e-9077-4e22-a579-fbeef01f88ee",
+          "questionText": "如果多个 Skill 的 description 很相似，导致 Agent 经常加载错 Skill，应该怎么解决？",
+          "vectorScore": 0.7207,
+          "bm25Score": 6.1676,
+          "hybridScore": 0.3743,
+          "rerankRank": 7,
+          "finalSelectionRank": null,
+          "filterReason": "not-selected-after-final-randomization"
+        },
+        {
+          "id": "d4e9507b-9be1-4c18-98a9-7c92e32bc303",
+          "questionText": "如果把大量 Skill 直接放进系统提示词，导致上下文窗口占用过大，应该如何处理？",
+          "vectorScore": 0.7134,
+          "bm25Score": 3.2442,
+          "hybridScore": 0.2749,
+          "rerankRank": 10,
+          "finalSelectionRank": null,
+          "filterReason": "not-selected-after-final-randomization"
+        },
+        {
+          "id": "0aef3a95-c6fc-4190-90a1-99f1b1fb3206",
+          "questionText": "Java 在 Agent 平台中更适合承接哪些后端模块？",
+          "vectorScore": 0.7027,
+          "bm25Score": 26.8885,
+          "hybridScore": 0.599,
+          "rerankRank": 2,
+          "finalSelectionRank": null,
+          "filterReason": "not-selected-after-final-randomization"
+        },
+        {
+          "id": "dfdd3983-0dc1-4c28-84ad-4b34ce04312b",
+          "questionText": "在开发自己的 Agent 时，你采用了什么研发流程？为什么选择这个流程？",
+          "vectorScore": 0.7004,
+          "bm25Score": 22.5546,
+          "hybridScore": 0.5107,
+          "rerankRank": 3,
+          "finalSelectionRank": 1,
+          "filterReason": "selected"
+        },
+        {
+          "id": "118268e9-1edf-4718-a9b9-5a42d10e3a1a",
+          "questionText": "你如何定义一个好的 Agent 系统？你认为 Agent 设计里最重要的部分是什么？",
+          "vectorScore": 0.7,
+          "bm25Score": 22.6596,
+          "hybridScore": 0.5097,
+          "rerankRank": 4,
+          "finalSelectionRank": null,
+          "filterReason": "not-selected-after-final-randomization"
+        },
+        {
+          "id": "c8700b66-02dc-4940-8bb1-f5ead73dc7de",
+          "questionText": "沙箱隔离通常会限制哪些能力？如何做提权审批？",
+          "vectorScore": 0.6963,
+          "bm25Score": 0,
+          "hybridScore": 0,
+          "rerankRank": null,
+          "finalSelectionRank": null,
+          "filterReason": "filtered-out-by-hybrid-rerank"
+        },
+        {
+          "id": "9fd63a1f-2d8b-462b-8ec4-90a2f61037bc",
+          "questionText": "在开发中，你怎么判断一个任务该用 Workflow，还是该交给自主决策的 Agent？",
+          "vectorScore": 0.6952,
+          "bm25Score": 23.5285,
+          "hybridScore": 0.492,
+          "rerankRank": 5,
+          "finalSelectionRank": null,
+          "filterReason": "not-selected-after-final-randomization"
+        },
+        {
+          "id": "69208e62-d5f6-4ddb-96b0-17bd4b002174",
+          "questionText": "OpenClaw 是什么？它的定位、设计思路和适用场景是什么？",
+          "vectorScore": 0.6948,
+          "bm25Score": 0,
+          "hybridScore": 0,
+          "rerankRank": null,
+          "finalSelectionRank": null,
+          "filterReason": "filtered-out-by-hybrid-rerank"
+        },
+        {
+          "id": "7ae0d7c3-da6f-4dfc-a5b1-120f1408a6c9",
+          "questionText": "如果 Agent 总是重复执行同一个错误的工具调用，你会从哪个环节开始修复？",
+          "vectorScore": 0.6943,
+          "bm25Score": 0,
+          "hybridScore": 0,
+          "rerankRank": null,
+          "finalSelectionRank": null,
+          "filterReason": "filtered-out-by-hybrid-rerank"
+        },
+        {
+          "id": "f9a2c46e-6f10-4089-a786-eda98feabc56",
+          "questionText": "本地工具、MCP Tools 和 Skill 三者分别解决什么问题？",
+          "vectorScore": 0.6935,
+          "bm25Score": 0,
+          "hybridScore": 0,
+          "rerankRank": null,
+          "finalSelectionRank": null,
+          "filterReason": "filtered-out-by-hybrid-rerank"
+        },
+        {
+          "id": "941bc94a-8d36-4b2e-84a1-697df26db81f",
+          "questionText": "Multi-Agent 架构的主流实现方案有哪些？",
+          "vectorScore": 0.6921,
+          "bm25Score": 0,
+          "hybridScore": 0,
+          "rerankRank": null,
+          "finalSelectionRank": null,
+          "filterReason": "filtered-out-by-hybrid-rerank"
+        },
+        {
+          "id": "d93f4e7e-081c-410a-a3e5-ec8cdcebc335",
+          "questionText": "在 Agent 系统中，RAG 检索到的外部知识是如何喂给模型并尽量避免干扰主任务的？",
+          "vectorScore": 0.6905,
+          "bm25Score": 0,
+          "hybridScore": 0,
+          "rerankRank": null,
+          "finalSelectionRank": null,
+          "filterReason": "filtered-out-by-hybrid-rerank"
+        },
+        {
+          "id": "399aa449-0e73-411d-b361-1abe05ac4d10",
+          "questionText": "如果 Agent 发现工具调用报错，如何设计 Prompt 或策略引导它利用报错信息重试，而不是直接失败？",
+          "vectorScore": 0.6893,
+          "bm25Score": 0,
+          "hybridScore": 0,
+          "rerankRank": null,
+          "finalSelectionRank": null,
+          "filterReason": "filtered-out-by-hybrid-rerank"
+        },
+        {
+          "id": "6dd09175-2550-40ad-83dc-0efe552e2778",
+          "questionText": "Agent 是如何识别并选择正确工具的？更依赖工具名称还是功能描述？",
+          "vectorScore": 0.6879,
+          "bm25Score": 0,
+          "hybridScore": 0,
+          "rerankRank": null,
+          "finalSelectionRank": null,
+          "filterReason": "filtered-out-by-hybrid-rerank"
+        },
+        {
+          "id": "c35a4e33-bb18-4956-b1c6-61c49fc58ac3",
+          "questionText": "当用户提问很模糊时，Agent 应该先反问澄清，还是先检索知识库？如何判定？",
+          "vectorScore": 0.6859,
+          "bm25Score": 0,
+          "hybridScore": 0,
+          "rerankRank": null,
+          "finalSelectionRank": null,
+          "filterReason": "filtered-out-by-hybrid-rerank"
+        },
+        {
+          "id": "6b271857-55fb-4ca4-a713-d75f0c5d1e40",
+          "questionText": "如何量化评估一个 Agent 系统的好坏？",
+          "vectorScore": 0.6811,
+          "bm25Score": 0,
+          "hybridScore": 0,
+          "rerankRank": null,
+          "finalSelectionRank": null,
+          "filterReason": "filtered-out-by-hybrid-rerank"
+        },
+        {
+          "id": "1ca8cf44-d72e-49e1-8b7f-854bec136fc2",
+          "questionText": "如何设计单 Agent 架构和 Multi-Agent 架构？什么时候需要从单 Agent 演进到 Multi-Agent？",
+          "vectorScore": 0.6808,
+          "bm25Score": 25.4061,
+          "hybridScore": 0.4251,
+          "rerankRank": 6,
+          "finalSelectionRank": null,
+          "filterReason": "not-selected-after-final-randomization"
+        }
+      ],
+      "finalSelectedQuestions": [
+        {
+          "id": "dfdd3983-0dc1-4c28-84ad-4b34ce04312b",
+          "questionText": "在开发自己的 Agent 时，你采用了什么研发流程？为什么选择这个流程？",
+          "vectorScore": 0.7004,
+          "bm25Score": 22.5546,
+          "hybridScore": 0.5107,
+          "rerankRank": 3,
+          "finalSelectionRank": 1
+        }
+      ],
+      "postInterviewAnswerPerformance": [
+        {
+          "roundType": "professional-skills",
+          "topic": "在开发自己的 Agent 时",
+          "mainQuestion": "在开发自己的 Agent 时，你采用了什么研发流程？为什么选择这个流程？",
+          "nodeStatus": "awaiting-main-answer",
+          "followUpCount": 0,
+          "answerAttemptCount": 0,
+          "latestClassification": null,
+          "aggregatedScore": null,
+          "strengths": [],
+          "missingPoints": [],
+          "incorrectPoints": []
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-05-03T14:22:47.217Z",
+      "roundType": "professional-skills",
+      "skill": "C#",
+      "queryText": "Target role: 通用技术岗位\nRound type: professional-skills\nQuestion lens: implementation depth and reasoning\nPrimary skill: C#\nRelated resume skills: 熟练掌握 TypeScript, 具备 Java 工程开发能力, 能够独立完成 AI Agent 系统, 工作流引擎与平台服务开发。深入理解 LLM 应用架构",
+      "logContext": "initialization:professional-skills:C#",
+      "candidateQuestionIds": [
+        "f22f42dd-48c1-4afe-acdc-d43d89028830",
+        "b0dbff04-26ac-4a42-8e8c-7fc6b5f8232d",
+        "4b27cbf3-c7be-496a-b790-3724f2a49aab",
+        "2b6ff69e-9077-4e22-a579-fbeef01f88ee",
+        "d4e9507b-9be1-4c18-98a9-7c92e32bc303",
+        "118268e9-1edf-4718-a9b9-5a42d10e3a1a",
+        "dfdd3983-0dc1-4c28-84ad-4b34ce04312b",
+        "69208e62-d5f6-4ddb-96b0-17bd4b002174",
+        "9fd63a1f-2d8b-462b-8ec4-90a2f61037bc",
+        "c8700b66-02dc-4940-8bb1-f5ead73dc7de",
+        "941bc94a-8d36-4b2e-84a1-697df26db81f",
+        "f9a2c46e-6f10-4089-a786-eda98feabc56",
+        "7ae0d7c3-da6f-4dfc-a5b1-120f1408a6c9",
+        "d93f4e7e-081c-410a-a3e5-ec8cdcebc335",
+        "0aef3a95-c6fc-4190-90a1-99f1b1fb3206",
+        "6dd09175-2550-40ad-83dc-0efe552e2778",
+        "399aa449-0e73-411d-b361-1abe05ac4d10",
+        "c35a4e33-bb18-4956-b1c6-61c49fc58ac3",
+        "1ca8cf44-d72e-49e1-8b7f-854bec136fc2",
+        "6b271857-55fb-4ca4-a713-d75f0c5d1e40"
+      ],
+      "selectedQuestionIds": [
+        "2b6ff69e-9077-4e22-a579-fbeef01f88ee"
+      ],
+      "candidates": [
+        {
+          "id": "f22f42dd-48c1-4afe-acdc-d43d89028830",
+          "questionText": "如果让你用 TypeScript 或 C# 设计一个 Agent 平台的模块分层，你会怎么拆？",
+          "vectorScore": 0.7579,
+          "bm25Score": 24.4303,
+          "hybridScore": 0.9587,
+          "rerankRank": 1,
+          "finalSelectionRank": null,
+          "filterReason": "not-selected-after-final-randomization"
+        },
+        {
+          "id": "b0dbff04-26ac-4a42-8e8c-7fc6b5f8232d",
+          "questionText": "跨 Agent 的任务委派协议里，至少要包含哪些字段？",
+          "vectorScore": 0.7232,
+          "bm25Score": 0.0736,
+          "hybridScore": 0.3107,
+          "rerankRank": 9,
+          "finalSelectionRank": null,
+          "filterReason": "not-selected-after-final-randomization"
+        },
+        {
+          "id": "4b27cbf3-c7be-496a-b790-3724f2a49aab",
+          "questionText": "Skill 内部是否可以封装 workflow 或 SOP？怎么设计边界？",
+          "vectorScore": 0.723,
+          "bm25Score": 2.3722,
+          "hybridScore": 0.3478,
+          "rerankRank": 8,
+          "finalSelectionRank": null,
+          "filterReason": "not-selected-after-final-randomization"
+        },
+        {
+          "id": "2b6ff69e-9077-4e22-a579-fbeef01f88ee",
+          "questionText": "如果多个 Skill 的 description 很相似，导致 Agent 经常加载错 Skill，应该怎么解决？",
+          "vectorScore": 0.7199,
+          "bm25Score": 6.1676,
+          "hybridScore": 0.3901,
+          "rerankRank": 7,
+          "finalSelectionRank": 1,
+          "filterReason": "selected"
+        },
+        {
+          "id": "d4e9507b-9be1-4c18-98a9-7c92e32bc303",
+          "questionText": "如果把大量 Skill 直接放进系统提示词，导致上下文窗口占用过大，应该如何处理？",
+          "vectorScore": 0.7095,
+          "bm25Score": 3.2442,
+          "hybridScore": 0.2691,
+          "rerankRank": 10,
+          "finalSelectionRank": null,
+          "filterReason": "not-selected-after-final-randomization"
+        },
+        {
+          "id": "118268e9-1edf-4718-a9b9-5a42d10e3a1a",
+          "questionText": "你如何定义一个好的 Agent 系统？你认为 Agent 设计里最重要的部分是什么？",
+          "vectorScore": 0.6991,
+          "bm25Score": 22.6596,
+          "hybridScore": 0.523,
+          "rerankRank": 2,
+          "finalSelectionRank": null,
+          "filterReason": "not-selected-after-final-randomization"
+        },
+        {
+          "id": "dfdd3983-0dc1-4c28-84ad-4b34ce04312b",
+          "questionText": "在开发自己的 Agent 时，你采用了什么研发流程？为什么选择这个流程？",
+          "vectorScore": 0.6984,
+          "bm25Score": 22.5546,
+          "hybridScore": 0.5164,
+          "rerankRank": 3,
+          "finalSelectionRank": null,
+          "filterReason": "not-selected-after-final-randomization"
+        },
+        {
+          "id": "69208e62-d5f6-4ddb-96b0-17bd4b002174",
+          "questionText": "OpenClaw 是什么？它的定位、设计思路和适用场景是什么？",
+          "vectorScore": 0.695,
+          "bm25Score": 0,
+          "hybridScore": 0,
+          "rerankRank": null,
+          "finalSelectionRank": null,
+          "filterReason": "filtered-out-by-hybrid-rerank"
+        },
+        {
+          "id": "9fd63a1f-2d8b-462b-8ec4-90a2f61037bc",
+          "questionText": "在开发中，你怎么判断一个任务该用 Workflow，还是该交给自主决策的 Agent？",
+          "vectorScore": 0.6945,
+          "bm25Score": 23.5285,
+          "hybridScore": 0.5062,
+          "rerankRank": 5,
+          "finalSelectionRank": null,
+          "filterReason": "not-selected-after-final-randomization"
+        },
+        {
+          "id": "c8700b66-02dc-4940-8bb1-f5ead73dc7de",
+          "questionText": "沙箱隔离通常会限制哪些能力？如何做提权审批？",
+          "vectorScore": 0.6929,
+          "bm25Score": 0,
+          "hybridScore": 0,
+          "rerankRank": null,
+          "finalSelectionRank": null,
+          "filterReason": "filtered-out-by-hybrid-rerank"
+        },
+        {
+          "id": "941bc94a-8d36-4b2e-84a1-697df26db81f",
+          "questionText": "Multi-Agent 架构的主流实现方案有哪些？",
+          "vectorScore": 0.6924,
+          "bm25Score": 0,
+          "hybridScore": 0,
+          "rerankRank": null,
+          "finalSelectionRank": null,
+          "filterReason": "filtered-out-by-hybrid-rerank"
+        },
+        {
+          "id": "f9a2c46e-6f10-4089-a786-eda98feabc56",
+          "questionText": "本地工具、MCP Tools 和 Skill 三者分别解决什么问题？",
+          "vectorScore": 0.6908,
+          "bm25Score": 0,
+          "hybridScore": 0,
+          "rerankRank": null,
+          "finalSelectionRank": null,
+          "filterReason": "filtered-out-by-hybrid-rerank"
+        },
+        {
+          "id": "7ae0d7c3-da6f-4dfc-a5b1-120f1408a6c9",
+          "questionText": "如果 Agent 总是重复执行同一个错误的工具调用，你会从哪个环节开始修复？",
+          "vectorScore": 0.6902,
+          "bm25Score": 0,
+          "hybridScore": 0,
+          "rerankRank": null,
+          "finalSelectionRank": null,
+          "filterReason": "filtered-out-by-hybrid-rerank"
+        },
+        {
+          "id": "d93f4e7e-081c-410a-a3e5-ec8cdcebc335",
+          "questionText": "在 Agent 系统中，RAG 检索到的外部知识是如何喂给模型并尽量避免干扰主任务的？",
+          "vectorScore": 0.6884,
+          "bm25Score": 0,
+          "hybridScore": 0,
+          "rerankRank": null,
+          "finalSelectionRank": null,
+          "filterReason": "filtered-out-by-hybrid-rerank"
+        },
+        {
+          "id": "0aef3a95-c6fc-4190-90a1-99f1b1fb3206",
+          "questionText": "Java 在 Agent 平台中更适合承接哪些后端模块？",
+          "vectorScore": 0.6869,
+          "bm25Score": 26.8885,
+          "hybridScore": 0.5098,
+          "rerankRank": 4,
+          "finalSelectionRank": null,
+          "filterReason": "not-selected-after-final-randomization"
+        },
+        {
+          "id": "6dd09175-2550-40ad-83dc-0efe552e2778",
+          "questionText": "Agent 是如何识别并选择正确工具的？更依赖工具名称还是功能描述？",
+          "vectorScore": 0.6868,
+          "bm25Score": 0,
+          "hybridScore": 0,
+          "rerankRank": null,
+          "finalSelectionRank": null,
+          "filterReason": "filtered-out-by-hybrid-rerank"
+        },
+        {
+          "id": "399aa449-0e73-411d-b361-1abe05ac4d10",
+          "questionText": "如果 Agent 发现工具调用报错，如何设计 Prompt 或策略引导它利用报错信息重试，而不是直接失败？",
+          "vectorScore": 0.6866,
+          "bm25Score": 0,
+          "hybridScore": 0,
+          "rerankRank": null,
+          "finalSelectionRank": null,
+          "filterReason": "filtered-out-by-hybrid-rerank"
+        },
+        {
+          "id": "c35a4e33-bb18-4956-b1c6-61c49fc58ac3",
+          "questionText": "当用户提问很模糊时，Agent 应该先反问澄清，还是先检索知识库？如何判定？",
+          "vectorScore": 0.6865,
+          "bm25Score": 0,
+          "hybridScore": 0,
+          "rerankRank": null,
+          "finalSelectionRank": null,
+          "filterReason": "filtered-out-by-hybrid-rerank"
+        },
+        {
+          "id": "1ca8cf44-d72e-49e1-8b7f-854bec136fc2",
+          "questionText": "如何设计单 Agent 架构和 Multi-Agent 架构？什么时候需要从单 Agent 演进到 Multi-Agent？",
+          "vectorScore": 0.6794,
+          "bm25Score": 25.4061,
+          "hybridScore": 0.4332,
+          "rerankRank": 6,
+          "finalSelectionRank": null,
+          "filterReason": "not-selected-after-final-randomization"
+        },
+        {
+          "id": "6b271857-55fb-4ca4-a713-d75f0c5d1e40",
+          "questionText": "如何量化评估一个 Agent 系统的好坏？",
+          "vectorScore": 0.6782,
+          "bm25Score": 0,
+          "hybridScore": 0,
+          "rerankRank": null,
+          "finalSelectionRank": null,
+          "filterReason": "filtered-out-by-hybrid-rerank"
+        }
+      ],
+      "finalSelectedQuestions": [
+        {
+          "id": "2b6ff69e-9077-4e22-a579-fbeef01f88ee",
+          "questionText": "如果多个 Skill 的 description 很相似，导致 Agent 经常加载错 Skill，应该怎么解决？",
+          "vectorScore": 0.7199,
+          "bm25Score": 6.1676,
+          "hybridScore": 0.3901,
+          "rerankRank": 7,
+          "finalSelectionRank": 1
+        }
+      ],
+      "postInterviewAnswerPerformance": [
+        {
+          "roundType": "professional-skills",
+          "topic": "如果多个 Skill 的 description 很相似",
+          "mainQuestion": "如果多个 Skill 的 description 很相似，导致 Agent 经常加载错 Skill，应该怎么解决？",
+          "nodeStatus": "pending",
+          "followUpCount": 0,
+          "answerAttemptCount": 0,
+          "latestClassification": null,
+          "aggregatedScore": null,
+          "strengths": [],
+          "missingPoints": [],
+          "incorrectPoints": []
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-05-03T14:22:47.345Z",
+      "roundType": "professional-skills",
+      "skill": "具备 Java 工程开发能力",
+      "queryText": "Target role: 通用技术岗位\nRound type: professional-skills\nQuestion lens: implementation depth and reasoning\nPrimary skill: 具备 Java 工程开发能力\nRelated resume skills: 熟练掌握 TypeScript, C#, 能够独立完成 AI Agent 系统, 工作流引擎与平台服务开发。深入理解 LLM 应用架构",
+      "logContext": "initialization:professional-skills:具备 Java 工程开发能力",
+      "candidateQuestionIds": [
+        "4b27cbf3-c7be-496a-b790-3724f2a49aab",
+        "b0dbff04-26ac-4a42-8e8c-7fc6b5f8232d",
+        "f22f42dd-48c1-4afe-acdc-d43d89028830",
+        "2b6ff69e-9077-4e22-a579-fbeef01f88ee",
+        "d4e9507b-9be1-4c18-98a9-7c92e32bc303",
+        "0aef3a95-c6fc-4190-90a1-99f1b1fb3206",
+        "118268e9-1edf-4718-a9b9-5a42d10e3a1a",
+        "dfdd3983-0dc1-4c28-84ad-4b34ce04312b",
+        "941bc94a-8d36-4b2e-84a1-697df26db81f",
+        "c8700b66-02dc-4940-8bb1-f5ead73dc7de",
+        "9fd63a1f-2d8b-462b-8ec4-90a2f61037bc",
+        "d93f4e7e-081c-410a-a3e5-ec8cdcebc335",
+        "7ae0d7c3-da6f-4dfc-a5b1-120f1408a6c9",
+        "69208e62-d5f6-4ddb-96b0-17bd4b002174",
+        "6dd09175-2550-40ad-83dc-0efe552e2778",
+        "399aa449-0e73-411d-b361-1abe05ac4d10",
+        "6b271857-55fb-4ca4-a713-d75f0c5d1e40",
+        "f9a2c46e-6f10-4089-a786-eda98feabc56",
+        "1ca8cf44-d72e-49e1-8b7f-854bec136fc2",
+        "c35a4e33-bb18-4956-b1c6-61c49fc58ac3"
+      ],
+      "selectedQuestionIds": [
+        "2b6ff69e-9077-4e22-a579-fbeef01f88ee"
+      ],
+      "candidates": [
+        {
+          "id": "4b27cbf3-c7be-496a-b790-3724f2a49aab",
+          "questionText": "Skill 内部是否可以封装 workflow 或 SOP？怎么设计边界？",
+          "vectorScore": 0.7323,
+          "bm25Score": 2.3722,
+          "hybridScore": 0.5886,
+          "rerankRank": 5,
+          "finalSelectionRank": null,
+          "filterReason": "not-selected-after-final-randomization"
+        },
+        {
+          "id": "b0dbff04-26ac-4a42-8e8c-7fc6b5f8232d",
+          "questionText": "跨 Agent 的任务委派协议里，至少要包含哪些字段？",
+          "vectorScore": 0.7314,
+          "bm25Score": 0.0736,
+          "hybridScore": 0.5387,
+          "rerankRank": 7,
+          "finalSelectionRank": null,
+          "filterReason": "not-selected-after-final-randomization"
+        },
+        {
+          "id": "f22f42dd-48c1-4afe-acdc-d43d89028830",
+          "questionText": "如果让你用 TypeScript 或 C# 设计一个 Agent 平台的模块分层，你会怎么拆？",
+          "vectorScore": 0.7267,
+          "bm25Score": 24.4303,
+          "hybridScore": 0.8934,
+          "rerankRank": 1,
+          "finalSelectionRank": null,
+          "filterReason": "not-selected-after-final-randomization"
+        },
+        {
+          "id": "2b6ff69e-9077-4e22-a579-fbeef01f88ee",
+          "questionText": "如果多个 Skill 的 description 很相似，导致 Agent 经常加载错 Skill，应该怎么解决？",
+          "vectorScore": 0.7185,
+          "bm25Score": 6.1676,
+          "hybridScore": 0.4911,
+          "rerankRank": 8,
+          "finalSelectionRank": 1,
+          "filterReason": "selected"
+        },
+        {
+          "id": "d4e9507b-9be1-4c18-98a9-7c92e32bc303",
+          "questionText": "如果把大量 Skill 直接放进系统提示词，导致上下文窗口占用过大，应该如何处理？",
+          "vectorScore": 0.709,
+          "bm25Score": 0,
+          "hybridScore": 0,
+          "rerankRank": null,
+          "finalSelectionRank": null,
+          "filterReason": "filtered-out-by-hybrid-rerank"
+        },
+        {
+          "id": "0aef3a95-c6fc-4190-90a1-99f1b1fb3206",
+          "questionText": "Java 在 Agent 平台中更适合承接哪些后端模块？",
+          "vectorScore": 0.708,
+          "bm25Score": 26.8885,
+          "hybridScore": 0.7162,
+          "rerankRank": 2,
+          "finalSelectionRank": null,
+          "filterReason": "not-selected-after-final-randomization"
+        },
+        {
+          "id": "118268e9-1edf-4718-a9b9-5a42d10e3a1a",
+          "questionText": "你如何定义一个好的 Agent 系统？你认为 Agent 设计里最重要的部分是什么？",
+          "vectorScore": 0.705,
+          "bm25Score": 22.6596,
+          "hybridScore": 0.6106,
+          "rerankRank": 3,
+          "finalSelectionRank": null,
+          "filterReason": "not-selected-after-final-randomization"
+        },
+        {
+          "id": "dfdd3983-0dc1-4c28-84ad-4b34ce04312b",
+          "questionText": "在开发自己的 Agent 时，你采用了什么研发流程？为什么选择这个流程？",
+          "vectorScore": 0.7034,
+          "bm25Score": 22.5546,
+          "hybridScore": 0.5903,
+          "rerankRank": 4,
+          "finalSelectionRank": null,
+          "filterReason": "not-selected-after-final-randomization"
+        },
+        {
+          "id": "941bc94a-8d36-4b2e-84a1-697df26db81f",
+          "questionText": "Multi-Agent 架构的主流实现方案有哪些？",
+          "vectorScore": 0.7018,
+          "bm25Score": 9.0186,
+          "hybridScore": 0.3445,
+          "rerankRank": 10,
+          "finalSelectionRank": null,
+          "filterReason": "not-selected-after-final-randomization"
+        },
+        {
+          "id": "c8700b66-02dc-4940-8bb1-f5ead73dc7de",
+          "questionText": "沙箱隔离通常会限制哪些能力？如何做提权审批？",
+          "vectorScore": 0.7013,
+          "bm25Score": 0,
+          "hybridScore": 0,
+          "rerankRank": null,
+          "finalSelectionRank": null,
+          "filterReason": "filtered-out-by-hybrid-rerank"
+        },
+        {
+          "id": "9fd63a1f-2d8b-462b-8ec4-90a2f61037bc",
+          "questionText": "在开发中，你怎么判断一个任务该用 Workflow，还是该交给自主决策的 Agent？",
+          "vectorScore": 0.6991,
+          "bm25Score": 23.5285,
+          "hybridScore": 0.5562,
+          "rerankRank": 6,
+          "finalSelectionRank": null,
+          "filterReason": "not-selected-after-final-randomization"
+        },
+        {
+          "id": "d93f4e7e-081c-410a-a3e5-ec8cdcebc335",
+          "questionText": "在 Agent 系统中，RAG 检索到的外部知识是如何喂给模型并尽量避免干扰主任务的？",
+          "vectorScore": 0.6962,
+          "bm25Score": 0,
+          "hybridScore": 0,
+          "rerankRank": null,
+          "finalSelectionRank": null,
+          "filterReason": "filtered-out-by-hybrid-rerank"
+        },
+        {
+          "id": "7ae0d7c3-da6f-4dfc-a5b1-120f1408a6c9",
+          "questionText": "如果 Agent 总是重复执行同一个错误的工具调用，你会从哪个环节开始修复？",
+          "vectorScore": 0.6955,
+          "bm25Score": 0,
+          "hybridScore": 0,
+          "rerankRank": null,
+          "finalSelectionRank": null,
+          "filterReason": "filtered-out-by-hybrid-rerank"
+        },
+        {
+          "id": "69208e62-d5f6-4ddb-96b0-17bd4b002174",
+          "questionText": "OpenClaw 是什么？它的定位、设计思路和适用场景是什么？",
+          "vectorScore": 0.6948,
+          "bm25Score": 0,
+          "hybridScore": 0,
+          "rerankRank": null,
+          "finalSelectionRank": null,
+          "filterReason": "filtered-out-by-hybrid-rerank"
+        },
+        {
+          "id": "6dd09175-2550-40ad-83dc-0efe552e2778",
+          "questionText": "Agent 是如何识别并选择正确工具的？更依赖工具名称还是功能描述？",
+          "vectorScore": 0.6906,
+          "bm25Score": 0,
+          "hybridScore": 0,
+          "rerankRank": null,
+          "finalSelectionRank": null,
+          "filterReason": "filtered-out-by-hybrid-rerank"
+        },
+        {
+          "id": "399aa449-0e73-411d-b361-1abe05ac4d10",
+          "questionText": "如果 Agent 发现工具调用报错，如何设计 Prompt 或策略引导它利用报错信息重试，而不是直接失败？",
+          "vectorScore": 0.69,
+          "bm25Score": 0,
+          "hybridScore": 0,
+          "rerankRank": null,
+          "finalSelectionRank": null,
+          "filterReason": "filtered-out-by-hybrid-rerank"
+        },
+        {
+          "id": "6b271857-55fb-4ca4-a713-d75f0c5d1e40",
+          "questionText": "如何量化评估一个 Agent 系统的好坏？",
+          "vectorScore": 0.6899,
+          "bm25Score": 0,
+          "hybridScore": 0,
+          "rerankRank": null,
+          "finalSelectionRank": null,
+          "filterReason": "filtered-out-by-hybrid-rerank"
+        },
+        {
+          "id": "f9a2c46e-6f10-4089-a786-eda98feabc56",
+          "questionText": "本地工具、MCP Tools 和 Skill 三者分别解决什么问题？",
+          "vectorScore": 0.6891,
+          "bm25Score": 0,
+          "hybridScore": 0,
+          "rerankRank": null,
+          "finalSelectionRank": null,
+          "filterReason": "filtered-out-by-hybrid-rerank"
+        },
+        {
+          "id": "1ca8cf44-d72e-49e1-8b7f-854bec136fc2",
+          "questionText": "如何设计单 Agent 架构和 Multi-Agent 架构？什么时候需要从单 Agent 演进到 Multi-Agent？",
+          "vectorScore": 0.6854,
+          "bm25Score": 25.4061,
+          "hybridScore": 0.4284,
+          "rerankRank": 9,
+          "finalSelectionRank": null,
+          "filterReason": "not-selected-after-final-randomization"
+        },
+        {
+          "id": "c35a4e33-bb18-4956-b1c6-61c49fc58ac3",
+          "questionText": "当用户提问很模糊时，Agent 应该先反问澄清，还是先检索知识库？如何判定？",
+          "vectorScore": 0.6851,
+          "bm25Score": 0,
+          "hybridScore": 0,
+          "rerankRank": null,
+          "finalSelectionRank": null,
+          "filterReason": "filtered-out-by-hybrid-rerank"
+        }
+      ],
+      "finalSelectedQuestions": [
+        {
+          "id": "2b6ff69e-9077-4e22-a579-fbeef01f88ee",
+          "questionText": "如果多个 Skill 的 description 很相似，导致 Agent 经常加载错 Skill，应该怎么解决？",
+          "vectorScore": 0.7185,
+          "bm25Score": 6.1676,
+          "hybridScore": 0.4911,
+          "rerankRank": 8,
+          "finalSelectionRank": 1
+        }
+      ],
+      "postInterviewAnswerPerformance": [
+        {
+          "roundType": "professional-skills",
+          "topic": "如果多个 Skill 的 description 很相似",
+          "mainQuestion": "如果多个 Skill 的 description 很相似，导致 Agent 经常加载错 Skill，应该怎么解决？",
+          "nodeStatus": "pending",
+          "followUpCount": 0,
+          "answerAttemptCount": 0,
+          "latestClassification": null,
+          "aggregatedScore": null,
+          "strengths": [],
+          "missingPoints": [],
+          "incorrectPoints": []
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-05-03T14:22:47.443Z",
+      "roundType": "professional-skills",
+      "skill": "能够独立完成 AI Agent 系统",
+      "queryText": "Target role: 通用技术岗位\nRound type: professional-skills\nQuestion lens: implementation depth and reasoning\nPrimary skill: 能够独立完成 AI Agent 系统\nRelated resume skills: 熟练掌握 TypeScript, C#, 具备 Java 工程开发能力, 工作流引擎与平台服务开发。深入理解 LLM 应用架构",
+      "logContext": "initialization:professional-skills:能够独立完成 AI Agent 系统",
+      "candidateQuestionIds": [
+        "b0dbff04-26ac-4a42-8e8c-7fc6b5f8232d",
+        "f22f42dd-48c1-4afe-acdc-d43d89028830",
+        "4b27cbf3-c7be-496a-b790-3724f2a49aab",
+        "2b6ff69e-9077-4e22-a579-fbeef01f88ee",
+        "118268e9-1edf-4718-a9b9-5a42d10e3a1a",
+        "941bc94a-8d36-4b2e-84a1-697df26db81f",
+        "dfdd3983-0dc1-4c28-84ad-4b34ce04312b",
+        "9fd63a1f-2d8b-462b-8ec4-90a2f61037bc",
+        "c8700b66-02dc-4940-8bb1-f5ead73dc7de",
+        "d4e9507b-9be1-4c18-98a9-7c92e32bc303",
+        "69208e62-d5f6-4ddb-96b0-17bd4b002174",
+        "d93f4e7e-081c-410a-a3e5-ec8cdcebc335",
+        "1ca8cf44-d72e-49e1-8b7f-854bec136fc2",
+        "6b271857-55fb-4ca4-a713-d75f0c5d1e40",
+        "7ae0d7c3-da6f-4dfc-a5b1-120f1408a6c9",
+        "399aa449-0e73-411d-b361-1abe05ac4d10",
+        "6dd09175-2550-40ad-83dc-0efe552e2778",
+        "0aef3a95-c6fc-4190-90a1-99f1b1fb3206",
+        "c35a4e33-bb18-4956-b1c6-61c49fc58ac3",
+        "edfabdd9-eec9-4d8e-b895-40d4fdfcff85"
+      ],
+      "selectedQuestionIds": [
+        "941bc94a-8d36-4b2e-84a1-697df26db81f"
+      ],
+      "candidates": [
+        {
+          "id": "b0dbff04-26ac-4a42-8e8c-7fc6b5f8232d",
+          "questionText": "跨 Agent 的任务委派协议里，至少要包含哪些字段？",
+          "vectorScore": 0.7442,
+          "bm25Score": 0.0737,
+          "hybridScore": 0.55,
+          "rerankRank": 5,
+          "finalSelectionRank": null,
+          "filterReason": "not-selected-after-final-randomization"
+        },
+        {
+          "id": "f22f42dd-48c1-4afe-acdc-d43d89028830",
+          "questionText": "如果让你用 TypeScript 或 C# 设计一个 Agent 平台的模块分层，你会怎么拆？",
+          "vectorScore": 0.7353,
+          "bm25Score": 24.5206,
+          "hybridScore": 0.8522,
+          "rerankRank": 1,
+          "finalSelectionRank": null,
+          "filterReason": "not-selected-after-final-randomization"
+        },
+        {
+          "id": "4b27cbf3-c7be-496a-b790-3724f2a49aab",
+          "questionText": "Skill 内部是否可以封装 workflow 或 SOP？怎么设计边界？",
+          "vectorScore": 0.7288,
+          "bm25Score": 2.6945,
+          "hybridScore": 0.4116,
+          "rerankRank": 10,
+          "finalSelectionRank": null,
+          "filterReason": "not-selected-after-final-randomization"
+        },
+        {
+          "id": "2b6ff69e-9077-4e22-a579-fbeef01f88ee",
+          "questionText": "如果多个 Skill 的 description 很相似，导致 Agent 经常加载错 Skill，应该怎么解决？",
+          "vectorScore": 0.7272,
+          "bm25Score": 6.4845,
+          "hybridScore": 0.4554,
+          "rerankRank": 8,
+          "finalSelectionRank": null,
+          "filterReason": "not-selected-after-final-randomization"
+        },
+        {
+          "id": "118268e9-1edf-4718-a9b9-5a42d10e3a1a",
+          "questionText": "你如何定义一个好的 Agent 系统？你认为 Agent 设计里最重要的部分是什么？",
+          "vectorScore": 0.7219,
+          "bm25Score": 22.7961,
+          "hybridScore": 0.6643,
+          "rerankRank": 2,
+          "finalSelectionRank": null,
+          "filterReason": "not-selected-after-final-randomization"
+        },
+        {
+          "id": "941bc94a-8d36-4b2e-84a1-697df26db81f",
+          "questionText": "Multi-Agent 架构的主流实现方案有哪些？",
+          "vectorScore": 0.7205,
+          "bm25Score": 8.6825,
+          "hybridScore": 0.4133,
+          "rerankRank": 9,
+          "finalSelectionRank": 1,
+          "filterReason": "selected"
+        },
+        {
+          "id": "dfdd3983-0dc1-4c28-84ad-4b34ce04312b",
+          "questionText": "在开发自己的 Agent 时，你采用了什么研发流程？为什么选择这个流程？",
+          "vectorScore": 0.7181,
+          "bm25Score": 22.6409,
+          "hybridScore": 0.6175,
+          "rerankRank": 3,
+          "finalSelectionRank": null,
+          "filterReason": "not-selected-after-final-randomization"
+        },
+        {
+          "id": "9fd63a1f-2d8b-462b-8ec4-90a2f61037bc",
+          "questionText": "在开发中，你怎么判断一个任务该用 Workflow，还是该交给自主决策的 Agent？",
+          "vectorScore": 0.7123,
+          "bm25Score": 23.6131,
+          "hybridScore": 0.5649,
+          "rerankRank": 4,
+          "finalSelectionRank": null,
+          "filterReason": "not-selected-after-final-randomization"
+        },
+        {
+          "id": "c8700b66-02dc-4940-8bb1-f5ead73dc7de",
+          "questionText": "沙箱隔离通常会限制哪些能力？如何做提权审批？",
+          "vectorScore": 0.707,
+          "bm25Score": 0,
+          "hybridScore": 0,
+          "rerankRank": null,
+          "finalSelectionRank": null,
+          "filterReason": "filtered-out-by-hybrid-rerank"
+        },
+        {
+          "id": "d4e9507b-9be1-4c18-98a9-7c92e32bc303",
+          "questionText": "如果把大量 Skill 直接放进系统提示词，导致上下文窗口占用过大，应该如何处理？",
+          "vectorScore": 0.7067,
+          "bm25Score": 0,
+          "hybridScore": 0,
+          "rerankRank": null,
+          "finalSelectionRank": null,
+          "filterReason": "filtered-out-by-hybrid-rerank"
+        },
+        {
+          "id": "69208e62-d5f6-4ddb-96b0-17bd4b002174",
+          "questionText": "OpenClaw 是什么？它的定位、设计思路和适用场景是什么？",
+          "vectorScore": 0.7061,
+          "bm25Score": 0,
+          "hybridScore": 0,
+          "rerankRank": null,
+          "finalSelectionRank": null,
+          "filterReason": "filtered-out-by-hybrid-rerank"
+        },
+        {
+          "id": "d93f4e7e-081c-410a-a3e5-ec8cdcebc335",
+          "questionText": "在 Agent 系统中，RAG 检索到的外部知识是如何喂给模型并尽量避免干扰主任务的？",
+          "vectorScore": 0.7058,
+          "bm25Score": 0,
+          "hybridScore": 0,
+          "rerankRank": null,
+          "finalSelectionRank": null,
+          "filterReason": "filtered-out-by-hybrid-rerank"
+        },
+        {
+          "id": "1ca8cf44-d72e-49e1-8b7f-854bec136fc2",
+          "questionText": "如何设计单 Agent 架构和 Multi-Agent 架构？什么时候需要从单 Agent 演进到 Multi-Agent？",
+          "vectorScore": 0.705,
+          "bm25Score": 25.4965,
+          "hybridScore": 0.5092,
+          "rerankRank": 6,
+          "finalSelectionRank": null,
+          "filterReason": "not-selected-after-final-randomization"
+        },
+        {
+          "id": "6b271857-55fb-4ca4-a713-d75f0c5d1e40",
+          "questionText": "如何量化评估一个 Agent 系统的好坏？",
+          "vectorScore": 0.7045,
+          "bm25Score": 0,
+          "hybridScore": 0,
+          "rerankRank": null,
+          "finalSelectionRank": null,
+          "filterReason": "filtered-out-by-hybrid-rerank"
+        },
+        {
+          "id": "7ae0d7c3-da6f-4dfc-a5b1-120f1408a6c9",
+          "questionText": "如果 Agent 总是重复执行同一个错误的工具调用，你会从哪个环节开始修复？",
+          "vectorScore": 0.7042,
+          "bm25Score": 0,
+          "hybridScore": 0,
+          "rerankRank": null,
+          "finalSelectionRank": null,
+          "filterReason": "filtered-out-by-hybrid-rerank"
+        },
+        {
+          "id": "399aa449-0e73-411d-b361-1abe05ac4d10",
+          "questionText": "如果 Agent 发现工具调用报错，如何设计 Prompt 或策略引导它利用报错信息重试，而不是直接失败？",
+          "vectorScore": 0.7017,
+          "bm25Score": 0,
+          "hybridScore": 0,
+          "rerankRank": null,
+          "finalSelectionRank": null,
+          "filterReason": "filtered-out-by-hybrid-rerank"
+        },
+        {
+          "id": "6dd09175-2550-40ad-83dc-0efe552e2778",
+          "questionText": "Agent 是如何识别并选择正确工具的？更依赖工具名称还是功能描述？",
+          "vectorScore": 0.7006,
+          "bm25Score": 0,
+          "hybridScore": 0,
+          "rerankRank": null,
+          "finalSelectionRank": null,
+          "filterReason": "filtered-out-by-hybrid-rerank"
+        },
+        {
+          "id": "0aef3a95-c6fc-4190-90a1-99f1b1fb3206",
+          "questionText": "Java 在 Agent 平台中更适合承接哪些后端模块？",
+          "vectorScore": 0.6998,
+          "bm25Score": 27.0607,
+          "hybridScore": 0.4733,
+          "rerankRank": 7,
+          "finalSelectionRank": null,
+          "filterReason": "not-selected-after-final-randomization"
+        },
+        {
+          "id": "c35a4e33-bb18-4956-b1c6-61c49fc58ac3",
+          "questionText": "当用户提问很模糊时，Agent 应该先反问澄清，还是先检索知识库？如何判定？",
+          "vectorScore": 0.6989,
+          "bm25Score": 0,
+          "hybridScore": 0,
+          "rerankRank": null,
+          "finalSelectionRank": null,
+          "filterReason": "filtered-out-by-hybrid-rerank"
+        },
+        {
+          "id": "edfabdd9-eec9-4d8e-b895-40d4fdfcff85",
+          "questionText": "多 Agent 共享的状态、消息和中间结果通常存在哪里？如何保证一致性？",
+          "vectorScore": 0.6978,
+          "bm25Score": 0,
+          "hybridScore": 0,
+          "rerankRank": null,
+          "finalSelectionRank": null,
+          "filterReason": "filtered-out-by-hybrid-rerank"
+        }
+      ],
+      "finalSelectedQuestions": [
+        {
+          "id": "941bc94a-8d36-4b2e-84a1-697df26db81f",
+          "questionText": "Multi-Agent 架构的主流实现方案有哪些？",
+          "vectorScore": 0.7205,
+          "bm25Score": 8.6825,
+          "hybridScore": 0.4133,
+          "rerankRank": 9,
+          "finalSelectionRank": 1
+        }
+      ],
+      "postInterviewAnswerPerformance": [
+        {
+          "roundType": "professional-skills",
+          "topic": "Multi-Agent 架构的主流实现方案有哪些",
+          "mainQuestion": "Multi-Agent 架构的主流实现方案有哪些？",
+          "nodeStatus": "pending",
+          "followUpCount": 0,
+          "answerAttemptCount": 0,
+          "latestClassification": null,
+          "aggregatedScore": null,
+          "strengths": [],
+          "missingPoints": [],
+          "incorrectPoints": []
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-05-03T14:22:47.532Z",
+      "roundType": "professional-skills",
+      "skill": "工作流引擎与平台服务开发。深入理解 LLM 应用架构",
+      "queryText": "Target role: 通用技术岗位\nRound type: professional-skills\nQuestion lens: implementation depth and reasoning\nPrimary skill: 工作流引擎与平台服务开发。深入理解 LLM 应用架构\nRelated resume skills: 熟练掌握 TypeScript, C#, 具备 Java 工程开发能力, 能够独立完成 AI Agent 系统",
+      "logContext": "initialization:professional-skills:工作流引擎与平台服务开发。深入理解 LLM 应用架构",
+      "candidateQuestionIds": [
+        "b0dbff04-26ac-4a42-8e8c-7fc6b5f8232d",
+        "f22f42dd-48c1-4afe-acdc-d43d89028830",
+        "4b27cbf3-c7be-496a-b790-3724f2a49aab",
+        "2b6ff69e-9077-4e22-a579-fbeef01f88ee",
+        "941bc94a-8d36-4b2e-84a1-697df26db81f",
+        "d4e9507b-9be1-4c18-98a9-7c92e32bc303",
+        "118268e9-1edf-4718-a9b9-5a42d10e3a1a",
+        "dfdd3983-0dc1-4c28-84ad-4b34ce04312b",
+        "9fd63a1f-2d8b-462b-8ec4-90a2f61037bc",
+        "69208e62-d5f6-4ddb-96b0-17bd4b002174",
+        "c8700b66-02dc-4940-8bb1-f5ead73dc7de",
+        "d93f4e7e-081c-410a-a3e5-ec8cdcebc335",
+        "7ae0d7c3-da6f-4dfc-a5b1-120f1408a6c9",
+        "399aa449-0e73-411d-b361-1abe05ac4d10",
+        "0aef3a95-c6fc-4190-90a1-99f1b1fb3206",
+        "1ca8cf44-d72e-49e1-8b7f-854bec136fc2",
+        "c35a4e33-bb18-4956-b1c6-61c49fc58ac3",
+        "6dd09175-2550-40ad-83dc-0efe552e2778",
+        "6b271857-55fb-4ca4-a713-d75f0c5d1e40",
+        "07902b72-130c-4842-b8b9-9c6e284ac6ff"
+      ],
+      "selectedQuestionIds": [
+        "9fd63a1f-2d8b-462b-8ec4-90a2f61037bc"
+      ],
+      "candidates": [
+        {
+          "id": "b0dbff04-26ac-4a42-8e8c-7fc6b5f8232d",
+          "questionText": "跨 Agent 的任务委派协议里，至少要包含哪些字段？",
+          "vectorScore": 0.7345,
+          "bm25Score": 0.0737,
+          "hybridScore": 0.55,
+          "rerankRank": 6,
+          "finalSelectionRank": null,
+          "filterReason": "not-selected-after-final-randomization"
+        },
+        {
+          "id": "f22f42dd-48c1-4afe-acdc-d43d89028830",
+          "questionText": "如果让你用 TypeScript 或 C# 设计一个 Agent 平台的模块分层，你会怎么拆？",
+          "vectorScore": 0.7332,
+          "bm25Score": 24.7153,
+          "hybridScore": 0.9478,
+          "rerankRank": 1,
+          "finalSelectionRank": null,
+          "filterReason": "not-selected-after-final-randomization"
+        },
+        {
+          "id": "4b27cbf3-c7be-496a-b790-3724f2a49aab",
+          "questionText": "Skill 内部是否可以封装 workflow 或 SOP？怎么设计边界？",
+          "vectorScore": 0.7319,
+          "bm25Score": 2.6938,
+          "hybridScore": 0.563,
+          "rerankRank": 5,
+          "finalSelectionRank": null,
+          "filterReason": "not-selected-after-final-randomization"
+        },
+        {
+          "id": "2b6ff69e-9077-4e22-a579-fbeef01f88ee",
+          "questionText": "如果多个 Skill 的 description 很相似，导致 Agent 经常加载错 Skill，应该怎么解决？",
+          "vectorScore": 0.7252,
+          "bm25Score": 6.48,
+          "hybridScore": 0.5472,
+          "rerankRank": 7,
+          "finalSelectionRank": null,
+          "filterReason": "not-selected-after-final-randomization"
+        },
+        {
+          "id": "941bc94a-8d36-4b2e-84a1-697df26db81f",
+          "questionText": "Multi-Agent 架构的主流实现方案有哪些？",
+          "vectorScore": 0.7157,
+          "bm25Score": 8.0118,
+          "hybridScore": 0.461,
+          "rerankRank": 10,
+          "finalSelectionRank": null,
+          "filterReason": "not-selected-after-final-randomization"
+        },
+        {
+          "id": "d4e9507b-9be1-4c18-98a9-7c92e32bc303",
+          "questionText": "如果把大量 Skill 直接放进系统提示词，导致上下文窗口占用过大，应该如何处理？",
+          "vectorScore": 0.7156,
+          "bm25Score": 0,
+          "hybridScore": 0,
+          "rerankRank": null,
+          "finalSelectionRank": null,
+          "filterReason": "filtered-out-by-hybrid-rerank"
+        },
+        {
+          "id": "118268e9-1edf-4718-a9b9-5a42d10e3a1a",
+          "questionText": "你如何定义一个好的 Agent 系统？你认为 Agent 设计里最重要的部分是什么？",
+          "vectorScore": 0.71,
+          "bm25Score": 22.8906,
+          "hybridScore": 0.6428,
+          "rerankRank": 2,
+          "finalSelectionRank": null,
+          "filterReason": "not-selected-after-final-randomization"
+        },
+        {
+          "id": "dfdd3983-0dc1-4c28-84ad-4b34ce04312b",
+          "questionText": "在开发自己的 Agent 时，你采用了什么研发流程？为什么选择这个流程？",
+          "vectorScore": 0.708,
+          "bm25Score": 22.789,
+          "hybridScore": 0.6166,
+          "rerankRank": 3,
+          "finalSelectionRank": null,
+          "filterReason": "not-selected-after-final-randomization"
+        },
+        {
+          "id": "9fd63a1f-2d8b-462b-8ec4-90a2f61037bc",
+          "questionText": "在开发中，你怎么判断一个任务该用 Workflow，还是该交给自主决策的 Agent？",
+          "vectorScore": 0.7033,
+          "bm25Score": 23.7701,
+          "hybridScore": 0.5779,
+          "rerankRank": 4,
+          "finalSelectionRank": 1,
+          "filterReason": "selected"
+        },
+        {
+          "id": "69208e62-d5f6-4ddb-96b0-17bd4b002174",
+          "questionText": "OpenClaw 是什么？它的定位、设计思路和适用场景是什么？",
+          "vectorScore": 0.7031,
+          "bm25Score": 0,
+          "hybridScore": 0,
+          "rerankRank": null,
+          "finalSelectionRank": null,
+          "filterReason": "filtered-out-by-hybrid-rerank"
+        },
+        {
+          "id": "c8700b66-02dc-4940-8bb1-f5ead73dc7de",
+          "questionText": "沙箱隔离通常会限制哪些能力？如何做提权审批？",
+          "vectorScore": 0.7025,
+          "bm25Score": 0,
+          "hybridScore": 0,
+          "rerankRank": null,
+          "finalSelectionRank": null,
+          "filterReason": "filtered-out-by-hybrid-rerank"
+        },
+        {
+          "id": "d93f4e7e-081c-410a-a3e5-ec8cdcebc335",
+          "questionText": "在 Agent 系统中，RAG 检索到的外部知识是如何喂给模型并尽量避免干扰主任务的？",
+          "vectorScore": 0.6998,
+          "bm25Score": 0,
+          "hybridScore": 0,
+          "rerankRank": null,
+          "finalSelectionRank": null,
+          "filterReason": "filtered-out-by-hybrid-rerank"
+        },
+        {
+          "id": "7ae0d7c3-da6f-4dfc-a5b1-120f1408a6c9",
+          "questionText": "如果 Agent 总是重复执行同一个错误的工具调用，你会从哪个环节开始修复？",
+          "vectorScore": 0.6979,
+          "bm25Score": 0,
+          "hybridScore": 0,
+          "rerankRank": null,
+          "finalSelectionRank": null,
+          "filterReason": "filtered-out-by-hybrid-rerank"
+        },
+        {
+          "id": "399aa449-0e73-411d-b361-1abe05ac4d10",
+          "questionText": "如果 Agent 发现工具调用报错，如何设计 Prompt 或策略引导它利用报错信息重试，而不是直接失败？",
+          "vectorScore": 0.6946,
+          "bm25Score": 0,
+          "hybridScore": 0,
+          "rerankRank": null,
+          "finalSelectionRank": null,
+          "filterReason": "filtered-out-by-hybrid-rerank"
+        },
+        {
+          "id": "0aef3a95-c6fc-4190-90a1-99f1b1fb3206",
+          "questionText": "Java 在 Agent 平台中更适合承接哪些后端模块？",
+          "vectorScore": 0.6929,
+          "bm25Score": 26.9338,
+          "hybridScore": 0.5077,
+          "rerankRank": 8,
+          "finalSelectionRank": null,
+          "filterReason": "not-selected-after-final-randomization"
+        },
+        {
+          "id": "1ca8cf44-d72e-49e1-8b7f-854bec136fc2",
+          "questionText": "如何设计单 Agent 架构和 Multi-Agent 架构？什么时候需要从单 Agent 演进到 Multi-Agent？",
+          "vectorScore": 0.6921,
+          "bm25Score": 25.2269,
+          "hybridScore": 0.4687,
+          "rerankRank": 9,
+          "finalSelectionRank": null,
+          "filterReason": "not-selected-after-final-randomization"
+        },
+        {
+          "id": "c35a4e33-bb18-4956-b1c6-61c49fc58ac3",
+          "questionText": "当用户提问很模糊时，Agent 应该先反问澄清，还是先检索知识库？如何判定？",
+          "vectorScore": 0.6903,
+          "bm25Score": 0,
+          "hybridScore": 0,
+          "rerankRank": null,
+          "finalSelectionRank": null,
+          "filterReason": "filtered-out-by-hybrid-rerank"
+        },
+        {
+          "id": "6dd09175-2550-40ad-83dc-0efe552e2778",
+          "questionText": "Agent 是如何识别并选择正确工具的？更依赖工具名称还是功能描述？",
+          "vectorScore": 0.6902,
+          "bm25Score": 0,
+          "hybridScore": 0,
+          "rerankRank": null,
+          "finalSelectionRank": null,
+          "filterReason": "filtered-out-by-hybrid-rerank"
+        },
+        {
+          "id": "6b271857-55fb-4ca4-a713-d75f0c5d1e40",
+          "questionText": "如何量化评估一个 Agent 系统的好坏？",
+          "vectorScore": 0.69,
+          "bm25Score": 0,
+          "hybridScore": 0,
+          "rerankRank": null,
+          "finalSelectionRank": null,
+          "filterReason": "filtered-out-by-hybrid-rerank"
+        },
+        {
+          "id": "07902b72-130c-4842-b8b9-9c6e284ac6ff",
+          "questionText": "在开发 Agent 应用时，你怎么判断一个任务该用 7B 小模型还是 70B 大模型？",
+          "vectorScore": 0.6881,
+          "bm25Score": 0,
+          "hybridScore": 0,
+          "rerankRank": null,
+          "finalSelectionRank": null,
+          "filterReason": "filtered-out-by-hybrid-rerank"
+        }
+      ],
+      "finalSelectedQuestions": [
+        {
+          "id": "9fd63a1f-2d8b-462b-8ec4-90a2f61037bc",
+          "questionText": "在开发中，你怎么判断一个任务该用 Workflow，还是该交给自主决策的 Agent？",
+          "vectorScore": 0.7033,
+          "bm25Score": 23.7701,
+          "hybridScore": 0.5779,
+          "rerankRank": 4,
+          "finalSelectionRank": 1
+        }
+      ],
+      "postInterviewAnswerPerformance": [
+        {
+          "roundType": "professional-skills",
+          "topic": "在开发中",
+          "mainQuestion": "在开发中，你怎么判断一个任务该用 Workflow，还是该交给自主决策的 Agent？",
+          "nodeStatus": "pending",
+          "followUpCount": 0,
+          "answerAttemptCount": 0,
+          "latestClassification": null,
+          "aggregatedScore": null,
+          "strengths": [],
+          "missingPoints": [],
+          "incorrectPoints": []
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-05-03T14:22:47.633Z",
+      "roundType": "professional-skills",
+      "skill": "Claude 等模型能力边界",
+      "queryText": "Target role: 通用技术岗位\nRound type: professional-skills\nQuestion lens: implementation depth and reasoning\nPrimary skill: Claude 等模型能力边界\nRelated resume skills: 熟练掌握 TypeScript, C#, 具备 Java 工程开发能力, 能够独立完成 AI Agent 系统",
+      "logContext": "initialization:professional-skills:Claude 等模型能力边界",
+      "candidateQuestionIds": [
+        "2b6ff69e-9077-4e22-a579-fbeef01f88ee",
+        "b0dbff04-26ac-4a42-8e8c-7fc6b5f8232d",
+        "4b27cbf3-c7be-496a-b790-3724f2a49aab",
+        "f22f42dd-48c1-4afe-acdc-d43d89028830",
+        "dfdd3983-0dc1-4c28-84ad-4b34ce04312b",
+        "118268e9-1edf-4718-a9b9-5a42d10e3a1a",
+        "d4e9507b-9be1-4c18-98a9-7c92e32bc303",
+        "9fd63a1f-2d8b-462b-8ec4-90a2f61037bc",
+        "c8700b66-02dc-4940-8bb1-f5ead73dc7de",
+        "d93f4e7e-081c-410a-a3e5-ec8cdcebc335",
+        "399aa449-0e73-411d-b361-1abe05ac4d10",
+        "941bc94a-8d36-4b2e-84a1-697df26db81f",
+        "1ca8cf44-d72e-49e1-8b7f-854bec136fc2",
+        "7ae0d7c3-da6f-4dfc-a5b1-120f1408a6c9",
+        "6b271857-55fb-4ca4-a713-d75f0c5d1e40",
+        "c35a4e33-bb18-4956-b1c6-61c49fc58ac3",
+        "6dd09175-2550-40ad-83dc-0efe552e2778",
+        "edfabdd9-eec9-4d8e-b895-40d4fdfcff85",
+        "c28022a5-d445-4ec1-9cc9-1af3ff1769e0",
+        "69208e62-d5f6-4ddb-96b0-17bd4b002174"
+      ],
+      "selectedQuestionIds": [
+        "9fd63a1f-2d8b-462b-8ec4-90a2f61037bc"
+      ],
+      "candidates": [
+        {
+          "id": "2b6ff69e-9077-4e22-a579-fbeef01f88ee",
+          "questionText": "如果多个 Skill 的 description 很相似，导致 Agent 经常加载错 Skill，应该怎么解决？",
+          "vectorScore": 0.7398,
+          "bm25Score": 10.3678,
+          "hybridScore": 0.8055,
+          "rerankRank": 2,
+          "finalSelectionRank": null,
+          "filterReason": "not-selected-after-final-randomization"
+        },
+        {
+          "id": "b0dbff04-26ac-4a42-8e8c-7fc6b5f8232d",
+          "questionText": "跨 Agent 的任务委派协议里，至少要包含哪些字段？",
+          "vectorScore": 0.7393,
+          "bm25Score": 0.0735,
+          "hybridScore": 0.5442,
+          "rerankRank": 6,
+          "finalSelectionRank": null,
+          "filterReason": "not-selected-after-final-randomization"
+        },
+        {
+          "id": "4b27cbf3-c7be-496a-b790-3724f2a49aab",
+          "questionText": "Skill 内部是否可以封装 workflow 或 SOP？怎么设计边界？",
+          "vectorScore": 0.7263,
+          "bm25Score": 2.6924,
+          "hybridScore": 0.4652,
+          "rerankRank": 8,
+          "finalSelectionRank": null,
+          "filterReason": "not-selected-after-final-randomization"
+        },
+        {
+          "id": "f22f42dd-48c1-4afe-acdc-d43d89028830",
+          "questionText": "如果让你用 TypeScript 或 C# 设计一个 Agent 平台的模块分层，你会怎么拆？",
+          "vectorScore": 0.7237,
+          "bm25Score": 18.1971,
+          "hybridScore": 0.8203,
+          "rerankRank": 1,
+          "finalSelectionRank": null,
+          "filterReason": "not-selected-after-final-randomization"
+        },
+        {
+          "id": "dfdd3983-0dc1-4c28-84ad-4b34ce04312b",
+          "questionText": "在开发自己的 Agent 时，你采用了什么研发流程？为什么选择这个流程？",
+          "vectorScore": 0.7224,
+          "bm25Score": 17.4669,
+          "hybridScore": 0.788,
+          "rerankRank": 3,
+          "finalSelectionRank": null,
+          "filterReason": "not-selected-after-final-randomization"
+        },
+        {
+          "id": "118268e9-1edf-4718-a9b9-5a42d10e3a1a",
+          "questionText": "你如何定义一个好的 Agent 系统？你认为 Agent 设计里最重要的部分是什么？",
+          "vectorScore": 0.7178,
+          "bm25Score": 17.7908,
+          "hybridScore": 0.7447,
+          "rerankRank": 4,
+          "finalSelectionRank": null,
+          "filterReason": "not-selected-after-final-randomization"
+        },
+        {
+          "id": "d4e9507b-9be1-4c18-98a9-7c92e32bc303",
+          "questionText": "如果把大量 Skill 直接放进系统提示词，导致上下文窗口占用过大，应该如何处理？",
+          "vectorScore": 0.7144,
+          "bm25Score": 3.6958,
+          "hybridScore": 0.3576,
+          "rerankRank": 9,
+          "finalSelectionRank": null,
+          "filterReason": "not-selected-after-final-randomization"
+        },
+        {
+          "id": "9fd63a1f-2d8b-462b-8ec4-90a2f61037bc",
+          "questionText": "在开发中，你怎么判断一个任务该用 Workflow，还是该交给自主决策的 Agent？",
+          "vectorScore": 0.7094,
+          "bm25Score": 18.2024,
+          "hybridScore": 0.6615,
+          "rerankRank": 5,
+          "finalSelectionRank": 1,
+          "filterReason": "selected"
+        },
+        {
+          "id": "c8700b66-02dc-4940-8bb1-f5ead73dc7de",
+          "questionText": "沙箱隔离通常会限制哪些能力？如何做提权审批？",
+          "vectorScore": 0.7087,
+          "bm25Score": 2.521,
+          "hybridScore": 0.2646,
+          "rerankRank": 10,
+          "finalSelectionRank": null,
+          "filterReason": "not-selected-after-final-randomization"
+        },
+        {
+          "id": "d93f4e7e-081c-410a-a3e5-ec8cdcebc335",
+          "questionText": "在 Agent 系统中，RAG 检索到的外部知识是如何喂给模型并尽量避免干扰主任务的？",
+          "vectorScore": 0.7034,
+          "bm25Score": 0,
+          "hybridScore": 0,
+          "rerankRank": null,
+          "finalSelectionRank": null,
+          "filterReason": "filtered-out-by-hybrid-rerank"
+        },
+        {
+          "id": "399aa449-0e73-411d-b361-1abe05ac4d10",
+          "questionText": "如果 Agent 发现工具调用报错，如何设计 Prompt 或策略引导它利用报错信息重试，而不是直接失败？",
+          "vectorScore": 0.7006,
+          "bm25Score": 0,
+          "hybridScore": 0,
+          "rerankRank": null,
+          "finalSelectionRank": null,
+          "filterReason": "filtered-out-by-hybrid-rerank"
+        },
+        {
+          "id": "941bc94a-8d36-4b2e-84a1-697df26db81f",
+          "questionText": "Multi-Agent 架构的主流实现方案有哪些？",
+          "vectorScore": 0.6977,
+          "bm25Score": 0,
+          "hybridScore": 0,
+          "rerankRank": null,
+          "finalSelectionRank": null,
+          "filterReason": "filtered-out-by-hybrid-rerank"
+        },
+        {
+          "id": "1ca8cf44-d72e-49e1-8b7f-854bec136fc2",
+          "questionText": "如何设计单 Agent 架构和 Multi-Agent 架构？什么时候需要从单 Agent 演进到 Multi-Agent？",
+          "vectorScore": 0.6961,
+          "bm25Score": 17.1191,
+          "hybridScore": 0.4872,
+          "rerankRank": 7,
+          "finalSelectionRank": null,
+          "filterReason": "not-selected-after-final-randomization"
+        },
+        {
+          "id": "7ae0d7c3-da6f-4dfc-a5b1-120f1408a6c9",
+          "questionText": "如果 Agent 总是重复执行同一个错误的工具调用，你会从哪个环节开始修复？",
+          "vectorScore": 0.6947,
+          "bm25Score": 0,
+          "hybridScore": 0,
+          "rerankRank": null,
+          "finalSelectionRank": null,
+          "filterReason": "filtered-out-by-hybrid-rerank"
+        },
+        {
+          "id": "6b271857-55fb-4ca4-a713-d75f0c5d1e40",
+          "questionText": "如何量化评估一个 Agent 系统的好坏？",
+          "vectorScore": 0.6944,
+          "bm25Score": 0,
+          "hybridScore": 0,
+          "rerankRank": null,
+          "finalSelectionRank": null,
+          "filterReason": "filtered-out-by-hybrid-rerank"
+        },
+        {
+          "id": "c35a4e33-bb18-4956-b1c6-61c49fc58ac3",
+          "questionText": "当用户提问很模糊时，Agent 应该先反问澄清，还是先检索知识库？如何判定？",
+          "vectorScore": 0.6935,
+          "bm25Score": 0,
+          "hybridScore": 0,
+          "rerankRank": null,
+          "finalSelectionRank": null,
+          "filterReason": "filtered-out-by-hybrid-rerank"
+        },
+        {
+          "id": "6dd09175-2550-40ad-83dc-0efe552e2778",
+          "questionText": "Agent 是如何识别并选择正确工具的？更依赖工具名称还是功能描述？",
+          "vectorScore": 0.6933,
+          "bm25Score": 0,
+          "hybridScore": 0,
+          "rerankRank": null,
+          "finalSelectionRank": null,
+          "filterReason": "filtered-out-by-hybrid-rerank"
+        },
+        {
+          "id": "edfabdd9-eec9-4d8e-b895-40d4fdfcff85",
+          "questionText": "多 Agent 共享的状态、消息和中间结果通常存在哪里？如何保证一致性？",
+          "vectorScore": 0.6925,
+          "bm25Score": 0,
+          "hybridScore": 0,
+          "rerankRank": null,
+          "finalSelectionRank": null,
+          "filterReason": "filtered-out-by-hybrid-rerank"
+        },
+        {
+          "id": "c28022a5-d445-4ec1-9cc9-1af3ff1769e0",
+          "questionText": "用户情绪异常时，Agent 如何在不中断主流程的情况下进行干预？",
+          "vectorScore": 0.6904,
+          "bm25Score": 0,
+          "hybridScore": 0,
+          "rerankRank": null,
+          "finalSelectionRank": null,
+          "filterReason": "filtered-out-by-hybrid-rerank"
+        },
+        {
+          "id": "69208e62-d5f6-4ddb-96b0-17bd4b002174",
+          "questionText": "OpenClaw 是什么？它的定位、设计思路和适用场景是什么？",
+          "vectorScore": 0.6903,
+          "bm25Score": 0,
+          "hybridScore": 0,
+          "rerankRank": null,
+          "finalSelectionRank": null,
+          "filterReason": "filtered-out-by-hybrid-rerank"
+        }
+      ],
+      "finalSelectedQuestions": [
+        {
+          "id": "9fd63a1f-2d8b-462b-8ec4-90a2f61037bc",
+          "questionText": "在开发中，你怎么判断一个任务该用 Workflow，还是该交给自主决策的 Agent？",
+          "vectorScore": 0.7094,
+          "bm25Score": 18.2024,
+          "hybridScore": 0.6615,
+          "rerankRank": 5,
+          "finalSelectionRank": 1
+        }
+      ],
+      "postInterviewAnswerPerformance": [
+        {
+          "roundType": "professional-skills",
+          "topic": "在开发中",
+          "mainQuestion": "在开发中，你怎么判断一个任务该用 Workflow，还是该交给自主决策的 Agent？",
+          "nodeStatus": "pending",
+          "followUpCount": 0,
+          "answerAttemptCount": 0,
+          "latestClassification": null,
+          "aggregatedScore": null,
+          "strengths": [],
+          "missingPoints": [],
+          "incorrectPoints": []
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-05-03T14:22:47.729Z",
+      "roundType": "professional-skills",
+      "skill": "熟悉 GPT",
+      "queryText": "Target role: 通用技术岗位\nRound type: professional-skills\nQuestion lens: implementation depth and reasoning\nPrimary skill: 熟悉 GPT\nRelated resume skills: 熟练掌握 TypeScript, C#, 具备 Java 工程开发能力, 能够独立完成 AI Agent 系统",
+      "logContext": "initialization:professional-skills:熟悉 GPT",
+      "candidateQuestionIds": [
+        "b0dbff04-26ac-4a42-8e8c-7fc6b5f8232d",
+        "4b27cbf3-c7be-496a-b790-3724f2a49aab",
+        "f22f42dd-48c1-4afe-acdc-d43d89028830",
+        "2b6ff69e-9077-4e22-a579-fbeef01f88ee",
+        "d4e9507b-9be1-4c18-98a9-7c92e32bc303",
+        "f9a2c46e-6f10-4089-a786-eda98feabc56",
+        "9fd63a1f-2d8b-462b-8ec4-90a2f61037bc",
+        "69208e62-d5f6-4ddb-96b0-17bd4b002174",
+        "118268e9-1edf-4718-a9b9-5a42d10e3a1a",
+        "c8700b66-02dc-4940-8bb1-f5ead73dc7de",
+        "dfdd3983-0dc1-4c28-84ad-4b34ce04312b",
+        "eba37be6-0f58-4fac-815e-c467aec10646",
+        "399aa449-0e73-411d-b361-1abe05ac4d10",
+        "0aef3a95-c6fc-4190-90a1-99f1b1fb3206",
+        "941bc94a-8d36-4b2e-84a1-697df26db81f",
+        "40f57f7d-7e1f-404f-94bc-984cbff20e38",
+        "7ae0d7c3-da6f-4dfc-a5b1-120f1408a6c9",
+        "d93f4e7e-081c-410a-a3e5-ec8cdcebc335",
+        "f7dfe43b-809a-4f37-aa0a-22e6f82aaf2d",
+        "1ca8cf44-d72e-49e1-8b7f-854bec136fc2"
+      ],
+      "selectedQuestionIds": [
+        "f7dfe43b-809a-4f37-aa0a-22e6f82aaf2d"
+      ],
+      "candidates": [
+        {
+          "id": "b0dbff04-26ac-4a42-8e8c-7fc6b5f8232d",
+          "questionText": "跨 Agent 的任务委派协议里，至少要包含哪些字段？",
+          "vectorScore": 0.7233,
+          "bm25Score": 0.0738,
+          "hybridScore": 0.55,
+          "rerankRank": 5,
+          "finalSelectionRank": null,
+          "filterReason": "not-selected-after-final-randomization"
+        },
+        {
+          "id": "4b27cbf3-c7be-496a-b790-3724f2a49aab",
+          "questionText": "Skill 内部是否可以封装 workflow 或 SOP？怎么设计边界？",
+          "vectorScore": 0.7149,
+          "bm25Score": 2.6958,
+          "hybridScore": 0.5404,
+          "rerankRank": 6,
+          "finalSelectionRank": null,
+          "filterReason": "not-selected-after-final-randomization"
+        },
+        {
+          "id": "f22f42dd-48c1-4afe-acdc-d43d89028830",
+          "questionText": "如果让你用 TypeScript 或 C# 设计一个 Agent 平台的模块分层，你会怎么拆？",
+          "vectorScore": 0.7063,
+          "bm25Score": 13.8851,
+          "hybridScore": 0.8014,
+          "rerankRank": 1,
+          "finalSelectionRank": null,
+          "filterReason": "not-selected-after-final-randomization"
+        },
+        {
+          "id": "2b6ff69e-9077-4e22-a579-fbeef01f88ee",
+          "questionText": "如果多个 Skill 的 description 很相似，导致 Agent 经常加载错 Skill，应该怎么解决？",
+          "vectorScore": 0.7049,
+          "bm25Score": 6.4932,
+          "hybridScore": 0.551,
+          "rerankRank": 4,
+          "finalSelectionRank": null,
+          "filterReason": "not-selected-after-final-randomization"
+        },
+        {
+          "id": "d4e9507b-9be1-4c18-98a9-7c92e32bc303",
+          "questionText": "如果把大量 Skill 直接放进系统提示词，导致上下文窗口占用过大，应该如何处理？",
+          "vectorScore": 0.6904,
+          "bm25Score": 0,
+          "hybridScore": 0,
+          "rerankRank": null,
+          "finalSelectionRank": null,
+          "filterReason": "filtered-out-by-hybrid-rerank"
+        },
+        {
+          "id": "f9a2c46e-6f10-4089-a786-eda98feabc56",
+          "questionText": "本地工具、MCP Tools 和 Skill 三者分别解决什么问题？",
+          "vectorScore": 0.6899,
+          "bm25Score": 0,
+          "hybridScore": 0,
+          "rerankRank": null,
+          "finalSelectionRank": null,
+          "filterReason": "filtered-out-by-hybrid-rerank"
+        },
+        {
+          "id": "9fd63a1f-2d8b-462b-8ec4-90a2f61037bc",
+          "questionText": "在开发中，你怎么判断一个任务该用 Workflow，还是该交给自主决策的 Agent？",
+          "vectorScore": 0.6886,
+          "bm25Score": 13.8619,
+          "hybridScore": 0.6051,
+          "rerankRank": 2,
+          "finalSelectionRank": null,
+          "filterReason": "not-selected-after-final-randomization"
+        },
+        {
+          "id": "69208e62-d5f6-4ddb-96b0-17bd4b002174",
+          "questionText": "OpenClaw 是什么？它的定位、设计思路和适用场景是什么？",
+          "vectorScore": 0.688,
+          "bm25Score": 0,
+          "hybridScore": 0,
+          "rerankRank": null,
+          "finalSelectionRank": null,
+          "filterReason": "filtered-out-by-hybrid-rerank"
+        },
+        {
+          "id": "118268e9-1edf-4718-a9b9-5a42d10e3a1a",
+          "questionText": "你如何定义一个好的 Agent 系统？你认为 Agent 设计里最重要的部分是什么？",
+          "vectorScore": 0.6879,
+          "bm25Score": 13.4879,
+          "hybridScore": 0.5858,
+          "rerankRank": 3,
+          "finalSelectionRank": null,
+          "filterReason": "not-selected-after-final-randomization"
+        },
+        {
+          "id": "c8700b66-02dc-4940-8bb1-f5ead73dc7de",
+          "questionText": "沙箱隔离通常会限制哪些能力？如何做提权审批？",
+          "vectorScore": 0.6852,
+          "bm25Score": 0,
+          "hybridScore": 0,
+          "rerankRank": null,
+          "finalSelectionRank": null,
+          "filterReason": "filtered-out-by-hybrid-rerank"
+        },
+        {
+          "id": "dfdd3983-0dc1-4c28-84ad-4b34ce04312b",
+          "questionText": "在开发自己的 Agent 时，你采用了什么研发流程？为什么选择这个流程？",
+          "vectorScore": 0.6841,
+          "bm25Score": 13.3069,
+          "hybridScore": 0.5382,
+          "rerankRank": 7,
+          "finalSelectionRank": null,
+          "filterReason": "not-selected-after-final-randomization"
+        },
+        {
+          "id": "eba37be6-0f58-4fac-815e-c467aec10646",
+          "questionText": "GPU 或推理服务在容器平台上如何做资源隔离与调度？",
+          "vectorScore": 0.6815,
+          "bm25Score": 0,
+          "hybridScore": 0,
+          "rerankRank": null,
+          "finalSelectionRank": null,
+          "filterReason": "filtered-out-by-hybrid-rerank"
+        },
+        {
+          "id": "399aa449-0e73-411d-b361-1abe05ac4d10",
+          "questionText": "如果 Agent 发现工具调用报错，如何设计 Prompt 或策略引导它利用报错信息重试，而不是直接失败？",
+          "vectorScore": 0.6801,
+          "bm25Score": 0,
+          "hybridScore": 0,
+          "rerankRank": null,
+          "finalSelectionRank": null,
+          "filterReason": "filtered-out-by-hybrid-rerank"
+        },
+        {
+          "id": "0aef3a95-c6fc-4190-90a1-99f1b1fb3206",
+          "questionText": "Java 在 Agent 平台中更适合承接哪些后端模块？",
+          "vectorScore": 0.6793,
+          "bm25Score": 14.2037,
+          "hybridScore": 0.5128,
+          "rerankRank": 8,
+          "finalSelectionRank": null,
+          "filterReason": "not-selected-after-final-randomization"
+        },
+        {
+          "id": "941bc94a-8d36-4b2e-84a1-697df26db81f",
+          "questionText": "Multi-Agent 架构的主流实现方案有哪些？",
+          "vectorScore": 0.6792,
+          "bm25Score": 0,
+          "hybridScore": 0,
+          "rerankRank": null,
+          "finalSelectionRank": null,
+          "filterReason": "filtered-out-by-hybrid-rerank"
+        },
+        {
+          "id": "40f57f7d-7e1f-404f-94bc-984cbff20e38",
+          "questionText": "Deep Research 或深度研究能力具体是怎么实现的？",
+          "vectorScore": 0.6786,
+          "bm25Score": 0,
+          "hybridScore": 0,
+          "rerankRank": null,
+          "finalSelectionRank": null,
+          "filterReason": "filtered-out-by-hybrid-rerank"
+        },
+        {
+          "id": "7ae0d7c3-da6f-4dfc-a5b1-120f1408a6c9",
+          "questionText": "如果 Agent 总是重复执行同一个错误的工具调用，你会从哪个环节开始修复？",
+          "vectorScore": 0.6777,
+          "bm25Score": 0,
+          "hybridScore": 0,
+          "rerankRank": null,
+          "finalSelectionRank": null,
+          "filterReason": "filtered-out-by-hybrid-rerank"
+        },
+        {
+          "id": "d93f4e7e-081c-410a-a3e5-ec8cdcebc335",
+          "questionText": "在 Agent 系统中，RAG 检索到的外部知识是如何喂给模型并尽量避免干扰主任务的？",
+          "vectorScore": 0.675,
+          "bm25Score": 0,
+          "hybridScore": 0,
+          "rerankRank": null,
+          "finalSelectionRank": null,
+          "filterReason": "filtered-out-by-hybrid-rerank"
+        },
+        {
+          "id": "f7dfe43b-809a-4f37-aa0a-22e6f82aaf2d",
+          "questionText": "你了解哪些主流 Agent 设计范式？它们分别适用于什么场景？",
+          "vectorScore": 0.6747,
+          "bm25Score": 13.3488,
+          "hybridScore": 0.4352,
+          "rerankRank": 9,
+          "finalSelectionRank": 1,
+          "filterReason": "selected"
+        },
+        {
+          "id": "1ca8cf44-d72e-49e1-8b7f-854bec136fc2",
+          "questionText": "如何设计单 Agent 架构和 Multi-Agent 架构？什么时候需要从单 Agent 演进到 Multi-Agent？",
+          "vectorScore": 0.6736,
+          "bm25Score": 13.0141,
+          "hybridScore": 0.4121,
+          "rerankRank": 10,
+          "finalSelectionRank": null,
+          "filterReason": "not-selected-after-final-randomization"
+        }
+      ],
+      "finalSelectedQuestions": [
+        {
+          "id": "f7dfe43b-809a-4f37-aa0a-22e6f82aaf2d",
+          "questionText": "你了解哪些主流 Agent 设计范式？它们分别适用于什么场景？",
+          "vectorScore": 0.6747,
+          "bm25Score": 13.3488,
+          "hybridScore": 0.4352,
+          "rerankRank": 9,
+          "finalSelectionRank": 1
+        }
+      ],
+      "postInterviewAnswerPerformance": [
+        {
+          "roundType": "professional-skills",
+          "topic": "你了解哪些主流 Agent 设计范式",
+          "mainQuestion": "你了解哪些主流 Agent 设计范式？它们分别适用于什么场景？",
+          "nodeStatus": "pending",
+          "followUpCount": 0,
+          "answerAttemptCount": 0,
+          "latestClassification": null,
+          "aggregatedScore": null,
+          "strengths": [],
+          "missingPoints": [],
+          "incorrectPoints": []
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-05-03T14:22:47.828Z",
+      "roundType": "professional-skills",
+      "skill": "上下文窗口",
+      "queryText": "Target role: 通用技术岗位\nRound type: professional-skills\nQuestion lens: implementation depth and reasoning\nPrimary skill: 上下文窗口\nRelated resume skills: 熟练掌握 TypeScript, C#, 具备 Java 工程开发能力, 能够独立完成 AI Agent 系统",
+      "logContext": "initialization:professional-skills:上下文窗口",
+      "candidateQuestionIds": [
+        "b0dbff04-26ac-4a42-8e8c-7fc6b5f8232d",
+        "4b27cbf3-c7be-496a-b790-3724f2a49aab",
+        "f22f42dd-48c1-4afe-acdc-d43d89028830",
+        "2b6ff69e-9077-4e22-a579-fbeef01f88ee",
+        "d4e9507b-9be1-4c18-98a9-7c92e32bc303",
+        "118268e9-1edf-4718-a9b9-5a42d10e3a1a",
+        "9fd63a1f-2d8b-462b-8ec4-90a2f61037bc",
+        "dfdd3983-0dc1-4c28-84ad-4b34ce04312b",
+        "c8700b66-02dc-4940-8bb1-f5ead73dc7de",
+        "d93f4e7e-081c-410a-a3e5-ec8cdcebc335",
+        "69208e62-d5f6-4ddb-96b0-17bd4b002174",
+        "399aa449-0e73-411d-b361-1abe05ac4d10",
+        "f9a2c46e-6f10-4089-a786-eda98feabc56",
+        "0aef3a95-c6fc-4190-90a1-99f1b1fb3206",
+        "7ae0d7c3-da6f-4dfc-a5b1-120f1408a6c9",
+        "6dd09175-2550-40ad-83dc-0efe552e2778",
+        "1ca8cf44-d72e-49e1-8b7f-854bec136fc2",
+        "6b271857-55fb-4ca4-a713-d75f0c5d1e40",
+        "941bc94a-8d36-4b2e-84a1-697df26db81f",
+        "edfabdd9-eec9-4d8e-b895-40d4fdfcff85"
+      ],
+      "selectedQuestionIds": [
+        "0aef3a95-c6fc-4190-90a1-99f1b1fb3206"
+      ],
+      "candidates": [
+        {
+          "id": "b0dbff04-26ac-4a42-8e8c-7fc6b5f8232d",
+          "questionText": "跨 Agent 的任务委派协议里，至少要包含哪些字段？",
+          "vectorScore": 0.7377,
+          "bm25Score": 2.6946,
+          "hybridScore": 0.6151,
+          "rerankRank": 5,
+          "finalSelectionRank": null,
+          "filterReason": "not-selected-after-final-randomization"
+        },
+        {
+          "id": "4b27cbf3-c7be-496a-b790-3724f2a49aab",
+          "questionText": "Skill 内部是否可以封装 workflow 或 SOP？怎么设计边界？",
+          "vectorScore": 0.735,
+          "bm25Score": 2.3731,
+          "hybridScore": 0.5782,
+          "rerankRank": 7,
+          "finalSelectionRank": null,
+          "filterReason": "not-selected-after-final-randomization"
+        },
+        {
+          "id": "f22f42dd-48c1-4afe-acdc-d43d89028830",
+          "questionText": "如果让你用 TypeScript 或 C# 设计一个 Agent 平台的模块分层，你会怎么拆？",
+          "vectorScore": 0.7247,
+          "bm25Score": 15.9712,
+          "hybridScore": 0.8077,
+          "rerankRank": 1,
+          "finalSelectionRank": null,
+          "filterReason": "not-selected-after-final-randomization"
+        },
+        {
+          "id": "2b6ff69e-9077-4e22-a579-fbeef01f88ee",
+          "questionText": "如果多个 Skill 的 description 很相似，导致 Agent 经常加载错 Skill，应该怎么解决？",
+          "vectorScore": 0.7246,
+          "bm25Score": 6.1738,
+          "hybridScore": 0.5625,
+          "rerankRank": 8,
+          "finalSelectionRank": null,
+          "filterReason": "not-selected-after-final-randomization"
+        },
+        {
+          "id": "d4e9507b-9be1-4c18-98a9-7c92e32bc303",
+          "questionText": "如果把大量 Skill 直接放进系统提示词，导致上下文窗口占用过大，应该如何处理？",
+          "vectorScore": 0.7235,
+          "bm25Score": 9.7173,
+          "hybridScore": 0.6395,
+          "rerankRank": 3,
+          "finalSelectionRank": null,
+          "filterReason": "not-selected-after-final-randomization"
+        },
+        {
+          "id": "118268e9-1edf-4718-a9b9-5a42d10e3a1a",
+          "questionText": "你如何定义一个好的 Agent 系统？你认为 Agent 设计里最重要的部分是什么？",
+          "vectorScore": 0.7107,
+          "bm25Score": 15.5671,
+          "hybridScore": 0.649,
+          "rerankRank": 2,
+          "finalSelectionRank": null,
+          "filterReason": "not-selected-after-final-randomization"
+        },
+        {
+          "id": "9fd63a1f-2d8b-462b-8ec4-90a2f61037bc",
+          "questionText": "在开发中，你怎么判断一个任务该用 Workflow，还是该交给自主决策的 Agent？",
+          "vectorScore": 0.7077,
+          "bm25Score": 15.9773,
+          "hybridScore": 0.628,
+          "rerankRank": 4,
+          "finalSelectionRank": null,
+          "filterReason": "not-selected-after-final-randomization"
+        },
+        {
+          "id": "dfdd3983-0dc1-4c28-84ad-4b34ce04312b",
+          "questionText": "在开发自己的 Agent 时，你采用了什么研发流程？为什么选择这个流程？",
+          "vectorScore": 0.7065,
+          "bm25Score": 15.3341,
+          "hybridScore": 0.5995,
+          "rerankRank": 6,
+          "finalSelectionRank": null,
+          "filterReason": "not-selected-after-final-randomization"
+        },
+        {
+          "id": "c8700b66-02dc-4940-8bb1-f5ead73dc7de",
+          "questionText": "沙箱隔离通常会限制哪些能力？如何做提权审批？",
+          "vectorScore": 0.7015,
+          "bm25Score": 0,
+          "hybridScore": 0,
+          "rerankRank": null,
+          "finalSelectionRank": null,
+          "filterReason": "filtered-out-by-hybrid-rerank"
+        },
+        {
+          "id": "d93f4e7e-081c-410a-a3e5-ec8cdcebc335",
+          "questionText": "在 Agent 系统中，RAG 检索到的外部知识是如何喂给模型并尽量避免干扰主任务的？",
+          "vectorScore": 0.6985,
+          "bm25Score": 0,
+          "hybridScore": 0,
+          "rerankRank": null,
+          "finalSelectionRank": null,
+          "filterReason": "filtered-out-by-hybrid-rerank"
+        },
+        {
+          "id": "69208e62-d5f6-4ddb-96b0-17bd4b002174",
+          "questionText": "OpenClaw 是什么？它的定位、设计思路和适用场景是什么？",
+          "vectorScore": 0.6962,
+          "bm25Score": 0,
+          "hybridScore": 0,
+          "rerankRank": null,
+          "finalSelectionRank": null,
+          "filterReason": "filtered-out-by-hybrid-rerank"
+        },
+        {
+          "id": "399aa449-0e73-411d-b361-1abe05ac4d10",
+          "questionText": "如果 Agent 发现工具调用报错，如何设计 Prompt 或策略引导它利用报错信息重试，而不是直接失败？",
+          "vectorScore": 0.696,
+          "bm25Score": 0,
+          "hybridScore": 0,
+          "rerankRank": null,
+          "finalSelectionRank": null,
+          "filterReason": "filtered-out-by-hybrid-rerank"
+        },
+        {
+          "id": "f9a2c46e-6f10-4089-a786-eda98feabc56",
+          "questionText": "本地工具、MCP Tools 和 Skill 三者分别解决什么问题？",
+          "vectorScore": 0.694,
+          "bm25Score": 0,
+          "hybridScore": 0,
+          "rerankRank": null,
+          "finalSelectionRank": null,
+          "filterReason": "filtered-out-by-hybrid-rerank"
+        },
+        {
+          "id": "0aef3a95-c6fc-4190-90a1-99f1b1fb3206",
+          "questionText": "Java 在 Agent 平台中更适合承接哪些后端模块？",
+          "vectorScore": 0.6926,
+          "bm25Score": 16.3912,
+          "hybridScore": 0.4785,
+          "rerankRank": 10,
+          "finalSelectionRank": 1,
+          "filterReason": "selected"
+        },
+        {
+          "id": "7ae0d7c3-da6f-4dfc-a5b1-120f1408a6c9",
+          "questionText": "如果 Agent 总是重复执行同一个错误的工具调用，你会从哪个环节开始修复？",
+          "vectorScore": 0.6921,
+          "bm25Score": 0,
+          "hybridScore": 0,
+          "rerankRank": null,
+          "finalSelectionRank": null,
+          "filterReason": "filtered-out-by-hybrid-rerank"
+        },
+        {
+          "id": "6dd09175-2550-40ad-83dc-0efe552e2778",
+          "questionText": "Agent 是如何识别并选择正确工具的？更依赖工具名称还是功能描述？",
+          "vectorScore": 0.6908,
+          "bm25Score": 0,
+          "hybridScore": 0,
+          "rerankRank": null,
+          "finalSelectionRank": null,
+          "filterReason": "filtered-out-by-hybrid-rerank"
+        },
+        {
+          "id": "1ca8cf44-d72e-49e1-8b7f-854bec136fc2",
+          "questionText": "如何设计单 Agent 架构和 Multi-Agent 架构？什么时候需要从单 Agent 演进到 Multi-Agent？",
+          "vectorScore": 0.6906,
+          "bm25Score": 18.1957,
+          "hybridScore": 0.5022,
+          "rerankRank": 9,
+          "finalSelectionRank": null,
+          "filterReason": "not-selected-after-final-randomization"
+        },
+        {
+          "id": "6b271857-55fb-4ca4-a713-d75f0c5d1e40",
+          "questionText": "如何量化评估一个 Agent 系统的好坏？",
+          "vectorScore": 0.6901,
+          "bm25Score": 0,
+          "hybridScore": 0,
+          "rerankRank": null,
+          "finalSelectionRank": null,
+          "filterReason": "filtered-out-by-hybrid-rerank"
+        },
+        {
+          "id": "941bc94a-8d36-4b2e-84a1-697df26db81f",
+          "questionText": "Multi-Agent 架构的主流实现方案有哪些？",
+          "vectorScore": 0.686,
+          "bm25Score": 0,
+          "hybridScore": 0,
+          "rerankRank": null,
+          "finalSelectionRank": null,
+          "filterReason": "filtered-out-by-hybrid-rerank"
+        },
+        {
+          "id": "edfabdd9-eec9-4d8e-b895-40d4fdfcff85",
+          "questionText": "多 Agent 共享的状态、消息和中间结果通常存在哪里？如何保证一致性？",
+          "vectorScore": 0.6857,
+          "bm25Score": 0,
+          "hybridScore": 0,
+          "rerankRank": null,
+          "finalSelectionRank": null,
+          "filterReason": "filtered-out-by-hybrid-rerank"
+        }
+      ],
+      "finalSelectedQuestions": [
+        {
+          "id": "0aef3a95-c6fc-4190-90a1-99f1b1fb3206",
+          "questionText": "Java 在 Agent 平台中更适合承接哪些后端模块？",
+          "vectorScore": 0.6926,
+          "bm25Score": 16.3912,
+          "hybridScore": 0.4785,
+          "rerankRank": 10,
+          "finalSelectionRank": 1
+        }
+      ],
+      "postInterviewAnswerPerformance": [
+        {
+          "roundType": "professional-skills",
+          "topic": "Java 在 Agent 平台中更适合承接哪些后端模块",
+          "mainQuestion": "Java 在 Agent 平台中更适合承接哪些后端模块？",
+          "nodeStatus": "pending",
+          "followUpCount": 0,
+          "answerAttemptCount": 0,
+          "latestClassification": null,
+          "aggregatedScore": null,
+          "strengths": [],
+          "missingPoints": [],
+          "incorrectPoints": []
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-05-03T14:22:47.927Z",
+      "roundType": "project-experience",
+      "skill": "project-experience-context",
+      "queryText": "Target role: 通用技术岗位\nRound type: project-experience\nProject experience context:\n无",
+      "logContext": "initialization:project-experience:context",
+      "candidateQuestionIds": [
+        "b0dbff04-26ac-4a42-8e8c-7fc6b5f8232d",
+        "9fd63a1f-2d8b-462b-8ec4-90a2f61037bc",
+        "4b27cbf3-c7be-496a-b790-3724f2a49aab",
+        "7ae0d7c3-da6f-4dfc-a5b1-120f1408a6c9",
+        "f22f42dd-48c1-4afe-acdc-d43d89028830",
+        "69e632ae-b0ec-47eb-9be6-6b4ff5d5b3b4",
+        "3d09e533-d29a-4116-a2b2-da84cac91d9f",
+        "7e2f7ed9-0acd-43f2-ae83-8d4cafe4909c",
+        "399aa449-0e73-411d-b361-1abe05ac4d10",
+        "0aef3a95-c6fc-4190-90a1-99f1b1fb3206",
+        "f7dfe43b-809a-4f37-aa0a-22e6f82aaf2d",
+        "118268e9-1edf-4718-a9b9-5a42d10e3a1a",
+        "f6e6fbee-82b4-4ec4-a9e0-1557c1960b52",
+        "d4e9507b-9be1-4c18-98a9-7c92e32bc303",
+        "69208e62-d5f6-4ddb-96b0-17bd4b002174",
+        "2b6ff69e-9077-4e22-a579-fbeef01f88ee",
+        "6dd09175-2550-40ad-83dc-0efe552e2778",
+        "d9abd31e-610f-4545-863c-2b3dc8c49b06",
+        "e6b6403c-cdad-4e4f-8b87-1cbe47a649d6",
+        "dfdd3983-0dc1-4c28-84ad-4b34ce04312b"
+      ],
+      "selectedQuestionIds": [
+        "f6e6fbee-82b4-4ec4-a9e0-1557c1960b52",
+        "7ae0d7c3-da6f-4dfc-a5b1-120f1408a6c9",
+        "9fd63a1f-2d8b-462b-8ec4-90a2f61037bc",
+        "f22f42dd-48c1-4afe-acdc-d43d89028830",
+        "4b27cbf3-c7be-496a-b790-3724f2a49aab",
+        "b0dbff04-26ac-4a42-8e8c-7fc6b5f8232d",
+        "69e632ae-b0ec-47eb-9be6-6b4ff5d5b3b4",
+        "2b6ff69e-9077-4e22-a579-fbeef01f88ee",
+        "3d09e533-d29a-4116-a2b2-da84cac91d9f",
+        "7e2f7ed9-0acd-43f2-ae83-8d4cafe4909c"
+      ],
+      "candidates": [
+        {
+          "id": "b0dbff04-26ac-4a42-8e8c-7fc6b5f8232d",
+          "questionText": "跨 Agent 的任务委派协议里，至少要包含哪些字段？",
+          "vectorScore": 0.7147,
+          "bm25Score": 0,
+          "hybridScore": 0.55,
+          "rerankRank": 1,
+          "finalSelectionRank": 6,
+          "filterReason": "selected"
+        },
+        {
+          "id": "9fd63a1f-2d8b-462b-8ec4-90a2f61037bc",
+          "questionText": "在开发中，你怎么判断一个任务该用 Workflow，还是该交给自主决策的 Agent？",
+          "vectorScore": 0.7046,
+          "bm25Score": 0,
+          "hybridScore": 0.4587,
+          "rerankRank": 3,
+          "finalSelectionRank": 3,
+          "filterReason": "selected"
+        },
+        {
+          "id": "4b27cbf3-c7be-496a-b790-3724f2a49aab",
+          "questionText": "Skill 内部是否可以封装 workflow 或 SOP？怎么设计边界？",
+          "vectorScore": 0.7006,
+          "bm25Score": 0,
+          "hybridScore": 0.4223,
+          "rerankRank": 5,
+          "finalSelectionRank": 5,
+          "filterReason": "selected"
+        },
+        {
+          "id": "7ae0d7c3-da6f-4dfc-a5b1-120f1408a6c9",
+          "questionText": "如果 Agent 总是重复执行同一个错误的工具调用，你会从哪个环节开始修复？",
+          "vectorScore": 0.6817,
+          "bm25Score": 0,
+          "hybridScore": 0.2518,
+          "rerankRank": 6,
+          "finalSelectionRank": 2,
+          "filterReason": "selected"
+        },
+        {
+          "id": "f22f42dd-48c1-4afe-acdc-d43d89028830",
+          "questionText": "如果让你用 TypeScript 或 C# 设计一个 Agent 平台的模块分层，你会怎么拆？",
+          "vectorScore": 0.676,
+          "bm25Score": 0,
+          "hybridScore": 0.2007,
+          "rerankRank": 7,
+          "finalSelectionRank": 4,
+          "filterReason": "selected"
+        },
+        {
+          "id": "69e632ae-b0ec-47eb-9be6-6b4ff5d5b3b4",
+          "questionText": "在 LangChain / Mastra / CrewAI 中接入自定义 Tool 时，schema 和 description 应该怎么写？",
+          "vectorScore": 0.6725,
+          "bm25Score": 0,
+          "hybridScore": 0.1687,
+          "rerankRank": 8,
+          "finalSelectionRank": 7,
+          "filterReason": "selected"
+        },
+        {
+          "id": "3d09e533-d29a-4116-a2b2-da84cac91d9f",
+          "questionText": "如果要在 Prompt 中设计“知识缺失时拒答”的逻辑，你会怎么做？",
+          "vectorScore": 0.6717,
+          "bm25Score": 0,
+          "hybridScore": 0.162,
+          "rerankRank": 9,
+          "finalSelectionRank": 9,
+          "filterReason": "selected"
+        },
+        {
+          "id": "7e2f7ed9-0acd-43f2-ae83-8d4cafe4909c",
+          "questionText": "什么是 Human-in-the-loop？在 Agent 系统中如何设计人工审批断点？",
+          "vectorScore": 0.6717,
+          "bm25Score": 0,
+          "hybridScore": 0.1613,
+          "rerankRank": 10,
+          "finalSelectionRank": 10,
+          "filterReason": "selected"
+        },
+        {
+          "id": "399aa449-0e73-411d-b361-1abe05ac4d10",
+          "questionText": "如果 Agent 发现工具调用报错，如何设计 Prompt 或策略引导它利用报错信息重试，而不是直接失败？",
+          "vectorScore": 0.6709,
+          "bm25Score": 0,
+          "hybridScore": 0,
+          "rerankRank": null,
+          "finalSelectionRank": null,
+          "filterReason": "filtered-out-by-hybrid-rerank"
+        },
+        {
+          "id": "0aef3a95-c6fc-4190-90a1-99f1b1fb3206",
+          "questionText": "Java 在 Agent 平台中更适合承接哪些后端模块？",
+          "vectorScore": 0.6705,
+          "bm25Score": 0,
+          "hybridScore": 0,
+          "rerankRank": null,
+          "finalSelectionRank": null,
+          "filterReason": "filtered-out-by-hybrid-rerank"
+        },
+        {
+          "id": "f7dfe43b-809a-4f37-aa0a-22e6f82aaf2d",
+          "questionText": "你了解哪些主流 Agent 设计范式？它们分别适用于什么场景？",
+          "vectorScore": 0.6667,
+          "bm25Score": 0,
+          "hybridScore": 0,
+          "rerankRank": null,
+          "finalSelectionRank": null,
+          "filterReason": "filtered-out-by-hybrid-rerank"
+        },
+        {
+          "id": "118268e9-1edf-4718-a9b9-5a42d10e3a1a",
+          "questionText": "你如何定义一个好的 Agent 系统？你认为 Agent 设计里最重要的部分是什么？",
+          "vectorScore": 0.6652,
+          "bm25Score": 0,
+          "hybridScore": 0,
+          "rerankRank": null,
+          "finalSelectionRank": null,
+          "filterReason": "filtered-out-by-hybrid-rerank"
+        },
+        {
+          "id": "f6e6fbee-82b4-4ec4-a9e0-1557c1960b52",
+          "questionText": "如果 Ragas 的 Context Precision 很低，你会如何优化检索链路？",
+          "vectorScore": 0.6586,
+          "bm25Score": 4.0305,
+          "hybridScore": 0.4937,
+          "rerankRank": 2,
+          "finalSelectionRank": 1,
+          "filterReason": "selected"
+        },
+        {
+          "id": "d4e9507b-9be1-4c18-98a9-7c92e32bc303",
+          "questionText": "如果把大量 Skill 直接放进系统提示词，导致上下文窗口占用过大，应该如何处理？",
+          "vectorScore": 0.6579,
+          "bm25Score": 0,
+          "hybridScore": 0,
+          "rerankRank": null,
+          "finalSelectionRank": null,
+          "filterReason": "filtered-out-by-hybrid-rerank"
+        },
+        {
+          "id": "69208e62-d5f6-4ddb-96b0-17bd4b002174",
+          "questionText": "OpenClaw 是什么？它的定位、设计思路和适用场景是什么？",
+          "vectorScore": 0.657,
+          "bm25Score": 0,
+          "hybridScore": 0,
+          "rerankRank": null,
+          "finalSelectionRank": null,
+          "filterReason": "filtered-out-by-hybrid-rerank"
+        },
+        {
+          "id": "2b6ff69e-9077-4e22-a579-fbeef01f88ee",
+          "questionText": "如果多个 Skill 的 description 很相似，导致 Agent 经常加载错 Skill，应该怎么解决？",
+          "vectorScore": 0.6562,
+          "bm25Score": 3.8928,
+          "hybridScore": 0.4564,
+          "rerankRank": 4,
+          "finalSelectionRank": 8,
+          "filterReason": "selected"
+        },
+        {
+          "id": "6dd09175-2550-40ad-83dc-0efe552e2778",
+          "questionText": "Agent 是如何识别并选择正确工具的？更依赖工具名称还是功能描述？",
+          "vectorScore": 0.6548,
+          "bm25Score": 0,
+          "hybridScore": 0,
+          "rerankRank": null,
+          "finalSelectionRank": null,
+          "filterReason": "filtered-out-by-hybrid-rerank"
+        },
+        {
+          "id": "d9abd31e-610f-4545-863c-2b3dc8c49b06",
+          "questionText": "你如何做模型 fallback 或多供应商切换？",
+          "vectorScore": 0.6546,
+          "bm25Score": 0,
+          "hybridScore": 0,
+          "rerankRank": null,
+          "finalSelectionRank": null,
+          "filterReason": "filtered-out-by-hybrid-rerank"
+        },
+        {
+          "id": "e6b6403c-cdad-4e4f-8b87-1cbe47a649d6",
+          "questionText": "如果图纸中的关键信息没有被文本明确描述，系统如何依靠视觉特征完成召回？",
+          "vectorScore": 0.6543,
+          "bm25Score": 0,
+          "hybridScore": 0,
+          "rerankRank": null,
+          "finalSelectionRank": null,
+          "filterReason": "filtered-out-by-hybrid-rerank"
+        },
+        {
+          "id": "dfdd3983-0dc1-4c28-84ad-4b34ce04312b",
+          "questionText": "在开发自己的 Agent 时，你采用了什么研发流程？为什么选择这个流程？",
+          "vectorScore": 0.6538,
+          "bm25Score": 0,
+          "hybridScore": 0,
+          "rerankRank": null,
+          "finalSelectionRank": null,
+          "filterReason": "filtered-out-by-hybrid-rerank"
+        }
+      ],
+      "finalSelectedQuestions": [
+        {
+          "id": "f6e6fbee-82b4-4ec4-a9e0-1557c1960b52",
+          "questionText": "如果 Ragas 的 Context Precision 很低，你会如何优化检索链路？",
+          "vectorScore": 0.6586,
+          "bm25Score": 4.0305,
+          "hybridScore": 0.4937,
+          "rerankRank": 2,
+          "finalSelectionRank": 1
+        },
+        {
+          "id": "7ae0d7c3-da6f-4dfc-a5b1-120f1408a6c9",
+          "questionText": "如果 Agent 总是重复执行同一个错误的工具调用，你会从哪个环节开始修复？",
+          "vectorScore": 0.6817,
+          "bm25Score": 0,
+          "hybridScore": 0.2518,
+          "rerankRank": 6,
+          "finalSelectionRank": 2
+        },
+        {
+          "id": "9fd63a1f-2d8b-462b-8ec4-90a2f61037bc",
+          "questionText": "在开发中，你怎么判断一个任务该用 Workflow，还是该交给自主决策的 Agent？",
+          "vectorScore": 0.7046,
+          "bm25Score": 0,
+          "hybridScore": 0.4587,
+          "rerankRank": 3,
+          "finalSelectionRank": 3
+        },
+        {
+          "id": "f22f42dd-48c1-4afe-acdc-d43d89028830",
+          "questionText": "如果让你用 TypeScript 或 C# 设计一个 Agent 平台的模块分层，你会怎么拆？",
+          "vectorScore": 0.676,
+          "bm25Score": 0,
+          "hybridScore": 0.2007,
+          "rerankRank": 7,
+          "finalSelectionRank": 4
+        },
+        {
+          "id": "4b27cbf3-c7be-496a-b790-3724f2a49aab",
+          "questionText": "Skill 内部是否可以封装 workflow 或 SOP？怎么设计边界？",
+          "vectorScore": 0.7006,
+          "bm25Score": 0,
+          "hybridScore": 0.4223,
+          "rerankRank": 5,
+          "finalSelectionRank": 5
+        },
+        {
+          "id": "b0dbff04-26ac-4a42-8e8c-7fc6b5f8232d",
+          "questionText": "跨 Agent 的任务委派协议里，至少要包含哪些字段？",
+          "vectorScore": 0.7147,
+          "bm25Score": 0,
+          "hybridScore": 0.55,
+          "rerankRank": 1,
+          "finalSelectionRank": 6
+        },
+        {
+          "id": "69e632ae-b0ec-47eb-9be6-6b4ff5d5b3b4",
+          "questionText": "在 LangChain / Mastra / CrewAI 中接入自定义 Tool 时，schema 和 description 应该怎么写？",
+          "vectorScore": 0.6725,
+          "bm25Score": 0,
+          "hybridScore": 0.1687,
+          "rerankRank": 8,
+          "finalSelectionRank": 7
+        },
+        {
+          "id": "2b6ff69e-9077-4e22-a579-fbeef01f88ee",
+          "questionText": "如果多个 Skill 的 description 很相似，导致 Agent 经常加载错 Skill，应该怎么解决？",
+          "vectorScore": 0.6562,
+          "bm25Score": 3.8928,
+          "hybridScore": 0.4564,
+          "rerankRank": 4,
+          "finalSelectionRank": 8
+        },
+        {
+          "id": "3d09e533-d29a-4116-a2b2-da84cac91d9f",
+          "questionText": "如果要在 Prompt 中设计“知识缺失时拒答”的逻辑，你会怎么做？",
+          "vectorScore": 0.6717,
+          "bm25Score": 0,
+          "hybridScore": 0.162,
+          "rerankRank": 9,
+          "finalSelectionRank": 9
+        },
+        {
+          "id": "7e2f7ed9-0acd-43f2-ae83-8d4cafe4909c",
+          "questionText": "什么是 Human-in-the-loop？在 Agent 系统中如何设计人工审批断点？",
+          "vectorScore": 0.6717,
+          "bm25Score": 0,
+          "hybridScore": 0.1613,
+          "rerankRank": 10,
+          "finalSelectionRank": 10
+        }
+      ],
+      "postInterviewAnswerPerformance": [
+        {
+          "roundType": "professional-skills",
+          "topic": "在开发中",
+          "mainQuestion": "在开发中，你怎么判断一个任务该用 Workflow，还是该交给自主决策的 Agent？",
+          "nodeStatus": "pending",
+          "followUpCount": 0,
+          "answerAttemptCount": 0,
+          "latestClassification": null,
+          "aggregatedScore": null,
+          "strengths": [],
+          "missingPoints": [],
+          "incorrectPoints": []
+        },
+        {
+          "roundType": "professional-skills",
+          "topic": "如果多个 Skill 的 description 很相似",
+          "mainQuestion": "如果多个 Skill 的 description 很相似，导致 Agent 经常加载错 Skill，应该怎么解决？",
+          "nodeStatus": "pending",
+          "followUpCount": 0,
+          "answerAttemptCount": 0,
+          "latestClassification": null,
+          "aggregatedScore": null,
+          "strengths": [],
+          "missingPoints": [],
+          "incorrectPoints": []
+        }
+      ]
+    }
+  ],
+  "interviewSnapshot": {
+    "phase": "professional-skills-round",
+    "finalReportReady": false,
+    "answerPerformances": [
+      {
+        "roundType": "professional-skills",
+        "topic": "在开发自己的 Agent 时",
+        "mainQuestion": "在开发自己的 Agent 时，你采用了什么研发流程？为什么选择这个流程？",
+        "nodeStatus": "awaiting-main-answer",
+        "followUpCount": 0,
+        "answerAttemptCount": 0,
+        "latestClassification": null,
+        "aggregatedScore": null,
+        "strengths": [],
+        "missingPoints": [],
+        "incorrectPoints": []
+      },
+      {
+        "roundType": "professional-skills",
+        "topic": "如果多个 Skill 的 description 很相似",
+        "mainQuestion": "如果多个 Skill 的 description 很相似，导致 Agent 经常加载错 Skill，应该怎么解决？",
+        "nodeStatus": "pending",
+        "followUpCount": 0,
+        "answerAttemptCount": 0,
+        "latestClassification": null,
+        "aggregatedScore": null,
+        "strengths": [],
+        "missingPoints": [],
+        "incorrectPoints": []
+      },
+      {
+        "roundType": "professional-skills",
+        "topic": "Multi-Agent 架构的主流实现方案有哪些",
+        "mainQuestion": "Multi-Agent 架构的主流实现方案有哪些？",
+        "nodeStatus": "pending",
+        "followUpCount": 0,
+        "answerAttemptCount": 0,
+        "latestClassification": null,
+        "aggregatedScore": null,
+        "strengths": [],
+        "missingPoints": [],
+        "incorrectPoints": []
+      },
+      {
+        "roundType": "professional-skills",
+        "topic": "在开发中",
+        "mainQuestion": "在开发中，你怎么判断一个任务该用 Workflow，还是该交给自主决策的 Agent？",
+        "nodeStatus": "pending",
+        "followUpCount": 0,
+        "answerAttemptCount": 0,
+        "latestClassification": null,
+        "aggregatedScore": null,
+        "strengths": [],
+        "missingPoints": [],
+        "incorrectPoints": []
+      },
+      {
+        "roundType": "professional-skills",
+        "topic": "你了解哪些主流 Agent 设计范式",
+        "mainQuestion": "你了解哪些主流 Agent 设计范式？它们分别适用于什么场景？",
+        "nodeStatus": "pending",
+        "followUpCount": 0,
+        "answerAttemptCount": 0,
+        "latestClassification": null,
+        "aggregatedScore": null,
+        "strengths": [],
+        "missingPoints": [],
+        "incorrectPoints": []
+      },
+      {
+        "roundType": "professional-skills",
+        "topic": "Java 在 Agent 平台中更适合承接哪些后端模块",
+        "mainQuestion": "Java 在 Agent 平台中更适合承接哪些后端模块？",
+        "nodeStatus": "pending",
+        "followUpCount": 0,
+        "answerAttemptCount": 0,
+        "latestClassification": null,
+        "aggregatedScore": null,
+        "strengths": [],
+        "missingPoints": [],
+        "incorrectPoints": []
+      },
+      {
+        "roundType": "professional-skills",
+        "topic": "熟练掌握 TypeScript",
+        "mainQuestion": "请结合 通用技术岗位 岗位，系统说明你在“熟练掌握 TypeScript”这个方向的理解、实践经验、关键取舍以及常见风险。",
+        "nodeStatus": "pending",
+        "followUpCount": 0,
+        "answerAttemptCount": 0,
+        "latestClassification": null,
+        "aggregatedScore": null,
+        "strengths": [],
+        "missingPoints": [],
+        "incorrectPoints": []
+      },
+      {
+        "roundType": "professional-skills",
+        "topic": "C#",
+        "mainQuestion": "请结合 通用技术岗位 岗位，系统说明你在“C#”这个方向的理解、实践经验、关键取舍以及常见风险。",
+        "nodeStatus": "pending",
+        "followUpCount": 0,
+        "answerAttemptCount": 0,
+        "latestClassification": null,
+        "aggregatedScore": null,
+        "strengths": [],
+        "missingPoints": [],
+        "incorrectPoints": []
+      }
+    ]
+  }
+}

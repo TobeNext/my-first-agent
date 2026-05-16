@@ -1,0 +1,294 @@
+{
+  "schemaVersion": 2,
+  "createdAt": "2026-05-03T14:16:34.634Z",
+  "updatedAt": "2026-05-03T14:16:34.634Z",
+  "threadId": "ee71f8fd-d895-46ac-9d02-4686de81258a",
+  "session": {
+    "targetRole": "通用技术岗位",
+    "responseLanguage": "zh",
+    "phase": "professional-skills-round",
+    "finalReportReady": false,
+    "setup": {
+      "selectedDirection": "通用技术岗位",
+      "directionSource": "derived",
+      "settings": {
+        "reviewIncorrectOrMissingPoints": true,
+        "skipProfessionalSkillsRound": false,
+        "skipProjectExperienceRound": true,
+        "enableFlowTestMode": false,
+        "professionalQuestionMode": "per-skill-default",
+        "professionalQuestionCount": 8,
+        "projectQuestionCount": 0
+      }
+    },
+    "resumeContext": {
+      "professionalSkills": "熟练掌握 TypeScript / C# ，具备 Java 工程开发能力，能够独立完成 AI Agent 系统、工作流引擎与平台服务开发。深入理解 LLM 应用架构，熟悉 GPT / Claude 等模型能力边界、上下文窗口、模型路由与成本优化。掌握 ReAct、CoT、Few-shot、Memory、Planning、Tool Use 等 Agent 核心机制，能够设计复杂任务拆解与多轮执行流程。熟悉 LangChain、Mastra 等框架，具备 Agent 编排、工具接入、状态管理与运行时治理经验。熟悉 RAG、MCP、Multi-Agent 协作等关键技术，具备知识检索、工具协议、任务委派与跨 Agent 通信设计能力。具备 AI 平台工程化经验，熟悉微服务、API 网关、限流熔断、日志监控、链路追踪、权限控制与沙箱隔离。熟悉 Docker / Kubernetes、消息队列、缓存、搜索引擎、关系型数据库与向量数据库，能够支撑 AI 服务的稳定落地。能够基于数据驱动持续优化模型效果与 Agent 执行质量。",
+      "projectExperience": "无",
+      "resumeParsed": true
+    }
+  },
+  "selectorTraining": {
+    "traces": [],
+    "recallEvents": [],
+    "selectedQuestionLabels": []
+  },
+  "candidateImprovement": {
+    "totalQuestionCount": 8,
+    "completedQuestionCount": 0,
+    "finalScore": null,
+    "rounds": [
+      {
+        "id": "professional-skills-round-1777817586837-ldo9t6",
+        "type": "professional-skills",
+        "status": "in-progress",
+        "plannedNodeCount": 8,
+        "completedNodeCount": 0,
+        "activeNodeId": "topic-node-1777817586836-4t6xus",
+        "nodes": [
+          {
+            "id": "topic-node-1777817586836-4t6xus",
+            "topic": "详细解释一下你对 LLM 应用架构的理解",
+            "source": "knowledge-base",
+            "mainQuestion": "请详细解释一下你对 LLM 应用架构的理解，特别是 GPT 和 Claude 模型的能力边界、上下文窗口限制以及如何进行模型路由和成本优化。",
+            "status": "awaiting-follow-up-answer",
+            "aggregatedScore": null,
+            "followUpCount": 1,
+            "maxFollowUps": 3,
+            "earlyCompletionReason": null,
+            "summary": null,
+            "answerAttempts": [
+              {
+                "id": "answer-attempt-1777817794631-9l670i",
+                "targetType": "main-question",
+                "targetId": "topic-node-1777817586836-4t6xus",
+                "classification": "direct-answer",
+                "createdAt": "2026-05-03T14:16:34.631Z",
+                "userMessage": "LLM应用架构的理解。 这个架构其实就是在大语言模型的基础上封装了一些memory。 错误死MCP skills等模块去让大语言模型具备处理一定事务推理。 一定过程流程的能力，或者是根据一定的流程去处理一定事物的能力。 是通过自己的思考去处理一定语言的一定情况的能力。 好的的模型上下文认为200K。 Gpt的模型为400K。 在。 成本优化上，可以让复杂的任务通过昂贵的某昂贵的算力高的模型进行简单的任务。通过便宜的算力低的模型进行运行，比如思考的任务就可以通过贵的模型，而一些查询的任务就可以通过。 便宜的模型。 模型路由的话，它其实是根据你任务的类型去进行不同的模型路由可以通过，嗯，比如A模型对图像的处理比较好，所以它对图像任务处理就可以交给A模型。 来去处理。",
+                "score": {
+                  "relevance": 7.8,
+                  "accuracy": 7.4,
+                  "depth": 7.2,
+                  "specificity": 7,
+                  "clarity": 7.8,
+                  "weightedTotal": 7.43
+                },
+                "strengths": [
+                  "回答基本围绕“详细解释一下你对 LLM 应用架构的理解”展开"
+                ],
+                "missingPoints": [
+                  "还需要继续补充“详细解释一下你对 LLM 应用架构的理解”的实现细节、关键取舍或真实案例"
+                ],
+                "incorrectPoints": [],
+                "isDetour": false
+              }
+            ]
+          },
+          {
+            "id": "topic-node-1777817586836-6svefi",
+            "topic": "详细说明 ReAct、CoT、Few-shot、Memory、P",
+            "source": "knowledge-base",
+            "mainQuestion": "请详细说明 ReAct、CoT、Few-shot、Memory、Planning、Tool Use 等 Agent 核心机制的工作原理，并举例说明如何设计复杂任务拆解与多轮执行流程。",
+            "status": "pending",
+            "aggregatedScore": null,
+            "followUpCount": 0,
+            "maxFollowUps": 3,
+            "earlyCompletionReason": null,
+            "summary": null,
+            "answerAttempts": []
+          },
+          {
+            "id": "topic-node-1777817586837-6rfi9d",
+            "topic": "介绍 LangChain 和 Mastra 框架的核心功能",
+            "source": "knowledge-base",
+            "mainQuestion": "请介绍 LangChain 和 Mastra 框架的核心功能，以及如何使用这些框架进行 Agent 编排、工具接入、状态管理和运行时治理。",
+            "status": "pending",
+            "aggregatedScore": null,
+            "followUpCount": 0,
+            "maxFollowUps": 3,
+            "earlyCompletionReason": null,
+            "summary": null,
+            "answerAttempts": []
+          },
+          {
+            "id": "topic-node-1777817586837-cdqfx8",
+            "topic": "详细解释 RAG、MCP、Multi-Agent 协作等关键技术",
+            "source": "knowledge-base",
+            "mainQuestion": "请详细解释 RAG、MCP、Multi-Agent 协作等关键技术，并说明如何设计知识检索、工具协议、任务委派和跨 Agent 通信机制。",
+            "status": "pending",
+            "aggregatedScore": null,
+            "followUpCount": 0,
+            "maxFollowUps": 3,
+            "earlyCompletionReason": null,
+            "summary": null,
+            "answerAttempts": []
+          },
+          {
+            "id": "topic-node-1777817586837-l0l9rx",
+            "topic": "说明 AI 平台工程化的关键要素",
+            "source": "knowledge-base",
+            "mainQuestion": "请说明 AI 平台工程化的关键要素，包括微服务架构、API 网关、限流熔断、日志监控、链路追踪、权限控制和沙箱隔离等技术的实现方式。",
+            "status": "pending",
+            "aggregatedScore": null,
+            "followUpCount": 0,
+            "maxFollowUps": 3,
+            "earlyCompletionReason": null,
+            "summary": null,
+            "answerAttempts": []
+          },
+          {
+            "id": "topic-node-1777817586837-20rs82",
+            "topic": "介绍 Docker/Kubernetes 在 AI 服务部署中的",
+            "source": "knowledge-base",
+            "mainQuestion": "请介绍 Docker/Kubernetes 在 AI 服务部署中的应用，以及如何使用消息队列、缓存、搜索引擎、关系型数据库和向量数据库来支撑 AI 服务的稳定落地。",
+            "status": "pending",
+            "aggregatedScore": null,
+            "followUpCount": 0,
+            "maxFollowUps": 3,
+            "earlyCompletionReason": null,
+            "summary": null,
+            "answerAttempts": []
+          },
+          {
+            "id": "topic-node-1777817586837-yp83ij",
+            "topic": "说明如何基于数据驱动的方法来持续优化模型效果和 Agent 执行",
+            "source": "knowledge-base",
+            "mainQuestion": "请说明如何基于数据驱动的方法来持续优化模型效果和 Agent 执行质量，包括监控指标、评估方法和优化策略。",
+            "status": "pending",
+            "aggregatedScore": null,
+            "followUpCount": 0,
+            "maxFollowUps": 3,
+            "earlyCompletionReason": null,
+            "summary": null,
+            "answerAttempts": []
+          },
+          {
+            "id": "topic-node-1777817586837-mu98fe",
+            "topic": "结合你的经验",
+            "source": "knowledge-base",
+            "mainQuestion": "请结合你的经验，说明如何使用 TypeScript/C#/Java 开发 AI Agent 系统、工作流引擎和平台服务，并分享一些最佳实践。",
+            "status": "pending",
+            "aggregatedScore": null,
+            "followUpCount": 0,
+            "maxFollowUps": 3,
+            "earlyCompletionReason": null,
+            "summary": null,
+            "answerAttempts": []
+          }
+        ]
+      },
+      {
+        "id": "project-experience-round-1777817586837-uepwkr",
+        "type": "project-experience",
+        "status": "skipped",
+        "plannedNodeCount": 0,
+        "completedNodeCount": 0,
+        "activeNodeId": null,
+        "nodes": []
+      }
+    ],
+    "strongSignals": [],
+    "knowledgeWeaknesses": [],
+    "questionReviews": [
+      {
+        "roundType": "professional-skills",
+        "topic": "详细解释一下你对 LLM 应用架构的理解",
+        "question": "请详细解释一下你对 LLM 应用架构的理解，特别是 GPT 和 Claude 模型的能力边界、上下文窗口限制以及如何进行模型路由和成本优化。",
+        "score": null,
+        "strengths": [],
+        "missingPoints": [],
+        "incorrectPoints": [],
+        "improvementAdvice": [],
+        "evidence": []
+      },
+      {
+        "roundType": "professional-skills",
+        "topic": "详细说明 ReAct、CoT、Few-shot、Memory、P",
+        "question": "请详细说明 ReAct、CoT、Few-shot、Memory、Planning、Tool Use 等 Agent 核心机制的工作原理，并举例说明如何设计复杂任务拆解与多轮执行流程。",
+        "score": null,
+        "strengths": [],
+        "missingPoints": [],
+        "incorrectPoints": [],
+        "improvementAdvice": [],
+        "evidence": []
+      },
+      {
+        "roundType": "professional-skills",
+        "topic": "介绍 LangChain 和 Mastra 框架的核心功能",
+        "question": "请介绍 LangChain 和 Mastra 框架的核心功能，以及如何使用这些框架进行 Agent 编排、工具接入、状态管理和运行时治理。",
+        "score": null,
+        "strengths": [],
+        "missingPoints": [],
+        "incorrectPoints": [],
+        "improvementAdvice": [],
+        "evidence": []
+      },
+      {
+        "roundType": "professional-skills",
+        "topic": "详细解释 RAG、MCP、Multi-Agent 协作等关键技术",
+        "question": "请详细解释 RAG、MCP、Multi-Agent 协作等关键技术，并说明如何设计知识检索、工具协议、任务委派和跨 Agent 通信机制。",
+        "score": null,
+        "strengths": [],
+        "missingPoints": [],
+        "incorrectPoints": [],
+        "improvementAdvice": [],
+        "evidence": []
+      },
+      {
+        "roundType": "professional-skills",
+        "topic": "说明 AI 平台工程化的关键要素",
+        "question": "请说明 AI 平台工程化的关键要素，包括微服务架构、API 网关、限流熔断、日志监控、链路追踪、权限控制和沙箱隔离等技术的实现方式。",
+        "score": null,
+        "strengths": [],
+        "missingPoints": [],
+        "incorrectPoints": [],
+        "improvementAdvice": [],
+        "evidence": []
+      },
+      {
+        "roundType": "professional-skills",
+        "topic": "介绍 Docker/Kubernetes 在 AI 服务部署中的",
+        "question": "请介绍 Docker/Kubernetes 在 AI 服务部署中的应用，以及如何使用消息队列、缓存、搜索引擎、关系型数据库和向量数据库来支撑 AI 服务的稳定落地。",
+        "score": null,
+        "strengths": [],
+        "missingPoints": [],
+        "incorrectPoints": [],
+        "improvementAdvice": [],
+        "evidence": []
+      },
+      {
+        "roundType": "professional-skills",
+        "topic": "说明如何基于数据驱动的方法来持续优化模型效果和 Agent 执行",
+        "question": "请说明如何基于数据驱动的方法来持续优化模型效果和 Agent 执行质量，包括监控指标、评估方法和优化策略。",
+        "score": null,
+        "strengths": [],
+        "missingPoints": [],
+        "incorrectPoints": [],
+        "improvementAdvice": [],
+        "evidence": []
+      },
+      {
+        "roundType": "professional-skills",
+        "topic": "结合你的经验",
+        "question": "请结合你的经验，说明如何使用 TypeScript/C#/Java 开发 AI Agent 系统、工作流引擎和平台服务，并分享一些最佳实践。",
+        "score": null,
+        "strengths": [],
+        "missingPoints": [],
+        "incorrectPoints": [],
+        "improvementAdvice": [],
+        "evidence": []
+      }
+    ],
+    "report": {
+      "finalReport": null,
+      "lastCorrectionSummary": null
+    },
+    "feedback": {
+      "status": "pending",
+      "submittedAt": null,
+      "overallExperienceScore": null,
+      "questionFitScore": null,
+      "difficultyScore": null,
+      "comment": null
+    }
+  }
+}

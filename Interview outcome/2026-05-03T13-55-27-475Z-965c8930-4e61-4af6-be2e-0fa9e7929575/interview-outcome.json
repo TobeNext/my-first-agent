@@ -1,0 +1,2082 @@
+{
+  "schemaVersion": 2,
+  "createdAt": "2026-05-03T13:55:27.475Z",
+  "updatedAt": "2026-05-03T13:56:35.684Z",
+  "threadId": "965c8930-4e61-4af6-be2e-0fa9e7929575",
+  "session": {
+    "targetRole": "通用技术岗位",
+    "responseLanguage": "zh",
+    "phase": "professional-skills-round",
+    "finalReportReady": false,
+    "setup": {
+      "selectedDirection": "通用技术岗位",
+      "directionSource": "derived",
+      "settings": {
+        "reviewIncorrectOrMissingPoints": true,
+        "skipProfessionalSkillsRound": false,
+        "skipProjectExperienceRound": false,
+        "enableFlowTestMode": false,
+        "professionalQuestionMode": "custom-count",
+        "professionalQuestionCount": 6,
+        "projectQuestionCount": 2
+      }
+    },
+    "resumeContext": {
+      "professionalSkills": "### 专业技能\n\n- 熟练掌握 TypeScript / C# ，具备 Java 工程开发能力，能够独立完成 AI Agent 系统、工作流引擎与平台服务开发。\n- 深入理解 LLM 应用架构，熟悉 GPT / Claude 等模型能力边界、上下文窗口、模型路由与成本优化。\n- 掌握 ReAct、CoT、Few-shot、Memory、Planning、Tool Use 等 Agent 核心机制，能够设计复杂任务拆解与多轮执行流程。\n- 熟悉 LangChain、Mastra 等框架，具备 Agent 编排、工具接入、状态管理与运行时治理经验。\n- 熟悉 RAG、MCP、Multi-Agent 协作等关键技术，具备知识检索、工具协议、任务委派与跨 Agent 通信设计能力。\n- 具备 AI 平台工程化经验，熟悉微服务、API 网关、限流熔断、日志监控、链路追踪、权限控制与沙箱隔离。\n- 熟悉 Docker / Kubernetes、消息队列、缓存、搜索引擎、关系型数据库与向量数据库，能够支撑 AI 服务的稳定落地。\n- 能够基于数据驱动持续优化模型效果与 Agent 执行质量。",
+      "projectExperience": "### 项目经历\n\n- 无",
+      "resumeParsed": true
+    }
+  },
+  "selectorTraining": {
+    "traces": [
+      {
+        "timestamp": "2026-05-03T13:55:27.344Z",
+        "roundType": "professional-skills",
+        "skill": "professional-skills-context",
+        "queryText": "Target role: 通用技术岗位\nRound type: professional-skills\nProfessional skills context:\n### 专业技能\n\n- 熟练掌握 TypeScript / C# ，具备 Java 工程开发能力，能够独立完成 AI Agent 系统、工作流引擎与平台服务开发。\n- 深入理解 LLM 应用架构，熟悉 GPT / Claude 等模型能力边界、上下文窗口、模型路由与成本优化。\n- 掌握 ReAct、CoT、Few-shot、Memory、Planning、Tool Use 等 Agent 核心机制，能够设计复杂任务拆解与多轮执行流程。\n- 熟悉 LangChain、Mastra 等框架，具备 Agent 编排、工具接入、状态管理与运行时治理经验。\n- 熟悉 RAG、MCP、Multi-Agent 协作等关键技术，具备知识检索、工具协议、任务委派与跨 Agent 通信设计能力。\n- 具备 AI 平台工程化经验，熟悉微服务、API 网关、限流熔断、日志监控、链路追踪、权限控制与沙箱隔离。\n- 熟悉 Docker / Kubernetes、消息队列、缓存、搜索引擎、关系型数据库与向量数据库，能够支撑 AI 服务的稳定落地。\n- 能够基于数据驱动持续优化模型效果与 Agent 执行质量。",
+        "logContext": "initialization:professional-skills:context",
+        "candidateQuestionIds": [
+          "f22f42dd-48c1-4afe-acdc-d43d89028830",
+          "0aef3a95-c6fc-4190-90a1-99f1b1fb3206",
+          "b0dbff04-26ac-4a42-8e8c-7fc6b5f8232d",
+          "7ae0d7c3-da6f-4dfc-a5b1-120f1408a6c9",
+          "2b6ff69e-9077-4e22-a579-fbeef01f88ee",
+          "941bc94a-8d36-4b2e-84a1-697df26db81f",
+          "9fd63a1f-2d8b-462b-8ec4-90a2f61037bc",
+          "dfdd3983-0dc1-4c28-84ad-4b34ce04312b",
+          "34f3771a-8a4d-457d-ad2b-7eb6269bb20e",
+          "399aa449-0e73-411d-b361-1abe05ac4d10",
+          "c8700b66-02dc-4940-8bb1-f5ead73dc7de",
+          "f7dfe43b-809a-4f37-aa0a-22e6f82aaf2d",
+          "554289b6-0b2b-4311-98fc-e1f3edd4d73f",
+          "cd7f2aa9-23e0-49ce-87b1-bdf4dda5ed84",
+          "d93f4e7e-081c-410a-a3e5-ec8cdcebc335",
+          "69e632ae-b0ec-47eb-9be6-6b4ff5d5b3b4",
+          "6dd09175-2550-40ad-83dc-0efe552e2778",
+          "c28022a5-d445-4ec1-9cc9-1af3ff1769e0",
+          "4b27cbf3-c7be-496a-b790-3724f2a49aab",
+          "69208e62-d5f6-4ddb-96b0-17bd4b002174"
+        ],
+        "selectedQuestionIds": [
+          "c28022a5-d445-4ec1-9cc9-1af3ff1769e0",
+          "2b6ff69e-9077-4e22-a579-fbeef01f88ee",
+          "0aef3a95-c6fc-4190-90a1-99f1b1fb3206",
+          "f7dfe43b-809a-4f37-aa0a-22e6f82aaf2d",
+          "b0dbff04-26ac-4a42-8e8c-7fc6b5f8232d",
+          "dfdd3983-0dc1-4c28-84ad-4b34ce04312b",
+          "c8700b66-02dc-4940-8bb1-f5ead73dc7de",
+          "34f3771a-8a4d-457d-ad2b-7eb6269bb20e",
+          "941bc94a-8d36-4b2e-84a1-697df26db81f",
+          "f22f42dd-48c1-4afe-acdc-d43d89028830"
+        ],
+        "candidates": [
+          {
+            "id": "f22f42dd-48c1-4afe-acdc-d43d89028830",
+            "questionText": "如果让你用 TypeScript 或 C# 设计一个 Agent 平台的模块分层，你会怎么拆？",
+            "vectorScore": 0.7967,
+            "bm25Score": 43.6858,
+            "hybridScore": 0.8475,
+            "rerankRank": 1,
+            "finalSelectionRank": 10,
+            "filterReason": "selected"
+          },
+          {
+            "id": "0aef3a95-c6fc-4190-90a1-99f1b1fb3206",
+            "questionText": "Java 在 Agent 平台中更适合承接哪些后端模块？",
+            "vectorScore": 0.7725,
+            "bm25Score": 43.841,
+            "hybridScore": 0.6363,
+            "rerankRank": 2,
+            "finalSelectionRank": 3,
+            "filterReason": "selected"
+          },
+          {
+            "id": "b0dbff04-26ac-4a42-8e8c-7fc6b5f8232d",
+            "questionText": "跨 Agent 的任务委派协议里，至少要包含哪些字段？",
+            "vectorScore": 0.7675,
+            "bm25Score": 37.0049,
+            "hybridScore": 0.5078,
+            "rerankRank": 4,
+            "finalSelectionRank": 5,
+            "filterReason": "selected"
+          },
+          {
+            "id": "7ae0d7c3-da6f-4dfc-a5b1-120f1408a6c9",
+            "questionText": "如果 Agent 总是重复执行同一个错误的工具调用，你会从哪个环节开始修复？",
+            "vectorScore": 0.7603,
+            "bm25Score": 0,
+            "hybridScore": 0,
+            "rerankRank": null,
+            "finalSelectionRank": null,
+            "filterReason": "filtered-out-by-hybrid-rerank"
+          },
+          {
+            "id": "2b6ff69e-9077-4e22-a579-fbeef01f88ee",
+            "questionText": "如果多个 Skill 的 description 很相似，导致 Agent 经常加载错 Skill，应该怎么解决？",
+            "vectorScore": 0.7581,
+            "bm25Score": 26.9795,
+            "hybridScore": 0.3003,
+            "rerankRank": 10,
+            "finalSelectionRank": 2,
+            "filterReason": "selected"
+          },
+          {
+            "id": "941bc94a-8d36-4b2e-84a1-697df26db81f",
+            "questionText": "Multi-Agent 架构的主流实现方案有哪些？",
+            "vectorScore": 0.7548,
+            "bm25Score": 35.895,
+            "hybridScore": 0.3821,
+            "rerankRank": 6,
+            "finalSelectionRank": 9,
+            "filterReason": "selected"
+          },
+          {
+            "id": "9fd63a1f-2d8b-462b-8ec4-90a2f61037bc",
+            "questionText": "在开发中，你怎么判断一个任务该用 Workflow，还是该交给自主决策的 Agent？",
+            "vectorScore": 0.7538,
+            "bm25Score": 0,
+            "hybridScore": 0,
+            "rerankRank": null,
+            "finalSelectionRank": null,
+            "filterReason": "filtered-out-by-hybrid-rerank"
+          },
+          {
+            "id": "dfdd3983-0dc1-4c28-84ad-4b34ce04312b",
+            "questionText": "在开发自己的 Agent 时，你采用了什么研发流程？为什么选择这个流程？",
+            "vectorScore": 0.7509,
+            "bm25Score": 34.4073,
+            "hybridScore": 0.3289,
+            "rerankRank": 8,
+            "finalSelectionRank": 6,
+            "filterReason": "selected"
+          },
+          {
+            "id": "34f3771a-8a4d-457d-ad2b-7eb6269bb20e",
+            "questionText": "LangChain、Mastra、CrewAI 分别更适合什么场景？",
+            "vectorScore": 0.7501,
+            "bm25Score": 35.7153,
+            "hybridScore": 0.3384,
+            "rerankRank": 7,
+            "finalSelectionRank": 8,
+            "filterReason": "selected"
+          },
+          {
+            "id": "399aa449-0e73-411d-b361-1abe05ac4d10",
+            "questionText": "如果 Agent 发现工具调用报错，如何设计 Prompt 或策略引导它利用报错信息重试，而不是直接失败？",
+            "vectorScore": 0.7474,
+            "bm25Score": 0,
+            "hybridScore": 0,
+            "rerankRank": null,
+            "finalSelectionRank": null,
+            "filterReason": "filtered-out-by-hybrid-rerank"
+          },
+          {
+            "id": "c8700b66-02dc-4940-8bb1-f5ead73dc7de",
+            "questionText": "沙箱隔离通常会限制哪些能力？如何做提权审批？",
+            "vectorScore": 0.7454,
+            "bm25Score": 55.996,
+            "hybridScore": 0.5484,
+            "rerankRank": 3,
+            "finalSelectionRank": 7,
+            "filterReason": "selected"
+          },
+          {
+            "id": "f7dfe43b-809a-4f37-aa0a-22e6f82aaf2d",
+            "questionText": "你了解哪些主流 Agent 设计范式？它们分别适用于什么场景？",
+            "vectorScore": 0.7453,
+            "bm25Score": 37.2518,
+            "hybridScore": 0.3154,
+            "rerankRank": 9,
+            "finalSelectionRank": 4,
+            "filterReason": "selected"
+          },
+          {
+            "id": "554289b6-0b2b-4311-98fc-e1f3edd4d73f",
+            "questionText": "当单 Agent 面对长链路复杂任务时，引入 Multi-Agent 的核心优势是什么？",
+            "vectorScore": 0.7443,
+            "bm25Score": 0,
+            "hybridScore": 0,
+            "rerankRank": null,
+            "finalSelectionRank": null,
+            "filterReason": "filtered-out-by-hybrid-rerank"
+          },
+          {
+            "id": "cd7f2aa9-23e0-49ce-87b1-bdf4dda5ed84",
+            "questionText": "Multi-Agent 中的 Router 是如何决定把任务分发给哪个子 Agent 的？",
+            "vectorScore": 0.7423,
+            "bm25Score": 0,
+            "hybridScore": 0,
+            "rerankRank": null,
+            "finalSelectionRank": null,
+            "filterReason": "filtered-out-by-hybrid-rerank"
+          },
+          {
+            "id": "d93f4e7e-081c-410a-a3e5-ec8cdcebc335",
+            "questionText": "在 Agent 系统中，RAG 检索到的外部知识是如何喂给模型并尽量避免干扰主任务的？",
+            "vectorScore": 0.7421,
+            "bm25Score": 0,
+            "hybridScore": 0,
+            "rerankRank": null,
+            "finalSelectionRank": null,
+            "filterReason": "filtered-out-by-hybrid-rerank"
+          },
+          {
+            "id": "69e632ae-b0ec-47eb-9be6-6b4ff5d5b3b4",
+            "questionText": "在 LangChain / Mastra / CrewAI 中接入自定义 Tool 时，schema 和 description 应该怎么写？",
+            "vectorScore": 0.7401,
+            "bm25Score": 0,
+            "hybridScore": 0,
+            "rerankRank": null,
+            "finalSelectionRank": null,
+            "filterReason": "filtered-out-by-hybrid-rerank"
+          },
+          {
+            "id": "6dd09175-2550-40ad-83dc-0efe552e2778",
+            "questionText": "Agent 是如何识别并选择正确工具的？更依赖工具名称还是功能描述？",
+            "vectorScore": 0.7391,
+            "bm25Score": 0,
+            "hybridScore": 0,
+            "rerankRank": null,
+            "finalSelectionRank": null,
+            "filterReason": "filtered-out-by-hybrid-rerank"
+          },
+          {
+            "id": "c28022a5-d445-4ec1-9cc9-1af3ff1769e0",
+            "questionText": "用户情绪异常时，Agent 如何在不中断主流程的情况下进行干预？",
+            "vectorScore": 0.7372,
+            "bm25Score": 48.9684,
+            "hybridScore": 0.3889,
+            "rerankRank": 5,
+            "finalSelectionRank": 1,
+            "filterReason": "selected"
+          },
+          {
+            "id": "4b27cbf3-c7be-496a-b790-3724f2a49aab",
+            "questionText": "Skill 内部是否可以封装 workflow 或 SOP？怎么设计边界？",
+            "vectorScore": 0.737,
+            "bm25Score": 0,
+            "hybridScore": 0,
+            "rerankRank": null,
+            "finalSelectionRank": null,
+            "filterReason": "filtered-out-by-hybrid-rerank"
+          },
+          {
+            "id": "69208e62-d5f6-4ddb-96b0-17bd4b002174",
+            "questionText": "OpenClaw 是什么？它的定位、设计思路和适用场景是什么？",
+            "vectorScore": 0.7343,
+            "bm25Score": 0,
+            "hybridScore": 0,
+            "rerankRank": null,
+            "finalSelectionRank": null,
+            "filterReason": "filtered-out-by-hybrid-rerank"
+          }
+        ],
+        "finalSelectedQuestions": [
+          {
+            "id": "c28022a5-d445-4ec1-9cc9-1af3ff1769e0",
+            "questionText": "用户情绪异常时，Agent 如何在不中断主流程的情况下进行干预？",
+            "vectorScore": 0.7372,
+            "bm25Score": 48.9684,
+            "hybridScore": 0.3889,
+            "rerankRank": 5,
+            "finalSelectionRank": 1
+          },
+          {
+            "id": "2b6ff69e-9077-4e22-a579-fbeef01f88ee",
+            "questionText": "如果多个 Skill 的 description 很相似，导致 Agent 经常加载错 Skill，应该怎么解决？",
+            "vectorScore": 0.7581,
+            "bm25Score": 26.9795,
+            "hybridScore": 0.3003,
+            "rerankRank": 10,
+            "finalSelectionRank": 2
+          },
+          {
+            "id": "0aef3a95-c6fc-4190-90a1-99f1b1fb3206",
+            "questionText": "Java 在 Agent 平台中更适合承接哪些后端模块？",
+            "vectorScore": 0.7725,
+            "bm25Score": 43.841,
+            "hybridScore": 0.6363,
+            "rerankRank": 2,
+            "finalSelectionRank": 3
+          },
+          {
+            "id": "f7dfe43b-809a-4f37-aa0a-22e6f82aaf2d",
+            "questionText": "你了解哪些主流 Agent 设计范式？它们分别适用于什么场景？",
+            "vectorScore": 0.7453,
+            "bm25Score": 37.2518,
+            "hybridScore": 0.3154,
+            "rerankRank": 9,
+            "finalSelectionRank": 4
+          },
+          {
+            "id": "b0dbff04-26ac-4a42-8e8c-7fc6b5f8232d",
+            "questionText": "跨 Agent 的任务委派协议里，至少要包含哪些字段？",
+            "vectorScore": 0.7675,
+            "bm25Score": 37.0049,
+            "hybridScore": 0.5078,
+            "rerankRank": 4,
+            "finalSelectionRank": 5
+          },
+          {
+            "id": "dfdd3983-0dc1-4c28-84ad-4b34ce04312b",
+            "questionText": "在开发自己的 Agent 时，你采用了什么研发流程？为什么选择这个流程？",
+            "vectorScore": 0.7509,
+            "bm25Score": 34.4073,
+            "hybridScore": 0.3289,
+            "rerankRank": 8,
+            "finalSelectionRank": 6
+          },
+          {
+            "id": "c8700b66-02dc-4940-8bb1-f5ead73dc7de",
+            "questionText": "沙箱隔离通常会限制哪些能力？如何做提权审批？",
+            "vectorScore": 0.7454,
+            "bm25Score": 55.996,
+            "hybridScore": 0.5484,
+            "rerankRank": 3,
+            "finalSelectionRank": 7
+          },
+          {
+            "id": "34f3771a-8a4d-457d-ad2b-7eb6269bb20e",
+            "questionText": "LangChain、Mastra、CrewAI 分别更适合什么场景？",
+            "vectorScore": 0.7501,
+            "bm25Score": 35.7153,
+            "hybridScore": 0.3384,
+            "rerankRank": 7,
+            "finalSelectionRank": 8
+          },
+          {
+            "id": "941bc94a-8d36-4b2e-84a1-697df26db81f",
+            "questionText": "Multi-Agent 架构的主流实现方案有哪些？",
+            "vectorScore": 0.7548,
+            "bm25Score": 35.895,
+            "hybridScore": 0.3821,
+            "rerankRank": 6,
+            "finalSelectionRank": 9
+          },
+          {
+            "id": "f22f42dd-48c1-4afe-acdc-d43d89028830",
+            "questionText": "如果让你用 TypeScript 或 C# 设计一个 Agent 平台的模块分层，你会怎么拆？",
+            "vectorScore": 0.7967,
+            "bm25Score": 43.6858,
+            "hybridScore": 0.8475,
+            "rerankRank": 1,
+            "finalSelectionRank": 10
+          }
+        ]
+      },
+      {
+        "timestamp": "2026-05-03T13:55:27.442Z",
+        "roundType": "project-experience",
+        "skill": "project-experience-context",
+        "queryText": "Target role: 通用技术岗位\nRound type: project-experience\nProject experience context:\n### 项目经历\n\n- 无",
+        "logContext": "initialization:project-experience:context",
+        "candidateQuestionIds": [
+          "b0dbff04-26ac-4a42-8e8c-7fc6b5f8232d",
+          "9fd63a1f-2d8b-462b-8ec4-90a2f61037bc",
+          "4b27cbf3-c7be-496a-b790-3724f2a49aab",
+          "7ae0d7c3-da6f-4dfc-a5b1-120f1408a6c9",
+          "399aa449-0e73-411d-b361-1abe05ac4d10",
+          "3d09e533-d29a-4116-a2b2-da84cac91d9f",
+          "f22f42dd-48c1-4afe-acdc-d43d89028830",
+          "69208e62-d5f6-4ddb-96b0-17bd4b002174",
+          "7e2f7ed9-0acd-43f2-ae83-8d4cafe4909c",
+          "e6b6403c-cdad-4e4f-8b87-1cbe47a649d6",
+          "d4e9507b-9be1-4c18-98a9-7c92e32bc303",
+          "118268e9-1edf-4718-a9b9-5a42d10e3a1a",
+          "69e632ae-b0ec-47eb-9be6-6b4ff5d5b3b4",
+          "dfdd3983-0dc1-4c28-84ad-4b34ce04312b",
+          "d9abd31e-610f-4545-863c-2b3dc8c49b06",
+          "4b1f6149-68d3-46c3-b72a-15b19d70f6f8",
+          "f7dfe43b-809a-4f37-aa0a-22e6f82aaf2d",
+          "0aef3a95-c6fc-4190-90a1-99f1b1fb3206",
+          "f6e6fbee-82b4-4ec4-a9e0-1557c1960b52",
+          "a8d6a8f8-324e-4116-be32-9792629d2d6e"
+        ],
+        "selectedQuestionIds": [
+          "9fd63a1f-2d8b-462b-8ec4-90a2f61037bc",
+          "3d09e533-d29a-4116-a2b2-da84cac91d9f",
+          "f22f42dd-48c1-4afe-acdc-d43d89028830",
+          "f6e6fbee-82b4-4ec4-a9e0-1557c1960b52",
+          "399aa449-0e73-411d-b361-1abe05ac4d10",
+          "69208e62-d5f6-4ddb-96b0-17bd4b002174",
+          "7ae0d7c3-da6f-4dfc-a5b1-120f1408a6c9",
+          "b0dbff04-26ac-4a42-8e8c-7fc6b5f8232d",
+          "4b27cbf3-c7be-496a-b790-3724f2a49aab",
+          "dfdd3983-0dc1-4c28-84ad-4b34ce04312b"
+        ],
+        "candidates": [
+          {
+            "id": "b0dbff04-26ac-4a42-8e8c-7fc6b5f8232d",
+            "questionText": "跨 Agent 的任务委派协议里，至少要包含哪些字段？",
+            "vectorScore": 0.7271,
+            "bm25Score": 0,
+            "hybridScore": 0.55,
+            "rerankRank": 1,
+            "finalSelectionRank": 8,
+            "filterReason": "selected"
+          },
+          {
+            "id": "9fd63a1f-2d8b-462b-8ec4-90a2f61037bc",
+            "questionText": "在开发中，你怎么判断一个任务该用 Workflow，还是该交给自主决策的 Agent？",
+            "vectorScore": 0.7086,
+            "bm25Score": 0,
+            "hybridScore": 0.35,
+            "rerankRank": 3,
+            "finalSelectionRank": 1,
+            "filterReason": "selected"
+          },
+          {
+            "id": "4b27cbf3-c7be-496a-b790-3724f2a49aab",
+            "questionText": "Skill 内部是否可以封装 workflow 或 SOP？怎么设计边界？",
+            "vectorScore": 0.7076,
+            "bm25Score": 0,
+            "hybridScore": 0.3394,
+            "rerankRank": 5,
+            "finalSelectionRank": 9,
+            "filterReason": "selected"
+          },
+          {
+            "id": "7ae0d7c3-da6f-4dfc-a5b1-120f1408a6c9",
+            "questionText": "如果 Agent 总是重复执行同一个错误的工具调用，你会从哪个环节开始修复？",
+            "vectorScore": 0.6986,
+            "bm25Score": 0,
+            "hybridScore": 0.2413,
+            "rerankRank": 6,
+            "finalSelectionRank": 7,
+            "filterReason": "selected"
+          },
+          {
+            "id": "399aa449-0e73-411d-b361-1abe05ac4d10",
+            "questionText": "如果 Agent 发现工具调用报错，如何设计 Prompt 或策略引导它利用报错信息重试，而不是直接失败？",
+            "vectorScore": 0.6964,
+            "bm25Score": 0,
+            "hybridScore": 0.2182,
+            "rerankRank": 7,
+            "finalSelectionRank": 5,
+            "filterReason": "selected"
+          },
+          {
+            "id": "3d09e533-d29a-4116-a2b2-da84cac91d9f",
+            "questionText": "如果要在 Prompt 中设计“知识缺失时拒答”的逻辑，你会怎么做？",
+            "vectorScore": 0.6935,
+            "bm25Score": 0,
+            "hybridScore": 0.1866,
+            "rerankRank": 8,
+            "finalSelectionRank": 2,
+            "filterReason": "selected"
+          },
+          {
+            "id": "f22f42dd-48c1-4afe-acdc-d43d89028830",
+            "questionText": "如果让你用 TypeScript 或 C# 设计一个 Agent 平台的模块分层，你会怎么拆？",
+            "vectorScore": 0.6914,
+            "bm25Score": 0,
+            "hybridScore": 0.1633,
+            "rerankRank": 9,
+            "finalSelectionRank": 3,
+            "filterReason": "selected"
+          },
+          {
+            "id": "69208e62-d5f6-4ddb-96b0-17bd4b002174",
+            "questionText": "OpenClaw 是什么？它的定位、设计思路和适用场景是什么？",
+            "vectorScore": 0.6908,
+            "bm25Score": 0,
+            "hybridScore": 0.1572,
+            "rerankRank": 10,
+            "finalSelectionRank": 6,
+            "filterReason": "selected"
+          },
+          {
+            "id": "7e2f7ed9-0acd-43f2-ae83-8d4cafe4909c",
+            "questionText": "什么是 Human-in-the-loop？在 Agent 系统中如何设计人工审批断点？",
+            "vectorScore": 0.6883,
+            "bm25Score": 0,
+            "hybridScore": 0,
+            "rerankRank": null,
+            "finalSelectionRank": null,
+            "filterReason": "filtered-out-by-hybrid-rerank"
+          },
+          {
+            "id": "e6b6403c-cdad-4e4f-8b87-1cbe47a649d6",
+            "questionText": "如果图纸中的关键信息没有被文本明确描述，系统如何依靠视觉特征完成召回？",
+            "vectorScore": 0.6866,
+            "bm25Score": 0,
+            "hybridScore": 0,
+            "rerankRank": null,
+            "finalSelectionRank": null,
+            "filterReason": "filtered-out-by-hybrid-rerank"
+          },
+          {
+            "id": "d4e9507b-9be1-4c18-98a9-7c92e32bc303",
+            "questionText": "如果把大量 Skill 直接放进系统提示词，导致上下文窗口占用过大，应该如何处理？",
+            "vectorScore": 0.6833,
+            "bm25Score": 0,
+            "hybridScore": 0,
+            "rerankRank": null,
+            "finalSelectionRank": null,
+            "filterReason": "filtered-out-by-hybrid-rerank"
+          },
+          {
+            "id": "118268e9-1edf-4718-a9b9-5a42d10e3a1a",
+            "questionText": "你如何定义一个好的 Agent 系统？你认为 Agent 设计里最重要的部分是什么？",
+            "vectorScore": 0.6823,
+            "bm25Score": 0,
+            "hybridScore": 0,
+            "rerankRank": null,
+            "finalSelectionRank": null,
+            "filterReason": "filtered-out-by-hybrid-rerank"
+          },
+          {
+            "id": "69e632ae-b0ec-47eb-9be6-6b4ff5d5b3b4",
+            "questionText": "在 LangChain / Mastra / CrewAI 中接入自定义 Tool 时，schema 和 description 应该怎么写？",
+            "vectorScore": 0.6806,
+            "bm25Score": 0,
+            "hybridScore": 0,
+            "rerankRank": null,
+            "finalSelectionRank": null,
+            "filterReason": "filtered-out-by-hybrid-rerank"
+          },
+          {
+            "id": "dfdd3983-0dc1-4c28-84ad-4b34ce04312b",
+            "questionText": "在开发自己的 Agent 时，你采用了什么研发流程？为什么选择这个流程？",
+            "vectorScore": 0.6788,
+            "bm25Score": 5.4611,
+            "hybridScore": 0.4776,
+            "rerankRank": 2,
+            "finalSelectionRank": 10,
+            "filterReason": "selected"
+          },
+          {
+            "id": "d9abd31e-610f-4545-863c-2b3dc8c49b06",
+            "questionText": "你如何做模型 fallback 或多供应商切换？",
+            "vectorScore": 0.6787,
+            "bm25Score": 0,
+            "hybridScore": 0,
+            "rerankRank": null,
+            "finalSelectionRank": null,
+            "filterReason": "filtered-out-by-hybrid-rerank"
+          },
+          {
+            "id": "4b1f6149-68d3-46c3-b72a-15b19d70f6f8",
+            "questionText": "如果只允许检索某个时间之后的数据，向量数据库里如何实现标量过滤？",
+            "vectorScore": 0.6784,
+            "bm25Score": 0,
+            "hybridScore": 0,
+            "rerankRank": null,
+            "finalSelectionRank": null,
+            "filterReason": "filtered-out-by-hybrid-rerank"
+          },
+          {
+            "id": "f7dfe43b-809a-4f37-aa0a-22e6f82aaf2d",
+            "questionText": "你了解哪些主流 Agent 设计范式？它们分别适用于什么场景？",
+            "vectorScore": 0.6784,
+            "bm25Score": 0,
+            "hybridScore": 0,
+            "rerankRank": null,
+            "finalSelectionRank": null,
+            "filterReason": "filtered-out-by-hybrid-rerank"
+          },
+          {
+            "id": "0aef3a95-c6fc-4190-90a1-99f1b1fb3206",
+            "questionText": "Java 在 Agent 平台中更适合承接哪些后端模块？",
+            "vectorScore": 0.6774,
+            "bm25Score": 0,
+            "hybridScore": 0,
+            "rerankRank": null,
+            "finalSelectionRank": null,
+            "filterReason": "filtered-out-by-hybrid-rerank"
+          },
+          {
+            "id": "f6e6fbee-82b4-4ec4-a9e0-1557c1960b52",
+            "questionText": "如果 Ragas 的 Context Precision 很低，你会如何优化检索链路？",
+            "vectorScore": 0.6772,
+            "bm25Score": 4.0261,
+            "hybridScore": 0.3414,
+            "rerankRank": 4,
+            "finalSelectionRank": 4,
+            "filterReason": "selected"
+          },
+          {
+            "id": "a8d6a8f8-324e-4116-be32-9792629d2d6e",
+            "questionText": "检索结果中如果存在冲突信息，如何设计自动选择、融合或不确定性提示逻辑？",
+            "vectorScore": 0.6763,
+            "bm25Score": 0,
+            "hybridScore": 0,
+            "rerankRank": null,
+            "finalSelectionRank": null,
+            "filterReason": "filtered-out-by-hybrid-rerank"
+          }
+        ],
+        "finalSelectedQuestions": [
+          {
+            "id": "9fd63a1f-2d8b-462b-8ec4-90a2f61037bc",
+            "questionText": "在开发中，你怎么判断一个任务该用 Workflow，还是该交给自主决策的 Agent？",
+            "vectorScore": 0.7086,
+            "bm25Score": 0,
+            "hybridScore": 0.35,
+            "rerankRank": 3,
+            "finalSelectionRank": 1
+          },
+          {
+            "id": "3d09e533-d29a-4116-a2b2-da84cac91d9f",
+            "questionText": "如果要在 Prompt 中设计“知识缺失时拒答”的逻辑，你会怎么做？",
+            "vectorScore": 0.6935,
+            "bm25Score": 0,
+            "hybridScore": 0.1866,
+            "rerankRank": 8,
+            "finalSelectionRank": 2
+          },
+          {
+            "id": "f22f42dd-48c1-4afe-acdc-d43d89028830",
+            "questionText": "如果让你用 TypeScript 或 C# 设计一个 Agent 平台的模块分层，你会怎么拆？",
+            "vectorScore": 0.6914,
+            "bm25Score": 0,
+            "hybridScore": 0.1633,
+            "rerankRank": 9,
+            "finalSelectionRank": 3
+          },
+          {
+            "id": "f6e6fbee-82b4-4ec4-a9e0-1557c1960b52",
+            "questionText": "如果 Ragas 的 Context Precision 很低，你会如何优化检索链路？",
+            "vectorScore": 0.6772,
+            "bm25Score": 4.0261,
+            "hybridScore": 0.3414,
+            "rerankRank": 4,
+            "finalSelectionRank": 4
+          },
+          {
+            "id": "399aa449-0e73-411d-b361-1abe05ac4d10",
+            "questionText": "如果 Agent 发现工具调用报错，如何设计 Prompt 或策略引导它利用报错信息重试，而不是直接失败？",
+            "vectorScore": 0.6964,
+            "bm25Score": 0,
+            "hybridScore": 0.2182,
+            "rerankRank": 7,
+            "finalSelectionRank": 5
+          },
+          {
+            "id": "69208e62-d5f6-4ddb-96b0-17bd4b002174",
+            "questionText": "OpenClaw 是什么？它的定位、设计思路和适用场景是什么？",
+            "vectorScore": 0.6908,
+            "bm25Score": 0,
+            "hybridScore": 0.1572,
+            "rerankRank": 10,
+            "finalSelectionRank": 6
+          },
+          {
+            "id": "7ae0d7c3-da6f-4dfc-a5b1-120f1408a6c9",
+            "questionText": "如果 Agent 总是重复执行同一个错误的工具调用，你会从哪个环节开始修复？",
+            "vectorScore": 0.6986,
+            "bm25Score": 0,
+            "hybridScore": 0.2413,
+            "rerankRank": 6,
+            "finalSelectionRank": 7
+          },
+          {
+            "id": "b0dbff04-26ac-4a42-8e8c-7fc6b5f8232d",
+            "questionText": "跨 Agent 的任务委派协议里，至少要包含哪些字段？",
+            "vectorScore": 0.7271,
+            "bm25Score": 0,
+            "hybridScore": 0.55,
+            "rerankRank": 1,
+            "finalSelectionRank": 8
+          },
+          {
+            "id": "4b27cbf3-c7be-496a-b790-3724f2a49aab",
+            "questionText": "Skill 内部是否可以封装 workflow 或 SOP？怎么设计边界？",
+            "vectorScore": 0.7076,
+            "bm25Score": 0,
+            "hybridScore": 0.3394,
+            "rerankRank": 5,
+            "finalSelectionRank": 9
+          },
+          {
+            "id": "dfdd3983-0dc1-4c28-84ad-4b34ce04312b",
+            "questionText": "在开发自己的 Agent 时，你采用了什么研发流程？为什么选择这个流程？",
+            "vectorScore": 0.6788,
+            "bm25Score": 5.4611,
+            "hybridScore": 0.4776,
+            "rerankRank": 2,
+            "finalSelectionRank": 10
+          }
+        ]
+      }
+    ],
+    "recallEvents": [
+      {
+        "traceTimestamp": "2026-05-03T13:55:27.344Z",
+        "roundType": "professional-skills",
+        "skill": "professional-skills-context",
+        "queryText": "Target role: 通用技术岗位\nRound type: professional-skills\nProfessional skills context:\n### 专业技能\n\n- 熟练掌握 TypeScript / C# ，具备 Java 工程开发能力，能够独立完成 AI Agent 系统、工作流引擎与平台服务开发。\n- 深入理解 LLM 应用架构，熟悉 GPT / Claude 等模型能力边界、上下文窗口、模型路由与成本优化。\n- 掌握 ReAct、CoT、Few-shot、Memory、Planning、Tool Use 等 Agent 核心机制，能够设计复杂任务拆解与多轮执行流程。\n- 熟悉 LangChain、Mastra 等框架，具备 Agent 编排、工具接入、状态管理与运行时治理经验。\n- 熟悉 RAG、MCP、Multi-Agent 协作等关键技术，具备知识检索、工具协议、任务委派与跨 Agent 通信设计能力。\n- 具备 AI 平台工程化经验，熟悉微服务、API 网关、限流熔断、日志监控、链路追踪、权限控制与沙箱隔离。\n- 熟悉 Docker / Kubernetes、消息队列、缓存、搜索引擎、关系型数据库与向量数据库，能够支撑 AI 服务的稳定落地。\n- 能够基于数据驱动持续优化模型效果与 Agent 执行质量。",
+        "logContext": "initialization:professional-skills:context",
+        "candidates": [
+          {
+            "questionId": "f22f42dd-48c1-4afe-acdc-d43d89028830",
+            "questionText": "如果让你用 TypeScript 或 C# 设计一个 Agent 平台的模块分层，你会怎么拆？",
+            "vectorScore": 0.7967,
+            "bm25Score": 43.6858,
+            "hybridScore": 0.8475,
+            "rerankRank": 1,
+            "finalSelectionRank": 10,
+            "filterReason": "selected",
+            "wasSelected": true,
+            "outcomeLabel": null
+          },
+          {
+            "questionId": "0aef3a95-c6fc-4190-90a1-99f1b1fb3206",
+            "questionText": "Java 在 Agent 平台中更适合承接哪些后端模块？",
+            "vectorScore": 0.7725,
+            "bm25Score": 43.841,
+            "hybridScore": 0.6363,
+            "rerankRank": 2,
+            "finalSelectionRank": 3,
+            "filterReason": "selected",
+            "wasSelected": true,
+            "outcomeLabel": {
+              "roundType": "professional-skills",
+              "topic": "Java 在 Agent 平台中更适合承接哪些后端模块",
+              "mainQuestion": "Java 在 Agent 平台中更适合承接哪些后端模块？",
+              "nodeStatus": "pending",
+              "aggregatedScore": null,
+              "latestClassification": null,
+              "strengths": [],
+              "missingPoints": [],
+              "incorrectPoints": []
+            }
+          },
+          {
+            "questionId": "b0dbff04-26ac-4a42-8e8c-7fc6b5f8232d",
+            "questionText": "跨 Agent 的任务委派协议里，至少要包含哪些字段？",
+            "vectorScore": 0.7675,
+            "bm25Score": 37.0049,
+            "hybridScore": 0.5078,
+            "rerankRank": 4,
+            "finalSelectionRank": 5,
+            "filterReason": "selected",
+            "wasSelected": true,
+            "outcomeLabel": {
+              "roundType": "professional-skills",
+              "topic": "跨 Agent 的任务委派协议里",
+              "mainQuestion": "跨 Agent 的任务委派协议里，至少要包含哪些字段？",
+              "nodeStatus": "pending",
+              "aggregatedScore": null,
+              "latestClassification": null,
+              "strengths": [],
+              "missingPoints": [],
+              "incorrectPoints": []
+            }
+          },
+          {
+            "questionId": "7ae0d7c3-da6f-4dfc-a5b1-120f1408a6c9",
+            "questionText": "如果 Agent 总是重复执行同一个错误的工具调用，你会从哪个环节开始修复？",
+            "vectorScore": 0.7603,
+            "bm25Score": 0,
+            "hybridScore": 0,
+            "rerankRank": null,
+            "finalSelectionRank": null,
+            "filterReason": "filtered-out-by-hybrid-rerank",
+            "wasSelected": false,
+            "outcomeLabel": null
+          },
+          {
+            "questionId": "2b6ff69e-9077-4e22-a579-fbeef01f88ee",
+            "questionText": "如果多个 Skill 的 description 很相似，导致 Agent 经常加载错 Skill，应该怎么解决？",
+            "vectorScore": 0.7581,
+            "bm25Score": 26.9795,
+            "hybridScore": 0.3003,
+            "rerankRank": 10,
+            "finalSelectionRank": 2,
+            "filterReason": "selected",
+            "wasSelected": true,
+            "outcomeLabel": {
+              "roundType": "professional-skills",
+              "topic": "如果多个 Skill 的 description 很相似",
+              "mainQuestion": "如果多个 Skill 的 description 很相似，导致 Agent 经常加载错 Skill，应该怎么解决？",
+              "nodeStatus": "awaiting-main-answer",
+              "aggregatedScore": null,
+              "latestClassification": null,
+              "strengths": [],
+              "missingPoints": [],
+              "incorrectPoints": []
+            }
+          },
+          {
+            "questionId": "941bc94a-8d36-4b2e-84a1-697df26db81f",
+            "questionText": "Multi-Agent 架构的主流实现方案有哪些？",
+            "vectorScore": 0.7548,
+            "bm25Score": 35.895,
+            "hybridScore": 0.3821,
+            "rerankRank": 6,
+            "finalSelectionRank": 9,
+            "filterReason": "selected",
+            "wasSelected": true,
+            "outcomeLabel": null
+          },
+          {
+            "questionId": "9fd63a1f-2d8b-462b-8ec4-90a2f61037bc",
+            "questionText": "在开发中，你怎么判断一个任务该用 Workflow，还是该交给自主决策的 Agent？",
+            "vectorScore": 0.7538,
+            "bm25Score": 0,
+            "hybridScore": 0,
+            "rerankRank": null,
+            "finalSelectionRank": null,
+            "filterReason": "filtered-out-by-hybrid-rerank",
+            "wasSelected": false,
+            "outcomeLabel": {
+              "roundType": "project-experience",
+              "topic": "在开发中",
+              "mainQuestion": "在开发中，你怎么判断一个任务该用 Workflow，还是该交给自主决策的 Agent？",
+              "nodeStatus": "pending",
+              "aggregatedScore": null,
+              "latestClassification": null,
+              "strengths": [],
+              "missingPoints": [],
+              "incorrectPoints": []
+            }
+          },
+          {
+            "questionId": "dfdd3983-0dc1-4c28-84ad-4b34ce04312b",
+            "questionText": "在开发自己的 Agent 时，你采用了什么研发流程？为什么选择这个流程？",
+            "vectorScore": 0.7509,
+            "bm25Score": 34.4073,
+            "hybridScore": 0.3289,
+            "rerankRank": 8,
+            "finalSelectionRank": 6,
+            "filterReason": "selected",
+            "wasSelected": true,
+            "outcomeLabel": {
+              "roundType": "professional-skills",
+              "topic": "在开发自己的 Agent 时",
+              "mainQuestion": "在开发自己的 Agent 时，你采用了什么研发流程？为什么选择这个流程？",
+              "nodeStatus": "pending",
+              "aggregatedScore": null,
+              "latestClassification": null,
+              "strengths": [],
+              "missingPoints": [],
+              "incorrectPoints": []
+            }
+          },
+          {
+            "questionId": "34f3771a-8a4d-457d-ad2b-7eb6269bb20e",
+            "questionText": "LangChain、Mastra、CrewAI 分别更适合什么场景？",
+            "vectorScore": 0.7501,
+            "bm25Score": 35.7153,
+            "hybridScore": 0.3384,
+            "rerankRank": 7,
+            "finalSelectionRank": 8,
+            "filterReason": "selected",
+            "wasSelected": true,
+            "outcomeLabel": null
+          },
+          {
+            "questionId": "399aa449-0e73-411d-b361-1abe05ac4d10",
+            "questionText": "如果 Agent 发现工具调用报错，如何设计 Prompt 或策略引导它利用报错信息重试，而不是直接失败？",
+            "vectorScore": 0.7474,
+            "bm25Score": 0,
+            "hybridScore": 0,
+            "rerankRank": null,
+            "finalSelectionRank": null,
+            "filterReason": "filtered-out-by-hybrid-rerank",
+            "wasSelected": false,
+            "outcomeLabel": null
+          },
+          {
+            "questionId": "c8700b66-02dc-4940-8bb1-f5ead73dc7de",
+            "questionText": "沙箱隔离通常会限制哪些能力？如何做提权审批？",
+            "vectorScore": 0.7454,
+            "bm25Score": 55.996,
+            "hybridScore": 0.5484,
+            "rerankRank": 3,
+            "finalSelectionRank": 7,
+            "filterReason": "selected",
+            "wasSelected": true,
+            "outcomeLabel": null
+          },
+          {
+            "questionId": "f7dfe43b-809a-4f37-aa0a-22e6f82aaf2d",
+            "questionText": "你了解哪些主流 Agent 设计范式？它们分别适用于什么场景？",
+            "vectorScore": 0.7453,
+            "bm25Score": 37.2518,
+            "hybridScore": 0.3154,
+            "rerankRank": 9,
+            "finalSelectionRank": 4,
+            "filterReason": "selected",
+            "wasSelected": true,
+            "outcomeLabel": {
+              "roundType": "professional-skills",
+              "topic": "你了解哪些主流 Agent 设计范式",
+              "mainQuestion": "你了解哪些主流 Agent 设计范式？它们分别适用于什么场景？",
+              "nodeStatus": "pending",
+              "aggregatedScore": null,
+              "latestClassification": null,
+              "strengths": [],
+              "missingPoints": [],
+              "incorrectPoints": []
+            }
+          },
+          {
+            "questionId": "554289b6-0b2b-4311-98fc-e1f3edd4d73f",
+            "questionText": "当单 Agent 面对长链路复杂任务时，引入 Multi-Agent 的核心优势是什么？",
+            "vectorScore": 0.7443,
+            "bm25Score": 0,
+            "hybridScore": 0,
+            "rerankRank": null,
+            "finalSelectionRank": null,
+            "filterReason": "filtered-out-by-hybrid-rerank",
+            "wasSelected": false,
+            "outcomeLabel": null
+          },
+          {
+            "questionId": "cd7f2aa9-23e0-49ce-87b1-bdf4dda5ed84",
+            "questionText": "Multi-Agent 中的 Router 是如何决定把任务分发给哪个子 Agent 的？",
+            "vectorScore": 0.7423,
+            "bm25Score": 0,
+            "hybridScore": 0,
+            "rerankRank": null,
+            "finalSelectionRank": null,
+            "filterReason": "filtered-out-by-hybrid-rerank",
+            "wasSelected": false,
+            "outcomeLabel": null
+          },
+          {
+            "questionId": "d93f4e7e-081c-410a-a3e5-ec8cdcebc335",
+            "questionText": "在 Agent 系统中，RAG 检索到的外部知识是如何喂给模型并尽量避免干扰主任务的？",
+            "vectorScore": 0.7421,
+            "bm25Score": 0,
+            "hybridScore": 0,
+            "rerankRank": null,
+            "finalSelectionRank": null,
+            "filterReason": "filtered-out-by-hybrid-rerank",
+            "wasSelected": false,
+            "outcomeLabel": null
+          },
+          {
+            "questionId": "69e632ae-b0ec-47eb-9be6-6b4ff5d5b3b4",
+            "questionText": "在 LangChain / Mastra / CrewAI 中接入自定义 Tool 时，schema 和 description 应该怎么写？",
+            "vectorScore": 0.7401,
+            "bm25Score": 0,
+            "hybridScore": 0,
+            "rerankRank": null,
+            "finalSelectionRank": null,
+            "filterReason": "filtered-out-by-hybrid-rerank",
+            "wasSelected": false,
+            "outcomeLabel": null
+          },
+          {
+            "questionId": "6dd09175-2550-40ad-83dc-0efe552e2778",
+            "questionText": "Agent 是如何识别并选择正确工具的？更依赖工具名称还是功能描述？",
+            "vectorScore": 0.7391,
+            "bm25Score": 0,
+            "hybridScore": 0,
+            "rerankRank": null,
+            "finalSelectionRank": null,
+            "filterReason": "filtered-out-by-hybrid-rerank",
+            "wasSelected": false,
+            "outcomeLabel": null
+          },
+          {
+            "questionId": "c28022a5-d445-4ec1-9cc9-1af3ff1769e0",
+            "questionText": "用户情绪异常时，Agent 如何在不中断主流程的情况下进行干预？",
+            "vectorScore": 0.7372,
+            "bm25Score": 48.9684,
+            "hybridScore": 0.3889,
+            "rerankRank": 5,
+            "finalSelectionRank": 1,
+            "filterReason": "selected",
+            "wasSelected": true,
+            "outcomeLabel": {
+              "roundType": "professional-skills",
+              "topic": "用户情绪异常时",
+              "mainQuestion": "用户情绪异常时，Agent 如何在不中断主流程的情况下进行干预？",
+              "nodeStatus": "completed",
+              "aggregatedScore": 7.43,
+              "latestClassification": "direct-answer",
+              "strengths": [
+                "回答基本围绕“用户情绪异常时”展开"
+              ],
+              "missingPoints": [
+                "还需要继续补充“用户情绪异常时”的实现细节、关键取舍或真实案例"
+              ],
+              "incorrectPoints": []
+            }
+          },
+          {
+            "questionId": "4b27cbf3-c7be-496a-b790-3724f2a49aab",
+            "questionText": "Skill 内部是否可以封装 workflow 或 SOP？怎么设计边界？",
+            "vectorScore": 0.737,
+            "bm25Score": 0,
+            "hybridScore": 0,
+            "rerankRank": null,
+            "finalSelectionRank": null,
+            "filterReason": "filtered-out-by-hybrid-rerank",
+            "wasSelected": false,
+            "outcomeLabel": null
+          },
+          {
+            "questionId": "69208e62-d5f6-4ddb-96b0-17bd4b002174",
+            "questionText": "OpenClaw 是什么？它的定位、设计思路和适用场景是什么？",
+            "vectorScore": 0.7343,
+            "bm25Score": 0,
+            "hybridScore": 0,
+            "rerankRank": null,
+            "finalSelectionRank": null,
+            "filterReason": "filtered-out-by-hybrid-rerank",
+            "wasSelected": false,
+            "outcomeLabel": null
+          }
+        ]
+      },
+      {
+        "traceTimestamp": "2026-05-03T13:55:27.442Z",
+        "roundType": "project-experience",
+        "skill": "project-experience-context",
+        "queryText": "Target role: 通用技术岗位\nRound type: project-experience\nProject experience context:\n### 项目经历\n\n- 无",
+        "logContext": "initialization:project-experience:context",
+        "candidates": [
+          {
+            "questionId": "b0dbff04-26ac-4a42-8e8c-7fc6b5f8232d",
+            "questionText": "跨 Agent 的任务委派协议里，至少要包含哪些字段？",
+            "vectorScore": 0.7271,
+            "bm25Score": 0,
+            "hybridScore": 0.55,
+            "rerankRank": 1,
+            "finalSelectionRank": 8,
+            "filterReason": "selected",
+            "wasSelected": true,
+            "outcomeLabel": {
+              "roundType": "professional-skills",
+              "topic": "跨 Agent 的任务委派协议里",
+              "mainQuestion": "跨 Agent 的任务委派协议里，至少要包含哪些字段？",
+              "nodeStatus": "pending",
+              "aggregatedScore": null,
+              "latestClassification": null,
+              "strengths": [],
+              "missingPoints": [],
+              "incorrectPoints": []
+            }
+          },
+          {
+            "questionId": "9fd63a1f-2d8b-462b-8ec4-90a2f61037bc",
+            "questionText": "在开发中，你怎么判断一个任务该用 Workflow，还是该交给自主决策的 Agent？",
+            "vectorScore": 0.7086,
+            "bm25Score": 0,
+            "hybridScore": 0.35,
+            "rerankRank": 3,
+            "finalSelectionRank": 1,
+            "filterReason": "selected",
+            "wasSelected": true,
+            "outcomeLabel": {
+              "roundType": "project-experience",
+              "topic": "在开发中",
+              "mainQuestion": "在开发中，你怎么判断一个任务该用 Workflow，还是该交给自主决策的 Agent？",
+              "nodeStatus": "pending",
+              "aggregatedScore": null,
+              "latestClassification": null,
+              "strengths": [],
+              "missingPoints": [],
+              "incorrectPoints": []
+            }
+          },
+          {
+            "questionId": "4b27cbf3-c7be-496a-b790-3724f2a49aab",
+            "questionText": "Skill 内部是否可以封装 workflow 或 SOP？怎么设计边界？",
+            "vectorScore": 0.7076,
+            "bm25Score": 0,
+            "hybridScore": 0.3394,
+            "rerankRank": 5,
+            "finalSelectionRank": 9,
+            "filterReason": "selected",
+            "wasSelected": true,
+            "outcomeLabel": null
+          },
+          {
+            "questionId": "7ae0d7c3-da6f-4dfc-a5b1-120f1408a6c9",
+            "questionText": "如果 Agent 总是重复执行同一个错误的工具调用，你会从哪个环节开始修复？",
+            "vectorScore": 0.6986,
+            "bm25Score": 0,
+            "hybridScore": 0.2413,
+            "rerankRank": 6,
+            "finalSelectionRank": 7,
+            "filterReason": "selected",
+            "wasSelected": true,
+            "outcomeLabel": null
+          },
+          {
+            "questionId": "399aa449-0e73-411d-b361-1abe05ac4d10",
+            "questionText": "如果 Agent 发现工具调用报错，如何设计 Prompt 或策略引导它利用报错信息重试，而不是直接失败？",
+            "vectorScore": 0.6964,
+            "bm25Score": 0,
+            "hybridScore": 0.2182,
+            "rerankRank": 7,
+            "finalSelectionRank": 5,
+            "filterReason": "selected",
+            "wasSelected": true,
+            "outcomeLabel": null
+          },
+          {
+            "questionId": "3d09e533-d29a-4116-a2b2-da84cac91d9f",
+            "questionText": "如果要在 Prompt 中设计“知识缺失时拒答”的逻辑，你会怎么做？",
+            "vectorScore": 0.6935,
+            "bm25Score": 0,
+            "hybridScore": 0.1866,
+            "rerankRank": 8,
+            "finalSelectionRank": 2,
+            "filterReason": "selected",
+            "wasSelected": true,
+            "outcomeLabel": {
+              "roundType": "project-experience",
+              "topic": "如果要在 Prompt 中设计“知识缺失时拒答”的逻辑",
+              "mainQuestion": "如果要在 Prompt 中设计“知识缺失时拒答”的逻辑，你会怎么做？",
+              "nodeStatus": "pending",
+              "aggregatedScore": null,
+              "latestClassification": null,
+              "strengths": [],
+              "missingPoints": [],
+              "incorrectPoints": []
+            }
+          },
+          {
+            "questionId": "f22f42dd-48c1-4afe-acdc-d43d89028830",
+            "questionText": "如果让你用 TypeScript 或 C# 设计一个 Agent 平台的模块分层，你会怎么拆？",
+            "vectorScore": 0.6914,
+            "bm25Score": 0,
+            "hybridScore": 0.1633,
+            "rerankRank": 9,
+            "finalSelectionRank": 3,
+            "filterReason": "selected",
+            "wasSelected": true,
+            "outcomeLabel": null
+          },
+          {
+            "questionId": "69208e62-d5f6-4ddb-96b0-17bd4b002174",
+            "questionText": "OpenClaw 是什么？它的定位、设计思路和适用场景是什么？",
+            "vectorScore": 0.6908,
+            "bm25Score": 0,
+            "hybridScore": 0.1572,
+            "rerankRank": 10,
+            "finalSelectionRank": 6,
+            "filterReason": "selected",
+            "wasSelected": true,
+            "outcomeLabel": null
+          },
+          {
+            "questionId": "7e2f7ed9-0acd-43f2-ae83-8d4cafe4909c",
+            "questionText": "什么是 Human-in-the-loop？在 Agent 系统中如何设计人工审批断点？",
+            "vectorScore": 0.6883,
+            "bm25Score": 0,
+            "hybridScore": 0,
+            "rerankRank": null,
+            "finalSelectionRank": null,
+            "filterReason": "filtered-out-by-hybrid-rerank",
+            "wasSelected": false,
+            "outcomeLabel": null
+          },
+          {
+            "questionId": "e6b6403c-cdad-4e4f-8b87-1cbe47a649d6",
+            "questionText": "如果图纸中的关键信息没有被文本明确描述，系统如何依靠视觉特征完成召回？",
+            "vectorScore": 0.6866,
+            "bm25Score": 0,
+            "hybridScore": 0,
+            "rerankRank": null,
+            "finalSelectionRank": null,
+            "filterReason": "filtered-out-by-hybrid-rerank",
+            "wasSelected": false,
+            "outcomeLabel": null
+          },
+          {
+            "questionId": "d4e9507b-9be1-4c18-98a9-7c92e32bc303",
+            "questionText": "如果把大量 Skill 直接放进系统提示词，导致上下文窗口占用过大，应该如何处理？",
+            "vectorScore": 0.6833,
+            "bm25Score": 0,
+            "hybridScore": 0,
+            "rerankRank": null,
+            "finalSelectionRank": null,
+            "filterReason": "filtered-out-by-hybrid-rerank",
+            "wasSelected": false,
+            "outcomeLabel": null
+          },
+          {
+            "questionId": "118268e9-1edf-4718-a9b9-5a42d10e3a1a",
+            "questionText": "你如何定义一个好的 Agent 系统？你认为 Agent 设计里最重要的部分是什么？",
+            "vectorScore": 0.6823,
+            "bm25Score": 0,
+            "hybridScore": 0,
+            "rerankRank": null,
+            "finalSelectionRank": null,
+            "filterReason": "filtered-out-by-hybrid-rerank",
+            "wasSelected": false,
+            "outcomeLabel": null
+          },
+          {
+            "questionId": "69e632ae-b0ec-47eb-9be6-6b4ff5d5b3b4",
+            "questionText": "在 LangChain / Mastra / CrewAI 中接入自定义 Tool 时，schema 和 description 应该怎么写？",
+            "vectorScore": 0.6806,
+            "bm25Score": 0,
+            "hybridScore": 0,
+            "rerankRank": null,
+            "finalSelectionRank": null,
+            "filterReason": "filtered-out-by-hybrid-rerank",
+            "wasSelected": false,
+            "outcomeLabel": null
+          },
+          {
+            "questionId": "dfdd3983-0dc1-4c28-84ad-4b34ce04312b",
+            "questionText": "在开发自己的 Agent 时，你采用了什么研发流程？为什么选择这个流程？",
+            "vectorScore": 0.6788,
+            "bm25Score": 5.4611,
+            "hybridScore": 0.4776,
+            "rerankRank": 2,
+            "finalSelectionRank": 10,
+            "filterReason": "selected",
+            "wasSelected": true,
+            "outcomeLabel": {
+              "roundType": "professional-skills",
+              "topic": "在开发自己的 Agent 时",
+              "mainQuestion": "在开发自己的 Agent 时，你采用了什么研发流程？为什么选择这个流程？",
+              "nodeStatus": "pending",
+              "aggregatedScore": null,
+              "latestClassification": null,
+              "strengths": [],
+              "missingPoints": [],
+              "incorrectPoints": []
+            }
+          },
+          {
+            "questionId": "d9abd31e-610f-4545-863c-2b3dc8c49b06",
+            "questionText": "你如何做模型 fallback 或多供应商切换？",
+            "vectorScore": 0.6787,
+            "bm25Score": 0,
+            "hybridScore": 0,
+            "rerankRank": null,
+            "finalSelectionRank": null,
+            "filterReason": "filtered-out-by-hybrid-rerank",
+            "wasSelected": false,
+            "outcomeLabel": null
+          },
+          {
+            "questionId": "4b1f6149-68d3-46c3-b72a-15b19d70f6f8",
+            "questionText": "如果只允许检索某个时间之后的数据，向量数据库里如何实现标量过滤？",
+            "vectorScore": 0.6784,
+            "bm25Score": 0,
+            "hybridScore": 0,
+            "rerankRank": null,
+            "finalSelectionRank": null,
+            "filterReason": "filtered-out-by-hybrid-rerank",
+            "wasSelected": false,
+            "outcomeLabel": null
+          },
+          {
+            "questionId": "f7dfe43b-809a-4f37-aa0a-22e6f82aaf2d",
+            "questionText": "你了解哪些主流 Agent 设计范式？它们分别适用于什么场景？",
+            "vectorScore": 0.6784,
+            "bm25Score": 0,
+            "hybridScore": 0,
+            "rerankRank": null,
+            "finalSelectionRank": null,
+            "filterReason": "filtered-out-by-hybrid-rerank",
+            "wasSelected": false,
+            "outcomeLabel": {
+              "roundType": "professional-skills",
+              "topic": "你了解哪些主流 Agent 设计范式",
+              "mainQuestion": "你了解哪些主流 Agent 设计范式？它们分别适用于什么场景？",
+              "nodeStatus": "pending",
+              "aggregatedScore": null,
+              "latestClassification": null,
+              "strengths": [],
+              "missingPoints": [],
+              "incorrectPoints": []
+            }
+          },
+          {
+            "questionId": "0aef3a95-c6fc-4190-90a1-99f1b1fb3206",
+            "questionText": "Java 在 Agent 平台中更适合承接哪些后端模块？",
+            "vectorScore": 0.6774,
+            "bm25Score": 0,
+            "hybridScore": 0,
+            "rerankRank": null,
+            "finalSelectionRank": null,
+            "filterReason": "filtered-out-by-hybrid-rerank",
+            "wasSelected": false,
+            "outcomeLabel": {
+              "roundType": "professional-skills",
+              "topic": "Java 在 Agent 平台中更适合承接哪些后端模块",
+              "mainQuestion": "Java 在 Agent 平台中更适合承接哪些后端模块？",
+              "nodeStatus": "pending",
+              "aggregatedScore": null,
+              "latestClassification": null,
+              "strengths": [],
+              "missingPoints": [],
+              "incorrectPoints": []
+            }
+          },
+          {
+            "questionId": "f6e6fbee-82b4-4ec4-a9e0-1557c1960b52",
+            "questionText": "如果 Ragas 的 Context Precision 很低，你会如何优化检索链路？",
+            "vectorScore": 0.6772,
+            "bm25Score": 4.0261,
+            "hybridScore": 0.3414,
+            "rerankRank": 4,
+            "finalSelectionRank": 4,
+            "filterReason": "selected",
+            "wasSelected": true,
+            "outcomeLabel": null
+          },
+          {
+            "questionId": "a8d6a8f8-324e-4116-be32-9792629d2d6e",
+            "questionText": "检索结果中如果存在冲突信息，如何设计自动选择、融合或不确定性提示逻辑？",
+            "vectorScore": 0.6763,
+            "bm25Score": 0,
+            "hybridScore": 0,
+            "rerankRank": null,
+            "finalSelectionRank": null,
+            "filterReason": "filtered-out-by-hybrid-rerank",
+            "wasSelected": false,
+            "outcomeLabel": null
+          }
+        ]
+      }
+    ],
+    "selectedQuestionLabels": [
+      {
+        "traceTimestamp": "2026-05-03T13:55:27.344Z",
+        "roundType": "professional-skills",
+        "skill": "professional-skills-context",
+        "queryText": "Target role: 通用技术岗位\nRound type: professional-skills\nProfessional skills context:\n### 专业技能\n\n- 熟练掌握 TypeScript / C# ，具备 Java 工程开发能力，能够独立完成 AI Agent 系统、工作流引擎与平台服务开发。\n- 深入理解 LLM 应用架构，熟悉 GPT / Claude 等模型能力边界、上下文窗口、模型路由与成本优化。\n- 掌握 ReAct、CoT、Few-shot、Memory、Planning、Tool Use 等 Agent 核心机制，能够设计复杂任务拆解与多轮执行流程。\n- 熟悉 LangChain、Mastra 等框架，具备 Agent 编排、工具接入、状态管理与运行时治理经验。\n- 熟悉 RAG、MCP、Multi-Agent 协作等关键技术，具备知识检索、工具协议、任务委派与跨 Agent 通信设计能力。\n- 具备 AI 平台工程化经验，熟悉微服务、API 网关、限流熔断、日志监控、链路追踪、权限控制与沙箱隔离。\n- 熟悉 Docker / Kubernetes、消息队列、缓存、搜索引擎、关系型数据库与向量数据库，能够支撑 AI 服务的稳定落地。\n- 能够基于数据驱动持续优化模型效果与 Agent 执行质量。",
+        "logContext": "initialization:professional-skills:context",
+        "questionId": "c28022a5-d445-4ec1-9cc9-1af3ff1769e0",
+        "questionText": "用户情绪异常时，Agent 如何在不中断主流程的情况下进行干预？",
+        "vectorScore": 0.7372,
+        "bm25Score": 48.9684,
+        "hybridScore": 0.3889,
+        "rerankRank": 5,
+        "finalSelectionRank": 1,
+        "performance": {
+          "roundType": "professional-skills",
+          "topic": "用户情绪异常时",
+          "mainQuestion": "用户情绪异常时，Agent 如何在不中断主流程的情况下进行干预？",
+          "nodeStatus": "completed",
+          "aggregatedScore": 7.43,
+          "latestClassification": "direct-answer",
+          "strengths": [
+            "回答基本围绕“用户情绪异常时”展开"
+          ],
+          "missingPoints": [
+            "还需要继续补充“用户情绪异常时”的实现细节、关键取舍或真实案例"
+          ],
+          "incorrectPoints": []
+        }
+      },
+      {
+        "traceTimestamp": "2026-05-03T13:55:27.344Z",
+        "roundType": "professional-skills",
+        "skill": "professional-skills-context",
+        "queryText": "Target role: 通用技术岗位\nRound type: professional-skills\nProfessional skills context:\n### 专业技能\n\n- 熟练掌握 TypeScript / C# ，具备 Java 工程开发能力，能够独立完成 AI Agent 系统、工作流引擎与平台服务开发。\n- 深入理解 LLM 应用架构，熟悉 GPT / Claude 等模型能力边界、上下文窗口、模型路由与成本优化。\n- 掌握 ReAct、CoT、Few-shot、Memory、Planning、Tool Use 等 Agent 核心机制，能够设计复杂任务拆解与多轮执行流程。\n- 熟悉 LangChain、Mastra 等框架，具备 Agent 编排、工具接入、状态管理与运行时治理经验。\n- 熟悉 RAG、MCP、Multi-Agent 协作等关键技术，具备知识检索、工具协议、任务委派与跨 Agent 通信设计能力。\n- 具备 AI 平台工程化经验，熟悉微服务、API 网关、限流熔断、日志监控、链路追踪、权限控制与沙箱隔离。\n- 熟悉 Docker / Kubernetes、消息队列、缓存、搜索引擎、关系型数据库与向量数据库，能够支撑 AI 服务的稳定落地。\n- 能够基于数据驱动持续优化模型效果与 Agent 执行质量。",
+        "logContext": "initialization:professional-skills:context",
+        "questionId": "2b6ff69e-9077-4e22-a579-fbeef01f88ee",
+        "questionText": "如果多个 Skill 的 description 很相似，导致 Agent 经常加载错 Skill，应该怎么解决？",
+        "vectorScore": 0.7581,
+        "bm25Score": 26.9795,
+        "hybridScore": 0.3003,
+        "rerankRank": 10,
+        "finalSelectionRank": 2,
+        "performance": {
+          "roundType": "professional-skills",
+          "topic": "如果多个 Skill 的 description 很相似",
+          "mainQuestion": "如果多个 Skill 的 description 很相似，导致 Agent 经常加载错 Skill，应该怎么解决？",
+          "nodeStatus": "awaiting-main-answer",
+          "aggregatedScore": null,
+          "latestClassification": null,
+          "strengths": [],
+          "missingPoints": [],
+          "incorrectPoints": []
+        }
+      },
+      {
+        "traceTimestamp": "2026-05-03T13:55:27.344Z",
+        "roundType": "professional-skills",
+        "skill": "professional-skills-context",
+        "queryText": "Target role: 通用技术岗位\nRound type: professional-skills\nProfessional skills context:\n### 专业技能\n\n- 熟练掌握 TypeScript / C# ，具备 Java 工程开发能力，能够独立完成 AI Agent 系统、工作流引擎与平台服务开发。\n- 深入理解 LLM 应用架构，熟悉 GPT / Claude 等模型能力边界、上下文窗口、模型路由与成本优化。\n- 掌握 ReAct、CoT、Few-shot、Memory、Planning、Tool Use 等 Agent 核心机制，能够设计复杂任务拆解与多轮执行流程。\n- 熟悉 LangChain、Mastra 等框架，具备 Agent 编排、工具接入、状态管理与运行时治理经验。\n- 熟悉 RAG、MCP、Multi-Agent 协作等关键技术，具备知识检索、工具协议、任务委派与跨 Agent 通信设计能力。\n- 具备 AI 平台工程化经验，熟悉微服务、API 网关、限流熔断、日志监控、链路追踪、权限控制与沙箱隔离。\n- 熟悉 Docker / Kubernetes、消息队列、缓存、搜索引擎、关系型数据库与向量数据库，能够支撑 AI 服务的稳定落地。\n- 能够基于数据驱动持续优化模型效果与 Agent 执行质量。",
+        "logContext": "initialization:professional-skills:context",
+        "questionId": "0aef3a95-c6fc-4190-90a1-99f1b1fb3206",
+        "questionText": "Java 在 Agent 平台中更适合承接哪些后端模块？",
+        "vectorScore": 0.7725,
+        "bm25Score": 43.841,
+        "hybridScore": 0.6363,
+        "rerankRank": 2,
+        "finalSelectionRank": 3,
+        "performance": {
+          "roundType": "professional-skills",
+          "topic": "Java 在 Agent 平台中更适合承接哪些后端模块",
+          "mainQuestion": "Java 在 Agent 平台中更适合承接哪些后端模块？",
+          "nodeStatus": "pending",
+          "aggregatedScore": null,
+          "latestClassification": null,
+          "strengths": [],
+          "missingPoints": [],
+          "incorrectPoints": []
+        }
+      },
+      {
+        "traceTimestamp": "2026-05-03T13:55:27.344Z",
+        "roundType": "professional-skills",
+        "skill": "professional-skills-context",
+        "queryText": "Target role: 通用技术岗位\nRound type: professional-skills\nProfessional skills context:\n### 专业技能\n\n- 熟练掌握 TypeScript / C# ，具备 Java 工程开发能力，能够独立完成 AI Agent 系统、工作流引擎与平台服务开发。\n- 深入理解 LLM 应用架构，熟悉 GPT / Claude 等模型能力边界、上下文窗口、模型路由与成本优化。\n- 掌握 ReAct、CoT、Few-shot、Memory、Planning、Tool Use 等 Agent 核心机制，能够设计复杂任务拆解与多轮执行流程。\n- 熟悉 LangChain、Mastra 等框架，具备 Agent 编排、工具接入、状态管理与运行时治理经验。\n- 熟悉 RAG、MCP、Multi-Agent 协作等关键技术，具备知识检索、工具协议、任务委派与跨 Agent 通信设计能力。\n- 具备 AI 平台工程化经验，熟悉微服务、API 网关、限流熔断、日志监控、链路追踪、权限控制与沙箱隔离。\n- 熟悉 Docker / Kubernetes、消息队列、缓存、搜索引擎、关系型数据库与向量数据库，能够支撑 AI 服务的稳定落地。\n- 能够基于数据驱动持续优化模型效果与 Agent 执行质量。",
+        "logContext": "initialization:professional-skills:context",
+        "questionId": "f7dfe43b-809a-4f37-aa0a-22e6f82aaf2d",
+        "questionText": "你了解哪些主流 Agent 设计范式？它们分别适用于什么场景？",
+        "vectorScore": 0.7453,
+        "bm25Score": 37.2518,
+        "hybridScore": 0.3154,
+        "rerankRank": 9,
+        "finalSelectionRank": 4,
+        "performance": {
+          "roundType": "professional-skills",
+          "topic": "你了解哪些主流 Agent 设计范式",
+          "mainQuestion": "你了解哪些主流 Agent 设计范式？它们分别适用于什么场景？",
+          "nodeStatus": "pending",
+          "aggregatedScore": null,
+          "latestClassification": null,
+          "strengths": [],
+          "missingPoints": [],
+          "incorrectPoints": []
+        }
+      },
+      {
+        "traceTimestamp": "2026-05-03T13:55:27.344Z",
+        "roundType": "professional-skills",
+        "skill": "professional-skills-context",
+        "queryText": "Target role: 通用技术岗位\nRound type: professional-skills\nProfessional skills context:\n### 专业技能\n\n- 熟练掌握 TypeScript / C# ，具备 Java 工程开发能力，能够独立完成 AI Agent 系统、工作流引擎与平台服务开发。\n- 深入理解 LLM 应用架构，熟悉 GPT / Claude 等模型能力边界、上下文窗口、模型路由与成本优化。\n- 掌握 ReAct、CoT、Few-shot、Memory、Planning、Tool Use 等 Agent 核心机制，能够设计复杂任务拆解与多轮执行流程。\n- 熟悉 LangChain、Mastra 等框架，具备 Agent 编排、工具接入、状态管理与运行时治理经验。\n- 熟悉 RAG、MCP、Multi-Agent 协作等关键技术，具备知识检索、工具协议、任务委派与跨 Agent 通信设计能力。\n- 具备 AI 平台工程化经验，熟悉微服务、API 网关、限流熔断、日志监控、链路追踪、权限控制与沙箱隔离。\n- 熟悉 Docker / Kubernetes、消息队列、缓存、搜索引擎、关系型数据库与向量数据库，能够支撑 AI 服务的稳定落地。\n- 能够基于数据驱动持续优化模型效果与 Agent 执行质量。",
+        "logContext": "initialization:professional-skills:context",
+        "questionId": "b0dbff04-26ac-4a42-8e8c-7fc6b5f8232d",
+        "questionText": "跨 Agent 的任务委派协议里，至少要包含哪些字段？",
+        "vectorScore": 0.7675,
+        "bm25Score": 37.0049,
+        "hybridScore": 0.5078,
+        "rerankRank": 4,
+        "finalSelectionRank": 5,
+        "performance": {
+          "roundType": "professional-skills",
+          "topic": "跨 Agent 的任务委派协议里",
+          "mainQuestion": "跨 Agent 的任务委派协议里，至少要包含哪些字段？",
+          "nodeStatus": "pending",
+          "aggregatedScore": null,
+          "latestClassification": null,
+          "strengths": [],
+          "missingPoints": [],
+          "incorrectPoints": []
+        }
+      },
+      {
+        "traceTimestamp": "2026-05-03T13:55:27.344Z",
+        "roundType": "professional-skills",
+        "skill": "professional-skills-context",
+        "queryText": "Target role: 通用技术岗位\nRound type: professional-skills\nProfessional skills context:\n### 专业技能\n\n- 熟练掌握 TypeScript / C# ，具备 Java 工程开发能力，能够独立完成 AI Agent 系统、工作流引擎与平台服务开发。\n- 深入理解 LLM 应用架构，熟悉 GPT / Claude 等模型能力边界、上下文窗口、模型路由与成本优化。\n- 掌握 ReAct、CoT、Few-shot、Memory、Planning、Tool Use 等 Agent 核心机制，能够设计复杂任务拆解与多轮执行流程。\n- 熟悉 LangChain、Mastra 等框架，具备 Agent 编排、工具接入、状态管理与运行时治理经验。\n- 熟悉 RAG、MCP、Multi-Agent 协作等关键技术，具备知识检索、工具协议、任务委派与跨 Agent 通信设计能力。\n- 具备 AI 平台工程化经验，熟悉微服务、API 网关、限流熔断、日志监控、链路追踪、权限控制与沙箱隔离。\n- 熟悉 Docker / Kubernetes、消息队列、缓存、搜索引擎、关系型数据库与向量数据库，能够支撑 AI 服务的稳定落地。\n- 能够基于数据驱动持续优化模型效果与 Agent 执行质量。",
+        "logContext": "initialization:professional-skills:context",
+        "questionId": "dfdd3983-0dc1-4c28-84ad-4b34ce04312b",
+        "questionText": "在开发自己的 Agent 时，你采用了什么研发流程？为什么选择这个流程？",
+        "vectorScore": 0.7509,
+        "bm25Score": 34.4073,
+        "hybridScore": 0.3289,
+        "rerankRank": 8,
+        "finalSelectionRank": 6,
+        "performance": {
+          "roundType": "professional-skills",
+          "topic": "在开发自己的 Agent 时",
+          "mainQuestion": "在开发自己的 Agent 时，你采用了什么研发流程？为什么选择这个流程？",
+          "nodeStatus": "pending",
+          "aggregatedScore": null,
+          "latestClassification": null,
+          "strengths": [],
+          "missingPoints": [],
+          "incorrectPoints": []
+        }
+      },
+      {
+        "traceTimestamp": "2026-05-03T13:55:27.344Z",
+        "roundType": "professional-skills",
+        "skill": "professional-skills-context",
+        "queryText": "Target role: 通用技术岗位\nRound type: professional-skills\nProfessional skills context:\n### 专业技能\n\n- 熟练掌握 TypeScript / C# ，具备 Java 工程开发能力，能够独立完成 AI Agent 系统、工作流引擎与平台服务开发。\n- 深入理解 LLM 应用架构，熟悉 GPT / Claude 等模型能力边界、上下文窗口、模型路由与成本优化。\n- 掌握 ReAct、CoT、Few-shot、Memory、Planning、Tool Use 等 Agent 核心机制，能够设计复杂任务拆解与多轮执行流程。\n- 熟悉 LangChain、Mastra 等框架，具备 Agent 编排、工具接入、状态管理与运行时治理经验。\n- 熟悉 RAG、MCP、Multi-Agent 协作等关键技术，具备知识检索、工具协议、任务委派与跨 Agent 通信设计能力。\n- 具备 AI 平台工程化经验，熟悉微服务、API 网关、限流熔断、日志监控、链路追踪、权限控制与沙箱隔离。\n- 熟悉 Docker / Kubernetes、消息队列、缓存、搜索引擎、关系型数据库与向量数据库，能够支撑 AI 服务的稳定落地。\n- 能够基于数据驱动持续优化模型效果与 Agent 执行质量。",
+        "logContext": "initialization:professional-skills:context",
+        "questionId": "c8700b66-02dc-4940-8bb1-f5ead73dc7de",
+        "questionText": "沙箱隔离通常会限制哪些能力？如何做提权审批？",
+        "vectorScore": 0.7454,
+        "bm25Score": 55.996,
+        "hybridScore": 0.5484,
+        "rerankRank": 3,
+        "finalSelectionRank": 7,
+        "performance": null
+      },
+      {
+        "traceTimestamp": "2026-05-03T13:55:27.344Z",
+        "roundType": "professional-skills",
+        "skill": "professional-skills-context",
+        "queryText": "Target role: 通用技术岗位\nRound type: professional-skills\nProfessional skills context:\n### 专业技能\n\n- 熟练掌握 TypeScript / C# ，具备 Java 工程开发能力，能够独立完成 AI Agent 系统、工作流引擎与平台服务开发。\n- 深入理解 LLM 应用架构，熟悉 GPT / Claude 等模型能力边界、上下文窗口、模型路由与成本优化。\n- 掌握 ReAct、CoT、Few-shot、Memory、Planning、Tool Use 等 Agent 核心机制，能够设计复杂任务拆解与多轮执行流程。\n- 熟悉 LangChain、Mastra 等框架，具备 Agent 编排、工具接入、状态管理与运行时治理经验。\n- 熟悉 RAG、MCP、Multi-Agent 协作等关键技术，具备知识检索、工具协议、任务委派与跨 Agent 通信设计能力。\n- 具备 AI 平台工程化经验，熟悉微服务、API 网关、限流熔断、日志监控、链路追踪、权限控制与沙箱隔离。\n- 熟悉 Docker / Kubernetes、消息队列、缓存、搜索引擎、关系型数据库与向量数据库，能够支撑 AI 服务的稳定落地。\n- 能够基于数据驱动持续优化模型效果与 Agent 执行质量。",
+        "logContext": "initialization:professional-skills:context",
+        "questionId": "34f3771a-8a4d-457d-ad2b-7eb6269bb20e",
+        "questionText": "LangChain、Mastra、CrewAI 分别更适合什么场景？",
+        "vectorScore": 0.7501,
+        "bm25Score": 35.7153,
+        "hybridScore": 0.3384,
+        "rerankRank": 7,
+        "finalSelectionRank": 8,
+        "performance": null
+      },
+      {
+        "traceTimestamp": "2026-05-03T13:55:27.344Z",
+        "roundType": "professional-skills",
+        "skill": "professional-skills-context",
+        "queryText": "Target role: 通用技术岗位\nRound type: professional-skills\nProfessional skills context:\n### 专业技能\n\n- 熟练掌握 TypeScript / C# ，具备 Java 工程开发能力，能够独立完成 AI Agent 系统、工作流引擎与平台服务开发。\n- 深入理解 LLM 应用架构，熟悉 GPT / Claude 等模型能力边界、上下文窗口、模型路由与成本优化。\n- 掌握 ReAct、CoT、Few-shot、Memory、Planning、Tool Use 等 Agent 核心机制，能够设计复杂任务拆解与多轮执行流程。\n- 熟悉 LangChain、Mastra 等框架，具备 Agent 编排、工具接入、状态管理与运行时治理经验。\n- 熟悉 RAG、MCP、Multi-Agent 协作等关键技术，具备知识检索、工具协议、任务委派与跨 Agent 通信设计能力。\n- 具备 AI 平台工程化经验，熟悉微服务、API 网关、限流熔断、日志监控、链路追踪、权限控制与沙箱隔离。\n- 熟悉 Docker / Kubernetes、消息队列、缓存、搜索引擎、关系型数据库与向量数据库，能够支撑 AI 服务的稳定落地。\n- 能够基于数据驱动持续优化模型效果与 Agent 执行质量。",
+        "logContext": "initialization:professional-skills:context",
+        "questionId": "941bc94a-8d36-4b2e-84a1-697df26db81f",
+        "questionText": "Multi-Agent 架构的主流实现方案有哪些？",
+        "vectorScore": 0.7548,
+        "bm25Score": 35.895,
+        "hybridScore": 0.3821,
+        "rerankRank": 6,
+        "finalSelectionRank": 9,
+        "performance": null
+      },
+      {
+        "traceTimestamp": "2026-05-03T13:55:27.344Z",
+        "roundType": "professional-skills",
+        "skill": "professional-skills-context",
+        "queryText": "Target role: 通用技术岗位\nRound type: professional-skills\nProfessional skills context:\n### 专业技能\n\n- 熟练掌握 TypeScript / C# ，具备 Java 工程开发能力，能够独立完成 AI Agent 系统、工作流引擎与平台服务开发。\n- 深入理解 LLM 应用架构，熟悉 GPT / Claude 等模型能力边界、上下文窗口、模型路由与成本优化。\n- 掌握 ReAct、CoT、Few-shot、Memory、Planning、Tool Use 等 Agent 核心机制，能够设计复杂任务拆解与多轮执行流程。\n- 熟悉 LangChain、Mastra 等框架，具备 Agent 编排、工具接入、状态管理与运行时治理经验。\n- 熟悉 RAG、MCP、Multi-Agent 协作等关键技术，具备知识检索、工具协议、任务委派与跨 Agent 通信设计能力。\n- 具备 AI 平台工程化经验，熟悉微服务、API 网关、限流熔断、日志监控、链路追踪、权限控制与沙箱隔离。\n- 熟悉 Docker / Kubernetes、消息队列、缓存、搜索引擎、关系型数据库与向量数据库，能够支撑 AI 服务的稳定落地。\n- 能够基于数据驱动持续优化模型效果与 Agent 执行质量。",
+        "logContext": "initialization:professional-skills:context",
+        "questionId": "f22f42dd-48c1-4afe-acdc-d43d89028830",
+        "questionText": "如果让你用 TypeScript 或 C# 设计一个 Agent 平台的模块分层，你会怎么拆？",
+        "vectorScore": 0.7967,
+        "bm25Score": 43.6858,
+        "hybridScore": 0.8475,
+        "rerankRank": 1,
+        "finalSelectionRank": 10,
+        "performance": null
+      },
+      {
+        "traceTimestamp": "2026-05-03T13:55:27.442Z",
+        "roundType": "project-experience",
+        "skill": "project-experience-context",
+        "queryText": "Target role: 通用技术岗位\nRound type: project-experience\nProject experience context:\n### 项目经历\n\n- 无",
+        "logContext": "initialization:project-experience:context",
+        "questionId": "9fd63a1f-2d8b-462b-8ec4-90a2f61037bc",
+        "questionText": "在开发中，你怎么判断一个任务该用 Workflow，还是该交给自主决策的 Agent？",
+        "vectorScore": 0.7086,
+        "bm25Score": 0,
+        "hybridScore": 0.35,
+        "rerankRank": 3,
+        "finalSelectionRank": 1,
+        "performance": {
+          "roundType": "project-experience",
+          "topic": "在开发中",
+          "mainQuestion": "在开发中，你怎么判断一个任务该用 Workflow，还是该交给自主决策的 Agent？",
+          "nodeStatus": "pending",
+          "aggregatedScore": null,
+          "latestClassification": null,
+          "strengths": [],
+          "missingPoints": [],
+          "incorrectPoints": []
+        }
+      },
+      {
+        "traceTimestamp": "2026-05-03T13:55:27.442Z",
+        "roundType": "project-experience",
+        "skill": "project-experience-context",
+        "queryText": "Target role: 通用技术岗位\nRound type: project-experience\nProject experience context:\n### 项目经历\n\n- 无",
+        "logContext": "initialization:project-experience:context",
+        "questionId": "3d09e533-d29a-4116-a2b2-da84cac91d9f",
+        "questionText": "如果要在 Prompt 中设计“知识缺失时拒答”的逻辑，你会怎么做？",
+        "vectorScore": 0.6935,
+        "bm25Score": 0,
+        "hybridScore": 0.1866,
+        "rerankRank": 8,
+        "finalSelectionRank": 2,
+        "performance": {
+          "roundType": "project-experience",
+          "topic": "如果要在 Prompt 中设计“知识缺失时拒答”的逻辑",
+          "mainQuestion": "如果要在 Prompt 中设计“知识缺失时拒答”的逻辑，你会怎么做？",
+          "nodeStatus": "pending",
+          "aggregatedScore": null,
+          "latestClassification": null,
+          "strengths": [],
+          "missingPoints": [],
+          "incorrectPoints": []
+        }
+      },
+      {
+        "traceTimestamp": "2026-05-03T13:55:27.442Z",
+        "roundType": "project-experience",
+        "skill": "project-experience-context",
+        "queryText": "Target role: 通用技术岗位\nRound type: project-experience\nProject experience context:\n### 项目经历\n\n- 无",
+        "logContext": "initialization:project-experience:context",
+        "questionId": "f22f42dd-48c1-4afe-acdc-d43d89028830",
+        "questionText": "如果让你用 TypeScript 或 C# 设计一个 Agent 平台的模块分层，你会怎么拆？",
+        "vectorScore": 0.6914,
+        "bm25Score": 0,
+        "hybridScore": 0.1633,
+        "rerankRank": 9,
+        "finalSelectionRank": 3,
+        "performance": null
+      },
+      {
+        "traceTimestamp": "2026-05-03T13:55:27.442Z",
+        "roundType": "project-experience",
+        "skill": "project-experience-context",
+        "queryText": "Target role: 通用技术岗位\nRound type: project-experience\nProject experience context:\n### 项目经历\n\n- 无",
+        "logContext": "initialization:project-experience:context",
+        "questionId": "f6e6fbee-82b4-4ec4-a9e0-1557c1960b52",
+        "questionText": "如果 Ragas 的 Context Precision 很低，你会如何优化检索链路？",
+        "vectorScore": 0.6772,
+        "bm25Score": 4.0261,
+        "hybridScore": 0.3414,
+        "rerankRank": 4,
+        "finalSelectionRank": 4,
+        "performance": null
+      },
+      {
+        "traceTimestamp": "2026-05-03T13:55:27.442Z",
+        "roundType": "project-experience",
+        "skill": "project-experience-context",
+        "queryText": "Target role: 通用技术岗位\nRound type: project-experience\nProject experience context:\n### 项目经历\n\n- 无",
+        "logContext": "initialization:project-experience:context",
+        "questionId": "399aa449-0e73-411d-b361-1abe05ac4d10",
+        "questionText": "如果 Agent 发现工具调用报错，如何设计 Prompt 或策略引导它利用报错信息重试，而不是直接失败？",
+        "vectorScore": 0.6964,
+        "bm25Score": 0,
+        "hybridScore": 0.2182,
+        "rerankRank": 7,
+        "finalSelectionRank": 5,
+        "performance": null
+      },
+      {
+        "traceTimestamp": "2026-05-03T13:55:27.442Z",
+        "roundType": "project-experience",
+        "skill": "project-experience-context",
+        "queryText": "Target role: 通用技术岗位\nRound type: project-experience\nProject experience context:\n### 项目经历\n\n- 无",
+        "logContext": "initialization:project-experience:context",
+        "questionId": "69208e62-d5f6-4ddb-96b0-17bd4b002174",
+        "questionText": "OpenClaw 是什么？它的定位、设计思路和适用场景是什么？",
+        "vectorScore": 0.6908,
+        "bm25Score": 0,
+        "hybridScore": 0.1572,
+        "rerankRank": 10,
+        "finalSelectionRank": 6,
+        "performance": null
+      },
+      {
+        "traceTimestamp": "2026-05-03T13:55:27.442Z",
+        "roundType": "project-experience",
+        "skill": "project-experience-context",
+        "queryText": "Target role: 通用技术岗位\nRound type: project-experience\nProject experience context:\n### 项目经历\n\n- 无",
+        "logContext": "initialization:project-experience:context",
+        "questionId": "7ae0d7c3-da6f-4dfc-a5b1-120f1408a6c9",
+        "questionText": "如果 Agent 总是重复执行同一个错误的工具调用，你会从哪个环节开始修复？",
+        "vectorScore": 0.6986,
+        "bm25Score": 0,
+        "hybridScore": 0.2413,
+        "rerankRank": 6,
+        "finalSelectionRank": 7,
+        "performance": null
+      },
+      {
+        "traceTimestamp": "2026-05-03T13:55:27.442Z",
+        "roundType": "project-experience",
+        "skill": "project-experience-context",
+        "queryText": "Target role: 通用技术岗位\nRound type: project-experience\nProject experience context:\n### 项目经历\n\n- 无",
+        "logContext": "initialization:project-experience:context",
+        "questionId": "b0dbff04-26ac-4a42-8e8c-7fc6b5f8232d",
+        "questionText": "跨 Agent 的任务委派协议里，至少要包含哪些字段？",
+        "vectorScore": 0.7271,
+        "bm25Score": 0,
+        "hybridScore": 0.55,
+        "rerankRank": 1,
+        "finalSelectionRank": 8,
+        "performance": {
+          "roundType": "professional-skills",
+          "topic": "跨 Agent 的任务委派协议里",
+          "mainQuestion": "跨 Agent 的任务委派协议里，至少要包含哪些字段？",
+          "nodeStatus": "pending",
+          "aggregatedScore": null,
+          "latestClassification": null,
+          "strengths": [],
+          "missingPoints": [],
+          "incorrectPoints": []
+        }
+      },
+      {
+        "traceTimestamp": "2026-05-03T13:55:27.442Z",
+        "roundType": "project-experience",
+        "skill": "project-experience-context",
+        "queryText": "Target role: 通用技术岗位\nRound type: project-experience\nProject experience context:\n### 项目经历\n\n- 无",
+        "logContext": "initialization:project-experience:context",
+        "questionId": "4b27cbf3-c7be-496a-b790-3724f2a49aab",
+        "questionText": "Skill 内部是否可以封装 workflow 或 SOP？怎么设计边界？",
+        "vectorScore": 0.7076,
+        "bm25Score": 0,
+        "hybridScore": 0.3394,
+        "rerankRank": 5,
+        "finalSelectionRank": 9,
+        "performance": null
+      },
+      {
+        "traceTimestamp": "2026-05-03T13:55:27.442Z",
+        "roundType": "project-experience",
+        "skill": "project-experience-context",
+        "queryText": "Target role: 通用技术岗位\nRound type: project-experience\nProject experience context:\n### 项目经历\n\n- 无",
+        "logContext": "initialization:project-experience:context",
+        "questionId": "dfdd3983-0dc1-4c28-84ad-4b34ce04312b",
+        "questionText": "在开发自己的 Agent 时，你采用了什么研发流程？为什么选择这个流程？",
+        "vectorScore": 0.6788,
+        "bm25Score": 5.4611,
+        "hybridScore": 0.4776,
+        "rerankRank": 2,
+        "finalSelectionRank": 10,
+        "performance": {
+          "roundType": "professional-skills",
+          "topic": "在开发自己的 Agent 时",
+          "mainQuestion": "在开发自己的 Agent 时，你采用了什么研发流程？为什么选择这个流程？",
+          "nodeStatus": "pending",
+          "aggregatedScore": null,
+          "latestClassification": null,
+          "strengths": [],
+          "missingPoints": [],
+          "incorrectPoints": []
+        }
+      }
+    ]
+  },
+  "candidateImprovement": {
+    "totalQuestionCount": 8,
+    "completedQuestionCount": 1,
+    "finalScore": 7.43,
+    "rounds": [
+      {
+        "id": "professional-skills-round-1777816527447-9qwnjq",
+        "type": "professional-skills",
+        "status": "in-progress",
+        "plannedNodeCount": 6,
+        "completedNodeCount": 1,
+        "activeNodeId": "topic-node-1777816527446-c4iixw",
+        "nodes": [
+          {
+            "id": "topic-node-1777816527446-e25tgo",
+            "topic": "用户情绪异常时",
+            "source": "knowledge-base",
+            "mainQuestion": "用户情绪异常时，Agent 如何在不中断主流程的情况下进行干预？",
+            "status": "completed",
+            "aggregatedScore": 7.43,
+            "followUpCount": 3,
+            "maxFollowUps": 3,
+            "earlyCompletionReason": "回答分析降级为规则兜底后，当前节点已满足推进条件。",
+            "summary": {
+              "strengths": [
+                "回答基本围绕“用户情绪异常时”展开"
+              ],
+              "weaknesses": [],
+              "missingPoints": [
+                "还需要继续补充“用户情绪异常时”的实现细节、关键取舍或真实案例"
+              ],
+              "improvementAdvice": [
+                "补充说明：还需要继续补充“用户情绪异常时”的实现细节、关键取舍或真实案例"
+              ],
+              "evidence": [
+                "基于我实际开发的智能客服Agent系统，我来详细说明情绪异常处理的系统设计：\n\n**项目背景**：为金融客户开发的多模态智能客服Agent，处理日均50万+用户交互\n\n**架构设计**：\n```\n┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐\n│   用户交互层    │  ",
+                "**线上高压场景实战经验**：\n\n**真实失败案例**：\n\n1. **双十一大促崩溃事件**：\n   - **场景**：瞬时流量达到平时的15倍，情绪检测服务CPU使用率飙升至95%\n   - **失败表现**：情绪检测延迟从200ms激增至2.3s，导致大量用户超时\n   - **影响**：3.2%的用户交互失败，客服投诉率上升40%\n\n2. **模型误判"
+              ]
+            },
+            "answerAttempts": [
+              {
+                "id": "answer-attempt-1777816575756-cc6phg",
+                "targetType": "follow-up",
+                "targetId": "follow-up-2-1777816527446-i6jy0e",
+                "classification": "direct-answer",
+                "createdAt": "2026-05-03T13:56:15.756Z",
+                "userMessage": "基于我实际开发的智能客服Agent系统，我来详细说明情绪异常处理的系统设计：\n\n**项目背景**：为金融客户开发的多模态智能客服Agent，处理日均50万+用户交互\n\n**架构设计**：\n```\n┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐\n│   用户交互层    │    │   情绪检测层    │    │   干预执行层    │\n│  - WebSocket    │───▶│  - BERT模型    │───▶│  - 策略引擎     │\n│  - 语音识别     │    │  - 规则引擎     │    │  - 模板管理     │\n│  - 文本分析     │    │  - 上下文分析   │    │  - 工具调用     │\n└─────────────────┘    └─────────────────┘    └─────────────────┘\n         │                       │                       │\n         ▼                       ▼                       ▼\n┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐\n│   状态管理层    │    │   决策引擎层    │    │   监控告警层    │\n│  - 用户状态机   │    │  - 路由算法     │    │  - 性能监控     │\n│  - 会话上下文   │    │  - 权重计算     │    │  - 异常告警     │\n│  - 历史记录     │    │  - 风险评估     │    │  - 效果分析     │\n└─────────────────┘    └─────────────────┘    └─────────────────┘\n```\n\n**关键架构决策**：\n\n1. **分层检测机制**：\n   - **L1快速检测**：关键词匹配（响应时间<50ms）\n   - **L2深度分析**：BERT模型+上下文分析（响应时间<200ms）\n   - **L3专家系统**：领域知识库+历史模式匹配（响应时间<500ms）\n\n2. **异步处理架构**：\n   - 主线程保持实时响应，情绪检测在独立线程执行\n   - 使用Redis Pub/Sub实现事件驱动架构\n   - 情绪事件优先级队列：P0(紧急) > P1(重要) > P2(普通)\n\n3. **状态机设计**：\n   ```typescript\n   enum EmotionalState {\n     NORMAL = 'normal',\n     ALERT = 'alert',           // 检测到异常\n     INTERVENTING = 'intervening', // 执行干预\n     RECOVERING = 'recovering',   // 恢复期\n     ESCALATED = 'escalated'      // 需要人工介入\n   }\n   ```\n\n**异常路径处理**：\n\n1. **误判路径**：\n   - 用户可明确标记\"这不是情绪问题\"\n   - 系统记录误判案例，定期优化模型\n   - 提供\"撤销干预\"功能\n\n2. **性能异常路径**：\n   - 检测服务超时：自动降级到关键词模式\n   - 资源不足：启用简化版检测算法\n   - 服务不可用：标记为\"待处理\"，稍后重试\n\n3. **业务异常路径**：\n   - 涉及敏感话题：立即转人工\n   - 检测到欺诈风险：触发安全流程\n   - 用户明确要求人工：优雅降级\n\n**验证手段**：\n\n1. **单元测试**：\n   - 模拟各种情绪状态输入\n   - 测试状态转换逻辑\n   - 验证干预策略匹配\n\n2. **集成测试**：\n   - 端到端情绪检测流程\n   - 异常情况处理能力\n   - 性能压力测试（10万QPS）\n\n3. **A/B测试**：\n   - 实验组：启用情绪干预\n   - 对照组：传统处理方式\n   - 关键指标：用户满意度、解决率、响应时间\n\n4. **线上监控**：\n   - 实时监控情绪检测准确率\n   - 干预成功率统计\n   - 用户反馈收集分析\n\n**实际效果**：\n- 用户满意度提升23%\n- 问题解决率提升18%\n- 人工介入率降低35%\n- 系统响应时间控制在300ms以内\n- 情绪检测准确率达到87%\n\n**关键经验**：\n1. 情绪检测需要平衡准确性和实时性\n2. 干预策略必须个性化，不能一刀切\n3. 异常处理机制比核心功能更重要\n4. 持续优化需要大量真实数据支撑",
+                "score": {
+                  "relevance": 7.8,
+                  "accuracy": 7.4,
+                  "depth": 7.2,
+                  "specificity": 7,
+                  "clarity": 7.8,
+                  "weightedTotal": 7.43
+                },
+                "strengths": [
+                  "回答基本围绕“用户情绪异常时”展开"
+                ],
+                "missingPoints": [],
+                "incorrectPoints": [],
+                "isDetour": false
+              },
+              {
+                "id": "answer-attempt-1777816595680-amb3lp",
+                "targetType": "follow-up",
+                "targetId": "follow-up-3-1777816527446-pm2pm3",
+                "classification": "direct-answer",
+                "createdAt": "2026-05-03T13:56:35.680Z",
+                "userMessage": "**线上高压场景实战经验**：\n\n**真实失败案例**：\n\n1. **双十一大促崩溃事件**：\n   - **场景**：瞬时流量达到平时的15倍，情绪检测服务CPU使用率飙升至95%\n   - **失败表现**：情绪检测延迟从200ms激增至2.3s，导致大量用户超时\n   - **影响**：3.2%的用户交互失败，客服投诉率上升40%\n\n2. **模型误判事件**：\n   - **场景**：用户讨论\"股票大跌\"，被误判为\"情绪异常\"\n   - **失败表现**：系统频繁插入安抚语句，干扰正常业务流程\n   - **影响**：用户满意度下降18%，业务处理效率降低25%\n\n**监控指标与阈值**：\n\n```yaml\n# 核心监控指标\nemotion_detection:\n  latency_p95: 200ms          # 超过则触发告警\n  accuracy: 85%              # 低于此值需要模型优化\n  error_rate: 0.5%           # 超过则自动降级\n  cpu_usage: 70%             # 超过则扩容\n  memory_usage: 80%          # 超过则重启服务\n\nintervention_effectiveness:\n  success_rate: 75%          # 干预成功率\n  user_satisfaction: 4.2/5   # 用户满意度\n  escalation_rate: 5%        # 人工介入率\n```\n\n**降级与回滚方案**：\n\n1. **三级降级策略**：\n   - **L1降级**：关闭BERT模型，仅使用关键词检测（响应时间<50ms）\n   - **L2降级**：关闭情绪检测，仅记录日志（响应时间<10ms）\n   - **L3降级**：完全关闭情绪功能，专注核心业务\n\n2. **自动回滚触发条件**：\n   ```typescript\n   if (errorRate > 1% || latency > 500ms || cpu > 85%) {\n     triggerRollback();\n   }\n   ```\n\n3. **手动回滚流程**：\n   - 一键切换到基础模式\n   - 保留最近1小时数据用于分析\n   - 通知运维团队准备扩容\n\n**为什么不选其他方案**：\n\n1. **为什么不选纯规则引擎**：\n   - 维护成本：需要人工更新数千条规则\n   - 准确性：规则覆盖率仅65%，误判率高\n   - 扩展性：难以适应新场景和用户表达方式\n\n2. **为什么不选纯深度学习**：\n   - 性能：单次推理需要300-500ms，无法满足实时要求\n   - 成本：GPU资源消耗是规则的10倍\n   - 可解释性：难以调试和优化\n\n3. **为什么不选第三方服务**：\n   - 延迟：API调用额外增加100-200ms\n   - 可靠性：第三方服务可用性仅99.5%\n   - 成本：按调用量计费，大促期间成本激增\n\n**生产环境优化结果**：\n\n- **双十一大促**：通过自动降级机制，系统稳定性达到99.98%\n- **日常运行**：情绪检测准确率提升至89%，响应时间稳定在180ms\n- **成本控制**：资源使用效率提升40%，年节省成本约200万\n\n**关键经验**：\n1. 在高压场景下，稳定性永远优先于功能完整性\n2. 降级机制必须自动化，不能依赖人工判断\n3. 监控指标需要设置合理的阈值，避免告警疲劳\n4. 定期进行故障演练，确保降级流程有效",
+                "score": {
+                  "relevance": 7.8,
+                  "accuracy": 7.4,
+                  "depth": 7.2,
+                  "specificity": 7,
+                  "clarity": 7.8,
+                  "weightedTotal": 7.43
+                },
+                "strengths": [
+                  "回答基本围绕“用户情绪异常时”展开"
+                ],
+                "missingPoints": [],
+                "incorrectPoints": [],
+                "isDetour": false
+              }
+            ]
+          },
+          {
+            "id": "topic-node-1777816527446-c4iixw",
+            "topic": "如果多个 Skill 的 description 很相似",
+            "source": "knowledge-base",
+            "mainQuestion": "如果多个 Skill 的 description 很相似，导致 Agent 经常加载错 Skill，应该怎么解决？",
+            "status": "awaiting-main-answer",
+            "aggregatedScore": null,
+            "followUpCount": 0,
+            "maxFollowUps": 3,
+            "earlyCompletionReason": null,
+            "summary": null,
+            "answerAttempts": []
+          },
+          {
+            "id": "topic-node-1777816527446-dtn4vd",
+            "topic": "Java 在 Agent 平台中更适合承接哪些后端模块",
+            "source": "knowledge-base",
+            "mainQuestion": "Java 在 Agent 平台中更适合承接哪些后端模块？",
+            "status": "pending",
+            "aggregatedScore": null,
+            "followUpCount": 0,
+            "maxFollowUps": 3,
+            "earlyCompletionReason": null,
+            "summary": null,
+            "answerAttempts": []
+          },
+          {
+            "id": "topic-node-1777816527446-xnyq4l",
+            "topic": "你了解哪些主流 Agent 设计范式",
+            "source": "knowledge-base",
+            "mainQuestion": "你了解哪些主流 Agent 设计范式？它们分别适用于什么场景？",
+            "status": "pending",
+            "aggregatedScore": null,
+            "followUpCount": 0,
+            "maxFollowUps": 3,
+            "earlyCompletionReason": null,
+            "summary": null,
+            "answerAttempts": []
+          },
+          {
+            "id": "topic-node-1777816527447-lcab7k",
+            "topic": "跨 Agent 的任务委派协议里",
+            "source": "knowledge-base",
+            "mainQuestion": "跨 Agent 的任务委派协议里，至少要包含哪些字段？",
+            "status": "pending",
+            "aggregatedScore": null,
+            "followUpCount": 0,
+            "maxFollowUps": 3,
+            "earlyCompletionReason": null,
+            "summary": null,
+            "answerAttempts": []
+          },
+          {
+            "id": "topic-node-1777816527447-g83l4p",
+            "topic": "在开发自己的 Agent 时",
+            "source": "knowledge-base",
+            "mainQuestion": "在开发自己的 Agent 时，你采用了什么研发流程？为什么选择这个流程？",
+            "status": "pending",
+            "aggregatedScore": null,
+            "followUpCount": 0,
+            "maxFollowUps": 3,
+            "earlyCompletionReason": null,
+            "summary": null,
+            "answerAttempts": []
+          }
+        ]
+      },
+      {
+        "id": "project-experience-round-1777816527447-50duc4",
+        "type": "project-experience",
+        "status": "pending",
+        "plannedNodeCount": 2,
+        "completedNodeCount": 0,
+        "activeNodeId": "topic-node-1777816527447-27v0sr",
+        "nodes": [
+          {
+            "id": "topic-node-1777816527447-27v0sr",
+            "topic": "在开发中",
+            "source": "knowledge-base",
+            "mainQuestion": "在开发中，你怎么判断一个任务该用 Workflow，还是该交给自主决策的 Agent？",
+            "status": "pending",
+            "aggregatedScore": null,
+            "followUpCount": 0,
+            "maxFollowUps": 2,
+            "earlyCompletionReason": null,
+            "summary": null,
+            "answerAttempts": []
+          },
+          {
+            "id": "topic-node-1777816527447-8l4cv3",
+            "topic": "如果要在 Prompt 中设计“知识缺失时拒答”的逻辑",
+            "source": "knowledge-base",
+            "mainQuestion": "如果要在 Prompt 中设计“知识缺失时拒答”的逻辑，你会怎么做？",
+            "status": "pending",
+            "aggregatedScore": null,
+            "followUpCount": 0,
+            "maxFollowUps": 2,
+            "earlyCompletionReason": null,
+            "summary": null,
+            "answerAttempts": []
+          }
+        ]
+      }
+    ],
+    "strongSignals": [
+      {
+        "theme": "回答基本围绕“用户情绪异常时”展开",
+        "frequency": 1,
+        "affectedTopics": [
+          "用户情绪异常时"
+        ],
+        "exampleQuestions": [
+          "用户情绪异常时，Agent 如何在不中断主流程的情况下进行干预？"
+        ],
+        "evidence": [
+          "基于我实际开发的智能客服Agent系统，我来详细说明情绪异常处理的系统设计：\n\n**项目背景**：为金融客户开发的多模态智能客服Agent，处理日均50万+用户交互\n\n**架构设计**：\n```\n┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐\n│   用户交互层    │  ",
+          "**线上高压场景实战经验**：\n\n**真实失败案例**：\n\n1. **双十一大促崩溃事件**：\n   - **场景**：瞬时流量达到平时的15倍，情绪检测服务CPU使用率飙升至95%\n   - **失败表现**：情绪检测延迟从200ms激增至2.3s，导致大量用户超时\n   - **影响**：3.2%的用户交互失败，客服投诉率上升40%\n\n2. **模型误判"
+        ],
+        "averageQuestionScore": 7.43
+      }
+    ],
+    "knowledgeWeaknesses": [
+      {
+        "theme": "还需要继续补充“用户情绪异常时”的实现细节、关键取舍或真实案例",
+        "frequency": 1,
+        "affectedTopics": [
+          "用户情绪异常时"
+        ],
+        "exampleQuestions": [
+          "用户情绪异常时，Agent 如何在不中断主流程的情况下进行干预？"
+        ],
+        "evidence": [
+          "基于我实际开发的智能客服Agent系统，我来详细说明情绪异常处理的系统设计：\n\n**项目背景**：为金融客户开发的多模态智能客服Agent，处理日均50万+用户交互\n\n**架构设计**：\n```\n┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐\n│   用户交互层    │  ",
+          "**线上高压场景实战经验**：\n\n**真实失败案例**：\n\n1. **双十一大促崩溃事件**：\n   - **场景**：瞬时流量达到平时的15倍，情绪检测服务CPU使用率飙升至95%\n   - **失败表现**：情绪检测延迟从200ms激增至2.3s，导致大量用户超时\n   - **影响**：3.2%的用户交互失败，客服投诉率上升40%\n\n2. **模型误判"
+        ],
+        "averageQuestionScore": 7.43,
+        "kind": "missing-knowledge",
+        "priority": "medium"
+      }
+    ],
+    "questionReviews": [
+      {
+        "roundType": "professional-skills",
+        "topic": "用户情绪异常时",
+        "question": "用户情绪异常时，Agent 如何在不中断主流程的情况下进行干预？",
+        "score": 7.43,
+        "strengths": [
+          "回答基本围绕“用户情绪异常时”展开"
+        ],
+        "missingPoints": [
+          "还需要继续补充“用户情绪异常时”的实现细节、关键取舍或真实案例"
+        ],
+        "incorrectPoints": [],
+        "improvementAdvice": [
+          "补充说明：还需要继续补充“用户情绪异常时”的实现细节、关键取舍或真实案例"
+        ],
+        "evidence": [
+          "基于我实际开发的智能客服Agent系统，我来详细说明情绪异常处理的系统设计：\n\n**项目背景**：为金融客户开发的多模态智能客服Agent，处理日均50万+用户交互\n\n**架构设计**：\n```\n┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐\n│   用户交互层    │  ",
+          "**线上高压场景实战经验**：\n\n**真实失败案例**：\n\n1. **双十一大促崩溃事件**：\n   - **场景**：瞬时流量达到平时的15倍，情绪检测服务CPU使用率飙升至95%\n   - **失败表现**：情绪检测延迟从200ms激增至2.3s，导致大量用户超时\n   - **影响**：3.2%的用户交互失败，客服投诉率上升40%\n\n2. **模型误判"
+        ]
+      },
+      {
+        "roundType": "professional-skills",
+        "topic": "如果多个 Skill 的 description 很相似",
+        "question": "如果多个 Skill 的 description 很相似，导致 Agent 经常加载错 Skill，应该怎么解决？",
+        "score": null,
+        "strengths": [],
+        "missingPoints": [],
+        "incorrectPoints": [],
+        "improvementAdvice": [],
+        "evidence": []
+      },
+      {
+        "roundType": "professional-skills",
+        "topic": "Java 在 Agent 平台中更适合承接哪些后端模块",
+        "question": "Java 在 Agent 平台中更适合承接哪些后端模块？",
+        "score": null,
+        "strengths": [],
+        "missingPoints": [],
+        "incorrectPoints": [],
+        "improvementAdvice": [],
+        "evidence": []
+      },
+      {
+        "roundType": "professional-skills",
+        "topic": "你了解哪些主流 Agent 设计范式",
+        "question": "你了解哪些主流 Agent 设计范式？它们分别适用于什么场景？",
+        "score": null,
+        "strengths": [],
+        "missingPoints": [],
+        "incorrectPoints": [],
+        "improvementAdvice": [],
+        "evidence": []
+      },
+      {
+        "roundType": "professional-skills",
+        "topic": "跨 Agent 的任务委派协议里",
+        "question": "跨 Agent 的任务委派协议里，至少要包含哪些字段？",
+        "score": null,
+        "strengths": [],
+        "missingPoints": [],
+        "incorrectPoints": [],
+        "improvementAdvice": [],
+        "evidence": []
+      },
+      {
+        "roundType": "professional-skills",
+        "topic": "在开发自己的 Agent 时",
+        "question": "在开发自己的 Agent 时，你采用了什么研发流程？为什么选择这个流程？",
+        "score": null,
+        "strengths": [],
+        "missingPoints": [],
+        "incorrectPoints": [],
+        "improvementAdvice": [],
+        "evidence": []
+      },
+      {
+        "roundType": "project-experience",
+        "topic": "在开发中",
+        "question": "在开发中，你怎么判断一个任务该用 Workflow，还是该交给自主决策的 Agent？",
+        "score": null,
+        "strengths": [],
+        "missingPoints": [],
+        "incorrectPoints": [],
+        "improvementAdvice": [],
+        "evidence": []
+      },
+      {
+        "roundType": "project-experience",
+        "topic": "如果要在 Prompt 中设计“知识缺失时拒答”的逻辑",
+        "question": "如果要在 Prompt 中设计“知识缺失时拒答”的逻辑，你会怎么做？",
+        "score": null,
+        "strengths": [],
+        "missingPoints": [],
+        "incorrectPoints": [],
+        "improvementAdvice": [],
+        "evidence": []
+      }
+    ],
+    "report": {
+      "finalReport": null,
+      "lastCorrectionSummary": "回答纠正\n- 漏答点：还需要继续补充“用户情绪异常时”的实现细节、关键取舍或真实案例"
+    },
+    "feedback": {
+      "status": "pending",
+      "submittedAt": null,
+      "overallExperienceScore": null,
+      "questionFitScore": null,
+      "difficultyScore": null,
+      "comment": null
+    }
+  }
+}

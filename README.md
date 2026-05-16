@@ -14,6 +14,28 @@ Open [http://localhost:4111](http://localhost:4111) in your browser to access [M
 
 You can start editing files inside the `src/mastra` directory. The development server will automatically reload whenever you make changes.
 
+## Run The Full Project
+
+There are two ways to start the full stack:
+
+```powershell
+docker compose up --build
+```
+
+This uses the root `docker-compose.yml` to start Mastra, the BFF, and the frontend together.
+
+For local Windows development without Docker, use the root startup script:
+
+```powershell
+npm run start:local
+```
+
+This launches three PowerShell windows for:
+
+- Mastra: `http://localhost:4111`
+- BFF: `http://localhost:3000`
+- Frontend: default `http://localhost:5173` (Vite may choose the next available port if 5173 is already in use)
+
 ## Learn more
 
 To learn more about Mastra, visit our [documentation](https://mastra.ai/docs/). Your bootstrapped project includes example code for [agents](https://mastra.ai/docs/agents/overview), [tools](https://mastra.ai/docs/agents/using-tools), [workflows](https://mastra.ai/docs/workflows/overview), [scorers](https://mastra.ai/docs/evals/overview), and [observability](https://mastra.ai/docs/observability/overview).

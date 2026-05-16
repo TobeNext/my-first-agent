@@ -1,0 +1,461 @@
+{
+  "schemaVersion": 2,
+  "createdAt": "2026-05-04T05:01:17.439Z",
+  "updatedAt": "2026-05-04T05:03:39.968Z",
+  "threadId": "c2319d6d-2272-45ea-939d-1fb14249f2f0",
+  "session": {
+    "targetRole": "通用技术岗位",
+    "responseLanguage": "zh",
+    "phase": "completed",
+    "finalReportReady": true,
+    "setup": {
+      "selectedDirection": "通用技术岗位",
+      "directionSource": "derived",
+      "settings": {
+        "reviewIncorrectOrMissingPoints": true,
+        "skipProfessionalSkillsRound": false,
+        "skipProjectExperienceRound": true,
+        "enableFlowTestMode": false,
+        "professionalQuestionMode": "per-skill-default",
+        "professionalQuestionCount": 8,
+        "projectQuestionCount": 0
+      }
+    },
+    "resumeContext": {
+      "professionalSkills": "- 熟练掌握 TypeScript / C# ，具备 Java 工程开发能力，能够独立完成 AI Agent 系统、工作流引擎与平台服务开发。\n- 深入理解 LLM 应用架构，熟悉 GPT / Claude 等模型能力边界、上下文窗口、模型路由与成本优化。\n- 掌握 ReAct、CoT、Few-shot、Memory、Planning、Tool Use 等 Agent 核心机制，能够设计复杂任务拆解与多轮执行流程。\n- 熟悉 LangChain、Mastra 等框架，具备 Agent 编排、工具接入、状态管理与运行时治理经验。\n- 熟悉 RAG、MCP、Multi-Agent 协作等关键技术，具备知识检索、工具协议、任务委派与跨 Agent 通信设计能力。\n- 具备 AI 平台工程化经验，熟悉微服务、API 网关、限流熔断、日志监控、链路追踪、权限控制与沙箱隔离。\n- 熟悉 Docker / Kubernetes、消息队列、缓存、搜索引擎、关系型数据库与向量数据库，能够支撑 AI 服务的稳定落地。\n- 能够基于数据驱动持续优化模型效果与 Agent 执行质量。",
+      "projectExperience": "- 无\n\nJob Description Markdown:",
+      "resumeParsed": true
+    }
+  },
+  "selectorTraining": {
+    "traces": [],
+    "recallEvents": [],
+    "selectedQuestionLabels": []
+  },
+  "candidateImprovement": {
+    "totalQuestionCount": 8,
+    "completedQuestionCount": 8,
+    "finalScore": null,
+    "rounds": [
+      {
+        "id": "professional-skills-round-1777870613962-zq28pj",
+        "type": "professional-skills",
+        "status": "completed",
+        "plannedNodeCount": 8,
+        "completedNodeCount": 8,
+        "activeNodeId": null,
+        "nodes": [
+          {
+            "id": "topic-node-1777870613962-qt9q7p",
+            "topic": "在开发自己的 Agent 时",
+            "source": "knowledge-base",
+            "mainQuestion": "在开发自己的 Agent 时，你采用了什么研发流程？为什么选择这个流程？",
+            "status": "completed",
+            "aggregatedScore": null,
+            "followUpCount": 0,
+            "maxFollowUps": 3,
+            "earlyCompletionReason": null,
+            "summary": {
+              "strengths": [],
+              "weaknesses": [],
+              "missingPoints": [],
+              "improvementAdvice": [],
+              "evidence": [
+                "跳过这一题，下一题"
+              ]
+            },
+            "answerAttempts": [
+              {
+                "id": "answer-attempt-1777870869948-bg0wf0",
+                "targetType": "main-question",
+                "targetId": "topic-node-1777870613962-qt9q7p",
+                "classification": "skip-request",
+                "createdAt": "2026-05-04T05:01:09.948Z",
+                "userMessage": "跳过这一题，下一题",
+                "score": null,
+                "strengths": [],
+                "missingPoints": [],
+                "incorrectPoints": [],
+                "isDetour": false
+              }
+            ]
+          },
+          {
+            "id": "topic-node-1777870613962-9rcxam",
+            "topic": "如果多个 Skill 的 description 很相似",
+            "source": "knowledge-base",
+            "mainQuestion": "如果多个 Skill 的 description 很相似，导致 Agent 经常加载错 Skill，应该怎么解决？",
+            "status": "completed",
+            "aggregatedScore": null,
+            "followUpCount": 0,
+            "maxFollowUps": 3,
+            "earlyCompletionReason": null,
+            "summary": {
+              "strengths": [],
+              "weaknesses": [],
+              "missingPoints": [],
+              "improvementAdvice": [],
+              "evidence": [
+                "跳过这一题，下一题"
+              ]
+            },
+            "answerAttempts": [
+              {
+                "id": "answer-attempt-1777870897075-vitk3x",
+                "targetType": "main-question",
+                "targetId": "topic-node-1777870613962-9rcxam",
+                "classification": "skip-request",
+                "createdAt": "2026-05-04T05:01:37.075Z",
+                "userMessage": "跳过这一题，下一题",
+                "score": null,
+                "strengths": [],
+                "missingPoints": [],
+                "incorrectPoints": [],
+                "isDetour": false
+              }
+            ]
+          },
+          {
+            "id": "topic-node-1777870613962-9jjjyh",
+            "topic": "Multi-Agent 架构的主流实现方案有哪些",
+            "source": "knowledge-base",
+            "mainQuestion": "Multi-Agent 架构的主流实现方案有哪些？",
+            "status": "completed",
+            "aggregatedScore": null,
+            "followUpCount": 0,
+            "maxFollowUps": 3,
+            "earlyCompletionReason": null,
+            "summary": {
+              "strengths": [],
+              "weaknesses": [],
+              "missingPoints": [],
+              "improvementAdvice": [],
+              "evidence": [
+                "跳过这一题，下一题"
+              ]
+            },
+            "answerAttempts": [
+              {
+                "id": "answer-attempt-1777870907134-agl9rb",
+                "targetType": "main-question",
+                "targetId": "topic-node-1777870613962-9jjjyh",
+                "classification": "skip-request",
+                "createdAt": "2026-05-04T05:01:47.134Z",
+                "userMessage": "跳过这一题，下一题",
+                "score": null,
+                "strengths": [],
+                "missingPoints": [],
+                "incorrectPoints": [],
+                "isDetour": false
+              }
+            ]
+          },
+          {
+            "id": "topic-node-1777870613962-yzndn2",
+            "topic": "在开发中",
+            "source": "knowledge-base",
+            "mainQuestion": "在开发中，你怎么判断一个任务该用 Workflow，还是该交给自主决策的 Agent？",
+            "status": "completed",
+            "aggregatedScore": null,
+            "followUpCount": 0,
+            "maxFollowUps": 3,
+            "earlyCompletionReason": null,
+            "summary": {
+              "strengths": [],
+              "weaknesses": [],
+              "missingPoints": [],
+              "improvementAdvice": [],
+              "evidence": [
+                "跳过这一题，下一题"
+              ]
+            },
+            "answerAttempts": [
+              {
+                "id": "answer-attempt-1777870912125-cp47mz",
+                "targetType": "main-question",
+                "targetId": "topic-node-1777870613962-yzndn2",
+                "classification": "skip-request",
+                "createdAt": "2026-05-04T05:01:52.125Z",
+                "userMessage": "跳过这一题，下一题",
+                "score": null,
+                "strengths": [],
+                "missingPoints": [],
+                "incorrectPoints": [],
+                "isDetour": false
+              }
+            ]
+          },
+          {
+            "id": "topic-node-1777870613962-g9ac17",
+            "topic": "Java 在 Agent 平台中更适合承接哪些后端模块",
+            "source": "knowledge-base",
+            "mainQuestion": "Java 在 Agent 平台中更适合承接哪些后端模块？",
+            "status": "completed",
+            "aggregatedScore": null,
+            "followUpCount": 0,
+            "maxFollowUps": 3,
+            "earlyCompletionReason": null,
+            "summary": {
+              "strengths": [],
+              "weaknesses": [],
+              "missingPoints": [],
+              "improvementAdvice": [],
+              "evidence": [
+                "跳过这一题，下一题"
+              ]
+            },
+            "answerAttempts": [
+              {
+                "id": "answer-attempt-1777870917239-8y6l3a",
+                "targetType": "main-question",
+                "targetId": "topic-node-1777870613962-g9ac17",
+                "classification": "skip-request",
+                "createdAt": "2026-05-04T05:01:57.239Z",
+                "userMessage": "跳过这一题，下一题",
+                "score": null,
+                "strengths": [],
+                "missingPoints": [],
+                "incorrectPoints": [],
+                "isDetour": false
+              }
+            ]
+          },
+          {
+            "id": "topic-node-1777870613962-czgmxs",
+            "topic": "熟练掌握 TypeScript / C# ，具备 Java 工程开发能力，能够独立完成 AI Agent 系统、工作流引擎与平台服务开发。",
+            "source": "resume",
+            "mainQuestion": "请结合 通用技术岗位 岗位，系统说明你在“熟练掌握 TypeScript / C# ，具备 Java 工程开发能力，能够独立完成 AI Agent 系统、工作流引擎与平台服务开发。”这个方向的理解、实践经验、关键取舍以及常见风险。",
+            "status": "completed",
+            "aggregatedScore": null,
+            "followUpCount": 0,
+            "maxFollowUps": 3,
+            "earlyCompletionReason": null,
+            "summary": {
+              "strengths": [],
+              "weaknesses": [],
+              "missingPoints": [],
+              "improvementAdvice": [],
+              "evidence": [
+                "跳过这一题，下一题"
+              ]
+            },
+            "answerAttempts": [
+              {
+                "id": "answer-attempt-1777871002852-x3x5z2",
+                "targetType": "main-question",
+                "targetId": "topic-node-1777870613962-czgmxs",
+                "classification": "skip-request",
+                "createdAt": "2026-05-04T05:03:22.852Z",
+                "userMessage": "跳过这一题，下一题",
+                "score": null,
+                "strengths": [],
+                "missingPoints": [],
+                "incorrectPoints": [],
+                "isDetour": false
+              }
+            ]
+          },
+          {
+            "id": "topic-node-1777870613962-6wext9",
+            "topic": "深入理解 LLM 应用架构，熟悉 GPT / Claude 等模型能力边界、上下文窗口、模型路由与成本优化。",
+            "source": "resume",
+            "mainQuestion": "请结合 通用技术岗位 岗位，系统说明你在“深入理解 LLM 应用架构，熟悉 GPT / Claude 等模型能力边界、上下文窗口、模型路由与成本优化。”这个方向的理解、实践经验、关键取舍以及常见风险。",
+            "status": "completed",
+            "aggregatedScore": null,
+            "followUpCount": 0,
+            "maxFollowUps": 3,
+            "earlyCompletionReason": null,
+            "summary": {
+              "strengths": [],
+              "weaknesses": [],
+              "missingPoints": [],
+              "improvementAdvice": [],
+              "evidence": [
+                "跳过这一题，下一题"
+              ]
+            },
+            "answerAttempts": [
+              {
+                "id": "answer-attempt-1777871014923-u5twj0",
+                "targetType": "main-question",
+                "targetId": "topic-node-1777870613962-6wext9",
+                "classification": "skip-request",
+                "createdAt": "2026-05-04T05:03:34.923Z",
+                "userMessage": "跳过这一题，下一题",
+                "score": null,
+                "strengths": [],
+                "missingPoints": [],
+                "incorrectPoints": [],
+                "isDetour": false
+              }
+            ]
+          },
+          {
+            "id": "topic-node-1777870613962-7ikptu",
+            "topic": "掌握 ReAct、CoT、Few-shot、Memory、Planning、Tool Use 等 Agent 核心机制，能够设计复杂任务拆解与多轮执行流程。",
+            "source": "resume",
+            "mainQuestion": "请结合 通用技术岗位 岗位，系统说明你在“掌握 ReAct、CoT、Few-shot、Memory、Planning、Tool Use 等 Agent 核心机制，能够设计复杂任务拆解与多轮执行流程。”这个方向的理解、实践经验、关键取舍以及常见风险。",
+            "status": "completed",
+            "aggregatedScore": null,
+            "followUpCount": 0,
+            "maxFollowUps": 3,
+            "earlyCompletionReason": null,
+            "summary": {
+              "strengths": [],
+              "weaknesses": [],
+              "missingPoints": [],
+              "improvementAdvice": [],
+              "evidence": [
+                "跳过这一题，下一题"
+              ]
+            },
+            "answerAttempts": [
+              {
+                "id": "answer-attempt-1777871019965-pbin5o",
+                "targetType": "main-question",
+                "targetId": "topic-node-1777870613962-7ikptu",
+                "classification": "skip-request",
+                "createdAt": "2026-05-04T05:03:39.965Z",
+                "userMessage": "跳过这一题，下一题",
+                "score": null,
+                "strengths": [],
+                "missingPoints": [],
+                "incorrectPoints": [],
+                "isDetour": false
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "project-experience-round-1777870613962-u8fknm",
+        "type": "project-experience",
+        "status": "skipped",
+        "plannedNodeCount": 0,
+        "completedNodeCount": 0,
+        "activeNodeId": null,
+        "nodes": []
+      }
+    ],
+    "strongSignals": [],
+    "knowledgeWeaknesses": [],
+    "questionReviews": [
+      {
+        "roundType": "professional-skills",
+        "topic": "在开发自己的 Agent 时",
+        "question": "在开发自己的 Agent 时，你采用了什么研发流程？为什么选择这个流程？",
+        "score": null,
+        "strengths": [],
+        "missingPoints": [],
+        "incorrectPoints": [],
+        "improvementAdvice": [],
+        "evidence": [
+          "跳过这一题，下一题"
+        ]
+      },
+      {
+        "roundType": "professional-skills",
+        "topic": "如果多个 Skill 的 description 很相似",
+        "question": "如果多个 Skill 的 description 很相似，导致 Agent 经常加载错 Skill，应该怎么解决？",
+        "score": null,
+        "strengths": [],
+        "missingPoints": [],
+        "incorrectPoints": [],
+        "improvementAdvice": [],
+        "evidence": [
+          "跳过这一题，下一题"
+        ]
+      },
+      {
+        "roundType": "professional-skills",
+        "topic": "Multi-Agent 架构的主流实现方案有哪些",
+        "question": "Multi-Agent 架构的主流实现方案有哪些？",
+        "score": null,
+        "strengths": [],
+        "missingPoints": [],
+        "incorrectPoints": [],
+        "improvementAdvice": [],
+        "evidence": [
+          "跳过这一题，下一题"
+        ]
+      },
+      {
+        "roundType": "professional-skills",
+        "topic": "在开发中",
+        "question": "在开发中，你怎么判断一个任务该用 Workflow，还是该交给自主决策的 Agent？",
+        "score": null,
+        "strengths": [],
+        "missingPoints": [],
+        "incorrectPoints": [],
+        "improvementAdvice": [],
+        "evidence": [
+          "跳过这一题，下一题"
+        ]
+      },
+      {
+        "roundType": "professional-skills",
+        "topic": "Java 在 Agent 平台中更适合承接哪些后端模块",
+        "question": "Java 在 Agent 平台中更适合承接哪些后端模块？",
+        "score": null,
+        "strengths": [],
+        "missingPoints": [],
+        "incorrectPoints": [],
+        "improvementAdvice": [],
+        "evidence": [
+          "跳过这一题，下一题"
+        ]
+      },
+      {
+        "roundType": "professional-skills",
+        "topic": "熟练掌握 TypeScript / C# ，具备 Java 工程开发能力，能够独立完成 AI Agent 系统、工作流引擎与平台服务开发。",
+        "question": "请结合 通用技术岗位 岗位，系统说明你在“熟练掌握 TypeScript / C# ，具备 Java 工程开发能力，能够独立完成 AI Agent 系统、工作流引擎与平台服务开发。”这个方向的理解、实践经验、关键取舍以及常见风险。",
+        "score": null,
+        "strengths": [],
+        "missingPoints": [],
+        "incorrectPoints": [],
+        "improvementAdvice": [],
+        "evidence": [
+          "跳过这一题，下一题"
+        ]
+      },
+      {
+        "roundType": "professional-skills",
+        "topic": "深入理解 LLM 应用架构，熟悉 GPT / Claude 等模型能力边界、上下文窗口、模型路由与成本优化。",
+        "question": "请结合 通用技术岗位 岗位，系统说明你在“深入理解 LLM 应用架构，熟悉 GPT / Claude 等模型能力边界、上下文窗口、模型路由与成本优化。”这个方向的理解、实践经验、关键取舍以及常见风险。",
+        "score": null,
+        "strengths": [],
+        "missingPoints": [],
+        "incorrectPoints": [],
+        "improvementAdvice": [],
+        "evidence": [
+          "跳过这一题，下一题"
+        ]
+      },
+      {
+        "roundType": "professional-skills",
+        "topic": "掌握 ReAct、CoT、Few-shot、Memory、Planning、Tool Use 等 Agent 核心机制，能够设计复杂任务拆解与多轮执行流程。",
+        "question": "请结合 通用技术岗位 岗位，系统说明你在“掌握 ReAct、CoT、Few-shot、Memory、Planning、Tool Use 等 Agent 核心机制，能够设计复杂任务拆解与多轮执行流程。”这个方向的理解、实践经验、关键取舍以及常见风险。",
+        "score": null,
+        "strengths": [],
+        "missingPoints": [],
+        "incorrectPoints": [],
+        "improvementAdvice": [],
+        "evidence": [
+          "跳过这一题，下一题"
+        ]
+      }
+    ],
+    "report": {
+      "finalReport": "## 模拟面试报告\n\n**目标岗位**: 通用技术岗位\n**完成题数**: 8\n**综合得分**: 0.0/10\n\n### 单题复盘\n#### 第 1 题\n**题目**: 在开发自己的 Agent 时，你采用了什么研发流程？为什么选择这个流程？\n**得分**: 0.0/10\n**回答情况**: 回答基础相关，但还需要补充更扎实的原理、细节和案例。\n**回答不错的点**: 暂无明显亮点记录\n**回答还需改进的点**: 暂无明显短板记录\n\n#### 第 2 题\n**题目**: 如果多个 Skill 的 description 很相似，导致 Agent 经常加载错 Skill，应该怎么解决？\n**得分**: 0.0/10\n**回答情况**: 回答基础相关，但还需要补充更扎实的原理、细节和案例。\n**回答不错的点**: 暂无明显亮点记录\n**回答还需改进的点**: 暂无明显短板记录\n\n#### 第 3 题\n**题目**: Multi-Agent 架构的主流实现方案有哪些？\n**得分**: 0.0/10\n**回答情况**: 回答基础相关，但还需要补充更扎实的原理、细节和案例。\n**回答不错的点**: 暂无明显亮点记录\n**回答还需改进的点**: 暂无明显短板记录\n\n#### 第 4 题\n**题目**: 在开发中，你怎么判断一个任务该用 Workflow，还是该交给自主决策的 Agent？\n**得分**: 0.0/10\n**回答情况**: 回答基础相关，但还需要补充更扎实的原理、细节和案例。\n**回答不错的点**: 暂无明显亮点记录\n**回答还需改进的点**: 暂无明显短板记录\n\n#### 第 5 题\n**题目**: Java 在 Agent 平台中更适合承接哪些后端模块？\n**得分**: 0.0/10\n**回答情况**: 回答基础相关，但还需要补充更扎实的原理、细节和案例。\n**回答不错的点**: 暂无明显亮点记录\n**回答还需改进的点**: 暂无明显短板记录\n\n#### 第 6 题\n**题目**: 请结合 通用技术岗位 岗位，系统说明你在“熟练掌握 TypeScript / C# ，具备 Java 工程开发能力，能够独立完成 AI Agent 系统、工作流引擎与平台服务开发。”这个方向的理解、实践经验、关键取舍以及常见风险。\n**得分**: 0.0/10\n**回答情况**: 回答基础相关，但还需要补充更扎实的原理、细节和案例。\n**回答不错的点**: 暂无明显亮点记录\n**回答还需改进的点**: 暂无明显短板记录\n\n#### 第 7 题\n**题目**: 请结合 通用技术岗位 岗位，系统说明你在“深入理解 LLM 应用架构，熟悉 GPT / Claude 等模型能力边界、上下文窗口、模型路由与成本优化。”这个方向的理解、实践经验、关键取舍以及常见风险。\n**得分**: 0.0/10\n**回答情况**: 回答基础相关，但还需要补充更扎实的原理、细节和案例。\n**回答不错的点**: 暂无明显亮点记录\n**回答还需改进的点**: 暂无明显短板记录\n\n#### 第 8 题\n**题目**: 请结合 通用技术岗位 岗位，系统说明你在“掌握 ReAct、CoT、Few-shot、Memory、Planning、Tool Use 等 Agent 核心机制，能够设计复杂任务拆解与多轮执行流程。”这个方向的理解、实践经验、关键取舍以及常见风险。\n**得分**: 0.0/10\n**回答情况**: 回答基础相关，但还需要补充更扎实的原理、细节和案例。\n**回答不错的点**: 暂无明显亮点记录\n**回答还需改进的点**: 暂无明显短板记录\n\n### 总结建议\n**整体优势**: 整体表达比较稳定，可继续补充更多项目量化细节。\n**优先改进项**: 继续保持当前节奏，并增加更多贴近真实场景的案例和数据。",
+      "lastCorrectionSummary": null
+    },
+    "feedback": {
+      "status": "pending",
+      "submittedAt": null,
+      "overallExperienceScore": null,
+      "questionFitScore": null,
+      "difficultyScore": null,
+      "comment": null
+    }
+  }
+}

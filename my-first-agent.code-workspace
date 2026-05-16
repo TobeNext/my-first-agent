@@ -1,0 +1,134 @@
+{
+  "folders": [
+    {
+      "name": "mastra",
+      "path": "."
+    },
+    {
+      "name": "bff",
+      "path": "bff"
+    },
+    {
+      "name": "frontend",
+      "path": "frontend"
+    }
+  ],
+  "settings": {
+    "files.exclude": {
+      "bff": true,
+      "frontend": true
+    },
+    "search.exclude": {
+      "bff": true,
+      "frontend": true
+    },
+    "powershell.cwd": "mastra"
+  },
+  "launch": {
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "type": "node",
+        "request": "launch",
+        "name": "Debug Mastra CLI",
+        "cwd": "${workspaceFolder:mastra}",
+        "program": "${workspaceFolder:mastra}/node_modules/mastra/dist/index.js",
+        "args": [
+          "dev"
+        ],
+        "console": "integratedTerminal",
+        "autoAttachChildProcesses": true,
+        "restart": true,
+        "skipFiles": [
+          "<node_internals>/**"
+        ]
+      },
+      {
+        "type": "node",
+        "request": "launch",
+        "name": "Debug BFF",
+        "cwd": "${workspaceFolder:bff}",
+        "runtimeExecutable": "node",
+        "program": "${workspaceFolder:bff}/node_modules/ts-node/dist/bin.js",
+        "args": [
+          "--project",
+          "${workspaceFolder:bff}/tsconfig.json",
+          "src/main.ts"
+        ],
+        "console": "integratedTerminal",
+        "skipFiles": [
+          "<node_internals>/**"
+        ],
+        "sourceMaps": true,
+        "resolveSourceMapLocations": [
+          "${workspaceFolder:bff}/**",
+          "!**/node_modules/**"
+        ]
+      },
+      {
+        "type": "node",
+        "request": "launch",
+        "name": "Debug Mastra Runtime Output",
+        "cwd": "${workspaceFolder:mastra}",
+        "runtimeExecutable": "node",
+        "program": "${workspaceFolder:mastra}/.mastra/output/index.mjs",
+        "console": "integratedTerminal",
+        "skipFiles": [
+          "<node_internals>/**"
+        ]
+      },
+      {
+        "type": "node",
+        "request": "launch",
+        "name": "Debug Frontend",
+        "cwd": "${workspaceFolder:frontend}",
+        "runtimeExecutable": "npm.cmd",
+        "runtimeArgs": [
+          "run",
+          "dev",
+          "--",
+          "--host",
+          "127.0.0.1",
+          "--port",
+          "4173"
+        ],
+        "console": "integratedTerminal",
+        "serverReadyAction": {
+          "pattern": "(http://127\\.0\\.0\\.1:4173/?|http://localhost:4173/?)",
+          "action": "startDebugging",
+          "name": "Open Frontend Chrome"
+        },
+        "skipFiles": [
+          "<node_internals>/**"
+        ]
+      },
+      {
+        "type": "chrome",
+        "request": "launch",
+        "name": "Open Frontend Chrome",
+        "url": "http://127.0.0.1:4173",
+        "webRoot": "${workspaceFolder:frontend}",
+        "sourceMaps": true
+      }
+    ],
+    "compounds": [
+      {
+        "name": "Debug All Repos",
+        "configurations": [
+          "Debug Mastra CLI",
+          "Debug BFF",
+          "Debug Frontend"
+        ],
+        "stopAll": true
+      },
+      {
+        "name": "Debug Backends",
+        "configurations": [
+          "Debug Mastra CLI",
+          "Debug BFF"
+        ],
+        "stopAll": true
+      }
+    ]
+  }
+}
