@@ -1,0 +1,1608 @@
+{
+  "schemaVersion": 3,
+  "createdAt": "2026-05-17T12:58:00.396Z",
+  "updatedAt": "2026-05-17T12:58:00.396Z",
+  "threadId": "e2e-restore-1779022664672",
+  "session": {
+    "targetRole": "通用技术岗位",
+    "responseLanguage": "zh",
+    "phase": "professional-skills-round",
+    "finalReportReady": false,
+    "setup": {
+      "selectedDirection": "通用技术岗位",
+      "directionSource": "derived",
+      "settings": {
+        "reviewIncorrectOrMissingPoints": true,
+        "skipProfessionalSkillsRound": false,
+        "skipProjectExperienceRound": true,
+        "enableFlowTestMode": false,
+        "professionalQuestionMode": "custom-count",
+        "professionalQuestionCount": 1,
+        "projectQuestionCount": 0
+      }
+    },
+    "resumeContext": {
+      "professionalSkills": "- TypeScript / Node.js / NestJS / Vue 3\n- AI Agent 工程化、RAG、向量检索、Prompt 设计\n- 监控、测试自动化、故障排查与性能优化",
+      "projectExperience": "- 负责一个 AI Interview 平台，从前端、BFF 到 Mastra runtime 设计并落地全链路。\n- 为 RAG 召回增加 trace、fallback 和质量观测能力。",
+      "jobDescription": "### 岗位职责\n- 负责 AI 面试系统的端到端交付与性能优化。\n- 与产品和算法协作，持续改进召回与评分链路。\n\n### 技术要求\n- 熟悉 TypeScript、Node.js、NestJS、Vue 3。\n- 具备 Agent、RAG、观测与测试自动化经验。",
+      "resumeParsed": true
+    }
+  },
+  "selectorTraining": {
+    "traces": [
+      {
+        "timestamp": "2026-05-17T12:58:00.278Z",
+        "roundType": "professional-skills",
+        "skill": "监控、测试自动化、故障排查与性能优化",
+        "queryText": "Target role: 通用技术岗位 Primary skill: 监控、测试自动化、故障排查与性能优化",
+        "logContext": "initialization:professional-skills:监控、测试自动化、故障排查与性能优化",
+        "candidateQuestionIds": [
+          "d4e9507b-9be1-4c18-98a9-7c92e32bc303",
+          "b0dbff04-26ac-4a42-8e8c-7fc6b5f8232d",
+          "2b6ff69e-9077-4e22-a579-fbeef01f88ee",
+          "4b27cbf3-c7be-496a-b790-3724f2a49aab",
+          "118268e9-1edf-4718-a9b9-5a42d10e3a1a",
+          "c28022a5-d445-4ec1-9cc9-1af3ff1769e0",
+          "3d09e533-d29a-4116-a2b2-da84cac91d9f",
+          "9fd63a1f-2d8b-462b-8ec4-90a2f61037bc",
+          "f9a2c46e-6f10-4089-a786-eda98feabc56",
+          "399aa449-0e73-411d-b361-1abe05ac4d10",
+          "7ae0d7c3-da6f-4dfc-a5b1-120f1408a6c9",
+          "941bc94a-8d36-4b2e-84a1-697df26db81f",
+          "306cf8ac-04b9-40e5-8b62-55e6f1558c9b",
+          "512c2cfb-1687-432e-aeff-7f0d5a73f925",
+          "c8700b66-02dc-4940-8bb1-f5ead73dc7de",
+          "dfdd3983-0dc1-4c28-84ad-4b34ce04312b",
+          "4b1f6149-68d3-46c3-b72a-15b19d70f6f8",
+          "69208e62-d5f6-4ddb-96b0-17bd4b002174",
+          "42f0ae7a-4d12-4458-a6d3-0d1698abcc1a",
+          "7e2f7ed9-0acd-43f2-ae83-8d4cafe4909c"
+        ],
+        "selectedQuestionIds": [
+          "3d09e533-d29a-4116-a2b2-da84cac91d9f"
+        ],
+        "candidates": [
+          {
+            "id": "d4e9507b-9be1-4c18-98a9-7c92e32bc303",
+            "questionText": "如果把大量 Skill 直接放进系统提示词，导致上下文窗口占用过大，应该如何处理？",
+            "vectorScore": 0.7278,
+            "bm25Score": 4.6035,
+            "hybridScore": 0.6937,
+            "rerankRank": 2,
+            "finalSelectionRank": null,
+            "filterReason": "not-selected-after-final-randomization"
+          },
+          {
+            "id": "b0dbff04-26ac-4a42-8e8c-7fc6b5f8232d",
+            "questionText": "跨 Agent 的任务委派协议里，至少要包含哪些字段？",
+            "vectorScore": 0.7215,
+            "bm25Score": 4.2241,
+            "hybridScore": 0.6274,
+            "rerankRank": 3,
+            "finalSelectionRank": null,
+            "filterReason": "not-selected-after-final-randomization"
+          },
+          {
+            "id": "2b6ff69e-9077-4e22-a579-fbeef01f88ee",
+            "questionText": "如果多个 Skill 的 description 很相似，导致 Agent 经常加载错 Skill，应该怎么解决？",
+            "vectorScore": 0.7205,
+            "bm25Score": 6.4091,
+            "hybridScore": 0.7035,
+            "rerankRank": 1,
+            "finalSelectionRank": null,
+            "filterReason": "not-selected-after-final-randomization"
+          },
+          {
+            "id": "4b27cbf3-c7be-496a-b790-3724f2a49aab",
+            "questionText": "Skill 内部是否可以封装 workflow 或 SOP？怎么设计边界？",
+            "vectorScore": 0.7176,
+            "bm25Score": 3.5581,
+            "hybridScore": 0.5689,
+            "rerankRank": 4,
+            "finalSelectionRank": null,
+            "filterReason": "not-selected-after-final-randomization"
+          },
+          {
+            "id": "118268e9-1edf-4718-a9b9-5a42d10e3a1a",
+            "questionText": "你如何定义一个好的 Agent 系统？你认为 Agent 设计里最重要的部分是什么？",
+            "vectorScore": 0.687,
+            "bm25Score": 5.1745,
+            "hybridScore": 0.3779,
+            "rerankRank": 7,
+            "finalSelectionRank": null,
+            "filterReason": "not-selected-after-final-randomization"
+          },
+          {
+            "id": "c28022a5-d445-4ec1-9cc9-1af3ff1769e0",
+            "questionText": "用户情绪异常时，Agent 如何在不中断主流程的情况下进行干预？",
+            "vectorScore": 0.6828,
+            "bm25Score": 6.2268,
+            "hybridScore": 0.3837,
+            "rerankRank": 6,
+            "finalSelectionRank": null,
+            "filterReason": "not-selected-after-final-randomization"
+          },
+          {
+            "id": "3d09e533-d29a-4116-a2b2-da84cac91d9f",
+            "questionText": "如果要在 Prompt 中设计“知识缺失时拒答”的逻辑，你会怎么做？",
+            "vectorScore": 0.6817,
+            "bm25Score": 5.2585,
+            "hybridScore": 0.3368,
+            "rerankRank": 9,
+            "finalSelectionRank": 1,
+            "filterReason": "selected"
+          },
+          {
+            "id": "9fd63a1f-2d8b-462b-8ec4-90a2f61037bc",
+            "questionText": "在开发中，你怎么判断一个任务该用 Workflow，还是该交给自主决策的 Agent？",
+            "vectorScore": 0.6806,
+            "bm25Score": 5.1258,
+            "hybridScore": 0.3224,
+            "rerankRank": 10,
+            "finalSelectionRank": null,
+            "filterReason": "not-selected-after-final-randomization"
+          },
+          {
+            "id": "f9a2c46e-6f10-4089-a786-eda98feabc56",
+            "questionText": "本地工具、MCP Tools 和 Skill 三者分别解决什么问题？",
+            "vectorScore": 0.679,
+            "bm25Score": 0,
+            "hybridScore": 0,
+            "rerankRank": null,
+            "finalSelectionRank": null,
+            "filterReason": "filtered-out-by-hybrid-rerank"
+          },
+          {
+            "id": "399aa449-0e73-411d-b361-1abe05ac4d10",
+            "questionText": "如果 Agent 发现工具调用报错，如何设计 Prompt 或策略引导它利用报错信息重试，而不是直接失败？",
+            "vectorScore": 0.6777,
+            "bm25Score": 0,
+            "hybridScore": 0,
+            "rerankRank": null,
+            "finalSelectionRank": null,
+            "filterReason": "filtered-out-by-hybrid-rerank"
+          },
+          {
+            "id": "7ae0d7c3-da6f-4dfc-a5b1-120f1408a6c9",
+            "questionText": "如果 Agent 总是重复执行同一个错误的工具调用，你会从哪个环节开始修复？",
+            "vectorScore": 0.6719,
+            "bm25Score": 0,
+            "hybridScore": 0,
+            "rerankRank": null,
+            "finalSelectionRank": null,
+            "filterReason": "filtered-out-by-hybrid-rerank"
+          },
+          {
+            "id": "941bc94a-8d36-4b2e-84a1-697df26db81f",
+            "questionText": "Multi-Agent 架构的主流实现方案有哪些？",
+            "vectorScore": 0.6709,
+            "bm25Score": 0,
+            "hybridScore": 0,
+            "rerankRank": null,
+            "finalSelectionRank": null,
+            "filterReason": "filtered-out-by-hybrid-rerank"
+          },
+          {
+            "id": "306cf8ac-04b9-40e5-8b62-55e6f1558c9b",
+            "questionText": "记忆系统如何设计？长短期记忆分别存什么、怎么触发读取？",
+            "vectorScore": 0.6701,
+            "bm25Score": 0,
+            "hybridScore": 0,
+            "rerankRank": null,
+            "finalSelectionRank": null,
+            "filterReason": "filtered-out-by-hybrid-rerank"
+          },
+          {
+            "id": "512c2cfb-1687-432e-aeff-7f0d5a73f925",
+            "questionText": "用户一次对话结束后，记忆系统的处理流程通常是什么样的？",
+            "vectorScore": 0.6684,
+            "bm25Score": 0,
+            "hybridScore": 0,
+            "rerankRank": null,
+            "finalSelectionRank": null,
+            "filterReason": "filtered-out-by-hybrid-rerank"
+          },
+          {
+            "id": "c8700b66-02dc-4940-8bb1-f5ead73dc7de",
+            "questionText": "沙箱隔离通常会限制哪些能力？如何做提权审批？",
+            "vectorScore": 0.6674,
+            "bm25Score": 0,
+            "hybridScore": 0,
+            "rerankRank": null,
+            "finalSelectionRank": null,
+            "filterReason": "filtered-out-by-hybrid-rerank"
+          },
+          {
+            "id": "dfdd3983-0dc1-4c28-84ad-4b34ce04312b",
+            "questionText": "在开发自己的 Agent 时，你采用了什么研发流程？为什么选择这个流程？",
+            "vectorScore": 0.6643,
+            "bm25Score": 0,
+            "hybridScore": 0,
+            "rerankRank": null,
+            "finalSelectionRank": null,
+            "filterReason": "filtered-out-by-hybrid-rerank"
+          },
+          {
+            "id": "4b1f6149-68d3-46c3-b72a-15b19d70f6f8",
+            "questionText": "如果只允许检索某个时间之后的数据，向量数据库里如何实现标量过滤？",
+            "vectorScore": 0.664,
+            "bm25Score": 12.4614,
+            "hybridScore": 0.4708,
+            "rerankRank": 5,
+            "finalSelectionRank": null,
+            "filterReason": "not-selected-after-final-randomization"
+          },
+          {
+            "id": "69208e62-d5f6-4ddb-96b0-17bd4b002174",
+            "questionText": "OpenClaw 是什么？它的定位、设计思路和适用场景是什么？",
+            "vectorScore": 0.6636,
+            "bm25Score": 0,
+            "hybridScore": 0,
+            "rerankRank": null,
+            "finalSelectionRank": null,
+            "filterReason": "filtered-out-by-hybrid-rerank"
+          },
+          {
+            "id": "42f0ae7a-4d12-4458-a6d3-0d1698abcc1a",
+            "questionText": "向量检索中的 Top K 设置过大或过小，分别会带来什么问题？",
+            "vectorScore": 0.6619,
+            "bm25Score": 9.9597,
+            "hybridScore": 0.3562,
+            "rerankRank": 8,
+            "finalSelectionRank": null,
+            "filterReason": "not-selected-after-final-randomization"
+          },
+          {
+            "id": "7e2f7ed9-0acd-43f2-ae83-8d4cafe4909c",
+            "questionText": "什么是 Human-in-the-loop？在 Agent 系统中如何设计人工审批断点？",
+            "vectorScore": 0.6615,
+            "bm25Score": 0,
+            "hybridScore": 0,
+            "rerankRank": null,
+            "finalSelectionRank": null,
+            "filterReason": "filtered-out-by-hybrid-rerank"
+          }
+        ],
+        "finalSelectedQuestions": [
+          {
+            "id": "3d09e533-d29a-4116-a2b2-da84cac91d9f",
+            "questionText": "如果要在 Prompt 中设计“知识缺失时拒答”的逻辑，你会怎么做？",
+            "vectorScore": 0.6817,
+            "bm25Score": 5.2585,
+            "hybridScore": 0.3368,
+            "rerankRank": 9,
+            "finalSelectionRank": 1
+          }
+        ]
+      },
+      {
+        "timestamp": "2026-05-17T12:58:00.373Z",
+        "roundType": "project-experience",
+        "skill": "project-experience-context",
+        "queryText": "Target role: 通用技术岗位\nRound type: project-experience\nProject experience context:\n- 负责一个 AI Interview 平台，从前端、BFF 到 Mastra runtime 设计并落地全链路。\n- 为 RAG 召回增加 trace、fallback 和质量观测能力。\nCross-check these JD requirements against the project evidence:\n- 负责 AI 面试系统的端到端交付与性能优化。\nProject evidence candidates:\n- 负责一个 AI Interview 平台，从前端、BFF 到 Mastra runtime 设计并落地全链路。\nCapability gaps to validate when the resume evidence is thin:\n- 熟悉 TypeScript、Node.js、NestJS、Vue 3。\n- 具备 Agent、RAG、观测与测试自动化经验。\nAsk for concrete project decisions, trade-offs, ownership, or execution evidence instead of accepting resume claims at face value.",
+        "logContext": "initialization:project-experience:context",
+        "candidateQuestionIds": [
+          "f19b09ba-d9e8-48f9-8b38-c0218dff5094",
+          "0aef3a95-c6fc-4190-90a1-99f1b1fb3206",
+          "00b79d29-b8c2-4940-b21b-8ec8379c0fc1",
+          "69e632ae-b0ec-47eb-9be6-6b4ff5d5b3b4",
+          "34f3771a-8a4d-457d-ad2b-7eb6269bb20e",
+          "b0dbff04-26ac-4a42-8e8c-7fc6b5f8232d",
+          "d9abd31e-610f-4545-863c-2b3dc8c49b06",
+          "6dd09175-2550-40ad-83dc-0efe552e2778",
+          "9fd63a1f-2d8b-462b-8ec4-90a2f61037bc",
+          "f22f42dd-48c1-4afe-acdc-d43d89028830",
+          "883df029-6fd5-4b90-906b-513735c333e8",
+          "f6e6fbee-82b4-4ec4-a9e0-1557c1960b52",
+          "7ae0d7c3-da6f-4dfc-a5b1-120f1408a6c9",
+          "399aa449-0e73-411d-b361-1abe05ac4d10",
+          "f7dfe43b-809a-4f37-aa0a-22e6f82aaf2d",
+          "64459ad4-3185-44b7-9b3d-a69392cf3ec3",
+          "e6b6403c-cdad-4e4f-8b87-1cbe47a649d6",
+          "d93f4e7e-081c-410a-a3e5-ec8cdcebc335",
+          "c8700b66-02dc-4940-8bb1-f5ead73dc7de",
+          "917ceea4-d586-4cb5-9f68-99f184bbca28"
+        ],
+        "selectedQuestionIds": [
+          "883df029-6fd5-4b90-906b-513735c333e8",
+          "34f3771a-8a4d-457d-ad2b-7eb6269bb20e",
+          "0aef3a95-c6fc-4190-90a1-99f1b1fb3206",
+          "f6e6fbee-82b4-4ec4-a9e0-1557c1960b52",
+          "f22f42dd-48c1-4afe-acdc-d43d89028830",
+          "f19b09ba-d9e8-48f9-8b38-c0218dff5094",
+          "9fd63a1f-2d8b-462b-8ec4-90a2f61037bc",
+          "d9abd31e-610f-4545-863c-2b3dc8c49b06",
+          "69e632ae-b0ec-47eb-9be6-6b4ff5d5b3b4",
+          "00b79d29-b8c2-4940-b21b-8ec8379c0fc1"
+        ],
+        "candidates": [
+          {
+            "id": "f19b09ba-d9e8-48f9-8b38-c0218dff5094",
+            "questionText": "在 Mastra 或 CrewAI 这类框架里，任务状态如何做持久化、恢复和回放？",
+            "vectorScore": 0.7081,
+            "bm25Score": 8.9823,
+            "hybridScore": 0.7662,
+            "rerankRank": 1,
+            "finalSelectionRank": 6,
+            "filterReason": "selected"
+          },
+          {
+            "id": "0aef3a95-c6fc-4190-90a1-99f1b1fb3206",
+            "questionText": "Java 在 Agent 平台中更适合承接哪些后端模块？",
+            "vectorScore": 0.7068,
+            "bm25Score": 7.5114,
+            "hybridScore": 0.711,
+            "rerankRank": 2,
+            "finalSelectionRank": 3,
+            "filterReason": "selected"
+          },
+          {
+            "id": "00b79d29-b8c2-4940-b21b-8ec8379c0fc1",
+            "questionText": "如果你已经会 LangChain，再学习 Mastra 或 CrewAI，重点应该补什么？",
+            "vectorScore": 0.7048,
+            "bm25Score": 5.7953,
+            "hybridScore": 0.6379,
+            "rerankRank": 4,
+            "finalSelectionRank": 10,
+            "filterReason": "selected"
+          },
+          {
+            "id": "69e632ae-b0ec-47eb-9be6-6b4ff5d5b3b4",
+            "questionText": "在 LangChain / Mastra / CrewAI 中接入自定义 Tool 时，schema 和 description 应该怎么写？",
+            "vectorScore": 0.7048,
+            "bm25Score": 2.1789,
+            "hybridScore": 0.5498,
+            "rerankRank": 6,
+            "finalSelectionRank": 9,
+            "filterReason": "selected"
+          },
+          {
+            "id": "34f3771a-8a4d-457d-ad2b-7eb6269bb20e",
+            "questionText": "LangChain、Mastra、CrewAI 分别更适合什么场景？",
+            "vectorScore": 0.6961,
+            "bm25Score": 3.8578,
+            "hybridScore": 0.4548,
+            "rerankRank": 8,
+            "finalSelectionRank": 2,
+            "filterReason": "selected"
+          },
+          {
+            "id": "b0dbff04-26ac-4a42-8e8c-7fc6b5f8232d",
+            "questionText": "跨 Agent 的任务委派协议里，至少要包含哪些字段？",
+            "vectorScore": 0.6926,
+            "bm25Score": 0,
+            "hybridScore": 0,
+            "rerankRank": null,
+            "finalSelectionRank": null,
+            "filterReason": "filtered-out-by-hybrid-rerank"
+          },
+          {
+            "id": "d9abd31e-610f-4545-863c-2b3dc8c49b06",
+            "questionText": "你如何做模型 fallback 或多供应商切换？",
+            "vectorScore": 0.6905,
+            "bm25Score": 6.7612,
+            "hybridScore": 0.4383,
+            "rerankRank": 9,
+            "finalSelectionRank": 8,
+            "filterReason": "selected"
+          },
+          {
+            "id": "6dd09175-2550-40ad-83dc-0efe552e2778",
+            "questionText": "Agent 是如何识别并选择正确工具的？更依赖工具名称还是功能描述？",
+            "vectorScore": 0.6895,
+            "bm25Score": 0,
+            "hybridScore": 0,
+            "rerankRank": null,
+            "finalSelectionRank": null,
+            "filterReason": "filtered-out-by-hybrid-rerank"
+          },
+          {
+            "id": "9fd63a1f-2d8b-462b-8ec4-90a2f61037bc",
+            "questionText": "在开发中，你怎么判断一个任务该用 Workflow，还是该交给自主决策的 Agent？",
+            "vectorScore": 0.6893,
+            "bm25Score": 6.5606,
+            "hybridScore": 0.4152,
+            "rerankRank": 10,
+            "finalSelectionRank": 7,
+            "filterReason": "selected"
+          },
+          {
+            "id": "f22f42dd-48c1-4afe-acdc-d43d89028830",
+            "questionText": "如果让你用 TypeScript 或 C# 设计一个 Agent 平台的模块分层，你会怎么拆？",
+            "vectorScore": 0.6885,
+            "bm25Score": 13.5457,
+            "hybridScore": 0.572,
+            "rerankRank": 5,
+            "finalSelectionRank": 5,
+            "filterReason": "selected"
+          },
+          {
+            "id": "883df029-6fd5-4b90-906b-513735c333e8",
+            "questionText": "你会如何在 LangChain、Mastra、CrewAI 之间做技术选型？",
+            "vectorScore": 0.688,
+            "bm25Score": 12.0836,
+            "hybridScore": 0.5283,
+            "rerankRank": 7,
+            "finalSelectionRank": 1,
+            "filterReason": "selected"
+          },
+          {
+            "id": "f6e6fbee-82b4-4ec4-a9e0-1557c1960b52",
+            "questionText": "如果 Ragas 的 Context Precision 很低，你会如何优化检索链路？",
+            "vectorScore": 0.6866,
+            "bm25Score": 18.6199,
+            "hybridScore": 0.6652,
+            "rerankRank": 3,
+            "finalSelectionRank": 4,
+            "filterReason": "selected"
+          },
+          {
+            "id": "7ae0d7c3-da6f-4dfc-a5b1-120f1408a6c9",
+            "questionText": "如果 Agent 总是重复执行同一个错误的工具调用，你会从哪个环节开始修复？",
+            "vectorScore": 0.6855,
+            "bm25Score": 0,
+            "hybridScore": 0,
+            "rerankRank": null,
+            "finalSelectionRank": null,
+            "filterReason": "filtered-out-by-hybrid-rerank"
+          },
+          {
+            "id": "399aa449-0e73-411d-b361-1abe05ac4d10",
+            "questionText": "如果 Agent 发现工具调用报错，如何设计 Prompt 或策略引导它利用报错信息重试，而不是直接失败？",
+            "vectorScore": 0.6781,
+            "bm25Score": 0,
+            "hybridScore": 0,
+            "rerankRank": null,
+            "finalSelectionRank": null,
+            "filterReason": "filtered-out-by-hybrid-rerank"
+          },
+          {
+            "id": "f7dfe43b-809a-4f37-aa0a-22e6f82aaf2d",
+            "questionText": "你了解哪些主流 Agent 设计范式？它们分别适用于什么场景？",
+            "vectorScore": 0.6779,
+            "bm25Score": 0,
+            "hybridScore": 0,
+            "rerankRank": null,
+            "finalSelectionRank": null,
+            "filterReason": "filtered-out-by-hybrid-rerank"
+          },
+          {
+            "id": "64459ad4-3185-44b7-9b3d-a69392cf3ec3",
+            "questionText": "你会如何给 Agent 框架补 observability、retry、guardrail middleware？",
+            "vectorScore": 0.6762,
+            "bm25Score": 0,
+            "hybridScore": 0,
+            "rerankRank": null,
+            "finalSelectionRank": null,
+            "filterReason": "filtered-out-by-hybrid-rerank"
+          },
+          {
+            "id": "e6b6403c-cdad-4e4f-8b87-1cbe47a649d6",
+            "questionText": "如果图纸中的关键信息没有被文本明确描述，系统如何依靠视觉特征完成召回？",
+            "vectorScore": 0.6759,
+            "bm25Score": 0,
+            "hybridScore": 0,
+            "rerankRank": null,
+            "finalSelectionRank": null,
+            "filterReason": "filtered-out-by-hybrid-rerank"
+          },
+          {
+            "id": "d93f4e7e-081c-410a-a3e5-ec8cdcebc335",
+            "questionText": "在 Agent 系统中，RAG 检索到的外部知识是如何喂给模型并尽量避免干扰主任务的？",
+            "vectorScore": 0.6746,
+            "bm25Score": 0,
+            "hybridScore": 0,
+            "rerankRank": null,
+            "finalSelectionRank": null,
+            "filterReason": "filtered-out-by-hybrid-rerank"
+          },
+          {
+            "id": "c8700b66-02dc-4940-8bb1-f5ead73dc7de",
+            "questionText": "沙箱隔离通常会限制哪些能力？如何做提权审批？",
+            "vectorScore": 0.6737,
+            "bm25Score": 0,
+            "hybridScore": 0,
+            "rerankRank": null,
+            "finalSelectionRank": null,
+            "filterReason": "filtered-out-by-hybrid-rerank"
+          },
+          {
+            "id": "917ceea4-d586-4cb5-9f68-99f184bbca28",
+            "questionText": "MCP Server 的 Tool schema 应该怎么设计，才能减少模型误调用？",
+            "vectorScore": 0.6728,
+            "bm25Score": 0,
+            "hybridScore": 0,
+            "rerankRank": null,
+            "finalSelectionRank": null,
+            "filterReason": "filtered-out-by-hybrid-rerank"
+          }
+        ],
+        "finalSelectedQuestions": [
+          {
+            "id": "883df029-6fd5-4b90-906b-513735c333e8",
+            "questionText": "你会如何在 LangChain、Mastra、CrewAI 之间做技术选型？",
+            "vectorScore": 0.688,
+            "bm25Score": 12.0836,
+            "hybridScore": 0.5283,
+            "rerankRank": 7,
+            "finalSelectionRank": 1
+          },
+          {
+            "id": "34f3771a-8a4d-457d-ad2b-7eb6269bb20e",
+            "questionText": "LangChain、Mastra、CrewAI 分别更适合什么场景？",
+            "vectorScore": 0.6961,
+            "bm25Score": 3.8578,
+            "hybridScore": 0.4548,
+            "rerankRank": 8,
+            "finalSelectionRank": 2
+          },
+          {
+            "id": "0aef3a95-c6fc-4190-90a1-99f1b1fb3206",
+            "questionText": "Java 在 Agent 平台中更适合承接哪些后端模块？",
+            "vectorScore": 0.7068,
+            "bm25Score": 7.5114,
+            "hybridScore": 0.711,
+            "rerankRank": 2,
+            "finalSelectionRank": 3
+          },
+          {
+            "id": "f6e6fbee-82b4-4ec4-a9e0-1557c1960b52",
+            "questionText": "如果 Ragas 的 Context Precision 很低，你会如何优化检索链路？",
+            "vectorScore": 0.6866,
+            "bm25Score": 18.6199,
+            "hybridScore": 0.6652,
+            "rerankRank": 3,
+            "finalSelectionRank": 4
+          },
+          {
+            "id": "f22f42dd-48c1-4afe-acdc-d43d89028830",
+            "questionText": "如果让你用 TypeScript 或 C# 设计一个 Agent 平台的模块分层，你会怎么拆？",
+            "vectorScore": 0.6885,
+            "bm25Score": 13.5457,
+            "hybridScore": 0.572,
+            "rerankRank": 5,
+            "finalSelectionRank": 5
+          },
+          {
+            "id": "f19b09ba-d9e8-48f9-8b38-c0218dff5094",
+            "questionText": "在 Mastra 或 CrewAI 这类框架里，任务状态如何做持久化、恢复和回放？",
+            "vectorScore": 0.7081,
+            "bm25Score": 8.9823,
+            "hybridScore": 0.7662,
+            "rerankRank": 1,
+            "finalSelectionRank": 6
+          },
+          {
+            "id": "9fd63a1f-2d8b-462b-8ec4-90a2f61037bc",
+            "questionText": "在开发中，你怎么判断一个任务该用 Workflow，还是该交给自主决策的 Agent？",
+            "vectorScore": 0.6893,
+            "bm25Score": 6.5606,
+            "hybridScore": 0.4152,
+            "rerankRank": 10,
+            "finalSelectionRank": 7
+          },
+          {
+            "id": "d9abd31e-610f-4545-863c-2b3dc8c49b06",
+            "questionText": "你如何做模型 fallback 或多供应商切换？",
+            "vectorScore": 0.6905,
+            "bm25Score": 6.7612,
+            "hybridScore": 0.4383,
+            "rerankRank": 9,
+            "finalSelectionRank": 8
+          },
+          {
+            "id": "69e632ae-b0ec-47eb-9be6-6b4ff5d5b3b4",
+            "questionText": "在 LangChain / Mastra / CrewAI 中接入自定义 Tool 时，schema 和 description 应该怎么写？",
+            "vectorScore": 0.7048,
+            "bm25Score": 2.1789,
+            "hybridScore": 0.5498,
+            "rerankRank": 6,
+            "finalSelectionRank": 9
+          },
+          {
+            "id": "00b79d29-b8c2-4940-b21b-8ec8379c0fc1",
+            "questionText": "如果你已经会 LangChain，再学习 Mastra 或 CrewAI，重点应该补什么？",
+            "vectorScore": 0.7048,
+            "bm25Score": 5.7953,
+            "hybridScore": 0.6379,
+            "rerankRank": 4,
+            "finalSelectionRank": 10
+          }
+        ]
+      }
+    ],
+    "generationTrace": [
+      {
+        "roundType": "professional-skills",
+        "source": "retrieved",
+        "targetAbility": "监控、测试自动化、故障排查与性能优化",
+        "questionType": "knowledge-check",
+        "coverageIntent": "implementation-depth",
+        "questionDriver": "resume",
+        "resumeSignals": [
+          "监控、测试自动化、故障排查与性能优化"
+        ],
+        "jobDescriptionSignals": [],
+        "expectedDifficulty": "medium",
+        "questionId": "3d09e533-d29a-4116-a2b2-da84cac91d9f",
+        "questionText": "如果要在 Prompt 中设计“知识缺失时拒答”的逻辑，你会怎么做？",
+        "selectionReason": "Selected 监控、测试自动化、故障排查与性能优化 as a unique primary skill before allocating overflow slots to harder scenario coverage."
+      },
+      {
+        "roundType": "project-experience",
+        "source": "retrieved",
+        "targetAbility": null,
+        "questionType": "project-deep-dive",
+        "coverageIntent": "project-experience-context",
+        "questionDriver": "resume-and-job-description",
+        "resumeSignals": [
+          "负责一个 AI Interview 平台，从前端、BFF 到 Mastra runtime 设计并落地全链路。",
+          "为 RAG 召回增加 trace、fallback 和质量观测能力。"
+        ],
+        "jobDescriptionSignals": [
+          "负责 AI 面试系统的端到端交付与性能优化。"
+        ],
+        "expectedDifficulty": "medium",
+        "questionId": "883df029-6fd5-4b90-906b-513735c333e8",
+        "questionText": "你会如何在 LangChain、Mastra、CrewAI 之间做技术选型？",
+        "selectionReason": "Adapted a retrieved project-experience candidate into the final main-question set by cross-checking JD requirements against project evidence."
+      },
+      {
+        "roundType": "project-experience",
+        "source": "retrieved",
+        "targetAbility": null,
+        "questionType": "project-deep-dive",
+        "coverageIntent": "project-experience-context",
+        "questionDriver": "resume-and-job-description",
+        "resumeSignals": [
+          "负责一个 AI Interview 平台，从前端、BFF 到 Mastra runtime 设计并落地全链路。",
+          "为 RAG 召回增加 trace、fallback 和质量观测能力。"
+        ],
+        "jobDescriptionSignals": [
+          "负责 AI 面试系统的端到端交付与性能优化。"
+        ],
+        "expectedDifficulty": "medium",
+        "questionId": "34f3771a-8a4d-457d-ad2b-7eb6269bb20e",
+        "questionText": "LangChain、Mastra、CrewAI 分别更适合什么场景？",
+        "selectionReason": "Adapted a retrieved project-experience candidate into the final main-question set by cross-checking JD requirements against project evidence."
+      },
+      {
+        "roundType": "project-experience",
+        "source": "retrieved",
+        "targetAbility": null,
+        "questionType": "project-deep-dive",
+        "coverageIntent": "project-experience-context",
+        "questionDriver": "resume-and-job-description",
+        "resumeSignals": [
+          "负责一个 AI Interview 平台，从前端、BFF 到 Mastra runtime 设计并落地全链路。",
+          "为 RAG 召回增加 trace、fallback 和质量观测能力。"
+        ],
+        "jobDescriptionSignals": [
+          "负责 AI 面试系统的端到端交付与性能优化。"
+        ],
+        "expectedDifficulty": "medium",
+        "questionId": "0aef3a95-c6fc-4190-90a1-99f1b1fb3206",
+        "questionText": "Java 在 Agent 平台中更适合承接哪些后端模块？",
+        "selectionReason": "Adapted a retrieved project-experience candidate into the final main-question set by cross-checking JD requirements against project evidence."
+      },
+      {
+        "roundType": "project-experience",
+        "source": "retrieved",
+        "targetAbility": null,
+        "questionType": "project-deep-dive",
+        "coverageIntent": "project-experience-context",
+        "questionDriver": "resume-and-job-description",
+        "resumeSignals": [
+          "负责一个 AI Interview 平台，从前端、BFF 到 Mastra runtime 设计并落地全链路。",
+          "为 RAG 召回增加 trace、fallback 和质量观测能力。"
+        ],
+        "jobDescriptionSignals": [
+          "负责 AI 面试系统的端到端交付与性能优化。"
+        ],
+        "expectedDifficulty": "medium",
+        "questionId": "f6e6fbee-82b4-4ec4-a9e0-1557c1960b52",
+        "questionText": "如果 Ragas 的 Context Precision 很低，你会如何优化检索链路？",
+        "selectionReason": "Adapted a retrieved project-experience candidate into the final main-question set by cross-checking JD requirements against project evidence."
+      },
+      {
+        "roundType": "project-experience",
+        "source": "retrieved",
+        "targetAbility": null,
+        "questionType": "project-deep-dive",
+        "coverageIntent": "project-experience-context",
+        "questionDriver": "resume-and-job-description",
+        "resumeSignals": [
+          "负责一个 AI Interview 平台，从前端、BFF 到 Mastra runtime 设计并落地全链路。",
+          "为 RAG 召回增加 trace、fallback 和质量观测能力。"
+        ],
+        "jobDescriptionSignals": [
+          "负责 AI 面试系统的端到端交付与性能优化。"
+        ],
+        "expectedDifficulty": "medium",
+        "questionId": "f22f42dd-48c1-4afe-acdc-d43d89028830",
+        "questionText": "如果让你用 TypeScript 或 C# 设计一个 Agent 平台的模块分层，你会怎么拆？",
+        "selectionReason": "Adapted a retrieved project-experience candidate into the final main-question set by cross-checking JD requirements against project evidence."
+      },
+      {
+        "roundType": "project-experience",
+        "source": "retrieved",
+        "targetAbility": null,
+        "questionType": "project-deep-dive",
+        "coverageIntent": "project-experience-context",
+        "questionDriver": "resume-and-job-description",
+        "resumeSignals": [
+          "负责一个 AI Interview 平台，从前端、BFF 到 Mastra runtime 设计并落地全链路。",
+          "为 RAG 召回增加 trace、fallback 和质量观测能力。"
+        ],
+        "jobDescriptionSignals": [
+          "负责 AI 面试系统的端到端交付与性能优化。"
+        ],
+        "expectedDifficulty": "medium",
+        "questionId": "f19b09ba-d9e8-48f9-8b38-c0218dff5094",
+        "questionText": "在 Mastra 或 CrewAI 这类框架里，任务状态如何做持久化、恢复和回放？",
+        "selectionReason": "Adapted a retrieved project-experience candidate into the final main-question set by cross-checking JD requirements against project evidence."
+      },
+      {
+        "roundType": "project-experience",
+        "source": "retrieved",
+        "targetAbility": null,
+        "questionType": "project-deep-dive",
+        "coverageIntent": "project-experience-context",
+        "questionDriver": "resume-and-job-description",
+        "resumeSignals": [
+          "负责一个 AI Interview 平台，从前端、BFF 到 Mastra runtime 设计并落地全链路。",
+          "为 RAG 召回增加 trace、fallback 和质量观测能力。"
+        ],
+        "jobDescriptionSignals": [
+          "负责 AI 面试系统的端到端交付与性能优化。"
+        ],
+        "expectedDifficulty": "medium",
+        "questionId": "9fd63a1f-2d8b-462b-8ec4-90a2f61037bc",
+        "questionText": "在开发中，你怎么判断一个任务该用 Workflow，还是该交给自主决策的 Agent？",
+        "selectionReason": "Adapted a retrieved project-experience candidate into the final main-question set by cross-checking JD requirements against project evidence."
+      },
+      {
+        "roundType": "project-experience",
+        "source": "retrieved",
+        "targetAbility": null,
+        "questionType": "project-deep-dive",
+        "coverageIntent": "project-experience-context",
+        "questionDriver": "resume-and-job-description",
+        "resumeSignals": [
+          "负责一个 AI Interview 平台，从前端、BFF 到 Mastra runtime 设计并落地全链路。",
+          "为 RAG 召回增加 trace、fallback 和质量观测能力。"
+        ],
+        "jobDescriptionSignals": [
+          "负责 AI 面试系统的端到端交付与性能优化。"
+        ],
+        "expectedDifficulty": "medium",
+        "questionId": "d9abd31e-610f-4545-863c-2b3dc8c49b06",
+        "questionText": "你如何做模型 fallback 或多供应商切换？",
+        "selectionReason": "Adapted a retrieved project-experience candidate into the final main-question set by cross-checking JD requirements against project evidence."
+      },
+      {
+        "roundType": "project-experience",
+        "source": "retrieved",
+        "targetAbility": null,
+        "questionType": "project-deep-dive",
+        "coverageIntent": "project-experience-context",
+        "questionDriver": "resume-and-job-description",
+        "resumeSignals": [
+          "负责一个 AI Interview 平台，从前端、BFF 到 Mastra runtime 设计并落地全链路。",
+          "为 RAG 召回增加 trace、fallback 和质量观测能力。"
+        ],
+        "jobDescriptionSignals": [
+          "负责 AI 面试系统的端到端交付与性能优化。"
+        ],
+        "expectedDifficulty": "medium",
+        "questionId": "69e632ae-b0ec-47eb-9be6-6b4ff5d5b3b4",
+        "questionText": "在 LangChain / Mastra / CrewAI 中接入自定义 Tool 时，schema 和 description 应该怎么写？",
+        "selectionReason": "Adapted a retrieved project-experience candidate into the final main-question set by cross-checking JD requirements against project evidence."
+      },
+      {
+        "roundType": "project-experience",
+        "source": "retrieved",
+        "targetAbility": null,
+        "questionType": "project-deep-dive",
+        "coverageIntent": "project-experience-context",
+        "questionDriver": "resume-and-job-description",
+        "resumeSignals": [
+          "负责一个 AI Interview 平台，从前端、BFF 到 Mastra runtime 设计并落地全链路。",
+          "为 RAG 召回增加 trace、fallback 和质量观测能力。"
+        ],
+        "jobDescriptionSignals": [
+          "负责 AI 面试系统的端到端交付与性能优化。"
+        ],
+        "expectedDifficulty": "medium",
+        "questionId": "00b79d29-b8c2-4940-b21b-8ec8379c0fc1",
+        "questionText": "如果你已经会 LangChain，再学习 Mastra 或 CrewAI，重点应该补什么？",
+        "selectionReason": "Adapted a retrieved project-experience candidate into the final main-question set by cross-checking JD requirements against project evidence."
+      }
+    ],
+    "recallEvents": [
+      {
+        "traceTimestamp": "2026-05-17T12:58:00.278Z",
+        "roundType": "professional-skills",
+        "skill": "监控、测试自动化、故障排查与性能优化",
+        "queryText": "Target role: 通用技术岗位 Primary skill: 监控、测试自动化、故障排查与性能优化",
+        "logContext": "initialization:professional-skills:监控、测试自动化、故障排查与性能优化",
+        "candidates": [
+          {
+            "questionId": "d4e9507b-9be1-4c18-98a9-7c92e32bc303",
+            "questionText": "如果把大量 Skill 直接放进系统提示词，导致上下文窗口占用过大，应该如何处理？",
+            "vectorScore": 0.7278,
+            "bm25Score": 4.6035,
+            "hybridScore": 0.6937,
+            "rerankRank": 2,
+            "finalSelectionRank": null,
+            "filterReason": "not-selected-after-final-randomization",
+            "wasSelected": false,
+            "outcomeLabel": null
+          },
+          {
+            "questionId": "b0dbff04-26ac-4a42-8e8c-7fc6b5f8232d",
+            "questionText": "跨 Agent 的任务委派协议里，至少要包含哪些字段？",
+            "vectorScore": 0.7215,
+            "bm25Score": 4.2241,
+            "hybridScore": 0.6274,
+            "rerankRank": 3,
+            "finalSelectionRank": null,
+            "filterReason": "not-selected-after-final-randomization",
+            "wasSelected": false,
+            "outcomeLabel": null
+          },
+          {
+            "questionId": "2b6ff69e-9077-4e22-a579-fbeef01f88ee",
+            "questionText": "如果多个 Skill 的 description 很相似，导致 Agent 经常加载错 Skill，应该怎么解决？",
+            "vectorScore": 0.7205,
+            "bm25Score": 6.4091,
+            "hybridScore": 0.7035,
+            "rerankRank": 1,
+            "finalSelectionRank": null,
+            "filterReason": "not-selected-after-final-randomization",
+            "wasSelected": false,
+            "outcomeLabel": null
+          },
+          {
+            "questionId": "4b27cbf3-c7be-496a-b790-3724f2a49aab",
+            "questionText": "Skill 内部是否可以封装 workflow 或 SOP？怎么设计边界？",
+            "vectorScore": 0.7176,
+            "bm25Score": 3.5581,
+            "hybridScore": 0.5689,
+            "rerankRank": 4,
+            "finalSelectionRank": null,
+            "filterReason": "not-selected-after-final-randomization",
+            "wasSelected": false,
+            "outcomeLabel": null
+          },
+          {
+            "questionId": "118268e9-1edf-4718-a9b9-5a42d10e3a1a",
+            "questionText": "你如何定义一个好的 Agent 系统？你认为 Agent 设计里最重要的部分是什么？",
+            "vectorScore": 0.687,
+            "bm25Score": 5.1745,
+            "hybridScore": 0.3779,
+            "rerankRank": 7,
+            "finalSelectionRank": null,
+            "filterReason": "not-selected-after-final-randomization",
+            "wasSelected": false,
+            "outcomeLabel": null
+          },
+          {
+            "questionId": "c28022a5-d445-4ec1-9cc9-1af3ff1769e0",
+            "questionText": "用户情绪异常时，Agent 如何在不中断主流程的情况下进行干预？",
+            "vectorScore": 0.6828,
+            "bm25Score": 6.2268,
+            "hybridScore": 0.3837,
+            "rerankRank": 6,
+            "finalSelectionRank": null,
+            "filterReason": "not-selected-after-final-randomization",
+            "wasSelected": false,
+            "outcomeLabel": null
+          },
+          {
+            "questionId": "3d09e533-d29a-4116-a2b2-da84cac91d9f",
+            "questionText": "如果要在 Prompt 中设计“知识缺失时拒答”的逻辑，你会怎么做？",
+            "vectorScore": 0.6817,
+            "bm25Score": 5.2585,
+            "hybridScore": 0.3368,
+            "rerankRank": 9,
+            "finalSelectionRank": 1,
+            "filterReason": "selected",
+            "wasSelected": true,
+            "outcomeLabel": null
+          },
+          {
+            "questionId": "9fd63a1f-2d8b-462b-8ec4-90a2f61037bc",
+            "questionText": "在开发中，你怎么判断一个任务该用 Workflow，还是该交给自主决策的 Agent？",
+            "vectorScore": 0.6806,
+            "bm25Score": 5.1258,
+            "hybridScore": 0.3224,
+            "rerankRank": 10,
+            "finalSelectionRank": null,
+            "filterReason": "not-selected-after-final-randomization",
+            "wasSelected": false,
+            "outcomeLabel": null
+          },
+          {
+            "questionId": "f9a2c46e-6f10-4089-a786-eda98feabc56",
+            "questionText": "本地工具、MCP Tools 和 Skill 三者分别解决什么问题？",
+            "vectorScore": 0.679,
+            "bm25Score": 0,
+            "hybridScore": 0,
+            "rerankRank": null,
+            "finalSelectionRank": null,
+            "filterReason": "filtered-out-by-hybrid-rerank",
+            "wasSelected": false,
+            "outcomeLabel": null
+          },
+          {
+            "questionId": "399aa449-0e73-411d-b361-1abe05ac4d10",
+            "questionText": "如果 Agent 发现工具调用报错，如何设计 Prompt 或策略引导它利用报错信息重试，而不是直接失败？",
+            "vectorScore": 0.6777,
+            "bm25Score": 0,
+            "hybridScore": 0,
+            "rerankRank": null,
+            "finalSelectionRank": null,
+            "filterReason": "filtered-out-by-hybrid-rerank",
+            "wasSelected": false,
+            "outcomeLabel": null
+          },
+          {
+            "questionId": "7ae0d7c3-da6f-4dfc-a5b1-120f1408a6c9",
+            "questionText": "如果 Agent 总是重复执行同一个错误的工具调用，你会从哪个环节开始修复？",
+            "vectorScore": 0.6719,
+            "bm25Score": 0,
+            "hybridScore": 0,
+            "rerankRank": null,
+            "finalSelectionRank": null,
+            "filterReason": "filtered-out-by-hybrid-rerank",
+            "wasSelected": false,
+            "outcomeLabel": null
+          },
+          {
+            "questionId": "941bc94a-8d36-4b2e-84a1-697df26db81f",
+            "questionText": "Multi-Agent 架构的主流实现方案有哪些？",
+            "vectorScore": 0.6709,
+            "bm25Score": 0,
+            "hybridScore": 0,
+            "rerankRank": null,
+            "finalSelectionRank": null,
+            "filterReason": "filtered-out-by-hybrid-rerank",
+            "wasSelected": false,
+            "outcomeLabel": null
+          },
+          {
+            "questionId": "306cf8ac-04b9-40e5-8b62-55e6f1558c9b",
+            "questionText": "记忆系统如何设计？长短期记忆分别存什么、怎么触发读取？",
+            "vectorScore": 0.6701,
+            "bm25Score": 0,
+            "hybridScore": 0,
+            "rerankRank": null,
+            "finalSelectionRank": null,
+            "filterReason": "filtered-out-by-hybrid-rerank",
+            "wasSelected": false,
+            "outcomeLabel": null
+          },
+          {
+            "questionId": "512c2cfb-1687-432e-aeff-7f0d5a73f925",
+            "questionText": "用户一次对话结束后，记忆系统的处理流程通常是什么样的？",
+            "vectorScore": 0.6684,
+            "bm25Score": 0,
+            "hybridScore": 0,
+            "rerankRank": null,
+            "finalSelectionRank": null,
+            "filterReason": "filtered-out-by-hybrid-rerank",
+            "wasSelected": false,
+            "outcomeLabel": null
+          },
+          {
+            "questionId": "c8700b66-02dc-4940-8bb1-f5ead73dc7de",
+            "questionText": "沙箱隔离通常会限制哪些能力？如何做提权审批？",
+            "vectorScore": 0.6674,
+            "bm25Score": 0,
+            "hybridScore": 0,
+            "rerankRank": null,
+            "finalSelectionRank": null,
+            "filterReason": "filtered-out-by-hybrid-rerank",
+            "wasSelected": false,
+            "outcomeLabel": null
+          },
+          {
+            "questionId": "dfdd3983-0dc1-4c28-84ad-4b34ce04312b",
+            "questionText": "在开发自己的 Agent 时，你采用了什么研发流程？为什么选择这个流程？",
+            "vectorScore": 0.6643,
+            "bm25Score": 0,
+            "hybridScore": 0,
+            "rerankRank": null,
+            "finalSelectionRank": null,
+            "filterReason": "filtered-out-by-hybrid-rerank",
+            "wasSelected": false,
+            "outcomeLabel": null
+          },
+          {
+            "questionId": "4b1f6149-68d3-46c3-b72a-15b19d70f6f8",
+            "questionText": "如果只允许检索某个时间之后的数据，向量数据库里如何实现标量过滤？",
+            "vectorScore": 0.664,
+            "bm25Score": 12.4614,
+            "hybridScore": 0.4708,
+            "rerankRank": 5,
+            "finalSelectionRank": null,
+            "filterReason": "not-selected-after-final-randomization",
+            "wasSelected": false,
+            "outcomeLabel": null
+          },
+          {
+            "questionId": "69208e62-d5f6-4ddb-96b0-17bd4b002174",
+            "questionText": "OpenClaw 是什么？它的定位、设计思路和适用场景是什么？",
+            "vectorScore": 0.6636,
+            "bm25Score": 0,
+            "hybridScore": 0,
+            "rerankRank": null,
+            "finalSelectionRank": null,
+            "filterReason": "filtered-out-by-hybrid-rerank",
+            "wasSelected": false,
+            "outcomeLabel": null
+          },
+          {
+            "questionId": "42f0ae7a-4d12-4458-a6d3-0d1698abcc1a",
+            "questionText": "向量检索中的 Top K 设置过大或过小，分别会带来什么问题？",
+            "vectorScore": 0.6619,
+            "bm25Score": 9.9597,
+            "hybridScore": 0.3562,
+            "rerankRank": 8,
+            "finalSelectionRank": null,
+            "filterReason": "not-selected-after-final-randomization",
+            "wasSelected": false,
+            "outcomeLabel": null
+          },
+          {
+            "questionId": "7e2f7ed9-0acd-43f2-ae83-8d4cafe4909c",
+            "questionText": "什么是 Human-in-the-loop？在 Agent 系统中如何设计人工审批断点？",
+            "vectorScore": 0.6615,
+            "bm25Score": 0,
+            "hybridScore": 0,
+            "rerankRank": null,
+            "finalSelectionRank": null,
+            "filterReason": "filtered-out-by-hybrid-rerank",
+            "wasSelected": false,
+            "outcomeLabel": null
+          }
+        ]
+      },
+      {
+        "traceTimestamp": "2026-05-17T12:58:00.373Z",
+        "roundType": "project-experience",
+        "skill": "project-experience-context",
+        "queryText": "Target role: 通用技术岗位\nRound type: project-experience\nProject experience context:\n- 负责一个 AI Interview 平台，从前端、BFF 到 Mastra runtime 设计并落地全链路。\n- 为 RAG 召回增加 trace、fallback 和质量观测能力。\nCross-check these JD requirements against the project evidence:\n- 负责 AI 面试系统的端到端交付与性能优化。\nProject evidence candidates:\n- 负责一个 AI Interview 平台，从前端、BFF 到 Mastra runtime 设计并落地全链路。\nCapability gaps to validate when the resume evidence is thin:\n- 熟悉 TypeScript、Node.js、NestJS、Vue 3。\n- 具备 Agent、RAG、观测与测试自动化经验。\nAsk for concrete project decisions, trade-offs, ownership, or execution evidence instead of accepting resume claims at face value.",
+        "logContext": "initialization:project-experience:context",
+        "candidates": [
+          {
+            "questionId": "f19b09ba-d9e8-48f9-8b38-c0218dff5094",
+            "questionText": "在 Mastra 或 CrewAI 这类框架里，任务状态如何做持久化、恢复和回放？",
+            "vectorScore": 0.7081,
+            "bm25Score": 8.9823,
+            "hybridScore": 0.7662,
+            "rerankRank": 1,
+            "finalSelectionRank": 6,
+            "filterReason": "selected",
+            "wasSelected": true,
+            "outcomeLabel": null
+          },
+          {
+            "questionId": "0aef3a95-c6fc-4190-90a1-99f1b1fb3206",
+            "questionText": "Java 在 Agent 平台中更适合承接哪些后端模块？",
+            "vectorScore": 0.7068,
+            "bm25Score": 7.5114,
+            "hybridScore": 0.711,
+            "rerankRank": 2,
+            "finalSelectionRank": 3,
+            "filterReason": "selected",
+            "wasSelected": true,
+            "outcomeLabel": null
+          },
+          {
+            "questionId": "00b79d29-b8c2-4940-b21b-8ec8379c0fc1",
+            "questionText": "如果你已经会 LangChain，再学习 Mastra 或 CrewAI，重点应该补什么？",
+            "vectorScore": 0.7048,
+            "bm25Score": 5.7953,
+            "hybridScore": 0.6379,
+            "rerankRank": 4,
+            "finalSelectionRank": 10,
+            "filterReason": "selected",
+            "wasSelected": true,
+            "outcomeLabel": null
+          },
+          {
+            "questionId": "69e632ae-b0ec-47eb-9be6-6b4ff5d5b3b4",
+            "questionText": "在 LangChain / Mastra / CrewAI 中接入自定义 Tool 时，schema 和 description 应该怎么写？",
+            "vectorScore": 0.7048,
+            "bm25Score": 2.1789,
+            "hybridScore": 0.5498,
+            "rerankRank": 6,
+            "finalSelectionRank": 9,
+            "filterReason": "selected",
+            "wasSelected": true,
+            "outcomeLabel": null
+          },
+          {
+            "questionId": "34f3771a-8a4d-457d-ad2b-7eb6269bb20e",
+            "questionText": "LangChain、Mastra、CrewAI 分别更适合什么场景？",
+            "vectorScore": 0.6961,
+            "bm25Score": 3.8578,
+            "hybridScore": 0.4548,
+            "rerankRank": 8,
+            "finalSelectionRank": 2,
+            "filterReason": "selected",
+            "wasSelected": true,
+            "outcomeLabel": null
+          },
+          {
+            "questionId": "b0dbff04-26ac-4a42-8e8c-7fc6b5f8232d",
+            "questionText": "跨 Agent 的任务委派协议里，至少要包含哪些字段？",
+            "vectorScore": 0.6926,
+            "bm25Score": 0,
+            "hybridScore": 0,
+            "rerankRank": null,
+            "finalSelectionRank": null,
+            "filterReason": "filtered-out-by-hybrid-rerank",
+            "wasSelected": false,
+            "outcomeLabel": null
+          },
+          {
+            "questionId": "d9abd31e-610f-4545-863c-2b3dc8c49b06",
+            "questionText": "你如何做模型 fallback 或多供应商切换？",
+            "vectorScore": 0.6905,
+            "bm25Score": 6.7612,
+            "hybridScore": 0.4383,
+            "rerankRank": 9,
+            "finalSelectionRank": 8,
+            "filterReason": "selected",
+            "wasSelected": true,
+            "outcomeLabel": null
+          },
+          {
+            "questionId": "6dd09175-2550-40ad-83dc-0efe552e2778",
+            "questionText": "Agent 是如何识别并选择正确工具的？更依赖工具名称还是功能描述？",
+            "vectorScore": 0.6895,
+            "bm25Score": 0,
+            "hybridScore": 0,
+            "rerankRank": null,
+            "finalSelectionRank": null,
+            "filterReason": "filtered-out-by-hybrid-rerank",
+            "wasSelected": false,
+            "outcomeLabel": null
+          },
+          {
+            "questionId": "9fd63a1f-2d8b-462b-8ec4-90a2f61037bc",
+            "questionText": "在开发中，你怎么判断一个任务该用 Workflow，还是该交给自主决策的 Agent？",
+            "vectorScore": 0.6893,
+            "bm25Score": 6.5606,
+            "hybridScore": 0.4152,
+            "rerankRank": 10,
+            "finalSelectionRank": 7,
+            "filterReason": "selected",
+            "wasSelected": true,
+            "outcomeLabel": null
+          },
+          {
+            "questionId": "f22f42dd-48c1-4afe-acdc-d43d89028830",
+            "questionText": "如果让你用 TypeScript 或 C# 设计一个 Agent 平台的模块分层，你会怎么拆？",
+            "vectorScore": 0.6885,
+            "bm25Score": 13.5457,
+            "hybridScore": 0.572,
+            "rerankRank": 5,
+            "finalSelectionRank": 5,
+            "filterReason": "selected",
+            "wasSelected": true,
+            "outcomeLabel": null
+          },
+          {
+            "questionId": "883df029-6fd5-4b90-906b-513735c333e8",
+            "questionText": "你会如何在 LangChain、Mastra、CrewAI 之间做技术选型？",
+            "vectorScore": 0.688,
+            "bm25Score": 12.0836,
+            "hybridScore": 0.5283,
+            "rerankRank": 7,
+            "finalSelectionRank": 1,
+            "filterReason": "selected",
+            "wasSelected": true,
+            "outcomeLabel": null
+          },
+          {
+            "questionId": "f6e6fbee-82b4-4ec4-a9e0-1557c1960b52",
+            "questionText": "如果 Ragas 的 Context Precision 很低，你会如何优化检索链路？",
+            "vectorScore": 0.6866,
+            "bm25Score": 18.6199,
+            "hybridScore": 0.6652,
+            "rerankRank": 3,
+            "finalSelectionRank": 4,
+            "filterReason": "selected",
+            "wasSelected": true,
+            "outcomeLabel": null
+          },
+          {
+            "questionId": "7ae0d7c3-da6f-4dfc-a5b1-120f1408a6c9",
+            "questionText": "如果 Agent 总是重复执行同一个错误的工具调用，你会从哪个环节开始修复？",
+            "vectorScore": 0.6855,
+            "bm25Score": 0,
+            "hybridScore": 0,
+            "rerankRank": null,
+            "finalSelectionRank": null,
+            "filterReason": "filtered-out-by-hybrid-rerank",
+            "wasSelected": false,
+            "outcomeLabel": null
+          },
+          {
+            "questionId": "399aa449-0e73-411d-b361-1abe05ac4d10",
+            "questionText": "如果 Agent 发现工具调用报错，如何设计 Prompt 或策略引导它利用报错信息重试，而不是直接失败？",
+            "vectorScore": 0.6781,
+            "bm25Score": 0,
+            "hybridScore": 0,
+            "rerankRank": null,
+            "finalSelectionRank": null,
+            "filterReason": "filtered-out-by-hybrid-rerank",
+            "wasSelected": false,
+            "outcomeLabel": null
+          },
+          {
+            "questionId": "f7dfe43b-809a-4f37-aa0a-22e6f82aaf2d",
+            "questionText": "你了解哪些主流 Agent 设计范式？它们分别适用于什么场景？",
+            "vectorScore": 0.6779,
+            "bm25Score": 0,
+            "hybridScore": 0,
+            "rerankRank": null,
+            "finalSelectionRank": null,
+            "filterReason": "filtered-out-by-hybrid-rerank",
+            "wasSelected": false,
+            "outcomeLabel": null
+          },
+          {
+            "questionId": "64459ad4-3185-44b7-9b3d-a69392cf3ec3",
+            "questionText": "你会如何给 Agent 框架补 observability、retry、guardrail middleware？",
+            "vectorScore": 0.6762,
+            "bm25Score": 0,
+            "hybridScore": 0,
+            "rerankRank": null,
+            "finalSelectionRank": null,
+            "filterReason": "filtered-out-by-hybrid-rerank",
+            "wasSelected": false,
+            "outcomeLabel": null
+          },
+          {
+            "questionId": "e6b6403c-cdad-4e4f-8b87-1cbe47a649d6",
+            "questionText": "如果图纸中的关键信息没有被文本明确描述，系统如何依靠视觉特征完成召回？",
+            "vectorScore": 0.6759,
+            "bm25Score": 0,
+            "hybridScore": 0,
+            "rerankRank": null,
+            "finalSelectionRank": null,
+            "filterReason": "filtered-out-by-hybrid-rerank",
+            "wasSelected": false,
+            "outcomeLabel": null
+          },
+          {
+            "questionId": "d93f4e7e-081c-410a-a3e5-ec8cdcebc335",
+            "questionText": "在 Agent 系统中，RAG 检索到的外部知识是如何喂给模型并尽量避免干扰主任务的？",
+            "vectorScore": 0.6746,
+            "bm25Score": 0,
+            "hybridScore": 0,
+            "rerankRank": null,
+            "finalSelectionRank": null,
+            "filterReason": "filtered-out-by-hybrid-rerank",
+            "wasSelected": false,
+            "outcomeLabel": null
+          },
+          {
+            "questionId": "c8700b66-02dc-4940-8bb1-f5ead73dc7de",
+            "questionText": "沙箱隔离通常会限制哪些能力？如何做提权审批？",
+            "vectorScore": 0.6737,
+            "bm25Score": 0,
+            "hybridScore": 0,
+            "rerankRank": null,
+            "finalSelectionRank": null,
+            "filterReason": "filtered-out-by-hybrid-rerank",
+            "wasSelected": false,
+            "outcomeLabel": null
+          },
+          {
+            "questionId": "917ceea4-d586-4cb5-9f68-99f184bbca28",
+            "questionText": "MCP Server 的 Tool schema 应该怎么设计，才能减少模型误调用？",
+            "vectorScore": 0.6728,
+            "bm25Score": 0,
+            "hybridScore": 0,
+            "rerankRank": null,
+            "finalSelectionRank": null,
+            "filterReason": "filtered-out-by-hybrid-rerank",
+            "wasSelected": false,
+            "outcomeLabel": null
+          }
+        ]
+      }
+    ],
+    "selectedQuestionLabels": [
+      {
+        "traceTimestamp": "2026-05-17T12:58:00.278Z",
+        "roundType": "professional-skills",
+        "skill": "监控、测试自动化、故障排查与性能优化",
+        "queryText": "Target role: 通用技术岗位 Primary skill: 监控、测试自动化、故障排查与性能优化",
+        "logContext": "initialization:professional-skills:监控、测试自动化、故障排查与性能优化",
+        "questionId": "3d09e533-d29a-4116-a2b2-da84cac91d9f",
+        "questionText": "如果要在 Prompt 中设计“知识缺失时拒答”的逻辑，你会怎么做？",
+        "vectorScore": 0.6817,
+        "bm25Score": 5.2585,
+        "hybridScore": 0.3368,
+        "rerankRank": 9,
+        "finalSelectionRank": 1,
+        "questionDriver": "resume",
+        "resumeSignals": [],
+        "jobDescriptionSignals": [],
+        "selectionReason": "No performance label was available for this selection.",
+        "performance": null
+      },
+      {
+        "traceTimestamp": "2026-05-17T12:58:00.373Z",
+        "roundType": "project-experience",
+        "skill": "project-experience-context",
+        "queryText": "Target role: 通用技术岗位\nRound type: project-experience\nProject experience context:\n- 负责一个 AI Interview 平台，从前端、BFF 到 Mastra runtime 设计并落地全链路。\n- 为 RAG 召回增加 trace、fallback 和质量观测能力。\nCross-check these JD requirements against the project evidence:\n- 负责 AI 面试系统的端到端交付与性能优化。\nProject evidence candidates:\n- 负责一个 AI Interview 平台，从前端、BFF 到 Mastra runtime 设计并落地全链路。\nCapability gaps to validate when the resume evidence is thin:\n- 熟悉 TypeScript、Node.js、NestJS、Vue 3。\n- 具备 Agent、RAG、观测与测试自动化经验。\nAsk for concrete project decisions, trade-offs, ownership, or execution evidence instead of accepting resume claims at face value.",
+        "logContext": "initialization:project-experience:context",
+        "questionId": "883df029-6fd5-4b90-906b-513735c333e8",
+        "questionText": "你会如何在 LangChain、Mastra、CrewAI 之间做技术选型？",
+        "vectorScore": 0.688,
+        "bm25Score": 12.0836,
+        "hybridScore": 0.5283,
+        "rerankRank": 7,
+        "finalSelectionRank": 1,
+        "questionDriver": "resume",
+        "resumeSignals": [],
+        "jobDescriptionSignals": [],
+        "selectionReason": "No performance label was available for this selection.",
+        "performance": null
+      },
+      {
+        "traceTimestamp": "2026-05-17T12:58:00.373Z",
+        "roundType": "project-experience",
+        "skill": "project-experience-context",
+        "queryText": "Target role: 通用技术岗位\nRound type: project-experience\nProject experience context:\n- 负责一个 AI Interview 平台，从前端、BFF 到 Mastra runtime 设计并落地全链路。\n- 为 RAG 召回增加 trace、fallback 和质量观测能力。\nCross-check these JD requirements against the project evidence:\n- 负责 AI 面试系统的端到端交付与性能优化。\nProject evidence candidates:\n- 负责一个 AI Interview 平台，从前端、BFF 到 Mastra runtime 设计并落地全链路。\nCapability gaps to validate when the resume evidence is thin:\n- 熟悉 TypeScript、Node.js、NestJS、Vue 3。\n- 具备 Agent、RAG、观测与测试自动化经验。\nAsk for concrete project decisions, trade-offs, ownership, or execution evidence instead of accepting resume claims at face value.",
+        "logContext": "initialization:project-experience:context",
+        "questionId": "34f3771a-8a4d-457d-ad2b-7eb6269bb20e",
+        "questionText": "LangChain、Mastra、CrewAI 分别更适合什么场景？",
+        "vectorScore": 0.6961,
+        "bm25Score": 3.8578,
+        "hybridScore": 0.4548,
+        "rerankRank": 8,
+        "finalSelectionRank": 2,
+        "questionDriver": "resume",
+        "resumeSignals": [],
+        "jobDescriptionSignals": [],
+        "selectionReason": "No performance label was available for this selection.",
+        "performance": null
+      },
+      {
+        "traceTimestamp": "2026-05-17T12:58:00.373Z",
+        "roundType": "project-experience",
+        "skill": "project-experience-context",
+        "queryText": "Target role: 通用技术岗位\nRound type: project-experience\nProject experience context:\n- 负责一个 AI Interview 平台，从前端、BFF 到 Mastra runtime 设计并落地全链路。\n- 为 RAG 召回增加 trace、fallback 和质量观测能力。\nCross-check these JD requirements against the project evidence:\n- 负责 AI 面试系统的端到端交付与性能优化。\nProject evidence candidates:\n- 负责一个 AI Interview 平台，从前端、BFF 到 Mastra runtime 设计并落地全链路。\nCapability gaps to validate when the resume evidence is thin:\n- 熟悉 TypeScript、Node.js、NestJS、Vue 3。\n- 具备 Agent、RAG、观测与测试自动化经验。\nAsk for concrete project decisions, trade-offs, ownership, or execution evidence instead of accepting resume claims at face value.",
+        "logContext": "initialization:project-experience:context",
+        "questionId": "0aef3a95-c6fc-4190-90a1-99f1b1fb3206",
+        "questionText": "Java 在 Agent 平台中更适合承接哪些后端模块？",
+        "vectorScore": 0.7068,
+        "bm25Score": 7.5114,
+        "hybridScore": 0.711,
+        "rerankRank": 2,
+        "finalSelectionRank": 3,
+        "questionDriver": "resume",
+        "resumeSignals": [],
+        "jobDescriptionSignals": [],
+        "selectionReason": "No performance label was available for this selection.",
+        "performance": null
+      },
+      {
+        "traceTimestamp": "2026-05-17T12:58:00.373Z",
+        "roundType": "project-experience",
+        "skill": "project-experience-context",
+        "queryText": "Target role: 通用技术岗位\nRound type: project-experience\nProject experience context:\n- 负责一个 AI Interview 平台，从前端、BFF 到 Mastra runtime 设计并落地全链路。\n- 为 RAG 召回增加 trace、fallback 和质量观测能力。\nCross-check these JD requirements against the project evidence:\n- 负责 AI 面试系统的端到端交付与性能优化。\nProject evidence candidates:\n- 负责一个 AI Interview 平台，从前端、BFF 到 Mastra runtime 设计并落地全链路。\nCapability gaps to validate when the resume evidence is thin:\n- 熟悉 TypeScript、Node.js、NestJS、Vue 3。\n- 具备 Agent、RAG、观测与测试自动化经验。\nAsk for concrete project decisions, trade-offs, ownership, or execution evidence instead of accepting resume claims at face value.",
+        "logContext": "initialization:project-experience:context",
+        "questionId": "f6e6fbee-82b4-4ec4-a9e0-1557c1960b52",
+        "questionText": "如果 Ragas 的 Context Precision 很低，你会如何优化检索链路？",
+        "vectorScore": 0.6866,
+        "bm25Score": 18.6199,
+        "hybridScore": 0.6652,
+        "rerankRank": 3,
+        "finalSelectionRank": 4,
+        "questionDriver": "resume",
+        "resumeSignals": [],
+        "jobDescriptionSignals": [],
+        "selectionReason": "No performance label was available for this selection.",
+        "performance": null
+      },
+      {
+        "traceTimestamp": "2026-05-17T12:58:00.373Z",
+        "roundType": "project-experience",
+        "skill": "project-experience-context",
+        "queryText": "Target role: 通用技术岗位\nRound type: project-experience\nProject experience context:\n- 负责一个 AI Interview 平台，从前端、BFF 到 Mastra runtime 设计并落地全链路。\n- 为 RAG 召回增加 trace、fallback 和质量观测能力。\nCross-check these JD requirements against the project evidence:\n- 负责 AI 面试系统的端到端交付与性能优化。\nProject evidence candidates:\n- 负责一个 AI Interview 平台，从前端、BFF 到 Mastra runtime 设计并落地全链路。\nCapability gaps to validate when the resume evidence is thin:\n- 熟悉 TypeScript、Node.js、NestJS、Vue 3。\n- 具备 Agent、RAG、观测与测试自动化经验。\nAsk for concrete project decisions, trade-offs, ownership, or execution evidence instead of accepting resume claims at face value.",
+        "logContext": "initialization:project-experience:context",
+        "questionId": "f22f42dd-48c1-4afe-acdc-d43d89028830",
+        "questionText": "如果让你用 TypeScript 或 C# 设计一个 Agent 平台的模块分层，你会怎么拆？",
+        "vectorScore": 0.6885,
+        "bm25Score": 13.5457,
+        "hybridScore": 0.572,
+        "rerankRank": 5,
+        "finalSelectionRank": 5,
+        "questionDriver": "resume",
+        "resumeSignals": [],
+        "jobDescriptionSignals": [],
+        "selectionReason": "No performance label was available for this selection.",
+        "performance": null
+      },
+      {
+        "traceTimestamp": "2026-05-17T12:58:00.373Z",
+        "roundType": "project-experience",
+        "skill": "project-experience-context",
+        "queryText": "Target role: 通用技术岗位\nRound type: project-experience\nProject experience context:\n- 负责一个 AI Interview 平台，从前端、BFF 到 Mastra runtime 设计并落地全链路。\n- 为 RAG 召回增加 trace、fallback 和质量观测能力。\nCross-check these JD requirements against the project evidence:\n- 负责 AI 面试系统的端到端交付与性能优化。\nProject evidence candidates:\n- 负责一个 AI Interview 平台，从前端、BFF 到 Mastra runtime 设计并落地全链路。\nCapability gaps to validate when the resume evidence is thin:\n- 熟悉 TypeScript、Node.js、NestJS、Vue 3。\n- 具备 Agent、RAG、观测与测试自动化经验。\nAsk for concrete project decisions, trade-offs, ownership, or execution evidence instead of accepting resume claims at face value.",
+        "logContext": "initialization:project-experience:context",
+        "questionId": "f19b09ba-d9e8-48f9-8b38-c0218dff5094",
+        "questionText": "在 Mastra 或 CrewAI 这类框架里，任务状态如何做持久化、恢复和回放？",
+        "vectorScore": 0.7081,
+        "bm25Score": 8.9823,
+        "hybridScore": 0.7662,
+        "rerankRank": 1,
+        "finalSelectionRank": 6,
+        "questionDriver": "resume",
+        "resumeSignals": [],
+        "jobDescriptionSignals": [],
+        "selectionReason": "No performance label was available for this selection.",
+        "performance": null
+      },
+      {
+        "traceTimestamp": "2026-05-17T12:58:00.373Z",
+        "roundType": "project-experience",
+        "skill": "project-experience-context",
+        "queryText": "Target role: 通用技术岗位\nRound type: project-experience\nProject experience context:\n- 负责一个 AI Interview 平台，从前端、BFF 到 Mastra runtime 设计并落地全链路。\n- 为 RAG 召回增加 trace、fallback 和质量观测能力。\nCross-check these JD requirements against the project evidence:\n- 负责 AI 面试系统的端到端交付与性能优化。\nProject evidence candidates:\n- 负责一个 AI Interview 平台，从前端、BFF 到 Mastra runtime 设计并落地全链路。\nCapability gaps to validate when the resume evidence is thin:\n- 熟悉 TypeScript、Node.js、NestJS、Vue 3。\n- 具备 Agent、RAG、观测与测试自动化经验。\nAsk for concrete project decisions, trade-offs, ownership, or execution evidence instead of accepting resume claims at face value.",
+        "logContext": "initialization:project-experience:context",
+        "questionId": "9fd63a1f-2d8b-462b-8ec4-90a2f61037bc",
+        "questionText": "在开发中，你怎么判断一个任务该用 Workflow，还是该交给自主决策的 Agent？",
+        "vectorScore": 0.6893,
+        "bm25Score": 6.5606,
+        "hybridScore": 0.4152,
+        "rerankRank": 10,
+        "finalSelectionRank": 7,
+        "questionDriver": "resume",
+        "resumeSignals": [],
+        "jobDescriptionSignals": [],
+        "selectionReason": "No performance label was available for this selection.",
+        "performance": null
+      },
+      {
+        "traceTimestamp": "2026-05-17T12:58:00.373Z",
+        "roundType": "project-experience",
+        "skill": "project-experience-context",
+        "queryText": "Target role: 通用技术岗位\nRound type: project-experience\nProject experience context:\n- 负责一个 AI Interview 平台，从前端、BFF 到 Mastra runtime 设计并落地全链路。\n- 为 RAG 召回增加 trace、fallback 和质量观测能力。\nCross-check these JD requirements against the project evidence:\n- 负责 AI 面试系统的端到端交付与性能优化。\nProject evidence candidates:\n- 负责一个 AI Interview 平台，从前端、BFF 到 Mastra runtime 设计并落地全链路。\nCapability gaps to validate when the resume evidence is thin:\n- 熟悉 TypeScript、Node.js、NestJS、Vue 3。\n- 具备 Agent、RAG、观测与测试自动化经验。\nAsk for concrete project decisions, trade-offs, ownership, or execution evidence instead of accepting resume claims at face value.",
+        "logContext": "initialization:project-experience:context",
+        "questionId": "d9abd31e-610f-4545-863c-2b3dc8c49b06",
+        "questionText": "你如何做模型 fallback 或多供应商切换？",
+        "vectorScore": 0.6905,
+        "bm25Score": 6.7612,
+        "hybridScore": 0.4383,
+        "rerankRank": 9,
+        "finalSelectionRank": 8,
+        "questionDriver": "resume",
+        "resumeSignals": [],
+        "jobDescriptionSignals": [],
+        "selectionReason": "No performance label was available for this selection.",
+        "performance": null
+      },
+      {
+        "traceTimestamp": "2026-05-17T12:58:00.373Z",
+        "roundType": "project-experience",
+        "skill": "project-experience-context",
+        "queryText": "Target role: 通用技术岗位\nRound type: project-experience\nProject experience context:\n- 负责一个 AI Interview 平台，从前端、BFF 到 Mastra runtime 设计并落地全链路。\n- 为 RAG 召回增加 trace、fallback 和质量观测能力。\nCross-check these JD requirements against the project evidence:\n- 负责 AI 面试系统的端到端交付与性能优化。\nProject evidence candidates:\n- 负责一个 AI Interview 平台，从前端、BFF 到 Mastra runtime 设计并落地全链路。\nCapability gaps to validate when the resume evidence is thin:\n- 熟悉 TypeScript、Node.js、NestJS、Vue 3。\n- 具备 Agent、RAG、观测与测试自动化经验。\nAsk for concrete project decisions, trade-offs, ownership, or execution evidence instead of accepting resume claims at face value.",
+        "logContext": "initialization:project-experience:context",
+        "questionId": "69e632ae-b0ec-47eb-9be6-6b4ff5d5b3b4",
+        "questionText": "在 LangChain / Mastra / CrewAI 中接入自定义 Tool 时，schema 和 description 应该怎么写？",
+        "vectorScore": 0.7048,
+        "bm25Score": 2.1789,
+        "hybridScore": 0.5498,
+        "rerankRank": 6,
+        "finalSelectionRank": 9,
+        "questionDriver": "resume",
+        "resumeSignals": [],
+        "jobDescriptionSignals": [],
+        "selectionReason": "No performance label was available for this selection.",
+        "performance": null
+      },
+      {
+        "traceTimestamp": "2026-05-17T12:58:00.373Z",
+        "roundType": "project-experience",
+        "skill": "project-experience-context",
+        "queryText": "Target role: 通用技术岗位\nRound type: project-experience\nProject experience context:\n- 负责一个 AI Interview 平台，从前端、BFF 到 Mastra runtime 设计并落地全链路。\n- 为 RAG 召回增加 trace、fallback 和质量观测能力。\nCross-check these JD requirements against the project evidence:\n- 负责 AI 面试系统的端到端交付与性能优化。\nProject evidence candidates:\n- 负责一个 AI Interview 平台，从前端、BFF 到 Mastra runtime 设计并落地全链路。\nCapability gaps to validate when the resume evidence is thin:\n- 熟悉 TypeScript、Node.js、NestJS、Vue 3。\n- 具备 Agent、RAG、观测与测试自动化经验。\nAsk for concrete project decisions, trade-offs, ownership, or execution evidence instead of accepting resume claims at face value.",
+        "logContext": "initialization:project-experience:context",
+        "questionId": "00b79d29-b8c2-4940-b21b-8ec8379c0fc1",
+        "questionText": "如果你已经会 LangChain，再学习 Mastra 或 CrewAI，重点应该补什么？",
+        "vectorScore": 0.7048,
+        "bm25Score": 5.7953,
+        "hybridScore": 0.6379,
+        "rerankRank": 4,
+        "finalSelectionRank": 10,
+        "questionDriver": "resume",
+        "resumeSignals": [],
+        "jobDescriptionSignals": [],
+        "selectionReason": "No performance label was available for this selection.",
+        "performance": null
+      }
+    ]
+  },
+  "candidateImprovement": {
+    "totalQuestionCount": 1,
+    "completedQuestionCount": 0,
+    "finalScore": null,
+    "rounds": [
+      {
+        "id": "professional-skills-round-1779022680374-0iv5nu",
+        "type": "professional-skills",
+        "status": "in-progress",
+        "plannedNodeCount": 1,
+        "completedNodeCount": 0,
+        "activeNodeId": "topic-node-1779022680374-0iyqi4",
+        "nodes": [
+          {
+            "id": "topic-node-1779022680374-0iyqi4",
+            "topic": "结合你真实做过的项目",
+            "source": "knowledge-base",
+            "mainQuestion": "请结合你真实做过的项目，详细说明你在监控、测试自动化、故障排查与性能优化上的实现思路、关键取舍与排障经验。",
+            "questionDriver": "resume",
+            "resumeSignals": [],
+            "jobDescriptionSignals": [],
+            "selectionReason": "No generation trace was available for this question.",
+            "status": "awaiting-main-answer",
+            "aggregatedScore": null,
+            "followUpCount": 0,
+            "maxFollowUps": 3,
+            "earlyCompletionReason": null,
+            "summary": null,
+            "answerAttempts": []
+          }
+        ]
+      },
+      {
+        "id": "project-experience-round-1779022680374-st2qef",
+        "type": "project-experience",
+        "status": "skipped",
+        "plannedNodeCount": 0,
+        "completedNodeCount": 0,
+        "activeNodeId": null,
+        "nodes": []
+      }
+    ],
+    "strongSignals": [],
+    "knowledgeWeaknesses": [],
+    "questionReviews": [
+      {
+        "roundType": "professional-skills",
+        "topic": "结合你真实做过的项目",
+        "question": "请结合你真实做过的项目，详细说明你在监控、测试自动化、故障排查与性能优化上的实现思路、关键取舍与排障经验。",
+        "questionDriver": "resume",
+        "resumeSignals": [],
+        "jobDescriptionSignals": [],
+        "selectionReason": "No generation trace was available for this question.",
+        "score": null,
+        "strengths": [],
+        "missingPoints": [],
+        "incorrectPoints": [],
+        "improvementAdvice": [],
+        "evidence": []
+      }
+    ],
+    "report": {
+      "finalReport": null,
+      "lastCorrectionSummary": null
+    },
+    "feedback": {
+      "status": "pending",
+      "submittedAt": null,
+      "overallExperienceScore": null,
+      "questionFitScore": null,
+      "difficultyScore": null,
+      "comment": null
+    }
+  }
+}

@@ -390,6 +390,40 @@ select {
   color: var(--muted);
 }
 
+.upload-card__ready {
+  display: grid;
+  gap: 8px;
+  margin-top: 20px;
+  padding: 18px 20px;
+  border: 1px solid rgba(11, 110, 79, 0.12);
+  border-radius: 20px;
+}
+
+.upload-card__ready.is-ready {
+  background: var(--success-bg);
+  border-color: rgba(11, 110, 79, 0.18);
+}
+
+.upload-card__ready.is-pending {
+  background: rgba(11, 110, 79, 0.05);
+}
+
+.upload-card__ready-title,
+.upload-card__ready-text,
+.upload-card__ready-meta {
+  margin: 0;
+}
+
+.upload-card__ready-title {
+  font-weight: 700;
+  color: var(--accent-strong);
+}
+
+.upload-card__ready-text,
+.upload-card__ready-meta {
+  color: var(--muted);
+}
+
 .agent-card__textarea {
   width: 100%;
   margin-top: 24px;

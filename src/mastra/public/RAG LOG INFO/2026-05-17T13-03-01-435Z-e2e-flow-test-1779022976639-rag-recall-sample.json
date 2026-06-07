@@ -1,0 +1,949 @@
+{
+  "schemaVersion": 1,
+  "createdAt": "2026-05-17T13:03:01.435Z",
+  "updatedAt": "2026-05-17T13:03:01.435Z",
+  "threadId": "e2e-flow-test-1779022976639",
+  "targetRole": "通用技术岗位",
+  "recalls": [
+    {
+      "timestamp": "2026-05-17T13:03:01.334Z",
+      "roundType": "professional-skills",
+      "skill": "professional-skills-context",
+      "queryText": "Target role: 通用技术岗位\nRound type: professional-skills\nProfessional skills context:\n候选人简历\n### 专业技能\n- TypeScript / Node.js / NestJS / Vue 3\n- AI Agent 工程化、RAG、向量检索、Prompt 设计\n- 监控、测试自动化、故障排查与性能优化\n\n### 项目经历\n- 负责一个 AI Interview 平台，从前端、BFF 到 Mastra runtime 设计并落地全链路。\n- 为 RAG 召回增加 trace、fallback 和质量观测能力。\n\n### 岗位职责\n- 负责 AI 面试系统的端到端交付与性能优化。\n- 与产品和算法协作，持续改进召回与评分链路。\n\n### 技术要求\n- 熟悉 TypeScript、Node.js、NestJS、Vue 3。\n- 具备 Agent、RAG、观测与测试自动化经验。",
+      "logContext": "initialization:professional-skills:context",
+      "candidateQuestionIds": [
+        "f22f42dd-48c1-4afe-acdc-d43d89028830",
+        "b0dbff04-26ac-4a42-8e8c-7fc6b5f8232d",
+        "7ae0d7c3-da6f-4dfc-a5b1-120f1408a6c9",
+        "00b79d29-b8c2-4940-b21b-8ec8379c0fc1",
+        "2b6ff69e-9077-4e22-a579-fbeef01f88ee",
+        "d93f4e7e-081c-410a-a3e5-ec8cdcebc335",
+        "399aa449-0e73-411d-b361-1abe05ac4d10",
+        "9fd63a1f-2d8b-462b-8ec4-90a2f61037bc",
+        "dfdd3983-0dc1-4c28-84ad-4b34ce04312b",
+        "0aef3a95-c6fc-4190-90a1-99f1b1fb3206",
+        "34f3771a-8a4d-457d-ad2b-7eb6269bb20e",
+        "6dd09175-2550-40ad-83dc-0efe552e2778",
+        "69e632ae-b0ec-47eb-9be6-6b4ff5d5b3b4",
+        "883df029-6fd5-4b90-906b-513735c333e8",
+        "d4e9507b-9be1-4c18-98a9-7c92e32bc303",
+        "4b27cbf3-c7be-496a-b790-3724f2a49aab",
+        "f7dfe43b-809a-4f37-aa0a-22e6f82aaf2d",
+        "c8700b66-02dc-4940-8bb1-f5ead73dc7de",
+        "7e2f7ed9-0acd-43f2-ae83-8d4cafe4909c",
+        "b1dba717-02e3-4e81-90cb-7766198de94d"
+      ],
+      "selectedQuestionIds": [
+        "b0dbff04-26ac-4a42-8e8c-7fc6b5f8232d",
+        "0aef3a95-c6fc-4190-90a1-99f1b1fb3206",
+        "00b79d29-b8c2-4940-b21b-8ec8379c0fc1",
+        "d93f4e7e-081c-410a-a3e5-ec8cdcebc335",
+        "883df029-6fd5-4b90-906b-513735c333e8",
+        "f22f42dd-48c1-4afe-acdc-d43d89028830",
+        "34f3771a-8a4d-457d-ad2b-7eb6269bb20e",
+        "2b6ff69e-9077-4e22-a579-fbeef01f88ee",
+        "9fd63a1f-2d8b-462b-8ec4-90a2f61037bc",
+        "dfdd3983-0dc1-4c28-84ad-4b34ce04312b"
+      ],
+      "candidates": [
+        {
+          "id": "f22f42dd-48c1-4afe-acdc-d43d89028830",
+          "questionText": "如果让你用 TypeScript 或 C# 设计一个 Agent 平台的模块分层，你会怎么拆？",
+          "vectorScore": 0.7671,
+          "bm25Score": 17.6102,
+          "hybridScore": 0.9847,
+          "rerankRank": 1,
+          "finalSelectionRank": 6,
+          "filterReason": "selected"
+        },
+        {
+          "id": "b0dbff04-26ac-4a42-8e8c-7fc6b5f8232d",
+          "questionText": "跨 Agent 的任务委派协议里，至少要包含哪些字段？",
+          "vectorScore": 0.7446,
+          "bm25Score": 7.4165,
+          "hybridScore": 0.4586,
+          "rerankRank": 4,
+          "finalSelectionRank": 1,
+          "filterReason": "selected"
+        },
+        {
+          "id": "7ae0d7c3-da6f-4dfc-a5b1-120f1408a6c9",
+          "questionText": "如果 Agent 总是重复执行同一个错误的工具调用，你会从哪个环节开始修复？",
+          "vectorScore": 0.7443,
+          "bm25Score": 0,
+          "hybridScore": 0,
+          "rerankRank": null,
+          "finalSelectionRank": null,
+          "filterReason": "filtered-out-by-hybrid-rerank"
+        },
+        {
+          "id": "00b79d29-b8c2-4940-b21b-8ec8379c0fc1",
+          "questionText": "如果你已经会 LangChain，再学习 Mastra 或 CrewAI，重点应该补什么？",
+          "vectorScore": 0.738,
+          "bm25Score": 9.4172,
+          "hybridScore": 0.444,
+          "rerankRank": 5,
+          "finalSelectionRank": 3,
+          "filterReason": "selected"
+        },
+        {
+          "id": "2b6ff69e-9077-4e22-a579-fbeef01f88ee",
+          "questionText": "如果多个 Skill 的 description 很相似，导致 Agent 经常加载错 Skill，应该怎么解决？",
+          "vectorScore": 0.7342,
+          "bm25Score": 10.2685,
+          "hybridScore": 0.427,
+          "rerankRank": 6,
+          "finalSelectionRank": 8,
+          "filterReason": "selected"
+        },
+        {
+          "id": "d93f4e7e-081c-410a-a3e5-ec8cdcebc335",
+          "questionText": "在 Agent 系统中，RAG 检索到的外部知识是如何喂给模型并尽量避免干扰主任务的？",
+          "vectorScore": 0.734,
+          "bm25Score": 15.5978,
+          "hybridScore": 0.5738,
+          "rerankRank": 3,
+          "finalSelectionRank": 4,
+          "filterReason": "selected"
+        },
+        {
+          "id": "399aa449-0e73-411d-b361-1abe05ac4d10",
+          "questionText": "如果 Agent 发现工具调用报错，如何设计 Prompt 或策略引导它利用报错信息重试，而不是直接失败？",
+          "vectorScore": 0.7333,
+          "bm25Score": 0,
+          "hybridScore": 0,
+          "rerankRank": null,
+          "finalSelectionRank": null,
+          "filterReason": "filtered-out-by-hybrid-rerank"
+        },
+        {
+          "id": "9fd63a1f-2d8b-462b-8ec4-90a2f61037bc",
+          "questionText": "在开发中，你怎么判断一个任务该用 Workflow，还是该交给自主决策的 Agent？",
+          "vectorScore": 0.7322,
+          "bm25Score": 8.9451,
+          "hybridScore": 0.3687,
+          "rerankRank": 8,
+          "finalSelectionRank": 9,
+          "filterReason": "selected"
+        },
+        {
+          "id": "dfdd3983-0dc1-4c28-84ad-4b34ce04312b",
+          "questionText": "在开发自己的 Agent 时，你采用了什么研发流程？为什么选择这个流程？",
+          "vectorScore": 0.7311,
+          "bm25Score": 18.1595,
+          "hybridScore": 0.6147,
+          "rerankRank": 2,
+          "finalSelectionRank": 10,
+          "filterReason": "selected"
+        },
+        {
+          "id": "0aef3a95-c6fc-4190-90a1-99f1b1fb3206",
+          "questionText": "Java 在 Agent 平台中更适合承接哪些后端模块？",
+          "vectorScore": 0.73,
+          "bm25Score": 9.5333,
+          "hybridScore": 0.3614,
+          "rerankRank": 10,
+          "finalSelectionRank": 2,
+          "filterReason": "selected"
+        },
+        {
+          "id": "34f3771a-8a4d-457d-ad2b-7eb6269bb20e",
+          "questionText": "LangChain、Mastra、CrewAI 分别更适合什么场景？",
+          "vectorScore": 0.7282,
+          "bm25Score": 10.4509,
+          "hybridScore": 0.368,
+          "rerankRank": 9,
+          "finalSelectionRank": 7,
+          "filterReason": "selected"
+        },
+        {
+          "id": "6dd09175-2550-40ad-83dc-0efe552e2778",
+          "questionText": "Agent 是如何识别并选择正确工具的？更依赖工具名称还是功能描述？",
+          "vectorScore": 0.726,
+          "bm25Score": 0,
+          "hybridScore": 0,
+          "rerankRank": null,
+          "finalSelectionRank": null,
+          "filterReason": "filtered-out-by-hybrid-rerank"
+        },
+        {
+          "id": "69e632ae-b0ec-47eb-9be6-6b4ff5d5b3b4",
+          "questionText": "在 LangChain / Mastra / CrewAI 中接入自定义 Tool 时，schema 和 description 应该怎么写？",
+          "vectorScore": 0.7233,
+          "bm25Score": 0,
+          "hybridScore": 0,
+          "rerankRank": null,
+          "finalSelectionRank": null,
+          "filterReason": "filtered-out-by-hybrid-rerank"
+        },
+        {
+          "id": "883df029-6fd5-4b90-906b-513735c333e8",
+          "questionText": "你会如何在 LangChain、Mastra、CrewAI 之间做技术选型？",
+          "vectorScore": 0.7214,
+          "bm25Score": 13.3964,
+          "hybridScore": 0.378,
+          "rerankRank": 7,
+          "finalSelectionRank": 5,
+          "filterReason": "selected"
+        },
+        {
+          "id": "d4e9507b-9be1-4c18-98a9-7c92e32bc303",
+          "questionText": "如果把大量 Skill 直接放进系统提示词，导致上下文窗口占用过大，应该如何处理？",
+          "vectorScore": 0.7207,
+          "bm25Score": 0,
+          "hybridScore": 0,
+          "rerankRank": null,
+          "finalSelectionRank": null,
+          "filterReason": "filtered-out-by-hybrid-rerank"
+        },
+        {
+          "id": "4b27cbf3-c7be-496a-b790-3724f2a49aab",
+          "questionText": "Skill 内部是否可以封装 workflow 或 SOP？怎么设计边界？",
+          "vectorScore": 0.7206,
+          "bm25Score": 0,
+          "hybridScore": 0,
+          "rerankRank": null,
+          "finalSelectionRank": null,
+          "filterReason": "filtered-out-by-hybrid-rerank"
+        },
+        {
+          "id": "f7dfe43b-809a-4f37-aa0a-22e6f82aaf2d",
+          "questionText": "你了解哪些主流 Agent 设计范式？它们分别适用于什么场景？",
+          "vectorScore": 0.7203,
+          "bm25Score": 0,
+          "hybridScore": 0,
+          "rerankRank": null,
+          "finalSelectionRank": null,
+          "filterReason": "filtered-out-by-hybrid-rerank"
+        },
+        {
+          "id": "c8700b66-02dc-4940-8bb1-f5ead73dc7de",
+          "questionText": "沙箱隔离通常会限制哪些能力？如何做提权审批？",
+          "vectorScore": 0.7196,
+          "bm25Score": 0,
+          "hybridScore": 0,
+          "rerankRank": null,
+          "finalSelectionRank": null,
+          "filterReason": "filtered-out-by-hybrid-rerank"
+        },
+        {
+          "id": "7e2f7ed9-0acd-43f2-ae83-8d4cafe4909c",
+          "questionText": "什么是 Human-in-the-loop？在 Agent 系统中如何设计人工审批断点？",
+          "vectorScore": 0.7161,
+          "bm25Score": 0,
+          "hybridScore": 0,
+          "rerankRank": null,
+          "finalSelectionRank": null,
+          "filterReason": "filtered-out-by-hybrid-rerank"
+        },
+        {
+          "id": "b1dba717-02e3-4e81-90cb-7766198de94d",
+          "questionText": "多个 Agent 之间通常通过什么机制协同与通信？",
+          "vectorScore": 0.7157,
+          "bm25Score": 0,
+          "hybridScore": 0,
+          "rerankRank": null,
+          "finalSelectionRank": null,
+          "filterReason": "filtered-out-by-hybrid-rerank"
+        }
+      ],
+      "finalSelectedQuestions": [
+        {
+          "id": "b0dbff04-26ac-4a42-8e8c-7fc6b5f8232d",
+          "questionText": "跨 Agent 的任务委派协议里，至少要包含哪些字段？",
+          "vectorScore": 0.7446,
+          "bm25Score": 7.4165,
+          "hybridScore": 0.4586,
+          "rerankRank": 4,
+          "finalSelectionRank": 1
+        },
+        {
+          "id": "0aef3a95-c6fc-4190-90a1-99f1b1fb3206",
+          "questionText": "Java 在 Agent 平台中更适合承接哪些后端模块？",
+          "vectorScore": 0.73,
+          "bm25Score": 9.5333,
+          "hybridScore": 0.3614,
+          "rerankRank": 10,
+          "finalSelectionRank": 2
+        },
+        {
+          "id": "00b79d29-b8c2-4940-b21b-8ec8379c0fc1",
+          "questionText": "如果你已经会 LangChain，再学习 Mastra 或 CrewAI，重点应该补什么？",
+          "vectorScore": 0.738,
+          "bm25Score": 9.4172,
+          "hybridScore": 0.444,
+          "rerankRank": 5,
+          "finalSelectionRank": 3
+        },
+        {
+          "id": "d93f4e7e-081c-410a-a3e5-ec8cdcebc335",
+          "questionText": "在 Agent 系统中，RAG 检索到的外部知识是如何喂给模型并尽量避免干扰主任务的？",
+          "vectorScore": 0.734,
+          "bm25Score": 15.5978,
+          "hybridScore": 0.5738,
+          "rerankRank": 3,
+          "finalSelectionRank": 4
+        },
+        {
+          "id": "883df029-6fd5-4b90-906b-513735c333e8",
+          "questionText": "你会如何在 LangChain、Mastra、CrewAI 之间做技术选型？",
+          "vectorScore": 0.7214,
+          "bm25Score": 13.3964,
+          "hybridScore": 0.378,
+          "rerankRank": 7,
+          "finalSelectionRank": 5
+        },
+        {
+          "id": "f22f42dd-48c1-4afe-acdc-d43d89028830",
+          "questionText": "如果让你用 TypeScript 或 C# 设计一个 Agent 平台的模块分层，你会怎么拆？",
+          "vectorScore": 0.7671,
+          "bm25Score": 17.6102,
+          "hybridScore": 0.9847,
+          "rerankRank": 1,
+          "finalSelectionRank": 6
+        },
+        {
+          "id": "34f3771a-8a4d-457d-ad2b-7eb6269bb20e",
+          "questionText": "LangChain、Mastra、CrewAI 分别更适合什么场景？",
+          "vectorScore": 0.7282,
+          "bm25Score": 10.4509,
+          "hybridScore": 0.368,
+          "rerankRank": 9,
+          "finalSelectionRank": 7
+        },
+        {
+          "id": "2b6ff69e-9077-4e22-a579-fbeef01f88ee",
+          "questionText": "如果多个 Skill 的 description 很相似，导致 Agent 经常加载错 Skill，应该怎么解决？",
+          "vectorScore": 0.7342,
+          "bm25Score": 10.2685,
+          "hybridScore": 0.427,
+          "rerankRank": 6,
+          "finalSelectionRank": 8
+        },
+        {
+          "id": "9fd63a1f-2d8b-462b-8ec4-90a2f61037bc",
+          "questionText": "在开发中，你怎么判断一个任务该用 Workflow，还是该交给自主决策的 Agent？",
+          "vectorScore": 0.7322,
+          "bm25Score": 8.9451,
+          "hybridScore": 0.3687,
+          "rerankRank": 8,
+          "finalSelectionRank": 9
+        },
+        {
+          "id": "dfdd3983-0dc1-4c28-84ad-4b34ce04312b",
+          "questionText": "在开发自己的 Agent 时，你采用了什么研发流程？为什么选择这个流程？",
+          "vectorScore": 0.7311,
+          "bm25Score": 18.1595,
+          "hybridScore": 0.6147,
+          "rerankRank": 2,
+          "finalSelectionRank": 10
+        }
+      ],
+      "postInterviewAnswerPerformance": [
+        {
+          "roundType": "professional-skills",
+          "topic": "跨 Agent 的任务委派协议里",
+          "mainQuestion": "跨 Agent 的任务委派协议里，至少要包含哪些字段？",
+          "nodeStatus": "awaiting-main-answer",
+          "followUpCount": 0,
+          "answerAttemptCount": 0,
+          "latestClassification": null,
+          "aggregatedScore": null,
+          "strengths": [],
+          "missingPoints": [],
+          "incorrectPoints": []
+        },
+        {
+          "roundType": "professional-skills",
+          "topic": "Java 在 Agent 平台中更适合承接哪些后端模块",
+          "mainQuestion": "Java 在 Agent 平台中更适合承接哪些后端模块？",
+          "nodeStatus": "pending",
+          "followUpCount": 0,
+          "answerAttemptCount": 0,
+          "latestClassification": null,
+          "aggregatedScore": null,
+          "strengths": [],
+          "missingPoints": [],
+          "incorrectPoints": []
+        },
+        {
+          "roundType": "professional-skills",
+          "topic": "如果你已经会 LangChain",
+          "mainQuestion": "如果你已经会 LangChain，再学习 Mastra 或 CrewAI，重点应该补什么？",
+          "nodeStatus": "pending",
+          "followUpCount": 0,
+          "answerAttemptCount": 0,
+          "latestClassification": null,
+          "aggregatedScore": null,
+          "strengths": [],
+          "missingPoints": [],
+          "incorrectPoints": []
+        },
+        {
+          "roundType": "professional-skills",
+          "topic": "在 Agent 系统中",
+          "mainQuestion": "在 Agent 系统中，RAG 检索到的外部知识是如何喂给模型并尽量避免干扰主任务的？",
+          "nodeStatus": "pending",
+          "followUpCount": 0,
+          "answerAttemptCount": 0,
+          "latestClassification": null,
+          "aggregatedScore": null,
+          "strengths": [],
+          "missingPoints": [],
+          "incorrectPoints": []
+        },
+        {
+          "roundType": "professional-skills",
+          "topic": "你会如何在 LangChain、Mastra、CrewAI 之间",
+          "mainQuestion": "你会如何在 LangChain、Mastra、CrewAI 之间做技术选型？",
+          "nodeStatus": "pending",
+          "followUpCount": 0,
+          "answerAttemptCount": 0,
+          "latestClassification": null,
+          "aggregatedScore": null,
+          "strengths": [],
+          "missingPoints": [],
+          "incorrectPoints": []
+        },
+        {
+          "roundType": "professional-skills",
+          "topic": "如果让你用 TypeScript 或 C# 设计一个 Agent",
+          "mainQuestion": "如果让你用 TypeScript 或 C# 设计一个 Agent 平台的模块分层，你会怎么拆？",
+          "nodeStatus": "pending",
+          "followUpCount": 0,
+          "answerAttemptCount": 0,
+          "latestClassification": null,
+          "aggregatedScore": null,
+          "strengths": [],
+          "missingPoints": [],
+          "incorrectPoints": []
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-05-17T13:03:01.433Z",
+      "roundType": "project-experience",
+      "skill": "project-experience-context",
+      "queryText": "Target role: 通用技术岗位\nRound type: project-experience\nProject experience context:\n候选人简历\n### 专业技能\n- TypeScript / Node.js / NestJS / Vue 3\n- AI Agent 工程化、RAG、向量检索、Prompt 设计\n- 监控、测试自动化、故障排查与性能优化\n\n### 项目经历\n- 负责一个 AI Interview 平台，从前端、BFF 到 Mastra runtime 设计并落地全链路。\n- 为 RAG 召回增加 trace、fallback 和质量观测能力。\n\n### 岗位职责\n- 负责 AI 面试系统的端到端交付与性能优化。\n- 与产品和算法协作，持续改进召回与评分链路。\n\n### 技术要求\n- 熟悉 TypeScript、Node.js、NestJS、Vue 3。\n- 具备 Agent、RAG、观测与测试自动化经验。",
+      "logContext": "initialization:project-experience:context",
+      "candidateQuestionIds": [
+        "f22f42dd-48c1-4afe-acdc-d43d89028830",
+        "b0dbff04-26ac-4a42-8e8c-7fc6b5f8232d",
+        "7ae0d7c3-da6f-4dfc-a5b1-120f1408a6c9",
+        "34f3771a-8a4d-457d-ad2b-7eb6269bb20e",
+        "00b79d29-b8c2-4940-b21b-8ec8379c0fc1",
+        "0aef3a95-c6fc-4190-90a1-99f1b1fb3206",
+        "399aa449-0e73-411d-b361-1abe05ac4d10",
+        "f7dfe43b-809a-4f37-aa0a-22e6f82aaf2d",
+        "d93f4e7e-081c-410a-a3e5-ec8cdcebc335",
+        "6dd09175-2550-40ad-83dc-0efe552e2778",
+        "69e632ae-b0ec-47eb-9be6-6b4ff5d5b3b4",
+        "9fd63a1f-2d8b-462b-8ec4-90a2f61037bc",
+        "dfdd3983-0dc1-4c28-84ad-4b34ce04312b",
+        "883df029-6fd5-4b90-906b-513735c333e8",
+        "b1dba717-02e3-4e81-90cb-7766198de94d",
+        "edfabdd9-eec9-4d8e-b895-40d4fdfcff85",
+        "f19b09ba-d9e8-48f9-8b38-c0218dff5094",
+        "554289b6-0b2b-4311-98fc-e1f3edd4d73f",
+        "c8700b66-02dc-4940-8bb1-f5ead73dc7de",
+        "64459ad4-3185-44b7-9b3d-a69392cf3ec3"
+      ],
+      "selectedQuestionIds": [
+        "f22f42dd-48c1-4afe-acdc-d43d89028830",
+        "f7dfe43b-809a-4f37-aa0a-22e6f82aaf2d",
+        "0aef3a95-c6fc-4190-90a1-99f1b1fb3206",
+        "b0dbff04-26ac-4a42-8e8c-7fc6b5f8232d",
+        "34f3771a-8a4d-457d-ad2b-7eb6269bb20e",
+        "00b79d29-b8c2-4940-b21b-8ec8379c0fc1",
+        "d93f4e7e-081c-410a-a3e5-ec8cdcebc335",
+        "7ae0d7c3-da6f-4dfc-a5b1-120f1408a6c9",
+        "883df029-6fd5-4b90-906b-513735c333e8",
+        "dfdd3983-0dc1-4c28-84ad-4b34ce04312b"
+      ],
+      "candidates": [
+        {
+          "id": "f22f42dd-48c1-4afe-acdc-d43d89028830",
+          "questionText": "如果让你用 TypeScript 或 C# 设计一个 Agent 平台的模块分层，你会怎么拆？",
+          "vectorScore": 0.7533,
+          "bm25Score": 17.9452,
+          "hybridScore": 1,
+          "rerankRank": 1,
+          "finalSelectionRank": 1,
+          "filterReason": "selected"
+        },
+        {
+          "id": "b0dbff04-26ac-4a42-8e8c-7fc6b5f8232d",
+          "questionText": "跨 Agent 的任务委派协议里，至少要包含哪些字段？",
+          "vectorScore": 0.7397,
+          "bm25Score": 7.4399,
+          "hybridScore": 0.5698,
+          "rerankRank": 4,
+          "finalSelectionRank": 4,
+          "filterReason": "selected"
+        },
+        {
+          "id": "7ae0d7c3-da6f-4dfc-a5b1-120f1408a6c9",
+          "questionText": "如果 Agent 总是重复执行同一个错误的工具调用，你会从哪个环节开始修复？",
+          "vectorScore": 0.7364,
+          "bm25Score": 2.8788,
+          "hybridScore": 0.4096,
+          "rerankRank": 10,
+          "finalSelectionRank": 8,
+          "filterReason": "selected"
+        },
+        {
+          "id": "34f3771a-8a4d-457d-ad2b-7eb6269bb20e",
+          "questionText": "LangChain、Mastra、CrewAI 分别更适合什么场景？",
+          "vectorScore": 0.7329,
+          "bm25Score": 9.303,
+          "hybridScore": 0.5494,
+          "rerankRank": 5,
+          "finalSelectionRank": 5,
+          "filterReason": "selected"
+        },
+        {
+          "id": "00b79d29-b8c2-4940-b21b-8ec8379c0fc1",
+          "questionText": "如果你已经会 LangChain，再学习 Mastra 或 CrewAI，重点应该补什么？",
+          "vectorScore": 0.7297,
+          "bm25Score": 8.9118,
+          "hybridScore": 0.5053,
+          "rerankRank": 8,
+          "finalSelectionRank": 6,
+          "filterReason": "selected"
+        },
+        {
+          "id": "0aef3a95-c6fc-4190-90a1-99f1b1fb3206",
+          "questionText": "Java 在 Agent 平台中更适合承接哪些后端模块？",
+          "vectorScore": 0.7292,
+          "bm25Score": 9.5222,
+          "hybridScore": 0.5171,
+          "rerankRank": 7,
+          "finalSelectionRank": 3,
+          "filterReason": "selected"
+        },
+        {
+          "id": "399aa449-0e73-411d-b361-1abe05ac4d10",
+          "questionText": "如果 Agent 发现工具调用报错，如何设计 Prompt 或策略引导它利用报错信息重试，而不是直接失败？",
+          "vectorScore": 0.7254,
+          "bm25Score": 0,
+          "hybridScore": 0,
+          "rerankRank": null,
+          "finalSelectionRank": null,
+          "filterReason": "filtered-out-by-hybrid-rerank"
+        },
+        {
+          "id": "f7dfe43b-809a-4f37-aa0a-22e6f82aaf2d",
+          "questionText": "你了解哪些主流 Agent 设计范式？它们分别适用于什么场景？",
+          "vectorScore": 0.7239,
+          "bm25Score": 12.1142,
+          "hybridScore": 0.5323,
+          "rerankRank": 6,
+          "finalSelectionRank": 2,
+          "filterReason": "selected"
+        },
+        {
+          "id": "d93f4e7e-081c-410a-a3e5-ec8cdcebc335",
+          "questionText": "在 Agent 系统中，RAG 检索到的外部知识是如何喂给模型并尽量避免干扰主任务的？",
+          "vectorScore": 0.7207,
+          "bm25Score": 16.3024,
+          "hybridScore": 0.6135,
+          "rerankRank": 3,
+          "finalSelectionRank": 7,
+          "filterReason": "selected"
+        },
+        {
+          "id": "6dd09175-2550-40ad-83dc-0efe552e2778",
+          "questionText": "Agent 是如何识别并选择正确工具的？更依赖工具名称还是功能描述？",
+          "vectorScore": 0.7193,
+          "bm25Score": 0,
+          "hybridScore": 0,
+          "rerankRank": null,
+          "finalSelectionRank": null,
+          "filterReason": "filtered-out-by-hybrid-rerank"
+        },
+        {
+          "id": "69e632ae-b0ec-47eb-9be6-6b4ff5d5b3b4",
+          "questionText": "在 LangChain / Mastra / CrewAI 中接入自定义 Tool 时，schema 和 description 应该怎么写？",
+          "vectorScore": 0.7185,
+          "bm25Score": 0,
+          "hybridScore": 0,
+          "rerankRank": null,
+          "finalSelectionRank": null,
+          "filterReason": "filtered-out-by-hybrid-rerank"
+        },
+        {
+          "id": "9fd63a1f-2d8b-462b-8ec4-90a2f61037bc",
+          "questionText": "在开发中，你怎么判断一个任务该用 Workflow，还是该交给自主决策的 Agent？",
+          "vectorScore": 0.7181,
+          "bm25Score": 0,
+          "hybridScore": 0,
+          "rerankRank": null,
+          "finalSelectionRank": null,
+          "filterReason": "filtered-out-by-hybrid-rerank"
+        },
+        {
+          "id": "dfdd3983-0dc1-4c28-84ad-4b34ce04312b",
+          "questionText": "在开发自己的 Agent 时，你采用了什么研发流程？为什么选择这个流程？",
+          "vectorScore": 0.7178,
+          "bm25Score": 17.5112,
+          "hybridScore": 0.6168,
+          "rerankRank": 2,
+          "finalSelectionRank": 10,
+          "filterReason": "selected"
+        },
+        {
+          "id": "883df029-6fd5-4b90-906b-513735c333e8",
+          "questionText": "你会如何在 LangChain、Mastra、CrewAI 之间做技术选型？",
+          "vectorScore": 0.716,
+          "bm25Score": 13.0859,
+          "hybridScore": 0.4767,
+          "rerankRank": 9,
+          "finalSelectionRank": 9,
+          "filterReason": "selected"
+        },
+        {
+          "id": "b1dba717-02e3-4e81-90cb-7766198de94d",
+          "questionText": "多个 Agent 之间通常通过什么机制协同与通信？",
+          "vectorScore": 0.7123,
+          "bm25Score": 0,
+          "hybridScore": 0,
+          "rerankRank": null,
+          "finalSelectionRank": null,
+          "filterReason": "filtered-out-by-hybrid-rerank"
+        },
+        {
+          "id": "edfabdd9-eec9-4d8e-b895-40d4fdfcff85",
+          "questionText": "多 Agent 共享的状态、消息和中间结果通常存在哪里？如何保证一致性？",
+          "vectorScore": 0.7076,
+          "bm25Score": 0,
+          "hybridScore": 0,
+          "rerankRank": null,
+          "finalSelectionRank": null,
+          "filterReason": "filtered-out-by-hybrid-rerank"
+        },
+        {
+          "id": "f19b09ba-d9e8-48f9-8b38-c0218dff5094",
+          "questionText": "在 Mastra 或 CrewAI 这类框架里，任务状态如何做持久化、恢复和回放？",
+          "vectorScore": 0.7075,
+          "bm25Score": 0,
+          "hybridScore": 0,
+          "rerankRank": null,
+          "finalSelectionRank": null,
+          "filterReason": "filtered-out-by-hybrid-rerank"
+        },
+        {
+          "id": "554289b6-0b2b-4311-98fc-e1f3edd4d73f",
+          "questionText": "当单 Agent 面对长链路复杂任务时，引入 Multi-Agent 的核心优势是什么？",
+          "vectorScore": 0.7037,
+          "bm25Score": 0,
+          "hybridScore": 0,
+          "rerankRank": null,
+          "finalSelectionRank": null,
+          "filterReason": "filtered-out-by-hybrid-rerank"
+        },
+        {
+          "id": "c8700b66-02dc-4940-8bb1-f5ead73dc7de",
+          "questionText": "沙箱隔离通常会限制哪些能力？如何做提权审批？",
+          "vectorScore": 0.7031,
+          "bm25Score": 0,
+          "hybridScore": 0,
+          "rerankRank": null,
+          "finalSelectionRank": null,
+          "filterReason": "filtered-out-by-hybrid-rerank"
+        },
+        {
+          "id": "64459ad4-3185-44b7-9b3d-a69392cf3ec3",
+          "questionText": "你会如何给 Agent 框架补 observability、retry、guardrail middleware？",
+          "vectorScore": 0.7007,
+          "bm25Score": 0,
+          "hybridScore": 0,
+          "rerankRank": null,
+          "finalSelectionRank": null,
+          "filterReason": "filtered-out-by-hybrid-rerank"
+        }
+      ],
+      "finalSelectedQuestions": [
+        {
+          "id": "f22f42dd-48c1-4afe-acdc-d43d89028830",
+          "questionText": "如果让你用 TypeScript 或 C# 设计一个 Agent 平台的模块分层，你会怎么拆？",
+          "vectorScore": 0.7533,
+          "bm25Score": 17.9452,
+          "hybridScore": 1,
+          "rerankRank": 1,
+          "finalSelectionRank": 1
+        },
+        {
+          "id": "f7dfe43b-809a-4f37-aa0a-22e6f82aaf2d",
+          "questionText": "你了解哪些主流 Agent 设计范式？它们分别适用于什么场景？",
+          "vectorScore": 0.7239,
+          "bm25Score": 12.1142,
+          "hybridScore": 0.5323,
+          "rerankRank": 6,
+          "finalSelectionRank": 2
+        },
+        {
+          "id": "0aef3a95-c6fc-4190-90a1-99f1b1fb3206",
+          "questionText": "Java 在 Agent 平台中更适合承接哪些后端模块？",
+          "vectorScore": 0.7292,
+          "bm25Score": 9.5222,
+          "hybridScore": 0.5171,
+          "rerankRank": 7,
+          "finalSelectionRank": 3
+        },
+        {
+          "id": "b0dbff04-26ac-4a42-8e8c-7fc6b5f8232d",
+          "questionText": "跨 Agent 的任务委派协议里，至少要包含哪些字段？",
+          "vectorScore": 0.7397,
+          "bm25Score": 7.4399,
+          "hybridScore": 0.5698,
+          "rerankRank": 4,
+          "finalSelectionRank": 4
+        },
+        {
+          "id": "34f3771a-8a4d-457d-ad2b-7eb6269bb20e",
+          "questionText": "LangChain、Mastra、CrewAI 分别更适合什么场景？",
+          "vectorScore": 0.7329,
+          "bm25Score": 9.303,
+          "hybridScore": 0.5494,
+          "rerankRank": 5,
+          "finalSelectionRank": 5
+        },
+        {
+          "id": "00b79d29-b8c2-4940-b21b-8ec8379c0fc1",
+          "questionText": "如果你已经会 LangChain，再学习 Mastra 或 CrewAI，重点应该补什么？",
+          "vectorScore": 0.7297,
+          "bm25Score": 8.9118,
+          "hybridScore": 0.5053,
+          "rerankRank": 8,
+          "finalSelectionRank": 6
+        },
+        {
+          "id": "d93f4e7e-081c-410a-a3e5-ec8cdcebc335",
+          "questionText": "在 Agent 系统中，RAG 检索到的外部知识是如何喂给模型并尽量避免干扰主任务的？",
+          "vectorScore": 0.7207,
+          "bm25Score": 16.3024,
+          "hybridScore": 0.6135,
+          "rerankRank": 3,
+          "finalSelectionRank": 7
+        },
+        {
+          "id": "7ae0d7c3-da6f-4dfc-a5b1-120f1408a6c9",
+          "questionText": "如果 Agent 总是重复执行同一个错误的工具调用，你会从哪个环节开始修复？",
+          "vectorScore": 0.7364,
+          "bm25Score": 2.8788,
+          "hybridScore": 0.4096,
+          "rerankRank": 10,
+          "finalSelectionRank": 8
+        },
+        {
+          "id": "883df029-6fd5-4b90-906b-513735c333e8",
+          "questionText": "你会如何在 LangChain、Mastra、CrewAI 之间做技术选型？",
+          "vectorScore": 0.716,
+          "bm25Score": 13.0859,
+          "hybridScore": 0.4767,
+          "rerankRank": 9,
+          "finalSelectionRank": 9
+        },
+        {
+          "id": "dfdd3983-0dc1-4c28-84ad-4b34ce04312b",
+          "questionText": "在开发自己的 Agent 时，你采用了什么研发流程？为什么选择这个流程？",
+          "vectorScore": 0.7178,
+          "bm25Score": 17.5112,
+          "hybridScore": 0.6168,
+          "rerankRank": 2,
+          "finalSelectionRank": 10
+        }
+      ],
+      "postInterviewAnswerPerformance": [
+        {
+          "roundType": "professional-skills",
+          "topic": "如果让你用 TypeScript 或 C# 设计一个 Agent",
+          "mainQuestion": "如果让你用 TypeScript 或 C# 设计一个 Agent 平台的模块分层，你会怎么拆？",
+          "nodeStatus": "pending",
+          "followUpCount": 0,
+          "answerAttemptCount": 0,
+          "latestClassification": null,
+          "aggregatedScore": null,
+          "strengths": [],
+          "missingPoints": [],
+          "incorrectPoints": []
+        },
+        {
+          "roundType": "professional-skills",
+          "topic": "Java 在 Agent 平台中更适合承接哪些后端模块",
+          "mainQuestion": "Java 在 Agent 平台中更适合承接哪些后端模块？",
+          "nodeStatus": "pending",
+          "followUpCount": 0,
+          "answerAttemptCount": 0,
+          "latestClassification": null,
+          "aggregatedScore": null,
+          "strengths": [],
+          "missingPoints": [],
+          "incorrectPoints": []
+        },
+        {
+          "roundType": "professional-skills",
+          "topic": "跨 Agent 的任务委派协议里",
+          "mainQuestion": "跨 Agent 的任务委派协议里，至少要包含哪些字段？",
+          "nodeStatus": "awaiting-main-answer",
+          "followUpCount": 0,
+          "answerAttemptCount": 0,
+          "latestClassification": null,
+          "aggregatedScore": null,
+          "strengths": [],
+          "missingPoints": [],
+          "incorrectPoints": []
+        },
+        {
+          "roundType": "professional-skills",
+          "topic": "如果你已经会 LangChain",
+          "mainQuestion": "如果你已经会 LangChain，再学习 Mastra 或 CrewAI，重点应该补什么？",
+          "nodeStatus": "pending",
+          "followUpCount": 0,
+          "answerAttemptCount": 0,
+          "latestClassification": null,
+          "aggregatedScore": null,
+          "strengths": [],
+          "missingPoints": [],
+          "incorrectPoints": []
+        },
+        {
+          "roundType": "professional-skills",
+          "topic": "在 Agent 系统中",
+          "mainQuestion": "在 Agent 系统中，RAG 检索到的外部知识是如何喂给模型并尽量避免干扰主任务的？",
+          "nodeStatus": "pending",
+          "followUpCount": 0,
+          "answerAttemptCount": 0,
+          "latestClassification": null,
+          "aggregatedScore": null,
+          "strengths": [],
+          "missingPoints": [],
+          "incorrectPoints": []
+        },
+        {
+          "roundType": "professional-skills",
+          "topic": "你会如何在 LangChain、Mastra、CrewAI 之间",
+          "mainQuestion": "你会如何在 LangChain、Mastra、CrewAI 之间做技术选型？",
+          "nodeStatus": "pending",
+          "followUpCount": 0,
+          "answerAttemptCount": 0,
+          "latestClassification": null,
+          "aggregatedScore": null,
+          "strengths": [],
+          "missingPoints": [],
+          "incorrectPoints": []
+        }
+      ]
+    }
+  ],
+  "interviewSnapshot": {
+    "phase": "professional-skills-round",
+    "finalReportReady": false,
+    "answerPerformances": [
+      {
+        "roundType": "professional-skills",
+        "topic": "跨 Agent 的任务委派协议里",
+        "mainQuestion": "跨 Agent 的任务委派协议里，至少要包含哪些字段？",
+        "nodeStatus": "awaiting-main-answer",
+        "followUpCount": 0,
+        "answerAttemptCount": 0,
+        "latestClassification": null,
+        "aggregatedScore": null,
+        "strengths": [],
+        "missingPoints": [],
+        "incorrectPoints": []
+      },
+      {
+        "roundType": "professional-skills",
+        "topic": "Java 在 Agent 平台中更适合承接哪些后端模块",
+        "mainQuestion": "Java 在 Agent 平台中更适合承接哪些后端模块？",
+        "nodeStatus": "pending",
+        "followUpCount": 0,
+        "answerAttemptCount": 0,
+        "latestClassification": null,
+        "aggregatedScore": null,
+        "strengths": [],
+        "missingPoints": [],
+        "incorrectPoints": []
+      },
+      {
+        "roundType": "professional-skills",
+        "topic": "如果你已经会 LangChain",
+        "mainQuestion": "如果你已经会 LangChain，再学习 Mastra 或 CrewAI，重点应该补什么？",
+        "nodeStatus": "pending",
+        "followUpCount": 0,
+        "answerAttemptCount": 0,
+        "latestClassification": null,
+        "aggregatedScore": null,
+        "strengths": [],
+        "missingPoints": [],
+        "incorrectPoints": []
+      },
+      {
+        "roundType": "professional-skills",
+        "topic": "在 Agent 系统中",
+        "mainQuestion": "在 Agent 系统中，RAG 检索到的外部知识是如何喂给模型并尽量避免干扰主任务的？",
+        "nodeStatus": "pending",
+        "followUpCount": 0,
+        "answerAttemptCount": 0,
+        "latestClassification": null,
+        "aggregatedScore": null,
+        "strengths": [],
+        "missingPoints": [],
+        "incorrectPoints": []
+      },
+      {
+        "roundType": "professional-skills",
+        "topic": "你会如何在 LangChain、Mastra、CrewAI 之间",
+        "mainQuestion": "你会如何在 LangChain、Mastra、CrewAI 之间做技术选型？",
+        "nodeStatus": "pending",
+        "followUpCount": 0,
+        "answerAttemptCount": 0,
+        "latestClassification": null,
+        "aggregatedScore": null,
+        "strengths": [],
+        "missingPoints": [],
+        "incorrectPoints": []
+      },
+      {
+        "roundType": "professional-skills",
+        "topic": "如果让你用 TypeScript 或 C# 设计一个 Agent",
+        "mainQuestion": "如果让你用 TypeScript 或 C# 设计一个 Agent 平台的模块分层，你会怎么拆？",
+        "nodeStatus": "pending",
+        "followUpCount": 0,
+        "answerAttemptCount": 0,
+        "latestClassification": null,
+        "aggregatedScore": null,
+        "strengths": [],
+        "missingPoints": [],
+        "incorrectPoints": []
+      },
+      {
+        "roundType": "project-experience",
+        "topic": "结合一个你负责过的项目",
+        "mainQuestion": "请结合一个你负责过的项目，说明项目背景、你的职责、关键决策、遇到的挑战以及最终结果。",
+        "nodeStatus": "pending",
+        "followUpCount": 0,
+        "answerAttemptCount": 0,
+        "latestClassification": null,
+        "aggregatedScore": null,
+        "strengths": [],
+        "missingPoints": [],
+        "incorrectPoints": []
+      },
+      {
+        "roundType": "project-experience",
+        "topic": "通用技术岗位 project experience 2",
+        "mainQuestion": "请结合你做过的项目，详细说明“通用技术岗位 project experience 2”相关经历中的背景、目标、你的职责、关键决策和最终结果。",
+        "nodeStatus": "pending",
+        "followUpCount": 0,
+        "answerAttemptCount": 0,
+        "latestClassification": null,
+        "aggregatedScore": null,
+        "strengths": [],
+        "missingPoints": [],
+        "incorrectPoints": []
+      }
+    ]
+  }
+}

@@ -3,6 +3,7 @@ import { resolve } from 'node:path';
 import { z } from 'zod';
 
 import { chunkAndEmbed } from '../lib/rag-pipeline';
+import { buildSkillAreaAudit, cleanInterviewQuestionMetadata } from '../lib/interview-question-metadata';
 import { EMBEDDING_DIMENSION, INTERVIEW_INDEX_NAME, vectorStore } from '../lib/vector-store';
 
 const DEFAULT_FILE_PATH = 'C:/Users/Blaine.Yu/Documents/Notes/Summary/Learning/AI Agent面试问题整理-回答要点版.md';
@@ -184,6 +185,7 @@ async function recreateIndex(): Promise<void> {
 
 async function importQuestions(questions: readonly ImportedQuestion[], sourceFile: string): Promise<number> {
   let totalChunks = 0;
+  const importedMetadata: ReturnType<typeof cleanInterviewQuestionMetadata>[] = [];
 
   for (const question of questions) {
     const content = `# ${question.question}\n\n## 回答要点\n${question.answer}`;
@@ -214,11 +216,20 @@ async function importQuestions(questions: readonly ImportedQuestion[], sourceFil
     await vectorStore.upsert({
       indexName: INTERVIEW_INDEX_NAME,
       vectors: embeddings,
-      metadata: chunks.map((chunk) => chunk.metadata),
+      metadata: chunks.map((chunk) => {
+        const cleaned = cleanInterviewQuestionMetadata(chunk.metadata);
+        importedMetadata.push(cleaned);
+        return cleaned;
+      }),
     });
 
     totalChunks += chunks.length;
     console.log(`  ✓ ${question.question} -> ${chunks.length} chunk(s)`);
+  }
+
+  console.log('  Skill area audit:');
+  for (const [skill, count] of Object.entries(buildSkillAreaAudit(importedMetadata))) {
+    console.log(`    ${skill}: ${count}`);
   }
 
   return totalChunks;

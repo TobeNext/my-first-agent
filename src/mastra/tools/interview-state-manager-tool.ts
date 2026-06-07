@@ -1,17 +1,14 @@
 import { createTool } from '@mastra/core/tools';
-import { generateText } from 'ai';
 import { z } from 'zod';
 
 import {
   applyUserReply,
   buildInterviewProgressSummary,
   classifyByRules,
-  extractResumeTopics,
   validateInterviewState,
 } from '../lib/interview-state-machine';
 import {
-  extractJobDescriptionMarkdownFromKickoffMessage,
-  extractResumeSectionsFromKickoffMessage,
+  detectKickoffPayloadFormat,
   recoverMissingInterviewSession,
 } from '../lib/interview-kickoff-recovery';
 import {
@@ -21,24 +18,14 @@ import {
 import {
   answerScoreSchema,
   followUpIntentSchema,
-  interviewQuestionCandidateSchema,
   interviewWorkingMemorySchema,
   type AnswerScore,
   type InterviewSessionState,
 } from '../lib/interview-state-machine-schema';
-import { planProfessionalQuestionQueries } from '../lib/interview-question-planner';
+import { ensureGeneratedFollowUpQuestion } from '../lib/interview-question-generator';
+import { resolveInterviewInitializationResources } from '../lib/interview-initialization-pipeline';
 import { mastraLogger } from '../lib/logger';
-import {
-  buildProfessionalSkillQuery,
-  describeProfessionalPlanSkill,
-} from '../lib/professional-question-query';
-import {
-  type RagRecallTrace,
-  updateRagRecallSampleAnswerPerformance,
-  writeInitializationRagRecallSample,
-} from '../lib/rag-recall-sample';
-import { queryInterviewQuestions } from './interview-question-tool';
-import { glmAirModel } from '../lib/zhipu-model';
+import { updateRagRecallSampleAnswerPerformance, writeInitializationRagRecallSample } from '../lib/rag-recall-sample';
 
 const TOOL_MEMORY_CONFIG = {
   workingMemory: {
@@ -53,22 +40,6 @@ const INTERVIEW_OUTCOME_PATH_KEY = 'interviewOutcomeFilePath';
 const stateManagerLogger = mastraLogger.child({
   module: 'interview-state-manager-tool',
 });
-
-function parseIntegerSetting(rawKickoffMessage: string, label: string, defaultValue: number): number {
-  const pattern = new RegExp(`${label}:\\s*(\\d+)`, 'i');
-  const match = rawKickoffMessage.match(pattern);
-  if (!match) {
-    return defaultValue;
-  }
-
-  const value = Number.parseInt(match[1], 10);
-  return Number.isNaN(value) ? defaultValue : value;
-}
-
-function parseProfessionalQuestionMode(rawKickoffMessage: string): 'per-skill-default' | 'custom-count' {
-  const match = rawKickoffMessage.match(/Professional question mode:\s*(per-skill-default|custom-count)/i);
-  return match?.[1]?.toLowerCase() === 'custom-count' ? 'custom-count' : 'per-skill-default';
-}
 
 const initializationInputSchema = z.object({
   action: z.literal('initialize-session'),
@@ -105,11 +76,6 @@ const interviewStateManagerOutputSchema = z.object({
     currentNodeTopic: z.string().nullable(),
   }),
 });
-
-interface InitializationResourcesInput {
-  readonly action: 'initialize-session';
-  readonly rawKickoffMessage: string;
-}
 
 interface InterviewAnalysisResult {
   readonly classification:
@@ -173,169 +139,6 @@ interface MemoryLike {
 }
 
 const THREAD_METADATA_STATE_KEY = 'interviewSessionState';
-
-function extractSelectedDirectionFromKickoffMessage(rawKickoffMessage: string): string {
-  const selectedDirectionMatch = rawKickoffMessage.match(/Selected interview direction:\s*(.+)/i);
-  const selectedDirection = selectedDirectionMatch?.[1]?.trim();
-  if (selectedDirection && selectedDirection.toLowerCase() !== 'unknown') {
-    return selectedDirection;
-  }
-
-  return /[\u3400-\u9fff]/.test(rawKickoffMessage) ? '通用技术岗位' : 'General Technical Role';
-}
-
-function buildInitializationQuery(options: {
-  readonly selectedDirection: string;
-  readonly roundType: 'professional-skills' | 'project-experience';
-  readonly sectionContent: string;
-  readonly rawKickoffMessage: string;
-}): string {
-  const sectionHeading = options.roundType === 'professional-skills' ? 'Professional skills' : 'Project experience';
-  const fallbackContext = options.sectionContent.trim() || options.rawKickoffMessage;
-
-  return [
-    `Target role: ${options.selectedDirection}`,
-    `Round type: ${options.roundType}`,
-    `${sectionHeading} context:`,
-    fallbackContext,
-  ].join('\n');
-}
-
-type QuestionQueryResult = Awaited<ReturnType<typeof queryInterviewQuestions>>;
-
-function createRecallTraceCollector(recallTraces: RagRecallTrace[]): (trace: RagRecallTrace) => void {
-  return (trace) => {
-    recallTraces.push(trace);
-  };
-}
-
-function combineQuestionQueryResults(results: readonly QuestionQueryResult[]): QuestionQueryResult {
-  return {
-    count: results.reduce((total, result) => total + result.count, 0),
-    questions: results.flatMap((result) => result.questions),
-  };
-}
-
-async function resolveProfessionalInitializationQuestions(options: {
-  readonly professionalQuestionPlan: ReturnType<typeof planProfessionalQuestionQueries>;
-  readonly selectedDirection: string;
-  readonly professionalSkills: string;
-  readonly projectExperience: string;
-  readonly rawKickoffMessage: string;
-  readonly onRecallTrace: (trace: RagRecallTrace) => void;
-}): Promise<QuestionQueryResult> {
-  if (options.professionalQuestionPlan.length === 0) {
-    return queryInterviewQuestions({
-      queryText: buildInitializationQuery({
-        selectedDirection: options.selectedDirection,
-        roundType: 'professional-skills',
-        sectionContent: options.professionalSkills,
-        rawKickoffMessage: options.rawKickoffMessage,
-      }),
-      topK: 10,
-      roundType: 'professional-skills',
-      skill: 'professional-skills-context',
-      logContext: 'initialization:professional-skills:context',
-      onRecallTrace: options.onRecallTrace,
-    });
-  }
-
-  const results = await Promise.all(
-    options.professionalQuestionPlan.map((plan) =>
-      queryInterviewQuestions({
-        queryText: buildProfessionalSkillQuery({
-          selectedDirection: options.selectedDirection,
-          plan,
-          professionalSkills: options.professionalSkills,
-          projectExperience: options.projectExperience,
-        }),
-        topK: 1,
-        roundType: 'professional-skills',
-        skill: describeProfessionalPlanSkill(plan),
-        logContext: `initialization:professional-skills:${describeProfessionalPlanSkill(plan)}`,
-        onRecallTrace: options.onRecallTrace,
-      }),
-    ),
-  );
-
-  return combineQuestionQueryResults(results);
-}
-
-async function resolveProjectInitializationQuestions(options: {
-  readonly selectedDirection: string;
-  readonly projectExperience: string;
-  readonly rawKickoffMessage: string;
-  readonly onRecallTrace: (trace: RagRecallTrace) => void;
-}): Promise<QuestionQueryResult> {
-  return queryInterviewQuestions({
-    queryText: buildInitializationQuery({
-      selectedDirection: options.selectedDirection,
-      roundType: 'project-experience',
-      sectionContent: options.projectExperience,
-      rawKickoffMessage: options.rawKickoffMessage,
-    }),
-    topK: 10,
-    roundType: 'project-experience',
-    skill: 'project-experience-context',
-    logContext: 'initialization:project-experience:context',
-    onRecallTrace: options.onRecallTrace,
-  });
-}
-
-async function resolveInitializationResources(input: InitializationResourcesInput): Promise<{
-  readonly professionalSkills: string;
-  readonly projectExperience: string;
-  readonly jobDescription: string;
-  readonly professionalQuestions: readonly z.infer<typeof interviewQuestionCandidateSchema>[];
-  readonly projectQuestions: readonly z.infer<typeof interviewQuestionCandidateSchema>[];
-  readonly recallTraces: readonly RagRecallTrace[];
-}> {
-  const resumeSections = extractResumeSectionsFromKickoffMessage(input.rawKickoffMessage);
-  const professionalSkills = resumeSections.professionalSkills;
-  const projectExperience = resumeSections.projectExperience;
-  const jobDescription = extractJobDescriptionMarkdownFromKickoffMessage(input.rawKickoffMessage);
-  const selectedDirection = extractSelectedDirectionFromKickoffMessage(input.rawKickoffMessage);
-  const professionalQuestionMode = parseProfessionalQuestionMode(input.rawKickoffMessage);
-  const requestedProfessionalQuestionCount = parseIntegerSetting(input.rawKickoffMessage, 'Professional question count', 0);
-  const extractedProfessionalSkills = extractResumeTopics(professionalSkills);
-  const desiredProfessionalQuestionCount =
-    professionalQuestionMode === 'per-skill-default'
-      ? extractedProfessionalSkills.length
-      : requestedProfessionalQuestionCount;
-  const professionalQuestionPlan = planProfessionalQuestionQueries({
-    mode: professionalQuestionMode,
-    professionalSkills: extractedProfessionalSkills,
-    desiredQuestionCount: desiredProfessionalQuestionCount,
-  });
-  const recallTraces: RagRecallTrace[] = [];
-  const onRecallTrace = createRecallTraceCollector(recallTraces);
-
-  const [professionalQueryResult, projectQueryResult] = await Promise.all([
-    resolveProfessionalInitializationQuestions({
-      professionalQuestionPlan,
-      selectedDirection,
-      professionalSkills,
-      projectExperience,
-      rawKickoffMessage: input.rawKickoffMessage,
-      onRecallTrace,
-    }),
-    resolveProjectInitializationQuestions({
-      selectedDirection,
-      projectExperience,
-      rawKickoffMessage: input.rawKickoffMessage,
-      onRecallTrace,
-    }),
-  ]);
-
-  return {
-    professionalSkills,
-    projectExperience,
-    jobDescription,
-    professionalQuestions: professionalQueryResult.questions,
-    projectQuestions: projectQueryResult.questions,
-    recallTraces,
-  };
-}
 
 function resolveStateResourceId(threadId: string, resourceId?: string): string {
   return resourceId ?? threadId;
@@ -559,53 +362,6 @@ function buildAnswerScore(score: Omit<AnswerScore, 'weightedTotal'>): AnswerScor
   });
 }
 
-function extractJsonObjectText(text: string): string | null {
-  const trimmed = text.trim();
-  if (!trimmed) {
-    return null;
-  }
-
-  const fencedMatch = trimmed.match(/```(?:json)?\s*([\s\S]*?)```/i);
-  const candidate = fencedMatch?.[1]?.trim() ?? trimmed;
-  const startIndex = candidate.indexOf('{');
-  const endIndex = candidate.lastIndexOf('}');
-
-  if (startIndex < 0 || endIndex <= startIndex) {
-    return null;
-  }
-
-  return candidate.slice(startIndex, endIndex + 1);
-}
-
-function parseModelJsonObject(text: string): Record<string, unknown> | null {
-  const jsonText = extractJsonObjectText(text);
-  if (!jsonText) {
-    return null;
-  }
-
-  try {
-    const parsed = JSON.parse(jsonText) as unknown;
-    return parsed && typeof parsed === 'object' && !Array.isArray(parsed)
-      ? (parsed as Record<string, unknown>)
-      : null;
-  } catch {
-    return null;
-  }
-}
-
-function normalizeNullableString(value: unknown): string | null | undefined {
-  if (value === null) {
-    return null;
-  }
-
-  if (typeof value !== 'string') {
-    return undefined;
-  }
-
-  const normalized = value.trim();
-  return normalized.length > 0 ? normalized : null;
-}
-
 function classifyDetourByPatterns(userMessage: string): 'off-topic' | null {
   const normalized = userMessage.trim();
   if (!normalized) {
@@ -650,44 +406,6 @@ function classifyMetaByPatterns(userMessage: string): 'meta-question' | null {
 
 function classifyAnswerWithoutModel(userMessage: string): RuleBasedAnswerClassification {
   return classifyByRules(userMessage) ?? classifyMetaByPatterns(userMessage) ?? classifyDetourByPatterns(userMessage);
-}
-
-function buildNodeConversationRecord(options: {
-  readonly activeNode: InterviewSessionState['rounds'][number]['nodes'][number];
-  readonly userMessage: string;
-}): string {
-  const lines = [`Interviewer main question: ${options.activeNode.mainQuestion}`];
-  const answerAttemptsByTargetId = new Map<string, string>();
-
-  for (const attempt of options.activeNode.answerAttempts) {
-    answerAttemptsByTargetId.set(attempt.targetId, attempt.userMessage);
-  }
-
-  const mainAnswer = options.activeNode.answerAttempts.find((attempt) => attempt.targetType === 'main-question')?.userMessage;
-  if (mainAnswer) {
-    lines.push(`Candidate answer #1: ${mainAnswer}`);
-  }
-
-  for (const followUp of options.activeNode.followUps) {
-    if (followUp.status === 'pending' || !followUp.question.trim()) {
-      continue;
-    }
-
-    lines.push(`Interviewer follow-up #${followUp.index}: ${followUp.question}`);
-    const linkedAnswer = followUp.linkedAnswerId
-      ? options.activeNode.answerAttempts.find((attempt) => attempt.id === followUp.linkedAnswerId)?.userMessage
-      : answerAttemptsByTargetId.get(followUp.id);
-    if (linkedAnswer) {
-      lines.push(`Candidate answer #${followUp.index + 1}: ${linkedAnswer}`);
-    }
-  }
-
-  const lastRecordedAnswer = options.activeNode.answerAttempts.at(-1)?.userMessage?.trim();
-  if (options.userMessage.trim() !== lastRecordedAnswer) {
-    lines.push(`Candidate latest answer: ${options.userMessage}`);
-  }
-
-  return lines.join('\n');
 }
 
 function buildFlowTestMockAnalysis(options: { readonly state: InterviewSessionState }): InterviewAnalysisResult {
@@ -856,123 +574,6 @@ function buildFallbackAnswerAnalysis(options: {
   };
 }
 
-function shouldGenerateDedicatedFollowUpQuestion(options: {
-  readonly analysis: InterviewAnalysisResult;
-  readonly activeNode: InterviewSessionState['rounds'][number]['nodes'][number];
-}): boolean {
-  if (options.analysis.followUpQuestion?.trim()) {
-    return false;
-  }
-
-  if (options.activeNode.followUpCount >= options.activeNode.maxFollowUps) {
-    return false;
-  }
-
-  return (
-    options.analysis.classification === 'direct-answer' ||
-    options.analysis.classification === 'partial-answer' ||
-    options.analysis.classification === 'deep-answer'
-  );
-}
-
-function buildDedicatedFollowUpQuestionPrompt(options: {
-  readonly state: InterviewSessionState;
-  readonly activeRound: InterviewSessionState['rounds'][number];
-  readonly activeNode: InterviewSessionState['rounds'][number]['nodes'][number];
-  readonly currentQuestion: string;
-  readonly userMessage: string;
-  readonly analysis: InterviewAnalysisResult;
-}): string {
-  return [
-    'You are writing the next interviewer follow-up question for a mock interview.',
-    'Return JSON only. Do not add markdown.',
-    'Return exactly this shape: {"followUpQuestion":"..."}.',
-    `Interview language: ${options.state.responseLanguage}`,
-    `Target role: ${options.state.targetRole}`,
-    `Round type: ${options.activeRound.type}`,
-    `Topic: ${options.activeNode.topic}`,
-    `Current target type: ${options.activeNode.currentTargetType}`,
-    `Current question: ${options.currentQuestion}`,
-    `Main question: ${options.activeNode.mainQuestion}`,
-    `Next follow-up index: ${options.activeNode.followUpCount + 1}`,
-    `Job description context: ${options.state.resumeContext.jobDescription.trim() || 'not provided'}`,
-    'Current question dialogue record:',
-    buildNodeConversationRecord({
-      activeNode: options.activeNode,
-      userMessage: options.userMessage,
-    }),
-    `Answer classification: ${options.analysis.classification}`,
-    `Recommended intent: ${options.analysis.recommendedIntent}`,
-    `Follow-up focus: ${options.analysis.followUpFocus.join(' | ') || options.activeNode.topic}`,
-    `Missing points: ${options.analysis.missingPoints.join(' | ') || 'none'}`,
-    `Incorrect points: ${options.analysis.incorrectPoints.join(' | ') || 'none'}`,
-    'Write exactly one short interviewer question that stays on the same topic as the current question and the candidate answer.',
-    'Deepen naturally. Do not jump to a much broader topic.',
-    'Use this simple deepening pattern:',
-    '- index 1: ask the candidate to explain the mentioned concept in more detail',
-    '- index 2: ask for concrete use cases, implementation approach, or internal distinctions',
-    '- index 3 or above: continue drilling into practical details, trade-offs, limitations, or edge cases that are still directly related',
-    'Do not force system design, production pressure, rollback, metrics, or alternative comparisons unless the candidate already brought them up.',
-    'Prefer asking about the specific concept the candidate actually mentioned, instead of repeating the full original question.',
-    'Example: if the candidate says the key part is memory, ask about memory itself next, not the whole agent architecture question again.',
-  ].join('\n');
-}
-
-async function generateDedicatedFollowUpQuestion(options: {
-  readonly state: InterviewSessionState;
-  readonly activeRound: InterviewSessionState['rounds'][number];
-  readonly activeNode: InterviewSessionState['rounds'][number]['nodes'][number];
-  readonly currentQuestion: string;
-  readonly userMessage: string;
-  readonly analysis: InterviewAnalysisResult;
-}): Promise<string | null> {
-  try {
-    const result = await generateText({
-      model: glmAirModel,
-      prompt: buildDedicatedFollowUpQuestionPrompt(options),
-    });
-
-    const parsed = parseModelJsonObject(result.text);
-    const followUpQuestion = normalizeNullableString(parsed?.followUpQuestion);
-
-    return typeof followUpQuestion === 'string' ? followUpQuestion : null;
-  } catch (error) {
-    stateManagerLogger.warn('Dedicated follow-up question generation failed', {
-      event: 'interview.state_manager.generate_follow_up_question.fallback',
-      threadId: options.state.threadId,
-      phase: options.state.phase,
-      roundType: options.activeRound.type,
-      currentTargetType: options.activeNode.currentTargetType,
-      err: error,
-    });
-
-    return null;
-  }
-}
-
-async function ensureDedicatedFollowUpQuestion(options: {
-  readonly state: InterviewSessionState;
-  readonly activeRound: InterviewSessionState['rounds'][number];
-  readonly activeNode: InterviewSessionState['rounds'][number]['nodes'][number];
-  readonly currentQuestion: string;
-  readonly userMessage: string;
-  readonly analysis: InterviewAnalysisResult;
-}): Promise<InterviewAnalysisResult> {
-  if (!shouldGenerateDedicatedFollowUpQuestion({ analysis: options.analysis, activeNode: options.activeNode })) {
-    return options.analysis;
-  }
-
-  const followUpQuestion = await generateDedicatedFollowUpQuestion(options);
-  if (!followUpQuestion) {
-    return options.analysis;
-  }
-
-  return {
-    ...options.analysis,
-    followUpQuestion,
-  };
-}
-
 async function analyzeAnswer(options: {
   readonly state: InterviewSessionState;
   readonly userMessage: string;
@@ -1033,7 +634,7 @@ async function analyzeAnswer(options: {
     ruleClassification,
   });
 
-  return ensureDedicatedFollowUpQuestion({
+  return ensureGeneratedFollowUpQuestion({
     state: options.state,
     activeRound,
     activeNode,
@@ -1074,12 +675,15 @@ export const interviewStateManagerTool = createTool({
 
     if (input.action === 'initialize-session') {
       const initializationStartedAt = Date.now();
-      const initializationResources = await resolveInitializationResources(input);
+      const kickoffPayloadFormat = detectKickoffPayloadFormat(input.rawKickoffMessage);
+      const initializationResources = await resolveInterviewInitializationResources(input.rawKickoffMessage);
       const state = recoverMissingInterviewSession({
         threadId,
         rawKickoffMessage: input.rawKickoffMessage,
         professionalSkills: initializationResources.professionalSkills,
         projectExperience: initializationResources.projectExperience,
+        normalizedProfessionalSkills: initializationResources.normalizedProfessionalSkills,
+        normalizedProjectTopics: initializationResources.normalizedProjectTopics,
         jobDescription: initializationResources.jobDescription,
         professionalQuestions: initializationResources.professionalQuestions,
         projectQuestions: initializationResources.projectQuestions,
@@ -1107,6 +711,7 @@ export const interviewStateManagerTool = createTool({
           threadId,
           state,
           recallTraces: initializationResources.recallTraces,
+          generationTrace: initializationResources.generationTrace,
         });
         await writeThreadMetadataValue(memory, threadId, INTERVIEW_OUTCOME_PATH_KEY, outcomeFilePath);
       } catch (error) {
@@ -1120,6 +725,7 @@ export const interviewStateManagerTool = createTool({
       stateManagerLogger.info('Interview session initialized', {
         event: 'interview.state_manager.initialized',
         threadId,
+        kickoffPayloadFormat,
         elapsedMs: Date.now() - initializationStartedAt,
         phase: state.phase,
         professionalQuestionCount: initializationResources.professionalQuestions.length,
@@ -1136,6 +742,7 @@ export const interviewStateManagerTool = createTool({
 
     const currentState = await readState(memory, threadId, resourceId);
     if (!currentState) {
+      const kickoffPayloadFormat = detectKickoffPayloadFormat(input.userMessage);
       const recoveredState = recoverMissingInterviewSession({
         threadId,
         rawKickoffMessage: input.userMessage,
@@ -1145,6 +752,7 @@ export const interviewStateManagerTool = createTool({
       stateManagerLogger.info('Interview session state recovered from kickoff payload', {
         event: 'interview.state_manager.recovered_missing_state',
         threadId,
+        kickoffPayloadFormat,
         phase: recoveredState.phase,
         flowTestMode: recoveredState.setup.settings.enableFlowTestMode,
       });

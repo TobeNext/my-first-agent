@@ -54,6 +54,7 @@ export const interviewQuestionCandidateSchema = z.object({
   company: z.string().optional(),
   questionType: z.string().optional(),
   difficulty: z.string().optional(),
+  skillArea: z.array(z.string()).optional(),
   tags: z.string().optional(),
 });
 

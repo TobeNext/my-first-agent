@@ -36,6 +36,29 @@ This launches three PowerShell windows for:
 - BFF: `http://localhost:3000`
 - Frontend: default `http://localhost:5173` (Vite may choose the next available port if 5173 is already in use)
 
+## Run The Interview E2E Suite
+
+The live interview E2E suite reuses the real frontend services, the BFF, and the Mastra runtime. Start the stack first with either Docker or `npm run start:local`, then run one of these root commands:
+
+```powershell
+npm run test:e2e:interview:smoke
+npm run test:e2e:interview
+```
+
+- `test:e2e:interview:smoke`: environment readiness plus the minimal “upload resume -> start interview” happy path
+- `test:e2e:interview`: the full live suite, including completion, outcome persistence, edge scenarios, and feedback submission
+
+If your services are not on the default local ports, override the targets before running the suite:
+
+```powershell
+$env:INTERVIEW_E2E_FRONTEND_URL = 'http://localhost:8080'
+$env:INTERVIEW_E2E_BFF_URL = 'http://localhost:3000'
+$env:INTERVIEW_E2E_MASTRA_URL = 'http://localhost:4111'
+npm run test:e2e:interview
+```
+
+The repository also includes a manual GitHub Actions workflow at `.github/workflows/interview-e2e.yml`. It expects a repository secret named `E2E_ENV_FILE`, writes that value to the root `.env`, starts the Docker Compose stack, and then runs the same root `npm run test:e2e:interview` command.
+
 ## Learn more
 
 To learn more about Mastra, visit our [documentation](https://mastra.ai/docs/). Your bootstrapped project includes example code for [agents](https://mastra.ai/docs/agents/overview), [tools](https://mastra.ai/docs/agents/using-tools), [workflows](https://mastra.ai/docs/workflows/overview), [scorers](https://mastra.ai/docs/evals/overview), and [observability](https://mastra.ai/docs/observability/overview).

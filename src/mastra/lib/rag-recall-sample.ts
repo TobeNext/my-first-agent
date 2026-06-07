@@ -12,6 +12,7 @@ export interface RagRecallTraceCandidate {
   readonly vectorScore: number;
   readonly bm25Score: number;
   readonly hybridScore: number;
+  readonly matchedSkillArea?: readonly string[];
   readonly rerankRank: number | null;
   readonly finalSelectionRank: number | null;
   readonly filterReason: string;
@@ -23,6 +24,7 @@ export interface RagRecallTraceSelection {
   readonly vectorScore: number;
   readonly bm25Score: number;
   readonly hybridScore: number;
+  readonly matchedSkillArea?: readonly string[];
   readonly rerankRank: number;
   readonly finalSelectionRank: number;
 }

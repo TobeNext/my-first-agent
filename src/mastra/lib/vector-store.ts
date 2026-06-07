@@ -1,12 +1,16 @@
-import { LibSQLVector } from '@mastra/libsql';
-
 import { ensureEnvironmentLoaded } from './load-env';
+import { MilvusVectorStore } from './milvus-vector-store';
 
 ensureEnvironmentLoaded();
 
-export const vectorStore = new LibSQLVector({
+export const vectorStore = new MilvusVectorStore({
   id: 'interview-vectors',
-  url: process.env.VECTOR_DB_URL || 'file:./interview-vectors.db',
+  address: process.env.MILVUS_ADDRESS || 'localhost:19530',
+  username: process.env.MILVUS_USERNAME,
+  password: process.env.MILVUS_PASSWORD,
+  token: process.env.MILVUS_TOKEN,
+  database: process.env.MILVUS_DATABASE,
+  ssl: process.env.MILVUS_SSL === 'true',
 });
 
 export const INTERVIEW_INDEX_NAME = 'interview_questions';

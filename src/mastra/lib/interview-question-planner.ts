@@ -1,4 +1,14 @@
+import {
+  extractJobDescriptionSignalSet,
+  resolveQuestionDriver,
+  type QuestionDriver,
+} from './job-description-signals';
+
 export type ProfessionalQuestionMode = 'per-skill-default' | 'custom-count';
+
+export type PlannedQuestionType = 'knowledge-check' | 'scenario';
+
+export type PlannedQuestionDifficulty = 'medium' | 'hard';
 
 export type ProfessionalQuestionLens =
   | 'implementation-depth'
@@ -13,6 +23,14 @@ export interface SkillFocusQuestionPlan {
   readonly primarySkill: string;
   readonly relatedSkills: readonly string[];
   readonly lens: 'implementation-depth';
+  readonly targetAbility: string;
+  readonly questionType: PlannedQuestionType;
+  readonly coverageIntent: ProfessionalQuestionLens;
+  readonly resumeSignals: readonly string[];
+  readonly jobDescriptionSignals: readonly string[];
+  readonly questionDriver: QuestionDriver;
+  readonly expectedDifficulty: PlannedQuestionDifficulty;
+  readonly selectionReason: string;
 }
 
 export interface CrossSkillScenarioQuestionPlan {
@@ -20,6 +38,14 @@ export interface CrossSkillScenarioQuestionPlan {
   readonly primarySkill: null;
   readonly relatedSkills: readonly string[];
   readonly lens: Exclude<ProfessionalQuestionLens, 'implementation-depth'>;
+  readonly targetAbility: string;
+  readonly questionType: PlannedQuestionType;
+  readonly coverageIntent: ProfessionalQuestionLens;
+  readonly resumeSignals: readonly string[];
+  readonly jobDescriptionSignals: readonly string[];
+  readonly questionDriver: QuestionDriver;
+  readonly expectedDifficulty: PlannedQuestionDifficulty;
+  readonly selectionReason: string;
 }
 
 export interface BroadProfessionalScenarioQuestionPlan {
@@ -27,12 +53,36 @@ export interface BroadProfessionalScenarioQuestionPlan {
   readonly primarySkill: null;
   readonly relatedSkills: readonly string[];
   readonly lens: Exclude<ProfessionalQuestionLens, 'implementation-depth'>;
+  readonly targetAbility: string;
+  readonly questionType: PlannedQuestionType;
+  readonly coverageIntent: ProfessionalQuestionLens;
+  readonly resumeSignals: readonly string[];
+  readonly jobDescriptionSignals: readonly string[];
+  readonly questionDriver: QuestionDriver;
+  readonly expectedDifficulty: PlannedQuestionDifficulty;
+  readonly selectionReason: string;
+}
+
+export interface JobDescriptionGapQuestionPlan {
+  readonly kind: 'jd-gap-scenario';
+  readonly primarySkill: null;
+  readonly relatedSkills: readonly string[];
+  readonly lens: Exclude<ProfessionalQuestionLens, 'implementation-depth'>;
+  readonly targetAbility: string;
+  readonly questionType: PlannedQuestionType;
+  readonly coverageIntent: ProfessionalQuestionLens;
+  readonly resumeSignals: readonly string[];
+  readonly jobDescriptionSignals: readonly string[];
+  readonly questionDriver: QuestionDriver;
+  readonly expectedDifficulty: PlannedQuestionDifficulty;
+  readonly selectionReason: string;
 }
 
 export type ProfessionalQuestionPlan =
   | SkillFocusQuestionPlan
   | CrossSkillScenarioQuestionPlan
-  | BroadProfessionalScenarioQuestionPlan;
+  | BroadProfessionalScenarioQuestionPlan
+  | JobDescriptionGapQuestionPlan;
 
 const OVERFLOW_LENSES: readonly Exclude<ProfessionalQuestionLens, 'implementation-depth'>[] = [
   'trade-off-analysis',
@@ -82,44 +132,173 @@ function buildCrossSkillGroup(skills: readonly string[], overflowIndex: number):
   return rotatedSkills.slice(0, Math.min(preferredGroupSize, skills.length));
 }
 
+function buildSkillFocusSelectionReason(options: {
+  readonly skill: string;
+  readonly mode: ProfessionalQuestionMode;
+  readonly matchedJobDescriptionSignals: readonly string[];
+}): string {
+  if (options.matchedJobDescriptionSignals.length > 0) {
+    const signalSummary = options.matchedJobDescriptionSignals.join(' | ');
+
+    if (options.mode === 'per-skill-default') {
+      return `Selected ${options.skill} as the canonical resume skill owner and cross-checked it against JD signals: ${signalSummary}.`;
+    }
+
+    return `Selected ${options.skill} as a unique primary skill before overflow allocation because it intersects JD signals: ${signalSummary}.`;
+  }
+
+  if (options.mode === 'per-skill-default') {
+    return `Selected ${options.skill} as the canonical resume skill owner for one dedicated implementation-depth question.`;
+  }
+
+  return `Selected ${options.skill} as a unique primary skill before allocating overflow slots to harder scenario coverage.`;
+}
+
+function buildScenarioSelectionReason(
+  kind: 'cross-skill-scenario' | 'broad-professional-scenario',
+  relatedSkills: readonly string[],
+  lens: ProfessionalQuestionLens,
+): string {
+  const skillSummary = relatedSkills.length > 0 ? relatedSkills.join(', ') : 'the broader resume context';
+
+  if (kind === 'cross-skill-scenario') {
+    return `Selected a ${lens} scenario to verify how the candidate connects ${skillSummary} in one answer without repeating a single-skill explanation.`;
+  }
+
+  return `Selected a broader ${lens} scenario to stretch beyond the single available skill signal and keep coverage diverse.`;
+}
+
 export function planProfessionalQuestionQueries(options: {
   readonly mode: ProfessionalQuestionMode;
   readonly professionalSkills: readonly string[];
   readonly desiredQuestionCount: number;
+  readonly jobDescription?: string;
+  readonly projectTopics?: readonly string[];
 }): ProfessionalQuestionPlan[] {
   const normalizedSkills = uniqueSkills(options.professionalSkills);
   if (normalizedSkills.length === 0 || options.desiredQuestionCount <= 0) {
     return [];
   }
 
+  const jobDescriptionSignalSet = extractJobDescriptionSignalSet({
+    jobDescription: options.jobDescription,
+    resumeTopics: normalizedSkills,
+    projectTopics: options.projectTopics,
+  });
+
+  function resolveMatchedSignals(skill: string): string[] {
+    const normalizedSkill = skill.toLowerCase();
+    return jobDescriptionSignalSet.topSignals.filter((signal) => {
+      const normalizedSignal = signal.toLowerCase();
+      return normalizedSignal.includes(normalizedSkill) || normalizedSkill.includes(normalizedSignal);
+    });
+  }
+
   if (options.mode === 'per-skill-default') {
-    return normalizedSkills.slice(0, options.desiredQuestionCount).map((skill) => ({
-      kind: 'skill-focus',
-      primarySkill: skill,
-      relatedSkills: [],
-      lens: 'implementation-depth',
-    }));
+    return normalizedSkills.slice(0, options.desiredQuestionCount).map((skill) => {
+      const matchedSignals = resolveMatchedSignals(skill);
+
+      return {
+        kind: 'skill-focus',
+        primarySkill: skill,
+        relatedSkills: [],
+        lens: 'implementation-depth',
+        targetAbility: skill,
+        questionType: 'knowledge-check',
+        coverageIntent: 'implementation-depth',
+        resumeSignals: [skill],
+        jobDescriptionSignals: matchedSignals,
+        questionDriver: resolveQuestionDriver({
+          hasResumeSignals: true,
+          hasJobDescriptionSignals: matchedSignals.length > 0,
+        }),
+        expectedDifficulty: 'medium',
+        selectionReason: buildSkillFocusSelectionReason({
+          skill,
+          mode: options.mode,
+          matchedJobDescriptionSignals: matchedSignals,
+        }),
+      } satisfies SkillFocusQuestionPlan;
+    });
   }
 
   const shuffledSkills = shuffle(normalizedSkills);
   const uniqueSkillPlans = shuffledSkills
     .slice(0, Math.min(options.desiredQuestionCount, shuffledSkills.length))
-    .map<SkillFocusQuestionPlan>((skill) => ({
-      kind: 'skill-focus',
-      primarySkill: skill,
-      relatedSkills: [],
-      lens: 'implementation-depth',
-    }));
+    .map<SkillFocusQuestionPlan>((skill) => {
+      const matchedSignals = resolveMatchedSignals(skill);
+
+      return {
+        kind: 'skill-focus',
+        primarySkill: skill,
+        relatedSkills: [],
+        lens: 'implementation-depth',
+        targetAbility: skill,
+        questionType: 'knowledge-check',
+        coverageIntent: 'implementation-depth',
+        resumeSignals: [skill],
+        jobDescriptionSignals: matchedSignals,
+        questionDriver: resolveQuestionDriver({
+          hasResumeSignals: true,
+          hasJobDescriptionSignals: matchedSignals.length > 0,
+        }),
+        expectedDifficulty: 'medium',
+        selectionReason: buildSkillFocusSelectionReason({
+          skill,
+          mode: options.mode,
+          matchedJobDescriptionSignals: matchedSignals,
+        }),
+      };
+    });
 
   const overflowCount = Math.max(0, options.desiredQuestionCount - uniqueSkillPlans.length);
-  const overflowPlans = Array.from({ length: overflowCount }, (_, overflowIndex) => {
+  const gapSignals = jobDescriptionSignalSet.gapSignals.slice(0, overflowCount);
+  const gapPlans = gapSignals.map<JobDescriptionGapQuestionPlan>((gapSignal, overflowIndex) => {
+    const lens = OVERFLOW_LENSES[overflowIndex % OVERFLOW_LENSES.length];
+    const relatedSkills = buildCrossSkillGroup(shuffledSkills, overflowIndex);
+
+    return {
+      kind: 'jd-gap-scenario',
+      primarySkill: null,
+      relatedSkills,
+      lens,
+      targetAbility: gapSignal,
+      questionType: 'scenario',
+      coverageIntent: lens,
+      resumeSignals: relatedSkills,
+      jobDescriptionSignals: [gapSignal],
+      questionDriver: 'job-description',
+      expectedDifficulty: 'hard',
+      selectionReason: `Selected JD-only capability gap "${gapSignal}" to validate a requirement that is not clearly evidenced in the resume.`,
+    };
+  });
+  const remainingOverflowCount = Math.max(0, overflowCount - gapPlans.length);
+  const overflowPlans = Array.from({ length: remainingOverflowCount }, (_, overflowIndex) => {
     const lens = OVERFLOW_LENSES[overflowIndex % OVERFLOW_LENSES.length];
     if (shuffledSkills.length >= 2) {
+      const relatedSkills = buildCrossSkillGroup(shuffledSkills, overflowIndex);
+      const matchedSignals = jobDescriptionSignalSet.alignedSignals.slice(0, 2);
+
       return {
         kind: 'cross-skill-scenario',
         primarySkill: null,
-        relatedSkills: buildCrossSkillGroup(shuffledSkills, overflowIndex),
+        relatedSkills,
         lens,
+        targetAbility: relatedSkills.join(' + '),
+        questionType: 'scenario',
+        coverageIntent: lens,
+        resumeSignals: relatedSkills,
+        jobDescriptionSignals: matchedSignals,
+        questionDriver: resolveQuestionDriver({
+          hasResumeSignals: relatedSkills.length > 0,
+          hasJobDescriptionSignals: matchedSignals.length > 0,
+        }),
+        expectedDifficulty: 'hard',
+        selectionReason: buildScenarioSelectionReason(
+          'cross-skill-scenario',
+          relatedSkills,
+          lens,
+        ),
       } satisfies CrossSkillScenarioQuestionPlan;
     }
 
@@ -128,8 +307,19 @@ export function planProfessionalQuestionQueries(options: {
       primarySkill: null,
       relatedSkills: shuffledSkills,
       lens,
+      targetAbility: shuffledSkills.join(' + '),
+      questionType: 'scenario',
+      coverageIntent: lens,
+      resumeSignals: shuffledSkills,
+      jobDescriptionSignals: jobDescriptionSignalSet.alignedSignals.slice(0, 2),
+      questionDriver: resolveQuestionDriver({
+        hasResumeSignals: shuffledSkills.length > 0,
+        hasJobDescriptionSignals: jobDescriptionSignalSet.alignedSignals.length > 0,
+      }),
+      expectedDifficulty: 'hard',
+      selectionReason: buildScenarioSelectionReason('broad-professional-scenario', shuffledSkills, lens),
     } satisfies BroadProfessionalScenarioQuestionPlan;
   });
 
-  return [...uniqueSkillPlans, ...overflowPlans];
+  return [...uniqueSkillPlans, ...gapPlans, ...overflowPlans];
 }

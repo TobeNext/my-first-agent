@@ -8,6 +8,7 @@ import { applyUserReply, initializeInterviewSession } from '../lib/interview-sta
 import { recoverMissingInterviewSession } from '../lib/interview-kickoff-recovery';
 import { planProfessionalQuestionQueries } from '../lib/interview-question-planner';
 import type { InterviewSessionState } from '../lib/interview-state-machine-schema';
+import { buildInterviewStartRequest } from '../../../bff/src/modules/agent/interview-start-contract';
 
 function assert(condition: unknown, message: string): asserts condition {
   if (!condition) {
@@ -234,6 +235,54 @@ function runRecoveryAssertions(): void {
   assert(
     recoveredWithJobDescription.resumeContext.jobDescription.includes('AI Agent 平台架构设计'),
     'Expected recovery to retain the job description context for follow-up generation.',
+  );
+
+  const recoveredStructuredKickoffState = recoverMissingInterviewSession({
+    threadId: `recovery-structured-${Date.now()}`,
+    rawKickoffMessage: JSON.stringify(
+      buildInterviewStartRequest({
+        threadId: 'structured-thread',
+        resumeMarkdown: [
+          '### 专业技能',
+          '- TypeScript',
+          '- Mastra',
+          '',
+          '### 项目经历',
+          '- 负责 AI 面试系统的状态机改造。',
+        ].join('\n'),
+        jobDescriptionMarkdown: '### 岗位职责\n- 负责 AI Agent 平台架构设计',
+        settings: {
+          reviewIncorrectOrMissingPoints: true,
+          skipProfessionalSkillsRound: false,
+          skipProjectExperienceRound: false,
+          enableFlowTestMode: false,
+          professionalQuestionMode: 'per-skill-default',
+          professionalQuestionCount: 2,
+          projectQuestionCount: 2,
+        },
+        resumeSections: {
+          professionalSkills: '- TypeScript\n- Mastra',
+          projectExperience: '- 负责 AI 面试系统的状态机改造。',
+        },
+      }),
+    ),
+  });
+
+  assert(
+    recoveredStructuredKickoffState.phase === 'professional-skills-round',
+    'Expected the structured startup payload to initialize the opening round successfully.',
+  );
+  assert(
+    recoveredStructuredKickoffState.rounds[0]?.plannedNodeCount === 2,
+    'Expected the structured startup payload to preserve the requested professional question count.',
+  );
+  assert(
+    recoveredStructuredKickoffState.resumeContext.professionalSkills.includes('Mastra'),
+    'Expected the structured startup payload to reuse the provided resume sections.',
+  );
+  assert(
+    recoveredStructuredKickoffState.resumeContext.jobDescription.includes('AI Agent 平台架构设计'),
+    'Expected the structured startup payload to preserve the uploaded job description context.',
   );
 
   const recoveredGenericState = recoverMissingInterviewSession({

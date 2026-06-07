@@ -4,8 +4,11 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 
 import { AgentService } from './agent.service';
+import { parseInterviewStartRequest } from './interview-start-contract';
 
 interface StreamInterviewInput {
+  readonly requestKind?: 'interview-start';
+  readonly protocolVersion?: '2026-05-structured-start-v1';
   readonly threadId: string;
   readonly message?: string;
   readonly resumeMarkdown?: string;
@@ -36,6 +39,8 @@ function createChatBody(input: StreamInterviewInput): {
 test('AgentService.createChatBody keeps the existing resume flow when no JD is uploaded', () => {
   const body = createChatBody({
     threadId: 'thread-1',
+    requestKind: 'interview-start',
+    protocolVersion: '2026-05-structured-start-v1',
     startInterview: true,
     resumeMarkdown: '### 专业技能\n- TypeScript\n- RAG\n\n### 项目经历\n- 搭建 BFF',
     settings: {
@@ -49,19 +54,21 @@ test('AgentService.createChatBody keeps the existing resume flow when no JD is u
     },
   });
 
-  assert.match(body.messages[0]?.content ?? '', /Job description provided: no/);
-  assert.match(body.messages[0]?.content ?? '', /Keep the existing resume-based retrieval flow/);
-  assert.match(body.messages[0]?.content ?? '', /Treat each "- " bullet under ### 专业技能 as one professional skill group/);
-  assert.match(body.messages[0]?.content ?? '', /Do not draft or pass main interview questions yourself during initialization/);
-  assert.match(body.messages[0]?.content ?? '', /generate the initialization questions internally from the resume context via retrieval/);
-  assert.match(body.messages[0]?.content ?? '', /do not use the model for main-question planning or answer scoring/i);
-  assert.match(body.messages[0]?.content ?? '', /follow-up questions from the current question dialogue and the candidate's job context/i);
-  assert.match(body.messages[0]?.content ?? '', /Professional question count: 2/);
+  const parsed = parseInterviewStartRequest(body.messages[0]?.content ?? '');
+
+  assert.ok(parsed, 'Expected the startup message to be a structured interview-start payload.');
+  assert.equal(parsed?.jobDescriptionMarkdown, '');
+  assert.equal(parsed?.settings.professionalQuestionCount, 2);
+  assert.equal(parsed?.resumeSections?.professionalSkills, '- TypeScript\n- RAG');
+  assert.equal(parsed?.resumeSections?.projectExperience, '- 搭建 BFF');
+  assert.doesNotMatch(body.messages[0]?.content ?? '', /Resume Markdown:/);
 });
 
 test('AgentService.createChatBody includes uploaded JD as extension context', () => {
   const body = createChatBody({
     threadId: 'thread-2',
+    requestKind: 'interview-start',
+    protocolVersion: '2026-05-structured-start-v1',
     startInterview: true,
     resumeMarkdown: '### 专业技能\n- TypeScript',
     jobDescriptionMarkdown: '### 岗位职责\n- 负责 AI 面试系统',
@@ -76,8 +83,10 @@ test('AgentService.createChatBody includes uploaded JD as extension context', ()
     },
   });
 
-  assert.match(body.messages[0]?.content ?? '', /Job description provided: yes/);
-  assert.match(body.messages[0]?.content ?? '', /extended retrieval strategy is still pending/);
-  assert.match(body.messages[0]?.content ?? '', /Job Description Markdown:/);
-  assert.match(body.messages[0]?.content ?? '', /岗位职责/);
+  const parsed = parseInterviewStartRequest(body.messages[0]?.content ?? '');
+
+  assert.ok(parsed, 'Expected the startup message to stay parseable as a structured interview-start payload.');
+  assert.equal(parsed?.jobDescriptionMarkdown, '### 岗位职责\n- 负责 AI 面试系统');
+  assert.equal(parsed?.resumeSections?.professionalSkills, '- TypeScript');
+  assert.equal(parsed?.settings.projectQuestionCount, 2);
 });

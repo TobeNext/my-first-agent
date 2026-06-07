@@ -1,0 +1,361 @@
+{
+  "schemaVersion": 3,
+  "createdAt": "2026-05-17T13:04:32.422Z",
+  "updatedAt": "2026-05-17T13:04:32.422Z",
+  "threadId": "e2e-restore-1779023033512",
+  "session": {
+    "targetRole": "通用技术岗位",
+    "responseLanguage": "zh",
+    "phase": "professional-skills-round",
+    "finalReportReady": false,
+    "setup": {
+      "selectedDirection": "通用技术岗位",
+      "directionSource": "derived",
+      "settings": {
+        "reviewIncorrectOrMissingPoints": true,
+        "skipProfessionalSkillsRound": false,
+        "skipProjectExperienceRound": false,
+        "enableFlowTestMode": false,
+        "professionalQuestionMode": "custom-count",
+        "professionalQuestionCount": 6,
+        "projectQuestionCount": 2
+      }
+    },
+    "resumeContext": {
+      "professionalSkills": "",
+      "projectExperience": "",
+      "jobDescription": "### 岗位职责\n- 负责 AI 面试系统的端到端交付与性能优化。\n- 与产品和算法协作，持续改进召回与评分链路。\n\n### 技术要求\n- 熟悉 TypeScript、Node.js、NestJS、Vue 3。\n- 具备 Agent、RAG、观测与测试自动化经验。",
+      "resumeParsed": false
+    }
+  },
+  "selectorTraining": {
+    "traces": [],
+    "generationTrace": [],
+    "recallEvents": [],
+    "selectedQuestionLabels": []
+  },
+  "candidateImprovement": {
+    "totalQuestionCount": 8,
+    "completedQuestionCount": 0,
+    "finalScore": null,
+    "rounds": [
+      {
+        "id": "professional-skills-round-1779023056820-zun7r2",
+        "type": "professional-skills",
+        "status": "in-progress",
+        "plannedNodeCount": 6,
+        "completedNodeCount": 0,
+        "activeNodeId": "topic-node-1779023056819-2w5xcy",
+        "nodes": [
+          {
+            "id": "topic-node-1779023056819-2w5xcy",
+            "topic": "沙箱隔离通常会限制哪些能力",
+            "source": "knowledge-base",
+            "mainQuestion": "沙箱隔离通常会限制哪些能力？如何做提权审批？",
+            "questionDriver": "resume",
+            "resumeSignals": [],
+            "jobDescriptionSignals": [],
+            "selectionReason": "No generation trace was available for this question.",
+            "status": "awaiting-follow-up-answer",
+            "aggregatedScore": null,
+            "followUpCount": 1,
+            "maxFollowUps": 3,
+            "earlyCompletionReason": null,
+            "summary": null,
+            "answerAttempts": [
+              {
+                "id": "answer-attempt-1779023072421-xv7km0",
+                "targetType": "main-question",
+                "targetId": "topic-node-1779023056819-2w5xcy",
+                "classification": "partial-answer",
+                "createdAt": "2026-05-17T13:04:32.421Z",
+                "userMessage": "我会先把问题拆成系统边界、状态管理、检索质量和异常恢复四层，然后给每层定义清晰 owner，避免逻辑继续堆回状态机。",
+                "score": {
+                  "relevance": 6.6,
+                  "accuracy": 6.2,
+                  "depth": 5.8,
+                  "specificity": 5.9,
+                  "clarity": 6.8,
+                  "weightedTotal": 6.215
+                },
+                "strengths": [
+                  "回答基本围绕“沙箱隔离通常会限制哪些能力”展开"
+                ],
+                "missingPoints": [
+                  "还需要继续补充“沙箱隔离通常会限制哪些能力”的实现细节、关键取舍或真实案例"
+                ],
+                "incorrectPoints": [],
+                "isDetour": false
+              }
+            ]
+          },
+          {
+            "id": "topic-node-1779023056819-c7hrqf",
+            "topic": "你了解哪些主流 Agent 设计范式",
+            "source": "knowledge-base",
+            "mainQuestion": "你了解哪些主流 Agent 设计范式？它们分别适用于什么场景？",
+            "questionDriver": "resume",
+            "resumeSignals": [],
+            "jobDescriptionSignals": [],
+            "selectionReason": "No generation trace was available for this question.",
+            "status": "pending",
+            "aggregatedScore": null,
+            "followUpCount": 0,
+            "maxFollowUps": 3,
+            "earlyCompletionReason": null,
+            "summary": null,
+            "answerAttempts": []
+          },
+          {
+            "id": "topic-node-1779023056819-lr5uzr",
+            "topic": "如果让你用 TypeScript 或 C# 设计一个 Agent",
+            "source": "knowledge-base",
+            "mainQuestion": "如果让你用 TypeScript 或 C# 设计一个 Agent 平台的模块分层，你会怎么拆？",
+            "questionDriver": "resume",
+            "resumeSignals": [],
+            "jobDescriptionSignals": [],
+            "selectionReason": "No generation trace was available for this question.",
+            "status": "pending",
+            "aggregatedScore": null,
+            "followUpCount": 0,
+            "maxFollowUps": 3,
+            "earlyCompletionReason": null,
+            "summary": null,
+            "answerAttempts": []
+          },
+          {
+            "id": "topic-node-1779023056819-o49fz0",
+            "topic": "在开发中",
+            "source": "knowledge-base",
+            "mainQuestion": "在开发中，你怎么判断一个任务该用 Workflow，还是该交给自主决策的 Agent？",
+            "questionDriver": "resume",
+            "resumeSignals": [],
+            "jobDescriptionSignals": [],
+            "selectionReason": "No generation trace was available for this question.",
+            "status": "pending",
+            "aggregatedScore": null,
+            "followUpCount": 0,
+            "maxFollowUps": 3,
+            "earlyCompletionReason": null,
+            "summary": null,
+            "answerAttempts": []
+          },
+          {
+            "id": "topic-node-1779023056819-aty29p",
+            "topic": "跨 Agent 的任务委派协议里",
+            "source": "knowledge-base",
+            "mainQuestion": "跨 Agent 的任务委派协议里，至少要包含哪些字段？",
+            "questionDriver": "resume",
+            "resumeSignals": [],
+            "jobDescriptionSignals": [],
+            "selectionReason": "No generation trace was available for this question.",
+            "status": "pending",
+            "aggregatedScore": null,
+            "followUpCount": 0,
+            "maxFollowUps": 3,
+            "earlyCompletionReason": null,
+            "summary": null,
+            "answerAttempts": []
+          },
+          {
+            "id": "topic-node-1779023056819-h09lf0",
+            "topic": "如果多个 Skill 的 description 很相似",
+            "source": "knowledge-base",
+            "mainQuestion": "如果多个 Skill 的 description 很相似，导致 Agent 经常加载错 Skill，应该怎么解决？",
+            "questionDriver": "resume",
+            "resumeSignals": [],
+            "jobDescriptionSignals": [],
+            "selectionReason": "No generation trace was available for this question.",
+            "status": "pending",
+            "aggregatedScore": null,
+            "followUpCount": 0,
+            "maxFollowUps": 3,
+            "earlyCompletionReason": null,
+            "summary": null,
+            "answerAttempts": []
+          }
+        ]
+      },
+      {
+        "id": "project-experience-round-1779023056820-z9r8m5",
+        "type": "project-experience",
+        "status": "pending",
+        "plannedNodeCount": 2,
+        "completedNodeCount": 0,
+        "activeNodeId": "topic-node-1779023056820-aem2g1",
+        "nodes": [
+          {
+            "id": "topic-node-1779023056820-aem2g1",
+            "topic": "结合一个你负责过的项目",
+            "source": "knowledge-base",
+            "mainQuestion": "请结合一个你负责过的项目，说明项目背景、你的职责、关键决策、遇到的挑战以及最终结果。",
+            "questionDriver": "resume",
+            "resumeSignals": [],
+            "jobDescriptionSignals": [],
+            "selectionReason": "No generation trace was available for this question.",
+            "status": "pending",
+            "aggregatedScore": null,
+            "followUpCount": 0,
+            "maxFollowUps": 2,
+            "earlyCompletionReason": null,
+            "summary": null,
+            "answerAttempts": []
+          },
+          {
+            "id": "topic-node-1779023056820-o4cbdj",
+            "topic": "通用技术岗位 project experience 2",
+            "source": "generated",
+            "mainQuestion": "请结合你做过的项目，详细说明“通用技术岗位 project experience 2”相关经历中的背景、目标、你的职责、关键决策和最终结果。",
+            "questionDriver": "resume",
+            "resumeSignals": [],
+            "jobDescriptionSignals": [],
+            "selectionReason": "No generation trace was available for this question.",
+            "status": "pending",
+            "aggregatedScore": null,
+            "followUpCount": 0,
+            "maxFollowUps": 2,
+            "earlyCompletionReason": null,
+            "summary": null,
+            "answerAttempts": []
+          }
+        ]
+      }
+    ],
+    "strongSignals": [],
+    "knowledgeWeaknesses": [],
+    "questionReviews": [
+      {
+        "roundType": "professional-skills",
+        "topic": "沙箱隔离通常会限制哪些能力",
+        "question": "沙箱隔离通常会限制哪些能力？如何做提权审批？",
+        "questionDriver": "resume",
+        "resumeSignals": [],
+        "jobDescriptionSignals": [],
+        "selectionReason": "No generation trace was available for this question.",
+        "score": null,
+        "strengths": [],
+        "missingPoints": [],
+        "incorrectPoints": [],
+        "improvementAdvice": [],
+        "evidence": []
+      },
+      {
+        "roundType": "professional-skills",
+        "topic": "你了解哪些主流 Agent 设计范式",
+        "question": "你了解哪些主流 Agent 设计范式？它们分别适用于什么场景？",
+        "questionDriver": "resume",
+        "resumeSignals": [],
+        "jobDescriptionSignals": [],
+        "selectionReason": "No generation trace was available for this question.",
+        "score": null,
+        "strengths": [],
+        "missingPoints": [],
+        "incorrectPoints": [],
+        "improvementAdvice": [],
+        "evidence": []
+      },
+      {
+        "roundType": "professional-skills",
+        "topic": "如果让你用 TypeScript 或 C# 设计一个 Agent",
+        "question": "如果让你用 TypeScript 或 C# 设计一个 Agent 平台的模块分层，你会怎么拆？",
+        "questionDriver": "resume",
+        "resumeSignals": [],
+        "jobDescriptionSignals": [],
+        "selectionReason": "No generation trace was available for this question.",
+        "score": null,
+        "strengths": [],
+        "missingPoints": [],
+        "incorrectPoints": [],
+        "improvementAdvice": [],
+        "evidence": []
+      },
+      {
+        "roundType": "professional-skills",
+        "topic": "在开发中",
+        "question": "在开发中，你怎么判断一个任务该用 Workflow，还是该交给自主决策的 Agent？",
+        "questionDriver": "resume",
+        "resumeSignals": [],
+        "jobDescriptionSignals": [],
+        "selectionReason": "No generation trace was available for this question.",
+        "score": null,
+        "strengths": [],
+        "missingPoints": [],
+        "incorrectPoints": [],
+        "improvementAdvice": [],
+        "evidence": []
+      },
+      {
+        "roundType": "professional-skills",
+        "topic": "跨 Agent 的任务委派协议里",
+        "question": "跨 Agent 的任务委派协议里，至少要包含哪些字段？",
+        "questionDriver": "resume",
+        "resumeSignals": [],
+        "jobDescriptionSignals": [],
+        "selectionReason": "No generation trace was available for this question.",
+        "score": null,
+        "strengths": [],
+        "missingPoints": [],
+        "incorrectPoints": [],
+        "improvementAdvice": [],
+        "evidence": []
+      },
+      {
+        "roundType": "professional-skills",
+        "topic": "如果多个 Skill 的 description 很相似",
+        "question": "如果多个 Skill 的 description 很相似，导致 Agent 经常加载错 Skill，应该怎么解决？",
+        "questionDriver": "resume",
+        "resumeSignals": [],
+        "jobDescriptionSignals": [],
+        "selectionReason": "No generation trace was available for this question.",
+        "score": null,
+        "strengths": [],
+        "missingPoints": [],
+        "incorrectPoints": [],
+        "improvementAdvice": [],
+        "evidence": []
+      },
+      {
+        "roundType": "project-experience",
+        "topic": "结合一个你负责过的项目",
+        "question": "请结合一个你负责过的项目，说明项目背景、你的职责、关键决策、遇到的挑战以及最终结果。",
+        "questionDriver": "resume",
+        "resumeSignals": [],
+        "jobDescriptionSignals": [],
+        "selectionReason": "No generation trace was available for this question.",
+        "score": null,
+        "strengths": [],
+        "missingPoints": [],
+        "incorrectPoints": [],
+        "improvementAdvice": [],
+        "evidence": []
+      },
+      {
+        "roundType": "project-experience",
+        "topic": "通用技术岗位 project experience 2",
+        "question": "请结合你做过的项目，详细说明“通用技术岗位 project experience 2”相关经历中的背景、目标、你的职责、关键决策和最终结果。",
+        "questionDriver": "resume",
+        "resumeSignals": [],
+        "jobDescriptionSignals": [],
+        "selectionReason": "No generation trace was available for this question.",
+        "score": null,
+        "strengths": [],
+        "missingPoints": [],
+        "incorrectPoints": [],
+        "improvementAdvice": [],
+        "evidence": []
+      }
+    ],
+    "report": {
+      "finalReport": null,
+      "lastCorrectionSummary": null
+    },
+    "feedback": {
+      "status": "pending",
+      "submittedAt": null,
+      "overallExperienceScore": null,
+      "questionFitScore": null,
+      "difficultyScore": null,
+      "comment": null
+    }
+  }
+}

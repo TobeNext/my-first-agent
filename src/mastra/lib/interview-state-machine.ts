@@ -24,6 +24,8 @@ import {
   PROJECT_MAX_FOLLOW_UPS,
   type ResponseLanguage,
 } from './interview-state-machine-schema';
+import { parseInterviewStartRequest } from '../../../bff/src/modules/agent/interview-start-contract';
+import { extractNormalizedResumeTopics } from '../../../bff/src/modules/resume/resume-parser';
 
 interface KickoffConfig {
   readonly targetRole: string;
@@ -38,6 +40,8 @@ interface InitializeInterviewSessionOptions {
   readonly rawKickoffMessage: string;
   readonly professionalSkills: string;
   readonly projectExperience: string;
+  readonly normalizedProfessionalSkills?: readonly string[];
+  readonly normalizedProjectTopics?: readonly string[];
   readonly jobDescription: string;
   readonly professionalQuestions: readonly InterviewQuestionCandidate[];
   readonly projectQuestions: readonly InterviewQuestionCandidate[];
@@ -211,14 +215,41 @@ function deriveTargetRole(rawKickoffMessage: string): string {
   return hasChinese(rawKickoffMessage) ? '通用技术岗位' : 'General Technical Role';
 }
 
-function parseKickoffConfig(rawKickoffMessage: string, professionalSkills: string, projectExperience: string): KickoffConfig {
+function parseKickoffConfig(options: {
+  readonly rawKickoffMessage: string;
+  readonly professionalSkills: string;
+  readonly projectExperience: string;
+  readonly normalizedProfessionalSkills?: readonly string[];
+}): KickoffConfig {
+  const { rawKickoffMessage, professionalSkills, projectExperience, normalizedProfessionalSkills } = options;
+  const structuredStartRequest = parseInterviewStartRequest(rawKickoffMessage);
+  if (structuredStartRequest) {
+    const combinedContext = [
+      structuredStartRequest.resumeMarkdown,
+      structuredStartRequest.jobDescriptionMarkdown,
+      professionalSkills,
+      projectExperience,
+    ].join('\n');
+    const targetRole = hasChinese(combinedContext) ? '通用技术岗位' : 'General Technical Role';
+
+    return {
+      targetRole,
+      selectedDirection: targetRole,
+      directionSource: 'derived',
+      settings: interviewSystemSettingsSchema.parse(structuredStartRequest.settings),
+      responseLanguage: detectResponseLanguage(combinedContext),
+    };
+  }
+
   const selectedDirection = deriveTargetRole(rawKickoffMessage);
   const directionSourceMatch = rawKickoffMessage.match(/Direction source:\s*(preset|custom|unknown)/i);
   const directionSource = directionSourceMatch?.[1]?.toLowerCase();
   const combinedContext = `${rawKickoffMessage}\n${professionalSkills}\n${projectExperience}`;
   const skipProfessionalSkillsRound = parseBooleanSetting(rawKickoffMessage, 'Skip professional-skills round', false);
   const skipProjectExperienceRound = parseBooleanSetting(rawKickoffMessage, 'Skip project-experience round', false);
-  const professionalSkillGroups = extractResumeTopics(professionalSkills);
+  const professionalSkillGroups = [
+    ...(normalizedProfessionalSkills ?? extractNormalizedResumeTopics(professionalSkills)),
+  ];
   const requestedProfessionalQuestionCount = skipProfessionalSkillsRound
     ? 0
     : parseIntegerSetting(
@@ -263,13 +294,7 @@ function parseKickoffConfig(rawKickoffMessage: string, professionalSkills: strin
 }
 
 export function extractResumeTopics(sectionText: string): string[] {
-  const lines = splitNonEmptyLines(sectionText).filter((line) => line !== '...');
-  const bulletLines = lines.filter((line) => /^[-*]\s+/.test(line));
-  const groupedLines = (bulletLines.length > 0 ? bulletLines : lines)
-    .map((line) => line.replace(/^[-*]\s*/, '').trim())
-    .filter((line) => line.length > 1);
-
-  return uniqueByNormalizedText(groupedLines).slice(0, 8);
+  return [...extractNormalizedResumeTopics(sectionText)];
 }
 
 function inferTopicFromQuestion(questionText: string, fallbackRole: string): string {
@@ -1084,13 +1109,16 @@ export function classifyByRules(userMessage: string): AnswerClassification | nul
 }
 
 export function initializeInterviewSession(options: InitializeInterviewSessionOptions): InterviewSessionState {
-  const kickoffConfig = parseKickoffConfig(
-    options.rawKickoffMessage,
-    options.professionalSkills,
-    options.projectExperience,
-  );
-  const professionalTopics = extractResumeTopics(options.professionalSkills);
-  const projectTopics = extractResumeTopics(options.projectExperience);
+  const kickoffConfig = parseKickoffConfig({
+    rawKickoffMessage: options.rawKickoffMessage,
+    professionalSkills: options.professionalSkills,
+    projectExperience: options.projectExperience,
+    normalizedProfessionalSkills: options.normalizedProfessionalSkills,
+  });
+  const professionalTopics = [
+    ...(options.normalizedProfessionalSkills ?? extractNormalizedResumeTopics(options.professionalSkills)),
+  ];
+  const projectTopics = [...(options.normalizedProjectTopics ?? extractNormalizedResumeTopics(options.projectExperience))];
   const professionalRoundNodes = buildNodesFromQuestions({
     questions: options.professionalQuestions,
     fallbackTopics: professionalTopics,

@@ -1,4 +1,5 @@
-import { extractResumeTopics } from './interview-state-machine';
+import { extractNormalizedResumeTopics } from '../../../bff/src/modules/resume/resume-parser';
+import type { QuestionDriver } from './job-description-signals';
 import type { ProfessionalQuestionLens, ProfessionalQuestionPlan } from './interview-question-planner';
 
 function normalizeQueryFragment(value: string): string {
@@ -66,6 +67,10 @@ export function describeProfessionalPlanSkill(plan: ProfessionalQuestionPlan): s
     return `cross-skill:${plan.relatedSkills.join(' + ')}`;
   }
 
+  if (plan.kind === 'jd-gap-scenario') {
+    return `jd-gap:${plan.targetAbility}`;
+  }
+
   return plan.relatedSkills.length > 0
     ? `broad-professional:${plan.relatedSkills.join(' + ')}`
     : 'broad-professional-context';
@@ -76,12 +81,13 @@ export function buildProfessionalSkillQuery(options: {
   readonly plan: ProfessionalQuestionPlan;
   readonly professionalSkills: string;
   readonly projectExperience: string;
+  readonly normalizedSkills?: readonly string[];
 }): string {
   const planSkills = options.plan.primarySkill
     ? [options.plan.primarySkill, ...options.plan.relatedSkills]
     : [...options.plan.relatedSkills];
   const excludedSkillKeys = new Set(planSkills.map((skill) => normalizeQueryFragment(skill)));
-  const relatedSkills = extractResumeTopics(options.professionalSkills)
+  const relatedSkills = (options.normalizedSkills ?? extractNormalizedResumeTopics(options.professionalSkills))
     .filter((skill) => !excludedSkillKeys.has(normalizeQueryFragment(skill)))
     .slice(0, 4);
   const relevantProjectHighlights = extractRelevantProjectHighlights(options.projectExperience, planSkills).slice(0, 2);
@@ -89,6 +95,7 @@ export function buildProfessionalSkillQuery(options: {
     `Target role: ${options.selectedDirection}`,
     'Round type: professional-skills',
     `Question lens: ${describeProfessionalQuestionLens(options.plan.lens)}`,
+    `Question driver: ${describeQuestionDriver(options.plan.questionDriver)}`,
   ];
 
   if (options.plan.kind === 'skill-focus') {
@@ -96,6 +103,12 @@ export function buildProfessionalSkillQuery(options: {
   } else if (options.plan.kind === 'cross-skill-scenario') {
     queryParts.push(`Scenario skills: ${options.plan.relatedSkills.join(', ')}`);
     queryParts.push('Ask a harder scenario-based question that forces the candidate to connect these skills in one answer.');
+  } else if (options.plan.kind === 'jd-gap-scenario') {
+    queryParts.push(`JD capability gap to validate: ${options.plan.targetAbility}`);
+    if (options.plan.relatedSkills.length > 0) {
+      queryParts.push(`Bridge from adjacent resume skills: ${options.plan.relatedSkills.join(', ')}`);
+    }
+    queryParts.push('Ask a validation question for an explicit JD requirement that is not clearly proven by the resume.');
   } else {
     queryParts.push('Use the broader professional skills context to ask a harder scenario-based question without repeating a single-skill explanation.');
   }
@@ -109,5 +122,35 @@ export function buildProfessionalSkillQuery(options: {
     queryParts.push(...relevantProjectHighlights.map((line) => `- ${line}`));
   }
 
+  if (options.plan.jobDescriptionSignals.length > 0) {
+    queryParts.push('Job description signals:');
+    queryParts.push(...options.plan.jobDescriptionSignals.map((signal) => `- ${signal}`));
+    const priorityKeywords = extractPriorityKeywords(options.plan.jobDescriptionSignals);
+    if (priorityKeywords.length > 0) {
+      queryParts.push(`Weight these JD keywords heavily during retrieval: ${priorityKeywords.join(', ')}`);
+    }
+  }
+
   return queryParts.join('\n');
+}
+
+function describeQuestionDriver(driver: QuestionDriver): string {
+  switch (driver) {
+    case 'job-description':
+      return 'job-description';
+    case 'resume-and-job-description':
+      return 'resume-and-job-description';
+    case 'resume':
+    default:
+      return 'resume';
+  }
+}
+
+function extractPriorityKeywords(signals: readonly string[]): string[] {
+  return [...new Set(signals.flatMap((signal) =>
+    normalizeQueryFragment(signal)
+      .split(/[^a-z0-9\u3400-\u9fff+#.-]+/u)
+      .map((token) => token.trim())
+      .filter((token) => token.length >= 4 || /[\u3400-\u9fff]/u.test(token)),
+  ))].slice(0, 6);
 }

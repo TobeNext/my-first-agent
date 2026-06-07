@@ -35,3 +35,11 @@ export interface InterviewResumeContext {
   readonly jobDescriptionFileName: string | null;
   readonly jobDescriptionMarkdown: string;
 }
+
+export interface InterviewEntryState {
+  readonly canStartInterview: boolean;
+  readonly hasJobDescriptionValidationError: boolean;
+  readonly resumeFileName: string | null;
+  readonly jobDescriptionFileName: string | null;
+  readonly professionalSkillGroupCount: number;
+}

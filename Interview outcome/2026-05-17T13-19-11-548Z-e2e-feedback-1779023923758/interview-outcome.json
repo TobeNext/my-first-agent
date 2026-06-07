@@ -1,0 +1,216 @@
+{
+  "schemaVersion": 3,
+  "createdAt": "2026-05-17T13:19:11.548Z",
+  "updatedAt": "2026-05-17T13:19:41.468Z",
+  "threadId": "e2e-feedback-1779023923758",
+  "session": {
+    "targetRole": "通用技术岗位",
+    "responseLanguage": "zh",
+    "phase": "completed",
+    "finalReportReady": true,
+    "setup": {
+      "selectedDirection": "通用技术岗位",
+      "directionSource": "derived",
+      "settings": {
+        "reviewIncorrectOrMissingPoints": true,
+        "skipProfessionalSkillsRound": true,
+        "skipProjectExperienceRound": false,
+        "enableFlowTestMode": false,
+        "professionalQuestionMode": "custom-count",
+        "professionalQuestionCount": 0,
+        "projectQuestionCount": 1
+      }
+    },
+    "resumeContext": {
+      "professionalSkills": "- TypeScript / Node.js / NestJS / Vue 3\n- AI Agent 工程化、RAG、向量检索、Prompt 设计\n- 监控、测试自动化、故障排查与性能优化",
+      "projectExperience": "- 负责一个 AI Interview 平台，从前端、BFF 到 Mastra runtime 设计并落地全链路。\n- 为 RAG 召回增加 trace、fallback 和质量观测能力。",
+      "jobDescription": "### 岗位职责\n- 负责 AI 面试系统的端到端交付与性能优化。\n- 与产品和算法协作，持续改进召回与评分链路。\n\n### 技术要求\n- 熟悉 TypeScript、Node.js、NestJS、Vue 3。\n- 具备 Agent、RAG、观测与测试自动化经验。",
+      "resumeParsed": true
+    }
+  },
+  "selectorTraining": {
+    "traces": [],
+    "generationTrace": [],
+    "recallEvents": [],
+    "selectedQuestionLabels": []
+  },
+  "candidateImprovement": {
+    "totalQuestionCount": 1,
+    "completedQuestionCount": 1,
+    "finalScore": 6.82,
+    "rounds": [
+      {
+        "id": "professional-skills-round-1779023936023-o64ym0",
+        "type": "professional-skills",
+        "status": "skipped",
+        "plannedNodeCount": 0,
+        "completedNodeCount": 0,
+        "activeNodeId": null,
+        "nodes": []
+      },
+      {
+        "id": "project-experience-round-1779023936023-pjxwj1",
+        "type": "project-experience",
+        "status": "completed",
+        "plannedNodeCount": 1,
+        "completedNodeCount": 1,
+        "activeNodeId": null,
+        "nodes": [
+          {
+            "id": "topic-node-1779023936023-tmtctx",
+            "topic": "结合项目“负责一个 AI Interview 平台",
+            "source": "knowledge-base",
+            "mainQuestion": "请结合项目“负责一个 AI Interview 平台，从前端、BFF 到 Mastra runtime 设计并落地全链路。”，说明项目背景、你的职责、关键决策、遇到的挑战以及最终结果。",
+            "questionDriver": "resume",
+            "resumeSignals": [],
+            "jobDescriptionSignals": [],
+            "selectionReason": "No generation trace was available for this question.",
+            "status": "completed",
+            "aggregatedScore": 6.82,
+            "followUpCount": 1,
+            "maxFollowUps": 2,
+            "earlyCompletionReason": "回答分析降级为规则兜底后，当前节点已满足推进条件。",
+            "summary": {
+              "strengths": [
+                "回答基本围绕“结合项目“负责一个 AI Interview 平台”展开"
+              ],
+              "weaknesses": [],
+              "missingPoints": [
+                "还需要继续补充“结合项目“负责一个 AI Interview 平台”的实现细节、关键取舍或真实案例"
+              ],
+              "improvementAdvice": [
+                "补充说明：还需要继续补充“结合项目“负责一个 AI Interview 平台”的实现细节、关键取舍或真实案例"
+              ],
+              "evidence": [
+                "我会先把问题拆成系统边界、状态管理、检索质量和异常恢复四层，然后给每层定义清晰 owner，避免逻辑继续堆回状态机。",
+                "在 AI Interview 平台里，我负责过从 Vue 页面到 BFF 再到 Mastra runtime 的链路设计，重点做了结构化启动协议、RAG trace 和质量 fallback。"
+              ]
+            },
+            "answerAttempts": [
+              {
+                "id": "answer-attempt-1779023951547-aghoj9",
+                "targetType": "main-question",
+                "targetId": "topic-node-1779023936023-tmtctx",
+                "classification": "partial-answer",
+                "createdAt": "2026-05-17T13:19:11.547Z",
+                "userMessage": "我会先把问题拆成系统边界、状态管理、检索质量和异常恢复四层，然后给每层定义清晰 owner，避免逻辑继续堆回状态机。",
+                "score": {
+                  "relevance": 6.6,
+                  "accuracy": 6.2,
+                  "depth": 5.8,
+                  "specificity": 5.9,
+                  "clarity": 6.8,
+                  "weightedTotal": 6.215
+                },
+                "strengths": [
+                  "回答基本围绕“结合项目“负责一个 AI Interview 平台”展开"
+                ],
+                "missingPoints": [
+                  "还需要继续补充“结合项目“负责一个 AI Interview 平台”的实现细节、关键取舍或真实案例"
+                ],
+                "incorrectPoints": [],
+                "isDetour": false
+              },
+              {
+                "id": "answer-attempt-1779023976171-aqajgk",
+                "targetType": "follow-up",
+                "targetId": "follow-up-1-1779023936023-y22ycy",
+                "classification": "direct-answer",
+                "createdAt": "2026-05-17T13:19:36.171Z",
+                "userMessage": "在 AI Interview 平台里，我负责过从 Vue 页面到 BFF 再到 Mastra runtime 的链路设计，重点做了结构化启动协议、RAG trace 和质量 fallback。",
+                "score": {
+                  "relevance": 7.8,
+                  "accuracy": 7.4,
+                  "depth": 7.2,
+                  "specificity": 7,
+                  "clarity": 7.8,
+                  "weightedTotal": 7.43
+                },
+                "strengths": [
+                  "回答基本围绕“结合项目“负责一个 AI Interview 平台”展开"
+                ],
+                "missingPoints": [],
+                "incorrectPoints": [],
+                "isDetour": false
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "strongSignals": [
+      {
+        "theme": "回答基本围绕“结合项目“负责一个 AI Interview 平台”展开",
+        "frequency": 1,
+        "affectedTopics": [
+          "结合项目“负责一个 AI Interview 平台"
+        ],
+        "exampleQuestions": [
+          "请结合项目“负责一个 AI Interview 平台，从前端、BFF 到 Mastra runtime 设计并落地全链路。”，说明项目背景、你的职责、关键决策、遇到的挑战以及最终结果。"
+        ],
+        "evidence": [
+          "我会先把问题拆成系统边界、状态管理、检索质量和异常恢复四层，然后给每层定义清晰 owner，避免逻辑继续堆回状态机。",
+          "在 AI Interview 平台里，我负责过从 Vue 页面到 BFF 再到 Mastra runtime 的链路设计，重点做了结构化启动协议、RAG trace 和质量 fallback。"
+        ],
+        "averageQuestionScore": 6.82
+      }
+    ],
+    "knowledgeWeaknesses": [
+      {
+        "theme": "还需要继续补充“结合项目“负责一个 AI Interview 平台”的实现细节、关键取舍或真实案例",
+        "frequency": 1,
+        "affectedTopics": [
+          "结合项目“负责一个 AI Interview 平台"
+        ],
+        "exampleQuestions": [
+          "请结合项目“负责一个 AI Interview 平台，从前端、BFF 到 Mastra runtime 设计并落地全链路。”，说明项目背景、你的职责、关键决策、遇到的挑战以及最终结果。"
+        ],
+        "evidence": [
+          "我会先把问题拆成系统边界、状态管理、检索质量和异常恢复四层，然后给每层定义清晰 owner，避免逻辑继续堆回状态机。",
+          "在 AI Interview 平台里，我负责过从 Vue 页面到 BFF 再到 Mastra runtime 的链路设计，重点做了结构化启动协议、RAG trace 和质量 fallback。"
+        ],
+        "averageQuestionScore": 6.82,
+        "kind": "missing-knowledge",
+        "priority": "medium"
+      }
+    ],
+    "questionReviews": [
+      {
+        "roundType": "project-experience",
+        "topic": "结合项目“负责一个 AI Interview 平台",
+        "question": "请结合项目“负责一个 AI Interview 平台，从前端、BFF 到 Mastra runtime 设计并落地全链路。”，说明项目背景、你的职责、关键决策、遇到的挑战以及最终结果。",
+        "questionDriver": "resume",
+        "resumeSignals": [],
+        "jobDescriptionSignals": [],
+        "selectionReason": "No generation trace was available for this question.",
+        "score": 6.82,
+        "strengths": [
+          "回答基本围绕“结合项目“负责一个 AI Interview 平台”展开"
+        ],
+        "missingPoints": [
+          "还需要继续补充“结合项目“负责一个 AI Interview 平台”的实现细节、关键取舍或真实案例"
+        ],
+        "incorrectPoints": [],
+        "improvementAdvice": [
+          "补充说明：还需要继续补充“结合项目“负责一个 AI Interview 平台”的实现细节、关键取舍或真实案例"
+        ],
+        "evidence": [
+          "我会先把问题拆成系统边界、状态管理、检索质量和异常恢复四层，然后给每层定义清晰 owner，避免逻辑继续堆回状态机。",
+          "在 AI Interview 平台里，我负责过从 Vue 页面到 BFF 再到 Mastra runtime 的链路设计，重点做了结构化启动协议、RAG trace 和质量 fallback。"
+        ]
+      }
+    ],
+    "report": {
+      "finalReport": "## 模拟面试报告\n\n**目标岗位**: 通用技术岗位\n**完成题数**: 1\n**综合得分**: 6.8/10\n\n### 单题复盘\n#### 第 1 题\n**题目**: 请结合项目“负责一个 AI Interview 平台，从前端、BFF 到 Mastra runtime 设计并落地全链路。”，说明项目背景、你的职责、关键决策、遇到的挑战以及最终结果。\n**得分**: 6.8/10\n**回答情况**: 回答和题目相关，但深度或准确性还不够稳定，需要围绕关键遗漏点继续强化。\n**回答不错的点**: 回答基本围绕“结合项目“负责一个 AI Interview 平台”展开\n**回答还需改进的点**: 还需要继续补充“结合项目“负责一个 AI Interview 平台”的实现细节、关键取舍或真实案例\n\n### 总结建议\n**整体优势**: 回答基本围绕“结合项目“负责一个 AI Interview 平台”展开\n**优先改进项**: 还需要继续补充“结合项目“负责一个 AI Interview 平台”的实现细节、关键取舍或真实案例",
+      "lastCorrectionSummary": "回答纠正\n- 漏答点：还需要继续补充“结合项目“负责一个 AI Interview 平台”的实现细节、关键取舍或真实案例"
+    },
+    "feedback": {
+      "status": "submitted",
+      "submittedAt": "2026-05-17T13:19:41.468Z",
+      "overallExperienceScore": 5,
+      "questionFitScore": 4,
+      "difficultyScore": 4,
+      "comment": "题目贴近岗位，反馈链路已经打通。"
+    }
+  }
+}

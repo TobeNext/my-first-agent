@@ -9,11 +9,12 @@ import type {
   InterviewTopicNodeState,
   RoundType,
 } from './interview-state-machine-schema';
+import type { GeneratedQuestionRecord } from './interview-question-generator';
 import type { RagRecallTrace } from './rag-recall-sample';
 
 const INTERVIEW_OUTCOME_DIRECTORY_NAME = 'Interview outcome';
 const INTERVIEW_OUTCOME_INDEX_DIRECTORY_NAME = 'index';
-const INTERVIEW_OUTCOME_SCHEMA_VERSION = 2;
+const INTERVIEW_OUTCOME_SCHEMA_VERSION = 3;
 
 interface InterviewOutcomeFeedback {
   readonly status: 'pending' | 'submitted';
@@ -43,6 +44,10 @@ interface OutcomeNodeRecord {
   readonly topic: string;
   readonly source: InterviewTopicNodeState['source'];
   readonly mainQuestion: string;
+  readonly questionDriver: GeneratedQuestionRecord['questionDriver'];
+  readonly resumeSignals: readonly string[];
+  readonly jobDescriptionSignals: readonly string[];
+  readonly selectionReason: string;
   readonly status: InterviewTopicNodeState['status'];
   readonly aggregatedScore: number | null;
   readonly followUpCount: number;
@@ -66,6 +71,10 @@ interface OutcomeQuestionPerformanceRecord {
   readonly roundType: RoundType;
   readonly topic: string;
   readonly mainQuestion: string;
+  readonly questionDriver: GeneratedQuestionRecord['questionDriver'];
+  readonly resumeSignals: readonly string[];
+  readonly jobDescriptionSignals: readonly string[];
+  readonly selectionReason: string;
   readonly nodeStatus: InterviewTopicNodeState['status'];
   readonly aggregatedScore: number | null;
   readonly latestClassification: AnswerAttemptState['classification'] | null;
@@ -109,6 +118,10 @@ interface SelectorTrainingLabelRecord {
   readonly hybridScore: number;
   readonly rerankRank: number;
   readonly finalSelectionRank: number;
+  readonly questionDriver: GeneratedQuestionRecord['questionDriver'];
+  readonly resumeSignals: readonly string[];
+  readonly jobDescriptionSignals: readonly string[];
+  readonly selectionReason: string;
   readonly performance: OutcomeQuestionPerformanceRecord | null;
 }
 
@@ -130,6 +143,10 @@ interface CandidateQuestionReviewRecord {
   readonly roundType: RoundType;
   readonly topic: string;
   readonly question: string;
+  readonly questionDriver: GeneratedQuestionRecord['questionDriver'];
+  readonly resumeSignals: readonly string[];
+  readonly jobDescriptionSignals: readonly string[];
+  readonly selectionReason: string;
   readonly score: number | null;
   readonly strengths: readonly string[];
   readonly missingPoints: readonly string[];
@@ -153,6 +170,7 @@ interface InterviewOutcomeRecord {
   };
   readonly selectorTraining: {
     readonly traces: readonly RagRecallTrace[];
+    readonly generationTrace: readonly GeneratedQuestionRecord[];
     readonly recallEvents: readonly SelectorTrainingEventRecord[];
     readonly selectedQuestionLabels: readonly SelectorTrainingLabelRecord[];
   };
@@ -178,6 +196,9 @@ type CandidateImprovementPerformanceSummary = Pick<
 >;
 
 type LegacyInterviewOutcomeRecord = InterviewOutcomeRecord & {
+  readonly selectorTraining: InterviewOutcomeRecord['selectorTraining'] & {
+    readonly generationTrace?: readonly GeneratedQuestionRecord[];
+  };
   readonly userFeedback?: InterviewOutcomeFeedback;
 };
 
@@ -251,12 +272,51 @@ function uniqueStrings(values: readonly string[]): string[] {
   return [...new Set(values.filter((value) => value.length > 0))];
 }
 
-function buildNodeRecord(node: InterviewTopicNodeState): OutcomeNodeRecord {
+function buildGenerationTraceMap(generationTrace: readonly GeneratedQuestionRecord[]): Map<string, GeneratedQuestionRecord> {
+  return new Map(
+    generationTrace.map((trace) => [normalizeQuestionText(trace.questionText), trace] as const),
+  );
+}
+
+function buildDefaultTrace(node: InterviewTopicNodeState): GeneratedQuestionRecord {
+  return {
+    roundType: node.source === 'generated' ? 'project-experience' : 'professional-skills',
+    source: 'retrieved',
+    targetAbility: node.topic,
+    questionType: 'knowledge-check',
+    coverageIntent: node.source,
+    questionDriver: 'resume',
+    resumeSignals: [],
+    jobDescriptionSignals: [],
+    expectedDifficulty: 'medium',
+    questionId: node.id,
+    questionText: node.mainQuestion,
+    selectionReason: 'No generation trace was available for this question.',
+  };
+}
+
+function resolveQuestionTrace(
+  node: InterviewTopicNodeState,
+  generationTraceMap: ReadonlyMap<string, GeneratedQuestionRecord>,
+): GeneratedQuestionRecord {
+  return generationTraceMap.get(normalizeQuestionText(node.mainQuestion)) ?? buildDefaultTrace(node);
+}
+
+function buildNodeRecord(
+  node: InterviewTopicNodeState,
+  generationTraceMap: ReadonlyMap<string, GeneratedQuestionRecord>,
+): OutcomeNodeRecord {
+  const trace = resolveQuestionTrace(node, generationTraceMap);
+
   return {
     id: node.id,
     topic: node.topic,
     source: node.source,
     mainQuestion: node.mainQuestion,
+    questionDriver: trace.questionDriver,
+    resumeSignals: trace.resumeSignals,
+    jobDescriptionSignals: trace.jobDescriptionSignals,
+    selectionReason: trace.selectionReason,
     status: node.status,
     aggregatedScore: roundNumber(node.aggregatedScore),
     followUpCount: node.followUpCount,
@@ -279,7 +339,10 @@ function buildNodeRecord(node: InterviewTopicNodeState): OutcomeNodeRecord {
   };
 }
 
-function buildRoundRecords(state: InterviewSessionState): OutcomeRoundRecord[] {
+function buildRoundRecords(
+  state: InterviewSessionState,
+  generationTraceMap: ReadonlyMap<string, GeneratedQuestionRecord>,
+): OutcomeRoundRecord[] {
   return state.rounds.map((round) => ({
     id: round.id,
     type: round.type,
@@ -287,15 +350,19 @@ function buildRoundRecords(state: InterviewSessionState): OutcomeRoundRecord[] {
     plannedNodeCount: round.plannedNodeCount,
     completedNodeCount: round.completedNodeCount,
     activeNodeId: round.activeNodeId,
-    nodes: round.nodes.map((node) => buildNodeRecord(node)),
+    nodes: round.nodes.map((node) => buildNodeRecord(node, generationTraceMap)),
   }));
 }
 
-function buildQuestionPerformanceMap(state: InterviewSessionState): Map<string, OutcomeQuestionPerformanceRecord> {
+function buildQuestionPerformanceMap(
+  state: InterviewSessionState,
+  generationTraceMap: ReadonlyMap<string, GeneratedQuestionRecord>,
+): Map<string, OutcomeQuestionPerformanceRecord> {
   return new Map(
     state.rounds.flatMap((round) =>
       round.nodes.map((node) => {
         const latestAttempt = node.answerAttempts.at(-1) ?? null;
+        const trace = resolveQuestionTrace(node, generationTraceMap);
 
         return [
           normalizeQuestionText(node.mainQuestion),
@@ -303,6 +370,10 @@ function buildQuestionPerformanceMap(state: InterviewSessionState): Map<string, 
             roundType: round.type,
             topic: node.topic,
             mainQuestion: node.mainQuestion,
+            questionDriver: trace.questionDriver,
+            resumeSignals: trace.resumeSignals,
+            jobDescriptionSignals: trace.jobDescriptionSignals,
+            selectionReason: trace.selectionReason,
             nodeStatus: node.status,
             aggregatedScore: roundNumber(node.aggregatedScore),
             latestClassification: latestAttempt?.classification ?? null,
@@ -319,8 +390,9 @@ function buildQuestionPerformanceMap(state: InterviewSessionState): Map<string, 
 function buildSelectorTrainingEvents(
   recallTraces: readonly RagRecallTrace[],
   state: InterviewSessionState,
+  generationTraceMap: ReadonlyMap<string, GeneratedQuestionRecord>,
 ): SelectorTrainingEventRecord[] {
-  const questionPerformanceMap = buildQuestionPerformanceMap(state);
+  const questionPerformanceMap = buildQuestionPerformanceMap(state, generationTraceMap);
 
   return recallTraces.map((trace) => ({
     traceTimestamp: trace.timestamp,
@@ -346,29 +418,41 @@ function buildSelectorTrainingEvents(
 function buildSelectorTrainingLabels(
   recallTraces: readonly RagRecallTrace[],
   state: InterviewSessionState,
+  generationTraceMap: ReadonlyMap<string, GeneratedQuestionRecord>,
 ): SelectorTrainingLabelRecord[] {
-  const questionPerformanceMap = buildQuestionPerformanceMap(state);
+  const questionPerformanceMap = buildQuestionPerformanceMap(state, generationTraceMap);
 
   return recallTraces.flatMap((trace) =>
-    trace.finalSelectedQuestions.map((selection) => ({
-      traceTimestamp: trace.timestamp,
-      roundType: trace.roundType,
-      skill: trace.skill,
-      queryText: trace.queryText,
-      logContext: trace.logContext,
-      questionId: selection.id,
-      questionText: selection.questionText,
-      vectorScore: selection.vectorScore,
-      bm25Score: selection.bm25Score,
-      hybridScore: selection.hybridScore,
-      rerankRank: selection.rerankRank,
-      finalSelectionRank: selection.finalSelectionRank,
-      performance: questionPerformanceMap.get(normalizeQuestionText(selection.questionText)) ?? null,
-    })),
+    trace.finalSelectedQuestions.map((selection) => {
+      const performance = questionPerformanceMap.get(normalizeQuestionText(selection.questionText)) ?? null;
+
+      return {
+        traceTimestamp: trace.timestamp,
+        roundType: trace.roundType,
+        skill: trace.skill,
+        queryText: trace.queryText,
+        logContext: trace.logContext,
+        questionId: selection.id,
+        questionText: selection.questionText,
+        vectorScore: selection.vectorScore,
+        bm25Score: selection.bm25Score,
+        hybridScore: selection.hybridScore,
+        rerankRank: selection.rerankRank,
+        finalSelectionRank: selection.finalSelectionRank,
+        questionDriver: performance?.questionDriver ?? 'resume',
+        resumeSignals: performance?.resumeSignals ?? [],
+        jobDescriptionSignals: performance?.jobDescriptionSignals ?? [],
+        selectionReason: performance?.selectionReason ?? 'No performance label was available for this selection.',
+        performance,
+      };
+    }),
   );
 }
 
-function buildPerformanceSummary(state: InterviewSessionState): CandidateImprovementPerformanceSummary {
+function buildPerformanceSummary(
+  state: InterviewSessionState,
+  generationTraceMap: ReadonlyMap<string, GeneratedQuestionRecord>,
+): CandidateImprovementPerformanceSummary {
   const allNodes = state.rounds.flatMap((round) => round.nodes);
   const completedNodeCount = allNodes.filter((node) => node.status === 'completed' || node.status === 'skipped').length;
   const scoredNodes = allNodes
@@ -379,7 +463,7 @@ function buildPerformanceSummary(state: InterviewSessionState): CandidateImprove
     totalQuestionCount: allNodes.length,
     completedQuestionCount: completedNodeCount,
     finalScore: average(scoredNodes),
-    rounds: buildRoundRecords(state),
+    rounds: buildRoundRecords(state, generationTraceMap),
   };
 }
 
@@ -506,19 +590,30 @@ function buildKnowledgeWeaknessRecords(state: InterviewSessionState): CandidateK
   });
 }
 
-function buildCandidateQuestionReviews(state: InterviewSessionState): CandidateQuestionReviewRecord[] {
+function buildCandidateQuestionReviews(
+  state: InterviewSessionState,
+  generationTraceMap: ReadonlyMap<string, GeneratedQuestionRecord>,
+): CandidateQuestionReviewRecord[] {
   return state.rounds.flatMap((round) =>
-    round.nodes.map((node) => ({
-      roundType: round.type,
-      topic: node.topic,
-      question: node.mainQuestion,
-      score: roundNumber(node.aggregatedScore),
-      strengths: node.summary?.strengths ?? [],
-      missingPoints: node.summary?.missingPoints ?? [],
-      incorrectPoints: node.summary?.weaknesses ?? [],
-      improvementAdvice: node.summary?.improvementAdvice ?? [],
-      evidence: uniqueStrings(node.summary?.evidence ?? []).slice(0, 3),
-    })),
+    round.nodes.map((node) => {
+      const trace = resolveQuestionTrace(node, generationTraceMap);
+
+      return {
+        roundType: round.type,
+        topic: node.topic,
+        question: node.mainQuestion,
+        questionDriver: trace.questionDriver,
+        resumeSignals: trace.resumeSignals,
+        jobDescriptionSignals: trace.jobDescriptionSignals,
+        selectionReason: trace.selectionReason,
+        score: roundNumber(node.aggregatedScore),
+        strengths: node.summary?.strengths ?? [],
+        missingPoints: node.summary?.missingPoints ?? [],
+        incorrectPoints: node.summary?.weaknesses ?? [],
+        improvementAdvice: node.summary?.improvementAdvice ?? [],
+        evidence: uniqueStrings(node.summary?.evidence ?? []).slice(0, 3),
+      };
+    }),
   );
 }
 
@@ -531,8 +626,11 @@ function buildOutcomeRecord(options: {
   readonly updatedAt: string;
   readonly state: InterviewSessionState;
   readonly recallTraces: readonly RagRecallTrace[];
+  readonly generationTrace: readonly GeneratedQuestionRecord[];
   readonly userFeedback: InterviewOutcomeFeedback;
 }): InterviewOutcomeRecord {
+  const generationTraceMap = buildGenerationTraceMap(options.generationTrace);
+
   return {
     schemaVersion: INTERVIEW_OUTCOME_SCHEMA_VERSION,
     createdAt: options.createdAt,
@@ -548,14 +646,15 @@ function buildOutcomeRecord(options: {
     },
     selectorTraining: {
       traces: options.recallTraces,
-      recallEvents: buildSelectorTrainingEvents(options.recallTraces, options.state),
-      selectedQuestionLabels: buildSelectorTrainingLabels(options.recallTraces, options.state),
+      generationTrace: options.generationTrace,
+      recallEvents: buildSelectorTrainingEvents(options.recallTraces, options.state, generationTraceMap),
+      selectedQuestionLabels: buildSelectorTrainingLabels(options.recallTraces, options.state, generationTraceMap),
     },
     candidateImprovement: {
-      ...buildPerformanceSummary(options.state),
+      ...buildPerformanceSummary(options.state, generationTraceMap),
       strongSignals: buildCandidateThemeRecords(options.state, 'strength').slice(0, 8),
       knowledgeWeaknesses: buildKnowledgeWeaknessRecords(options.state).slice(0, 12),
-      questionReviews: buildCandidateQuestionReviews(options.state),
+      questionReviews: buildCandidateQuestionReviews(options.state, generationTraceMap),
       report: {
         finalReport: options.state.finalReport,
         lastCorrectionSummary: options.state.lastCorrectionSummary,
@@ -596,6 +695,7 @@ export async function createInterviewOutcomeSnapshot(options: {
   readonly threadId: string;
   readonly state: InterviewSessionState;
   readonly recallTraces: readonly RagRecallTrace[];
+  readonly generationTrace?: readonly GeneratedQuestionRecord[];
 }): Promise<string> {
   const createdAt = new Date().toISOString();
   const directoryName = `${sanitizeTimestampForFileName(createdAt)}-${options.threadId}`;
@@ -609,6 +709,7 @@ export async function createInterviewOutcomeSnapshot(options: {
     updatedAt: createdAt,
     state: options.state,
     recallTraces: options.recallTraces,
+    generationTrace: options.generationTrace ?? [],
     userFeedback: buildPendingFeedback(),
   });
 
@@ -627,15 +728,18 @@ export async function updateInterviewOutcomeSnapshot(options: {
   readonly filePath: string;
   readonly state: InterviewSessionState;
   readonly recallTraces?: readonly RagRecallTrace[];
+  readonly generationTrace?: readonly GeneratedQuestionRecord[];
 }): Promise<void> {
   const currentRecord = await readInterviewOutcomeRecord(options.filePath);
   const updatedAt = new Date().toISOString();
   const recallTraces = options.recallTraces ?? currentRecord.selectorTraining.traces;
+  const generationTrace = options.generationTrace ?? currentRecord.selectorTraining.generationTrace ?? [];
   const updatedRecord = buildOutcomeRecord({
     createdAt: currentRecord.createdAt,
     updatedAt,
     state: options.state,
     recallTraces,
+    generationTrace,
     userFeedback: readFeedbackFromCurrentRecord(currentRecord),
   });
 

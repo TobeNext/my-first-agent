@@ -36,7 +36,7 @@ function getBadRequestMessage(callback: () => unknown): string | readonly string
   }
 }
 
-test('ResumeService.validate returns detailed section errors for malformed markdown bullets', () => {
+test('ResumeService.validate still rejects truly malformed list items after enabling parser tolerance', () => {
   const service = new ResumeService();
   const message = getBadRequestMessage(() =>
     service.validate(
@@ -50,11 +50,27 @@ test('ResumeService.validate returns detailed section errors for malformed markd
     ),
   );
 
-  assert.deepEqual(message, [
-    '第 2 行（专业技能）：内容项必须以 "- " 开头。',
-    '第 4 行（项目经历）："- " 后必须填写具体内容。',
-    '第 5 行（项目经历）：内容项必须以 "- " 开头。',
-  ]);
+  assert.deepEqual(message, ['第 4 行（项目经历）："- " 后必须填写具体内容。']);
+});
+
+test('ResumeService.validate rejects a missing file before checking metadata', () => {
+  const service = new ResumeService();
+  const message = getBadRequestMessage(() => service.validate(undefined));
+
+  assert.equal(message, '请先上传简历文件。');
+});
+
+test('ResumeService.validate rejects non-markdown files', () => {
+  const service = new ResumeService();
+  const message = getBadRequestMessage(() =>
+    service.validate({
+      originalname: 'resume.txt',
+      size: 20,
+      buffer: Buffer.from('resume', 'utf8'),
+    }),
+  );
+
+  assert.equal(message, '仅支持上传 .md 格式的简历文件。');
 });
 
 test('ResumeService.validate reports duplicate and missing required sections', () => {
@@ -83,6 +99,42 @@ test('ResumeService.validate accepts placeholder ellipsis and returns the profes
     '### 项目经历',
     '- 使用 TypeScript 和 Node.js 构建 NestJS BFF',
     '...',
+  ].join('\n');
+
+  const result = service.validate(createResumeFile(markdown));
+
+  assert.deepEqual(result, {
+    success: true,
+    fileName: 'resume.md',
+    fileSize: Buffer.byteLength(markdown, 'utf8'),
+    message: '文件已通过 BFF 大小、类型、结构校验，并完成技能组计数。',
+    professionalSkillGroupCount: 2,
+  });
+});
+
+test('ResumeService.validate rejects unreadable file buffers', () => {
+  const service = new ResumeService();
+  const message = getBadRequestMessage(() =>
+    service.validate({
+      originalname: 'resume.md',
+      size: 0,
+      buffer: undefined,
+    }),
+  );
+
+  assert.equal(message, '无法读取上传的简历内容。');
+});
+
+test('ResumeService.validate accepts heading aliases and non-standard markdown that the canonical parser can normalize', () => {
+  const service = new ResumeService();
+  const markdown = [
+    '## Skills:',
+    '1. TypeScript',
+    '2. RAG',
+    '',
+    'Project Experience:',
+    'AI 面试 Agent 状态机改造',
+    'BFF 流式代理联调',
   ].join('\n');
 
   const result = service.validate(createResumeFile(markdown));

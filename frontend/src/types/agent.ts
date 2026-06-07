@@ -1,3 +1,8 @@
+import type {
+  InterviewStartRequest as CanonicalInterviewStartRequest,
+  InterviewSystemSettings as CanonicalInterviewSystemSettings,
+} from '../../../bff/src/modules/agent/interview-start-contract';
+
 export type ChatRole = 'user' | 'assistant';
 
 export interface AgentChatMessage {
@@ -7,17 +12,8 @@ export interface AgentChatMessage {
 }
 
 export type InterviewRoundPreference = 'no-skip' | 'skip-professional-skills' | 'skip-project-experience';
-export type ProfessionalQuestionMode = 'per-skill-default' | 'custom-count';
-
-export interface InterviewSystemSettings {
-  readonly reviewIncorrectOrMissingPoints: boolean;
-  readonly skipProfessionalSkillsRound: boolean;
-  readonly skipProjectExperienceRound: boolean;
-  readonly enableFlowTestMode: boolean;
-  readonly professionalQuestionMode: ProfessionalQuestionMode;
-  readonly professionalQuestionCount: number;
-  readonly projectQuestionCount: number;
-}
+export type ProfessionalQuestionMode = CanonicalInterviewSystemSettings['professionalQuestionMode'];
+export type InterviewSystemSettings = CanonicalInterviewSystemSettings;
 
 export type InterviewProgressStage = 'main-question' | 'follow-up' | 'completed';
 
@@ -44,13 +40,7 @@ export interface InterviewStateSnapshot {
   readonly progress: InterviewProgressSummary;
 }
 
-export interface StartInterviewRequest {
-  readonly threadId: string;
-  readonly startInterview: true;
-  readonly resumeMarkdown: string;
-  readonly jobDescriptionMarkdown: string;
-  readonly settings: InterviewSystemSettings;
-}
+export type StartInterviewRequest = CanonicalInterviewStartRequest;
 
 export interface ContinueInterviewRequest {
   readonly threadId: string;

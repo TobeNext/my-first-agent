@@ -110,4 +110,50 @@ describe('validateResumeViaBff', () => {
       savedAt: '2026-05-03T12:00:00.000Z',
     });
   });
+
+  it('throws the first detailed BFF feedback error when submission fails', async () => {
+    const fetchMock = vi.fn().mockResolvedValue(
+      new Response(JSON.stringify({ message: ['thread not found'] }), {
+        status: 404,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }),
+    );
+
+    vi.stubGlobal('fetch', fetchMock);
+
+    await expect(
+      submitInterviewFeedbackViaBff({
+        threadId: 'missing-thread',
+        overallExperienceScore: 5,
+        questionFitScore: 4,
+        difficultyScore: 4,
+        comment: '',
+      }),
+    ).rejects.toThrow('thread not found');
+  });
+
+  it('throws the top-level BFF feedback error message when there are no details', async () => {
+    const fetchMock = vi.fn().mockResolvedValue(
+      new Response(JSON.stringify({ message: 'feedback rejected' }), {
+        status: 400,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }),
+    );
+
+    vi.stubGlobal('fetch', fetchMock);
+
+    await expect(
+      submitInterviewFeedbackViaBff({
+        threadId: 'thread-1',
+        overallExperienceScore: 1,
+        questionFitScore: 1,
+        difficultyScore: 1,
+        comment: 'too short',
+      }),
+    ).rejects.toThrow('feedback rejected');
+  });
 });

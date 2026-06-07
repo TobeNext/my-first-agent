@@ -1,0 +1,68 @@
+name: Interview E2E
+
+on:
+  workflow_dispatch:
+
+jobs:
+  interview-e2e:
+    runs-on: ubuntu-latest
+    env:
+      INTERVIEW_E2E_FRONTEND_URL: http://localhost:8080
+      INTERVIEW_E2E_BFF_URL: http://localhost:3000
+      INTERVIEW_E2E_MASTRA_URL: http://localhost:4111
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Validate required E2E env secret
+        run: |
+          if [ -z "${{ secrets.E2E_ENV_FILE }}" ]; then
+            echo "Repository secret E2E_ENV_FILE is required to run the live interview E2E workflow."
+            exit 1
+          fi
+
+      - name: Write root .env
+        run: |
+          cat <<'EOF' > .env
+          ${{ secrets.E2E_ENV_FILE }}
+          EOF
+
+      - name: Install workspace dependencies
+        run: |
+          npm install
+          npm --prefix bff install
+          npm --prefix frontend install
+
+      - name: Start Docker Compose stack
+        run: docker compose up -d --build
+
+      - name: Wait for live services
+        run: |
+          for url in http://localhost:8080 http://localhost:3000 http://localhost:4111/api; do
+            for attempt in $(seq 1 60); do
+              status=$(curl -s -o /dev/null -w '%{http_code}' "$url" || true)
+              if [ "$status" != "000" ] && [ "$status" -lt 500 ]; then
+                break
+              fi
+
+              if [ "$attempt" -eq 60 ]; then
+                echo "Service check failed for $url"
+                docker compose logs
+                exit 1
+              fi
+
+              sleep 5
+            done
+          done
+
+      - name: Run live interview E2E suite
+        run: npm run test:e2e:interview
+
+      - name: Stop Docker Compose stack
+        if: always()
+        run: docker compose down --volumes

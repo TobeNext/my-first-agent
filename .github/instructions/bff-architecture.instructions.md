@@ -16,7 +16,7 @@ description: "Use when coding in the NestJS BFF layer. Captures the BFF architec
 
 - `auth`: 登录相关接口与输入校验
 - `resume`: 文件上传、`.md` 校验、大小校验，以及返回供前端展示和后续启动态默认题数使用的权威专业技能组数量；技能语义拆解不再由 BFF 负责，而是保留原始 Markdown 给 Mastra 处理
-- `agent`: 前端 interview 启动 / 答题请求验证；负责校验专业技能轮自动/自定义题数模式、专业技能轮 / 项目经历轮各自题数、逐题纠错/轮次跳过/flow-test mode 等系统设置，并把基于 `threadId` 的 SSE 流式响应转发到 Mastra。当前启动态还允许接收一个选填的职位 JD Markdown 字段：未上传时为空，上传时作为未来扩展检索策略的预留上下文继续透传给下游 kickoff message。面试结束后，BFF 还会接收用户反馈评分与文本意见，并把它写回 Mastra 已经落盘的 `Interview outcome` 结构化 outcome 记录。
+- `agent`: 前端 interview 启动 / 答题请求验证；负责校验专业技能轮自动/自定义题数模式、专业技能轮 / 项目经历轮各自题数、逐题纠错/轮次跳过/flow-test mode 等系统设置，并把基于 `threadId` 的 SSE 流式响应转发到 Mastra。当前启动态已经收敛到统一的结构化 start contract：前端和 BFF 复用同一份 Zod schema，BFF 在默认模式下归一题数并补齐 `resumeSections` 后，将同一份 payload 以 JSON 形式继续透传给下游。面试结束后，BFF 还会接收用户反馈评分与文本意见，并把它写回 Mastra 已经落盘的 `Interview outcome` 结构化 outcome 记录。
 
 ## Module Boundaries
 
@@ -31,7 +31,7 @@ description: "Use when coding in the NestJS BFF layer. Captures the BFF architec
 - 前端校验不能替代 BFF 校验
 - BFF 必须对登录输入、聊天输入、上传文件元数据做二次校验
 - BFF 还负责把上传简历中“权威专业技能组数量”解析为权威结果返回给前端，避免前端和后端各自维护一套默认题数规则
-- BFF 不再拆解专业技能语义本身；`### 专业技能` 和 `### 项目经历` 的纯文本内容继续随简历 Markdown 透传给 Mastra，由下游在初始化时按技能组与项目经历上下文完成题目规划
+- BFF 不再拆解专业技能语义本身；`### 专业技能` 和 `### 项目经历` 的纯文本内容仍由 Mastra 负责消费，但 BFF 现在会在结构化 start payload 中预填 `resumeSections`，让下游优先使用已切好的章节上下文，同时保留完整 `resumeMarkdown` 作为兼容输入
 - BFF 在 interview 启动时仍需基于简历 Markdown 归一默认模式下的专业技能轮题数，确保 `per-skill-default` 始终等于技能组数量，而不是信任前端传入的数值
 - BFF 还必须对 interview 启动态设置做二次校验，尤其是专业技能轮自动/自定义题数模式、“不能同时跳过两轮”的约束、两轮题数与启用轮次的对应关系，以及 flow-test mode 这类仅联调用的布尔开关
 - BFF 还必须对 interview 结束后的反馈提交做二次校验，包括 `threadId`、反馈分值范围和反馈文本长度；前端不能直接假定 outcome 文件一定存在。

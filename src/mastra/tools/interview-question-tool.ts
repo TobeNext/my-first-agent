@@ -3,6 +3,7 @@ import { embed } from 'ai';
 import { fastembed } from '@mastra/fastembed';
 import { z } from 'zod';
 
+import { DEFAULT_SKILL_AREA, normalizeSkillAreaFromText } from '../lib/interview-question-metadata';
 import { interviewQuestionCandidateSchema } from '../lib/interview-state-machine-schema';
 import { mastraLogger } from '../lib/logger';
 import {
@@ -40,7 +41,7 @@ function shuffle<T>(arr: readonly T[]): T[] {
   return result;
 }
 
-interface QueryInterviewQuestionsOptions {
+export interface QueryInterviewQuestionsOptions {
   readonly queryText: string;
   readonly topK?: number;
   readonly logContext?: string;
@@ -49,7 +50,7 @@ interface QueryInterviewQuestionsOptions {
   readonly onRecallTrace?: (trace: RagRecallTrace) => void | Promise<void>;
 }
 
-interface QueryInterviewQuestionsResult {
+export interface QueryInterviewQuestionsResult {
   readonly count: number;
   readonly questions: z.infer<typeof interviewQuestionCandidateSchema>[];
 }
@@ -59,6 +60,7 @@ interface RerankedCandidateEntry {
   readonly vectorScore: number;
   readonly bm25Score: number;
   readonly hybridScore: number;
+  readonly matchedSkillArea: readonly string[];
   readonly rerankRank: number;
 }
 
@@ -107,6 +109,24 @@ function formatTags(tags: unknown): string | undefined {
   return typeof tags === 'string' ? tags : undefined;
 }
 
+function formatSkillArea(skillArea: unknown): string[] {
+  if (Array.isArray(skillArea)) {
+    return skillArea
+      .filter((value): value is string => typeof value === 'string')
+      .map((value) => value.trim().toLowerCase())
+      .filter((value) => value.length > 0);
+  }
+
+  if (typeof skillArea === 'string') {
+    return skillArea
+      .split(/[,，\s]+/u)
+      .map((value) => value.trim().toLowerCase())
+      .filter((value) => value.length > 0);
+  }
+
+  return [];
+}
+
 function normalizeScore(value: number, min: number, max: number): number {
   if (!Number.isFinite(value)) {
     return 0;
@@ -119,103 +139,57 @@ function normalizeScore(value: number, min: number, max: number): number {
   return (value - min) / (max - min);
 }
 
-function tokenize(text: string): string[] {
-  const matches = text.toLowerCase().match(/[a-z0-9+#.-]+|[\p{Script=Han}]{1,2}/gu) ?? [];
-
-  return matches.filter((token) => token.length > 0);
+export function extractJdSkillArea(queryText: string): string[] {
+  const normalized = normalizeSkillAreaFromText(queryText);
+  return normalized.length === 1 && normalized[0] === DEFAULT_SKILL_AREA ? [] : normalized;
 }
 
-function buildDocumentText(result: VectorSearchResult): string {
-  const metadata = result.metadata ?? {};
-  const parts = [
-    metadata['question'],
-    metadata['answer'],
-    metadata['text'],
-    metadata['role'],
-    metadata['company'],
-    metadata['mainCategory'],
-    metadata['subCategory'],
-    formatTags(metadata['tags']),
-  ];
+function scoreWithSkillArea(
+  jdSkillArea: readonly string[],
+  results: readonly VectorSearchResult[],
+): Map<string, { readonly score: number; readonly matchedSkillArea: readonly string[] }> {
+  const jdSkillSet = new Set(jdSkillArea);
 
-  return parts.filter((value): value is string => typeof value === 'string' && value.trim().length > 0).join(' ');
-}
+  return new Map(
+    results.map((result) => {
+      const candidateSkillArea = formatSkillArea(result.metadata?.['skillArea']);
+      const matchedSkillArea = candidateSkillArea.filter((skill) => jdSkillSet.has(skill));
+      const score = jdSkillArea.length > 0 ? matchedSkillArea.length / jdSkillArea.length : 0;
 
-function scoreWithBm25(queryText: string, results: readonly VectorSearchResult[]): Map<string, number> {
-  if (results.length === 0) {
-    return new Map<string, number>();
-  }
-
-  const queryTerms = tokenize(queryText);
-  if (queryTerms.length === 0) {
-    return new Map<string, number>(results.map((result) => [result.id, 0]));
-  }
-
-  const documentTokens = results.map((result) => tokenize(buildDocumentText(result)));
-  const documentLengths = documentTokens.map((tokens) => tokens.length || 1);
-  const averageDocumentLength = documentLengths.reduce((sum, length) => sum + length, 0) / documentLengths.length;
-  const uniqueQueryTerms = [...new Set(queryTerms)];
-  const documentFrequency = new Map<string, number>();
-
-  for (const term of uniqueQueryTerms) {
-    const frequency = documentTokens.reduce((count, tokens) => count + (tokens.includes(term) ? 1 : 0), 0);
-    documentFrequency.set(term, frequency);
-  }
-
-  const k1 = 1.5;
-  const b = 0.75;
-
-  return new Map<string, number>(
-    results.map((result, index) => {
-      const tokens = documentTokens[index];
-      const termCounts = new Map<string, number>();
-
-      for (const token of tokens) {
-        termCounts.set(token, (termCounts.get(token) ?? 0) + 1);
-      }
-
-      const score = uniqueQueryTerms.reduce((total, term) => {
-        const frequency = termCounts.get(term) ?? 0;
-        if (frequency === 0) {
-          return total;
-        }
-
-        const documentCount = results.length;
-        const docFrequency = documentFrequency.get(term) ?? 0;
-        const idf = Math.log(1 + (documentCount - docFrequency + 0.5) / (docFrequency + 0.5));
-        const denominator = frequency + k1 * (1 - b + b * (documentLengths[index] / averageDocumentLength));
-
-        return total + idf * ((frequency * (k1 + 1)) / denominator);
-      }, 0);
-
-      return [result.id, score] as const;
+      return [result.id, { score, matchedSkillArea }] as const;
     }),
   );
 }
 
-function buildRerankedEntries(queryText: string, results: readonly VectorSearchResult[]): RerankedCandidateEntry[] {
+export function buildRerankedEntries(queryText: string, results: readonly VectorSearchResult[]): RerankedCandidateEntry[] {
   if (results.length === 0) {
     return [];
   }
 
-  const bm25Scores = scoreWithBm25(queryText, results);
+  const jdSkillArea = extractJdSkillArea(queryText);
+  const skillAreaScores = scoreWithSkillArea(jdSkillArea, results);
   const vectorScores = results.map((result) => result.score);
-  const bm25Values = results.map((result) => bm25Scores.get(result.id) ?? 0);
+  const skillAreaValues = results.map((result) => skillAreaScores.get(result.id)?.score ?? 0);
   const minVector = Math.min(...vectorScores);
   const maxVector = Math.max(...vectorScores);
-  const minBm25 = Math.min(...bm25Values);
-  const maxBm25 = Math.max(...bm25Values);
+  const minSkillArea = Math.min(...skillAreaValues);
+  const maxSkillArea = Math.max(...skillAreaValues);
 
   return [...results]
     .map((result) => {
       const normalizedVectorScore = normalizeScore(result.score, minVector, maxVector);
-      const normalizedBm25Score = normalizeScore(bm25Scores.get(result.id) ?? 0, minBm25, maxBm25);
+      const skillAreaScore = skillAreaScores.get(result.id) ?? { score: 0, matchedSkillArea: [] };
+      const normalizedSkillAreaScore =
+        jdSkillArea.length > 0 && maxSkillArea > minSkillArea
+          ? normalizeScore(skillAreaScore.score, minSkillArea, maxSkillArea)
+          : skillAreaScore.score;
 
       return {
         result,
         vectorScore: result.score,
-        bm25Score: bm25Scores.get(result.id) ?? 0,
-        hybridScore: normalizedVectorScore * VECTOR_WEIGHT + normalizedBm25Score * BM25_WEIGHT,
+        bm25Score: skillAreaScore.score,
+        hybridScore: normalizedVectorScore * VECTOR_WEIGHT + normalizedSkillAreaScore * BM25_WEIGHT,
+        matchedSkillArea: skillAreaScore.matchedSkillArea,
       };
     })
     .sort((left, right) => right.hybridScore - left.hybridScore)
@@ -250,6 +224,7 @@ function buildRecallCandidates(options: {
       vectorScore: result.score,
       bm25Score: rerankedEntry?.bm25Score ?? 0,
       hybridScore: rerankedEntry?.hybridScore ?? 0,
+      matchedSkillArea: rerankedEntry?.matchedSkillArea ?? [],
       rerankRank: rerankedEntry?.rerankRank ?? null,
       finalSelectionRank,
       filterReason,
@@ -264,6 +239,7 @@ function buildFinalSelectedQuestions(selectedEntries: readonly RerankedCandidate
     vectorScore: entry.vectorScore,
     bm25Score: entry.bm25Score,
     hybridScore: entry.hybridScore,
+    matchedSkillArea: entry.matchedSkillArea,
     rerankRank: entry.rerankRank,
     finalSelectionRank: index + 1,
   }));
@@ -349,6 +325,7 @@ export async function queryInterviewQuestions(
           difficulty: (result.metadata?.['difficulty'] as string) ?? undefined,
           role: (result.metadata?.['role'] as string) ?? undefined,
           company: (result.metadata?.['company'] as string) ?? undefined,
+          skillArea: formatSkillArea(result.metadata?.['skillArea']),
           tags: formatTags(result.metadata?.['tags']),
         }),
       ),

@@ -10,6 +10,7 @@ export const mastra = new Mastra({
   agents: { interviewAgent },
   bundler: {
     sourcemap: true,
+    externals: ['@zilliz/milvus2-sdk-node'],
   },
   storage: new LibSQLStore({
     id: 'mastra-storage',

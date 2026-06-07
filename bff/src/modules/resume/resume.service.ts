@@ -2,7 +2,7 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { z } from 'zod';
 
 import { appConfig } from '../../config';
-import { countProfessionalSkillGroups, validateResumeMarkdown } from './resume-markdown';
+import { parseResumeMarkdown } from './resume-parser';
 import type { ResumeValidationSuccessPayload, UploadedResumeFile } from './resume.types';
 
 const resumeMetadataSchema = z.object({
@@ -31,7 +31,10 @@ export class ResumeService {
     });
 
     if (!parsed.success) {
-      throw new BadRequestException(parsed.error.issues[0]?.message ?? '简历文件校验失败。');
+      const errorMessage =
+        /* c8 ignore next -- Zod metadata validation failures always expose at least one issue. */
+        parsed.error.issues[0]?.message ?? '简历文件校验失败。';
+      throw new BadRequestException(errorMessage);
     }
 
     const markdown = file.buffer?.toString('utf8');
@@ -39,12 +42,12 @@ export class ResumeService {
       throw new BadRequestException('无法读取上传的简历内容。');
     }
 
-    const validationErrors = validateResumeMarkdown(markdown);
-    if (validationErrors.length > 0) {
-      throw new BadRequestException(validationErrors);
+    const parsedResume = parseResumeMarkdown(markdown);
+    if (parsedResume.validationErrors.length > 0) {
+      throw new BadRequestException(parsedResume.validationErrors);
     }
 
-    const professionalSkillGroupCount = countProfessionalSkillGroups(markdown);
+    const professionalSkillGroupCount = parsedResume.normalizedSkills.length;
 
     return {
       success: true,

@@ -1,7 +1,7 @@
 import { createTool } from '@mastra/core/tools';
 import { z } from 'zod';
 
-import { extractMarkdownSection } from '../lib/interview-kickoff-recovery';
+import { parseResumeMarkdown } from '../../../bff/src/modules/resume/resume-parser';
 
 export const resumeParserTool = createTool({
   id: 'resume-parser',
@@ -12,16 +12,25 @@ export const resumeParserTool = createTool({
   outputSchema: z.object({
     professionalSkills: z.string(),
     projectExperience: z.string(),
+    normalizedSkills: z.array(z.string()),
+    normalizedProjectTopics: z.array(z.string()),
+    warnings: z.array(z.string()),
+    validationErrors: z.array(z.string()),
     hasProfessionalSkills: z.boolean(),
     hasProjectExperience: z.boolean(),
   }),
   execute: async ({ resumeMarkdown }) => {
-    const professionalSkills = extractMarkdownSection(resumeMarkdown, '专业技能');
-    const projectExperience = extractMarkdownSection(resumeMarkdown, '项目经历');
+    const parsedResume = parseResumeMarkdown(resumeMarkdown);
+    const professionalSkills = parsedResume.professionalSkillsSection;
+    const projectExperience = parsedResume.projectExperienceSection;
 
     return {
       professionalSkills,
       projectExperience,
+      normalizedSkills: [...parsedResume.normalizedSkills],
+      normalizedProjectTopics: [...parsedResume.normalizedProjectTopics],
+      warnings: [...parsedResume.warnings],
+      validationErrors: [...parsedResume.validationErrors],
       hasProfessionalSkills: professionalSkills.length > 0,
       hasProjectExperience: projectExperience.length > 0,
     };

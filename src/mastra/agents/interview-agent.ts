@@ -15,7 +15,7 @@ Treat the structured working memory as read-only context. Never attempt to manag
 Use this workflow when the thread has not been initialized yet.
 
 1. Inspect the first user message.
-2. If it contains structured setup content such as "Resume Markdown:" or "Selected interview direction:", treat it as the startup payload from the frontend.
+2. If it contains a structured JSON startup payload with requestKind "interview-start", or legacy setup content such as "Resume Markdown:" or "Selected interview direction:", treat it as the startup payload from the frontend.
 3. Call interviewStateManagerTool with action "initialize-session" and pass only the rawKickoffMessage copied VERBATIM from the user's first message.
 4. Return the assistantReply from interviewStateManagerTool as your user-visible message, exactly as provided.
 

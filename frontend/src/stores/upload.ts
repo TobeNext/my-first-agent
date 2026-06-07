@@ -8,7 +8,12 @@ import {
   validateJobDescriptionFile,
   validateResumeFile,
 } from '@/services/resume-validation';
-import type { BffResumeValidationResult, InterviewResumeContext, ResumeValidationResult } from '@/types/resume';
+import type {
+  BffResumeValidationResult,
+  InterviewEntryState,
+  InterviewResumeContext,
+  ResumeValidationResult,
+} from '@/types/resume';
 
 export const useResumeUploadStore = defineStore('resumeUpload', () => {
   const constraints = getMarkdownUploadConstraints();
@@ -31,6 +36,13 @@ export const useResumeUploadStore = defineStore('resumeUpload', () => {
   const professionalSkillCount = computed(() => interviewResume.value?.professionalSkillGroupCount ?? 0);
   const selectedResumeFileName = computed(() => selectedFile.value?.name ?? '');
   const selectedJobDescriptionFileName = computed(() => selectedJobDescriptionFile.value?.name ?? '');
+  const interviewEntryState = computed<InterviewEntryState>(() => ({
+    canStartInterview: canStartInterview.value,
+    hasJobDescriptionValidationError: jobDescriptionResult.value?.success === false,
+    resumeFileName: interviewResume.value?.fileName ?? null,
+    jobDescriptionFileName: interviewResume.value?.jobDescriptionFileName ?? null,
+    professionalSkillGroupCount: professionalSkillCount.value,
+  }));
 
   function syncInterviewResumeContext(): void {
     if (!interviewResume.value) {
@@ -176,6 +188,7 @@ export const useResumeUploadStore = defineStore('resumeUpload', () => {
     maxFileSizeBytes: constraints.maxFileSizeBytes,
     bffResult,
     canStartInterview,
+    interviewEntryState,
     interviewResume,
     isSubmitting,
     jobDescriptionResult,

@@ -2,16 +2,21 @@ import { BadGatewayException, Injectable, Logger, NotFoundException } from '@nes
 import type { Response } from 'express';
 
 import { appConfig } from '../../config';
-import { countProfessionalSkillGroups } from '../resume/resume-markdown';
+import { parseResumeMarkdown } from '../resume/resume-parser';
 import { saveInterviewFeedback, type InterviewFeedbackInput } from './agent-outcome';
 import type { StreamInterviewInput } from './agent.schemas';
+import { buildInterviewStartRequest, serializeInterviewStartRequest } from './interview-start-contract';
 
 @Injectable()
 export class AgentService {
   private readonly logger = new Logger(AgentService.name);
 
+  private isStartInterviewInput(input: StreamInterviewInput): input is Extract<StreamInterviewInput, { startInterview: true }> {
+    return input.startInterview === true;
+  }
+
   private resolveProfessionalQuestionCount(input: StreamInterviewInput): number {
-    if (!input.settings || input.settings.skipProfessionalSkillsRound) {
+    if (!this.isStartInterviewInput(input) || input.settings.skipProfessionalSkillsRound) {
       return 0;
     }
 
@@ -19,7 +24,7 @@ export class AgentService {
       return input.settings.professionalQuestionCount;
     }
 
-    const skillGroupCount = countProfessionalSkillGroups(input.resumeMarkdown ?? '');
+    const skillGroupCount = parseResumeMarkdown(input.resumeMarkdown ?? '').normalizedSkills.length;
     return skillGroupCount > 0 ? skillGroupCount : input.settings.professionalQuestionCount;
   }
 
@@ -28,44 +33,30 @@ export class AgentService {
     readonly memory: { readonly thread: string; readonly resource: string };
     readonly maxSteps: 5;
   } {
-    const hasJobDescription = Boolean(input.jobDescriptionMarkdown?.trim());
-    const professionalQuestionCount = this.resolveProfessionalQuestionCount(input);
-    const kickoffMessage = [
-      'The candidate has uploaded the following markdown resume.',
-      'You must parse it with resumeParserTool before starting the interview.',
-      'The interview must have two stages in order: 专业技能阶段 first, 项目经验阶段 second.',
-      'Treat each "- " bullet under ### 专业技能 as one professional skill group.',
-      'Do not draft or pass main interview questions yourself during initialization.',
-      'Let interviewStateManagerTool generate the initialization questions internally from the resume context via retrieval.',
-      'After initialization, do not use the model for main-question planning or answer scoring.',
-      'Model usage is reserved for producing follow-up questions from the current question dialogue and the candidate\'s job context.',
-      'System settings:',
-      `- Review incorrect or missing points after each completed question: ${input.settings?.reviewIncorrectOrMissingPoints ? 'enabled' : 'disabled'}`,
-      `- Skip professional-skills round: ${input.settings?.skipProfessionalSkillsRound ? 'yes' : 'no'}`,
-      `- Skip project-experience round: ${input.settings?.skipProjectExperienceRound ? 'yes' : 'no'}`,
-      `- Flow test mode: ${input.settings?.enableFlowTestMode ? 'enabled' : 'disabled'}`,
-      `- Professional question mode: ${input.settings?.professionalQuestionMode ?? 'per-skill-default'}`,
-      `- Professional question count: ${professionalQuestionCount}`,
-      `- Project question count: ${input.settings?.projectQuestionCount ?? 2}`,
-      `- Job description provided: ${hasJobDescription ? 'yes' : 'no'}`,
-      'Use clear round headers so the first round and second round are visually distinct.',
-      'If a round is skipped by settings, explicitly announce the skip and continue to the next valid stage.',
-      hasJobDescription
-        ? 'A markdown job description is provided below as an extension input. The extended retrieval strategy is still pending, so preserve this context without replacing the current resume-based interview flow.'
-        : 'No job description markdown was uploaded. Keep the existing resume-based retrieval flow.',
-      '',
-      'Resume Markdown:',
-      input.resumeMarkdown ?? '',
-      '',
-      'Job Description Markdown:',
-      input.jobDescriptionMarkdown ?? '',
-    ].join('\n');
+    const parsedResume = input.startInterview ? parseResumeMarkdown(input.resumeMarkdown) : null;
+    const messageContent = input.startInterview
+      ? serializeInterviewStartRequest(
+          buildInterviewStartRequest({
+            threadId: input.threadId,
+            resumeMarkdown: input.resumeMarkdown,
+            jobDescriptionMarkdown: input.jobDescriptionMarkdown,
+            settings: {
+              ...input.settings,
+              professionalQuestionCount: this.resolveProfessionalQuestionCount(input),
+            },
+            resumeSections: {
+              professionalSkills: parsedResume?.professionalSkillsSection ?? '',
+              projectExperience: parsedResume?.projectExperienceSection ?? '',
+            },
+          }),
+        )
+      : input.message;
 
     return {
       messages: [
         {
           role: 'user',
-          content: input.startInterview ? kickoffMessage : input.message ?? '',
+          content: messageContent ?? '',
         },
       ],
       memory: {
@@ -77,11 +68,14 @@ export class AgentService {
   }
 
   async streamChat(input: StreamInterviewInput, response: Response): Promise<void> {
+    const isStartInterview = this.isStartInterviewInput(input);
+
     this.logger.log(
-      `Proxying ${input.startInterview ? 'startup' : 'reply'} stream for thread ${input.threadId} ` +
+      `Proxying ${isStartInterview ? 'startup' : 'reply'} stream for thread ${input.threadId} ` +
         `(` +
-        `flowTestMode=${input.settings?.enableFlowTestMode ?? false}, ` +
-        `hasJobDescription=${Boolean(input.jobDescriptionMarkdown?.trim())}, ` +
+        `protocol=${isStartInterview ? 'structured-start-v1' : 'reply'}, ` +
+        `flowTestMode=${isStartInterview ? input.settings.enableFlowTestMode : false}, ` +
+        `hasJobDescription=${isStartInterview ? Boolean(input.jobDescriptionMarkdown.trim()) : false}, ` +
         `professionalQuestionCount=${this.resolveProfessionalQuestionCount(input)}` +
         `).`,
     );

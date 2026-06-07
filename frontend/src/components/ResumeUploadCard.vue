@@ -89,7 +89,24 @@
       未上传职位 JD 时，系统仅使用简历内容维持当前流程；上传职位 JD 后，文件内容会随面试启动请求一并透传，供后续扩展方式接入。
     </div>
 
+    <div :class="['upload-card__ready', canEnterInterview ? 'is-ready' : 'is-pending']">
+      <p class="upload-card__ready-title">{{ nextStepTitle }}</p>
+      <p class="upload-card__ready-text">{{ nextStepDescription }}</p>
+      <p v-if="canEnterInterview" class="upload-card__ready-meta">
+        简历：{{ readyResumeFileName }}
+        <span v-if="readyJobDescriptionFileName"> · 职位 JD：{{ readyJobDescriptionFileName }}</span>
+      </p>
+    </div>
+
     <div class="upload-card__actions">
+      <button
+        class="upload-card__button upload-card__button--primary"
+        type="button"
+        :disabled="!canEnterInterview"
+        @click="onContinue"
+      >
+        {{ primaryActionLabel }}
+      </button>
       <button class="upload-card__button upload-card__button--secondary" type="button" @click="onReset">
         重置
       </button>
@@ -104,17 +121,53 @@ import { formatFileSize } from '@/services/resume-validation';
 import { useResumeUploadStore } from '@/stores/upload';
 import type { ResumeValidationResult } from '@/types/resume';
 
+const emit = defineEmits<{
+  continue: [];
+}>();
+
 const uploadStore = useResumeUploadStore();
 const resumeFileInput = ref<HTMLInputElement | null>(null);
 const jobDescriptionFileInput = ref<HTMLInputElement | null>(null);
 
 const bffResult = computed(() => uploadStore.bffResult);
+const canEnterInterview = computed(() => uploadStore.canStartInterview);
 const isSubmitting = computed(() => uploadStore.isSubmitting);
 const jobDescriptionResult = computed(() => uploadStore.jobDescriptionResult);
 const localResult = computed(() => uploadStore.localResult);
 const maxFileSizeLabel = computed(() => formatFileSize(uploadStore.maxFileSizeBytes));
 const selectedResumeFileName = computed(() => uploadStore.selectedResumeFileName);
 const selectedJobDescriptionFileName = computed(() => uploadStore.selectedJobDescriptionFileName);
+const readyResumeFileName = computed(() => uploadStore.interviewResume?.fileName ?? selectedResumeFileName.value);
+const readyJobDescriptionFileName = computed(
+  () => uploadStore.interviewResume?.jobDescriptionFileName ?? selectedJobDescriptionFileName.value,
+);
+const nextStepTitle = computed(() =>
+  canEnterInterview.value ? '已可进入面试配置' : '上传完成后可继续进入面试配置',
+);
+const nextStepDescription = computed(() => {
+  if (isSubmitting.value) {
+    return '简历正在经过 BFF 二次校验，完成后会自动解锁下一步。';
+  }
+
+  if (jobDescriptionResult.value && !jobDescriptionResult.value.success) {
+    return '职位 JD 为选填项，但当前文件未通过校验。修正或清空后即可继续。';
+  }
+
+  if (canEnterInterview.value) {
+    return readyJobDescriptionFileName.value
+      ? '简历与职位 JD 已就绪。你现在可以继续进入面试配置。'
+      : '简历已就绪。你现在可以继续进入面试配置；职位 JD 仍可保持为空。';
+  }
+
+  if (localResult.value?.success === false || bffResult.value?.success === false) {
+    return '请先修正当前校验问题；只有简历通过校验后才会解锁下一步。';
+  }
+
+  return '请先上传并校验简历。职位 JD 为选填项，未上传不会阻止进入下一步。';
+});
+const primaryActionLabel = computed(() =>
+  canEnterInterview.value ? '进入面试配置' : '请先完成简历校验',
+);
 const resumeValidationSummary = computed<{
   readonly success: boolean;
   readonly title: string;
@@ -236,5 +289,13 @@ function onReset(): void {
   }
 
   uploadStore.reset();
+}
+
+function onContinue(): void {
+  if (!canEnterInterview.value) {
+    return;
+  }
+
+  emit('continue');
 }
 </script>

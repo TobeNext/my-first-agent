@@ -18,15 +18,18 @@ description: "Use when coding in the Mastra TypeScript source tree. Captures the
 ## Current Runtime Snapshot
 
 - `src/mastra/index.ts` 是当前 Mastra 运行入口，负责注册 `interview-agent`、logger、storage 和 observability。
+- `src/mastra/index.ts` 的 bundler 配置会把 `@zilliz/milvus2-sdk-node` 作为 external 处理；Milvus SDK 不应被 Mastra build 内联打包。
 - 当前运行时只保留 `interview-agent` 作为对外启用的 agent。
 - 当前 Mastra 运行时的环境变量不再只依赖 CLI 隐式加载；`src/mastra/lib/load-env.ts` 会在读取模型 API key 和向量库配置前，显式尝试加载仓库根目录下的 `.env.local` 和 `.env`，以兼容直接执行构建产物的场景。
-- 仓库现在新增了独立的 `frontend/` Vue 3 + TypeScript 应用，用于承载面向用户的交互页面。当前它已经接入 BFF，提供“简历必传 + 职位 JD 选填”的信息上传页：简历在前端只做文件类型与大小校验，经由 BFF 做大小、类型和结构的二次校验；职位 JD 只做前端文件校验和内容保留、简历模板仍可下载；由 BFF 返回权威专业技能组数量，前端按该数量默认把专业技能轮题数设置为“每个技能组一题”，再结合项目经历轮题数、逐题纠错、轮次跳过和 flow-test mode 等系统设置正式开始流式面试。
+- 仓库现在新增了独立的 `frontend/` Vue 3 + TypeScript 应用，用于承载面向用户的交互页面。当前它已经接入 BFF，提供“简历必传 + 职位 JD 选填”的信息上传页：简历在前端只做文件类型与大小校验，经由 BFF 做大小、类型和结构的二次校验；职位 JD 只做前端文件校验和内容保留、简历模板仍可下载；由 BFF 返回权威专业技能组数量，前端按该数量默认把专业技能轮题数设置为“每个技能组一题”，再结合项目经历轮题数、逐题纠错、轮次跳过和 flow-test mode 等系统设置正式开始流式面试。当前前端配置页和开始前状态文案已经明确说明：上传 JD 后，下游会提取职责、技术要求、优先技能与领域词，并用于专业技能轮权重、项目经历交叉验证和缺口能力检查，而不再只是“透传待扩展”的上下文。
 - 上述 interview 页面现在还包含一个仅用于联调的 flow-test mode 设置；开启后，前端会暴露“跳过本次回答”按钮，并把保留标记传给下游 interview 状态机，由状态机 mock 回答评分、追问与流程推进，而不是只在 UI 层本地跳过。
-- 仓库现在新增了独立的 `bff/` NestJS 中间层，用于承接前端请求、执行登录和输入验证、处理上传校验、返回权威专业技能组数量，并把基于 `threadId` 的 `interview-agent` SSE 流式响应代理到 Mastra；在正式启动前，BFF 会校验专业技能轮自动/自定义题数模式、逐题纠错、轮次跳过和两轮分别配置的题数设置，并在默认模式下把专业技能轮题数归一到技能组数量，不再单独提供面试方向 setup 接口。BFF 现在还会接收并透传一个选填的职位 JD Markdown 字段：未上传时为空，已上传时作为未来扩展检索模式的预留上下文继续写入 kickoff payload。
+- 上述 interview 页面现在还会在浏览器本地持久化最近一次面试会话的 `threadId`、系统设置和阶段摘要；刷新或中断后，前端路由会允许用户重新进入 interview 页面，由页面显式提供“恢复上次面试 / 放弃并重新开始”的入口，并在后端 thread 失效时清理本地状态后回退到上传页。
+- 仓库现在新增了独立的 `bff/` NestJS 中间层，用于承接前端请求、执行登录和输入验证、处理上传校验、返回权威专业技能组数量，并把基于 `threadId` 的 `interview-agent` SSE 流式响应代理到 Mastra；在正式启动前，BFF 会校验专业技能轮自动/自定义题数模式、逐题纠错、轮次跳过和两轮分别配置的题数设置，并在默认模式下把专业技能轮题数归一到技能组数量，不再单独提供面试方向 setup 接口。当前启动态已经从自然语言 kickoff 文案切换为结构化 JSON 启动 payload：BFF 复用统一 contract 透传 `threadId`、`resumeMarkdown`、`jobDescriptionMarkdown`、`settings`，并在代理前通过 `bff/src/modules/resume/resume-parser.ts` 这个 canonical parser 补齐标准化 `resumeSections`。
 - BFF 现在还会校验并透传 flow-test mode 设置，在启动和答题流转时补充关键日志，便于前端联调 interview 流程。
 - 当前 interview 能力已经引入显式状态机：专业技能轮按 6 个节点推进，项目经历轮按 2 个节点推进；每个节点都记录主问题、追问槽位、回答尝试、评分、漏答点、错误点和偏题恢复计数。
 - 当前 interview 状态管理工具除了返回下一条 interviewer reply，也会返回结构化进度摘要（总题数、已完成题数、当前题号、当前是否处于追问）以及模板化最终报告所需的聚合信息，供前端侧边栏和结束报告直接消费。
 - 当前 interview 还会把每场面试的结构化 outcome 以时间戳目录的形式落盘到仓库根目录下的 `Interview outcome/`：Mastra 在初始化和每轮答题后持续写入两类目的不同的数据结构。其一是 `selectorTraining`，专门记录召回 trace、候选题排序信号和被选题目的结果标签，用于后续 lightweight selector / reranker 训练；其二是 `candidateImprovement`，专门记录逐题表现、优势信号、聚合后的知识薄弱点、改进建议和最终评分，供用户复盘与持续提升。BFF 在面试结束后把前端提交的用户反馈回写到 `candidateImprovement.feedback`。
+- 仓库根目录现在还提供了独立的 live interview E2E harness：`vitest.e2e.config.ts` 负责统一 Node 环境与 alias，`e2e/**` 负责最小全链路回归场景，根命令 `npm run test:e2e:interview:smoke` / `npm run test:e2e:interview` 作为本地与 CI 共同入口，`.github/workflows/interview-e2e.yml` 复用同一 root 命令在 workflow_dispatch 下执行 Docker Compose 版回归。
 - 因此，涉及 interview 方向开发时，必须区分：哪些是已经存在的实现，哪些仍属于文档定义的目标架构。
 
 ## Folder Responsibilities
@@ -36,27 +39,32 @@ description: "Use when coding in the Mastra TypeScript source tree. Captures the
 - `src/mastra/workflows`: 多步骤编排。适合封装稳定的流程，而不是把所有流程逻辑都堆进 agent prompt。
 - `src/mastra/lib`: 共享基础设施与库代码，例如向量存储、索引初始化、RAG 分块与嵌入。
 - `src/mastra/lib/load-env.ts` 属于运行时基础设施的一部分，专门负责把仓库根目录环境变量文件加载进 Node 进程，避免不同启动方式下的行为漂移。
-- `src/mastra/scripts`: 手动执行、导入、验证、E2E 测试脚本。脚本是验证流程的一部分，不应混入运行时入口。
+- `src/mastra/scripts`: 手动执行、导入、验证、E2E 测试脚本。脚本是验证流程的一部分，不应混入运行时入口；LibSQL 向量数据迁移到 Milvus、Milvus metadata backfill/rebuild 等一次性脚本也放在这里。
 - `src/mastra/scorers`: 评估/打分逻辑预留目录。当前 runtime 未注册 scorer；新增 interview scorer 时保持同样的职责边界。
 - `src/mastra/data`: 预留数据目录。若新增样例或导入源，优先保持原始数据与运行时代码分离。
 - `src/mastra/public`: 运行时静态资源目录，仅放需要被构建产物带出的内容。
 - `frontend`: 独立前端应用目录。负责页面、组件、状态管理和用户输入校验，不直接承载 Mastra agent 运行逻辑。
 - `bff`: 独立 NestJS 中间层目录。负责 auth、文件上传校验、agent 请求代理和前端适配，不直接承载 agent 本体。
+- `bff/src/modules/resume/resume-parser.ts`: 当前简历结构提取的单一权威实现；BFF 校验、启动 payload 预填和 Mastra kickoff 恢复都应复用这里，而不是各自维护标题切分和技能组归一化逻辑。
 
 ## Interview Feature Flow
 
 - `interview-agent.ts` 现在只负责把初始化和后续回复统一委托给 `interviewStateManagerTool`；启动时不再由模型串行编排简历解析和两轮题库检索。
-- `interview-state-manager-tool.ts` 是 interview 链路的状态拥有者，负责初始化 session、基于规则做候选人回答分类与推进、在需要时基于当前题对话记录和岗位信息生成追问、持久化与当前会话 `resourceId` 绑定的 working memory，并返回下一条 interviewer reply。
+- `interview-state-manager-tool.ts` 是 interview 链路的状态拥有者，但当前它在初始化阶段只负责编排与持久化：结构化 kickoff 解析、主问题规划、召回、生成和裁决已经下沉到独立的 initialization pipeline 与 stage 模块；state manager 主要负责调用该 pipeline、恢复/持久化与当前会话 `resourceId` 绑定的 working memory、处理后续答题推进，并在需要时调用 generator 生成追问。
 - `interview-outcome.ts` 负责把 interview outcome 拆成 `selectorTraining` 和 `candidateImprovement` 两块结构化数据，并维护 `Interview outcome/index` 下基于 `threadId` 的索引文件。其中 `selectorTraining` 面向选题训练，`candidateImprovement` 面向用户提升与知识薄弱点沉淀。
-- `interview-state-manager-tool.ts` 在初始化分支里会直接解析 kickoff payload 中的简历 Markdown；`### 专业技能` 与 `### 项目经历` 的纯文本都会保留下来交给 Mastra 自行拆解。初始化时显式忽略模型传入的题目数组或派生段落，只允许 tool 根据 kickoff payload 内的简历内容自行做主问题规划与 RAG 检索。专业技能轮现在按 `- ` bullet 识别技能组，默认按“每个技能组一题”逐条执行题库检索，自定义题数时优先保证每个技能组最多命中一次，若题数超过技能组数量则补充跨技能或综合场景题；项目经历轮仍按项目经历上下文检索，然后一次性建立首轮状态并返回首题，从而避免启动阶段额外的多次 tool orchestration 开销。
+- `interview-state-manager-tool.ts` 在初始化分支里会优先识别结构化 JSON 启动 payload，并在兼容分支中继续支持旧版 kickoff 文本恢复；`resumeMarkdown`、`jobDescriptionMarkdown` 和可选的 `resumeSections` 都会被解包为初始化上下文。初始化时显式忽略模型传入的题目数组或派生段落，只允许 tool 根据 payload 内的简历内容自行做主问题规划与 RAG 检索。专业技能轮和项目经历轮不再各自重复切字符串，而是统一消费 canonical parser 产出的标准化 section 结果、`normalizedSkills` 和 `normalizedProjectTopics`；默认模式按标准化技能组逐条执行题库检索，自定义题数时优先保证每个技能组最多命中一次，若题数超过技能组数量则补充跨技能或综合场景题；项目经历轮则复用标准化项目主题作为 fallback topic，再按项目经历上下文检索并一次性建立首轮状态，从而避免启动阶段额外的多次 tool orchestration 开销。
+- `interview-initialization-pipeline.ts` 现在是 kickoff 初始化主链路的唯一编排入口：它统一负责解析 structured / legacy kickoff、生成专业技能轮 question plan、调用 retriever 收集候选题、调用 generator 产出最终题目文案，并在进入状态机前调用 critic/judge 做最小质量闸门和 deterministic fallback。
+- `interview-question-retriever.ts` 负责把初始化阶段的 plan 转成专业技能轮 / 项目经历轮查询、聚合召回结果，并集中收集 `RagRecallTrace`；state manager 不再直接持有 query 构造和 trace 聚合逻辑。
+- `interview-question-generator.ts` 负责两类生成行为：一类是把召回结果适配成初始化主问题集合与 generation trace，另一类是基于当前题、对话记录和回答分析生成追问文案。
+- `interview-question-critic.ts` 负责初始化主问题的最小质量闸门，当前会检查空题、重复题、明显目标错位、scenario 形状不匹配和项目题形状不匹配；不通过时以 deterministic fallback 替换，避免低质量题进入状态机。
 - `interview-state-manager-tool.ts` 现在还负责返回结构化 progress 摘要；前端会从同一条 SSE 流里的 `tool-result` 事件读取这个摘要，并驱动侧边栏与最终权威回复展示。
 - `interview-state-machine-schema.ts` 定义结构化 working memory schema；`interview-state-machine.ts` 负责纯 reducer/helper 逻辑，包括节点初始化、按 setup 中的专业技能轮 / 项目经历轮独立题数建立两轮题目、偏题恢复、追问推进、纠错信息汇总和最终报告生成。
 - `professional-question-query.ts` 负责把专业技能选题计划转换为 RAG 查询文本、召回日志 skill 标签和题目 lens 描述；`interview-state-manager-tool.ts` 只调用该 helper，不再内联维护专业技能查询拼接细节。
 - `read-only-thread-memory.ts` 是对当前 Mastra memory 行为的兼容封装，用于让 interview agent 读取 thread working memory 上下文，但不直接暴露给模型自行更新。
-- `resume-parser-tool.ts` 负责解析上传的 Markdown 简历，并拆分出“专业技能”和“项目经历”两段上下文。
-- `interview-question-tool.ts` 负责把查询文本转成 embedding，访问向量库，并在向量召回 top 20 后结合 BM25 做 hybrid rerank，再从 rerank 后的 top 10 中随机抽取候选问题。
-- `vector-store.ts` 负责 `LibSQLVector` 实例与索引常量；`rag-pipeline.ts` 负责文本分块和 embedding 生成。
-- 典型数据流是：上传简历/可选职位 JD → 前端完成本地文件类型与大小校验，并把简历文件交给 BFF 做大小、类型和结构校验 → BFF 完成简历结构校验并返回权威专业技能组数量 → 前端按该数量默认启用“每个技能组一题”的专业技能轮设置；职位 JD 未上传时显式保留空值，已上传时在 store 中保留 Markdown 内容 → Begin Interview 时把简历 Markdown、职位 JD Markdown（可为空）和系统设置（包括专业技能轮自动/自定义题数模式、专业技能轮 / 项目经历轮各自题数）交给 BFF → BFF 在默认模式下按简历 Markdown 重新归一专业技能轮题数，并把职位 JD 作为后续追问可用的岗位上下文写入 kickoff payload，继续代理给 `interview-agent` → `interview-agent` 仅把 kickoff payload 作为原始初始化上下文交给 `interviewStateManagerTool`，不自行传入主问题数组 → `interviewStateManagerTool` 从 kickoff payload 中拆出专业技能/项目经历原文；专业技能轮按 `- ` bullet 技能组逐条检索，或在自定义题数模式下先覆盖不同技能组、再补充跨技能或综合场景题，项目经历轮按项目经历上下文检索，再按设置中的题数一次性预规划所有主问题并初始化与当前会话 `resourceId` 绑定的 schema working memory，同时把职位 JD 一并写入会话状态，并把召回 trace 与当前状态写入 `Interview outcome/<timestamp>-<threadId>/interview-outcome.json` 的 `selectorTraining` 和 `candidateImprovement` 两块结构 → 后续每一轮用户回答都再次交给 `interviewStateManagerTool` 做规则分类、偏题恢复、切轮和 wrap-up；只有在需要追问时才把当前题对话记录和岗位信息交给模型生成下一问，同时持续返回 progress 摘要与权威 interviewer reply，并更新同一份 outcome 文件中的选题标签、逐题复盘和知识薄弱点聚合 → 前端聊天页用这些结构化结果更新侧边栏并在面试结束后展示模板化报告 → 用户在前端提交反馈表单 → BFF 校验反馈并通过 `threadId` 索引把反馈回写到 `candidateImprovement.feedback`，完成“召回题目 → 用户表现 → 最终评分 → 用户反馈”的闭环。
+- `resume-parser-tool.ts` 负责暴露 canonical parser 的结果，除“专业技能”和“项目经历”两段上下文外，还会返回 `normalizedSkills`、`normalizedProjectTopics`、`warnings` 和 `validationErrors` 供下游复用。
+- `interview-question-tool.ts` 负责把查询文本转成 embedding，访问向量库，并在向量召回 top 20 后只用 JD/query 抽取出的 `skillArea` 与候选题 `skillArea` 做 hybrid rerank，再从 rerank 后的 top 10 中随机抽取候选问题；RAG trace 会记录每个候选命中的 `matchedSkillArea`。
+- `vector-store.ts` 负责 Milvus 向量库实例与索引常量；`milvus-vector-store.ts` 是对 Mastra Vector API 的本地 Milvus adapter，当前 `interview_questions` collection 会把 `role`、`difficulty`、`skillArea` 写为 Milvus scalar 字段，并把这些字段合并回查询结果 metadata 以保持上层兼容；`rag-pipeline.ts` 负责文本分块和 embedding 生成。
+- 典型数据流是：上传简历/可选职位 JD → 前端完成本地文件类型与大小校验，并把简历文件交给 BFF 做大小、类型和结构校验 → BFF 通过 `bff/src/modules/resume/resume-parser.ts` 完成简历结构校验、技能组标准化、项目主题标准化和权威专业技能组数量计算，并返回该数量给前端 → 前端按该数量默认启用“每个技能组一题”的专业技能轮设置；职位 JD 未上传时显式保留空值，已上传时在 store 中保留 Markdown 内容 → Begin Interview 时前端通过共享 contract 生成结构化 interview start request，并把简历 Markdown、职位 JD Markdown（可为空）和系统设置交给 BFF；一旦收到权威 interview progress，前端还会把最近一次会话的 `threadId`、系统设置和阶段摘要持久化到本地，供刷新后的恢复入口使用 → BFF 在默认模式下按 canonical parser 的 `normalizedSkills` 重新归一专业技能轮题数，并补齐标准化 `resumeSections` 后把同一份结构化 payload 以 JSON 形式继续代理给 `interview-agent` → `interview-agent` 仅把原始启动 payload 作为初始化上下文交给 `interviewStateManagerTool`，不自行传入主问题数组 → `interviewStateManagerTool` 调用 `interview-initialization-pipeline.ts`，由 pipeline 复用 kickoff recovery 解析 structured / legacy payload、先通过 `job-description-signals.ts` 提取 JD 职责、技术要求、优先技能与领域词，再生成 professional question plan、调用 retriever 做专业技能轮 JD 加权召回与项目经历轮“JD 要求 × 项目证据”交叉验证召回、调用 generator 适配最终主问题，并在进入状态机前经过 critic/judge 质量闸门与 fallback；其中 professional planner 会显式产出 `questionDriver`、`jobDescriptionSignals` 和 `jd-gap-scenario` 缺口验证题，generator 与 outcome 会继续保留这些 provenance 字段 → 随后 state manager 只负责把 judged question set 初始化进 working memory、写入 outcome / rag sample，并在后续每一轮答题中做规则分类、偏题恢复、切轮和 wrap-up → 只有在需要追问时才把当前题对话记录和岗位信息交给 generator 生成下一问，同时持续返回 progress 摘要与权威 interviewer reply，并更新同一份 outcome 文件中的选题标签、generation trace、逐题复盘和知识薄弱点聚合 → 前端聊天页用这些结构化结果更新侧边栏、在刷新后显式提供恢复或放弃入口，并在面试结束后展示模板化报告 → 用户在前端提交反馈表单 → BFF 校验反馈并通过 `threadId` 索引把反馈回写到 `candidateImprovement.feedback`，完成“规划题目 → 召回候选 → 生成问题 → 裁决兜底 → 用户表现 → 最终评分 → 用户反馈”的闭环。
 - 如果 setup 里开启了 flow-test mode，则后续用户点击“跳过本次回答”时，前端不会发送真实回答，而是发送保留 skip marker；BFF 原样代理该消息，`interviewStateManagerTool` 识别后在状态机内部生成 mock 分析结果，继续触发追问、切题或总结，同时保持同样的 progress 摘要输出路径。
 
 ## Coding Boundaries
@@ -67,6 +75,7 @@ description: "Use when coding in the Mastra TypeScript source tree. Captures the
 - 对系统边界输入使用 Zod；对共享逻辑优先抽到 `lib` 或 `tools`，避免把工具实现塞进 agent 文件。
 - 前端侧的输入校验、文件元数据处理、会话历史管理、启动态 UI 和 API 调用边界，优先通过 `frontend/src/schemas`、`frontend/src/services` 和 `frontend/src/stores` 管理。
 - BFF 侧的登录、上传、基于 `threadId` 的面试启动与回答流式代理等边界，优先通过 controller/service/config 分层管理。
+- 简历章节切分、技能组标准化和默认技能组计数必须优先复用 `bff/src/modules/resume/resume-parser.ts`，不要在 BFF、kickoff recovery 或 state manager 中再维护第二套核心解析规则。
 - 修改 `index.ts` 时，要明确这是“接线变化”，可能会改变当前可运行能力；修改 docs 时，不代表运行时已经同步完成。
 - 如果新增 interview 相关功能，优先复用现有的 `interview-agent.ts`、`interview-state-manager-tool.ts`、`interview-state-machine-schema.ts`、`interview-state-machine.ts`、`interview-question-tool.ts`、`vector-store.ts`、`rag-pipeline.ts` 模式，而不是另起一套并行架构。
 - interview 流程推进、切题、偏题恢复、wrap-up 和评分记录优先放在状态机 helper 或状态管理 tool 中，不要重新把这些规则散回 prompt 文案里。
@@ -78,10 +87,12 @@ description: "Use when coding in the Mastra TypeScript source tree. Captures the
 - `docs/PHASE2_INTERVIEW_AGENT.md`: 面试 Agent 行为、阶段与 memory 设计参考。
 - `docs/PHASE3_QUALITY_OPTIMIZATION.md`: scorer、质量优化与后续迭代方向。
 - `docs/PHASE4_OBSIDIAN_IMPORT.md`: Obsidian 导入方向参考。
+- `PLAN/2026-06-07-milvus-metadata-bm25-answer-evaluation-plan.md`: Milvus metadata contract、`skillArea` 标准化、scalar schema 和 answer evaluation 后续设计参考。
 - `PLAN/2026-04-18-interview-state-machine-plan.md`: interview 显式状态机改造方案、风险应对和验收口径。
 - `.github/instructions/frontend-architecture.instructions.md`: 前端页面、组件、store、service 分层约定。
 - `.github/instructions/bff-architecture.instructions.md`: BFF 的 NestJS 模块、验证与代理边界约定。
 - `README.md` 与 `package.json`: 常用命令、Node/Mastra 运行方式、依赖边界。
+- `vitest.e2e.config.ts` 与 `e2e/**`: live interview E2E harness、场景拆分与 outcome 断言入口。
 
 ## Required Post-Edit Skill
 

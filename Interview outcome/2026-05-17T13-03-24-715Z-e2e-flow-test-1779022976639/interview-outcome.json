@@ -1,0 +1,361 @@
+{
+  "schemaVersion": 3,
+  "createdAt": "2026-05-17T13:03:24.715Z",
+  "updatedAt": "2026-05-17T13:03:24.715Z",
+  "threadId": "e2e-flow-test-1779022976639",
+  "session": {
+    "targetRole": "通用技术岗位",
+    "responseLanguage": "zh",
+    "phase": "professional-skills-round",
+    "finalReportReady": false,
+    "setup": {
+      "selectedDirection": "通用技术岗位",
+      "directionSource": "derived",
+      "settings": {
+        "reviewIncorrectOrMissingPoints": true,
+        "skipProfessionalSkillsRound": false,
+        "skipProjectExperienceRound": false,
+        "enableFlowTestMode": false,
+        "professionalQuestionMode": "custom-count",
+        "professionalQuestionCount": 6,
+        "projectQuestionCount": 2
+      }
+    },
+    "resumeContext": {
+      "professionalSkills": "",
+      "projectExperience": "",
+      "jobDescription": "",
+      "resumeParsed": false
+    }
+  },
+  "selectorTraining": {
+    "traces": [],
+    "generationTrace": [],
+    "recallEvents": [],
+    "selectedQuestionLabels": []
+  },
+  "candidateImprovement": {
+    "totalQuestionCount": 8,
+    "completedQuestionCount": 0,
+    "finalScore": null,
+    "rounds": [
+      {
+        "id": "professional-skills-round-1779022981434-6zrl0q",
+        "type": "professional-skills",
+        "status": "in-progress",
+        "plannedNodeCount": 6,
+        "completedNodeCount": 0,
+        "activeNodeId": "topic-node-1779022981434-rpe3aw",
+        "nodes": [
+          {
+            "id": "topic-node-1779022981434-rpe3aw",
+            "topic": "跨 Agent 的任务委派协议里",
+            "source": "knowledge-base",
+            "mainQuestion": "跨 Agent 的任务委派协议里，至少要包含哪些字段？",
+            "questionDriver": "resume",
+            "resumeSignals": [],
+            "jobDescriptionSignals": [],
+            "selectionReason": "No generation trace was available for this question.",
+            "status": "awaiting-follow-up-answer",
+            "aggregatedScore": null,
+            "followUpCount": 1,
+            "maxFollowUps": 3,
+            "earlyCompletionReason": null,
+            "summary": null,
+            "answerAttempts": [
+              {
+                "id": "answer-attempt-1779023004713-o4fg1o",
+                "targetType": "main-question",
+                "targetId": "topic-node-1779022981434-rpe3aw",
+                "classification": "partial-answer",
+                "createdAt": "2026-05-17T13:03:24.713Z",
+                "userMessage": "[FLOW_TEST_SKIP]",
+                "score": {
+                  "relevance": 6.6,
+                  "accuracy": 6.2,
+                  "depth": 5.8,
+                  "specificity": 5.9,
+                  "clarity": 6.8,
+                  "weightedTotal": 6.215
+                },
+                "strengths": [
+                  "回答基本围绕“跨 Agent 的任务委派协议里”展开"
+                ],
+                "missingPoints": [
+                  "还需要继续补充“跨 Agent 的任务委派协议里”的实现细节、关键取舍或真实案例"
+                ],
+                "incorrectPoints": [],
+                "isDetour": false
+              }
+            ]
+          },
+          {
+            "id": "topic-node-1779022981434-ljue1m",
+            "topic": "Java 在 Agent 平台中更适合承接哪些后端模块",
+            "source": "knowledge-base",
+            "mainQuestion": "Java 在 Agent 平台中更适合承接哪些后端模块？",
+            "questionDriver": "resume",
+            "resumeSignals": [],
+            "jobDescriptionSignals": [],
+            "selectionReason": "No generation trace was available for this question.",
+            "status": "pending",
+            "aggregatedScore": null,
+            "followUpCount": 0,
+            "maxFollowUps": 3,
+            "earlyCompletionReason": null,
+            "summary": null,
+            "answerAttempts": []
+          },
+          {
+            "id": "topic-node-1779022981434-fuvvhf",
+            "topic": "如果你已经会 LangChain",
+            "source": "knowledge-base",
+            "mainQuestion": "如果你已经会 LangChain，再学习 Mastra 或 CrewAI，重点应该补什么？",
+            "questionDriver": "resume",
+            "resumeSignals": [],
+            "jobDescriptionSignals": [],
+            "selectionReason": "No generation trace was available for this question.",
+            "status": "pending",
+            "aggregatedScore": null,
+            "followUpCount": 0,
+            "maxFollowUps": 3,
+            "earlyCompletionReason": null,
+            "summary": null,
+            "answerAttempts": []
+          },
+          {
+            "id": "topic-node-1779022981434-vplgwk",
+            "topic": "在 Agent 系统中",
+            "source": "knowledge-base",
+            "mainQuestion": "在 Agent 系统中，RAG 检索到的外部知识是如何喂给模型并尽量避免干扰主任务的？",
+            "questionDriver": "resume",
+            "resumeSignals": [],
+            "jobDescriptionSignals": [],
+            "selectionReason": "No generation trace was available for this question.",
+            "status": "pending",
+            "aggregatedScore": null,
+            "followUpCount": 0,
+            "maxFollowUps": 3,
+            "earlyCompletionReason": null,
+            "summary": null,
+            "answerAttempts": []
+          },
+          {
+            "id": "topic-node-1779022981434-bw7txr",
+            "topic": "你会如何在 LangChain、Mastra、CrewAI 之间",
+            "source": "knowledge-base",
+            "mainQuestion": "你会如何在 LangChain、Mastra、CrewAI 之间做技术选型？",
+            "questionDriver": "resume",
+            "resumeSignals": [],
+            "jobDescriptionSignals": [],
+            "selectionReason": "No generation trace was available for this question.",
+            "status": "pending",
+            "aggregatedScore": null,
+            "followUpCount": 0,
+            "maxFollowUps": 3,
+            "earlyCompletionReason": null,
+            "summary": null,
+            "answerAttempts": []
+          },
+          {
+            "id": "topic-node-1779022981434-ye1s2h",
+            "topic": "如果让你用 TypeScript 或 C# 设计一个 Agent",
+            "source": "knowledge-base",
+            "mainQuestion": "如果让你用 TypeScript 或 C# 设计一个 Agent 平台的模块分层，你会怎么拆？",
+            "questionDriver": "resume",
+            "resumeSignals": [],
+            "jobDescriptionSignals": [],
+            "selectionReason": "No generation trace was available for this question.",
+            "status": "pending",
+            "aggregatedScore": null,
+            "followUpCount": 0,
+            "maxFollowUps": 3,
+            "earlyCompletionReason": null,
+            "summary": null,
+            "answerAttempts": []
+          }
+        ]
+      },
+      {
+        "id": "project-experience-round-1779022981434-c8in4a",
+        "type": "project-experience",
+        "status": "pending",
+        "plannedNodeCount": 2,
+        "completedNodeCount": 0,
+        "activeNodeId": "topic-node-1779022981434-7boqe4",
+        "nodes": [
+          {
+            "id": "topic-node-1779022981434-7boqe4",
+            "topic": "结合一个你负责过的项目",
+            "source": "knowledge-base",
+            "mainQuestion": "请结合一个你负责过的项目，说明项目背景、你的职责、关键决策、遇到的挑战以及最终结果。",
+            "questionDriver": "resume",
+            "resumeSignals": [],
+            "jobDescriptionSignals": [],
+            "selectionReason": "No generation trace was available for this question.",
+            "status": "pending",
+            "aggregatedScore": null,
+            "followUpCount": 0,
+            "maxFollowUps": 2,
+            "earlyCompletionReason": null,
+            "summary": null,
+            "answerAttempts": []
+          },
+          {
+            "id": "topic-node-1779022981434-rins7p",
+            "topic": "通用技术岗位 project experience 2",
+            "source": "generated",
+            "mainQuestion": "请结合你做过的项目，详细说明“通用技术岗位 project experience 2”相关经历中的背景、目标、你的职责、关键决策和最终结果。",
+            "questionDriver": "resume",
+            "resumeSignals": [],
+            "jobDescriptionSignals": [],
+            "selectionReason": "No generation trace was available for this question.",
+            "status": "pending",
+            "aggregatedScore": null,
+            "followUpCount": 0,
+            "maxFollowUps": 2,
+            "earlyCompletionReason": null,
+            "summary": null,
+            "answerAttempts": []
+          }
+        ]
+      }
+    ],
+    "strongSignals": [],
+    "knowledgeWeaknesses": [],
+    "questionReviews": [
+      {
+        "roundType": "professional-skills",
+        "topic": "跨 Agent 的任务委派协议里",
+        "question": "跨 Agent 的任务委派协议里，至少要包含哪些字段？",
+        "questionDriver": "resume",
+        "resumeSignals": [],
+        "jobDescriptionSignals": [],
+        "selectionReason": "No generation trace was available for this question.",
+        "score": null,
+        "strengths": [],
+        "missingPoints": [],
+        "incorrectPoints": [],
+        "improvementAdvice": [],
+        "evidence": []
+      },
+      {
+        "roundType": "professional-skills",
+        "topic": "Java 在 Agent 平台中更适合承接哪些后端模块",
+        "question": "Java 在 Agent 平台中更适合承接哪些后端模块？",
+        "questionDriver": "resume",
+        "resumeSignals": [],
+        "jobDescriptionSignals": [],
+        "selectionReason": "No generation trace was available for this question.",
+        "score": null,
+        "strengths": [],
+        "missingPoints": [],
+        "incorrectPoints": [],
+        "improvementAdvice": [],
+        "evidence": []
+      },
+      {
+        "roundType": "professional-skills",
+        "topic": "如果你已经会 LangChain",
+        "question": "如果你已经会 LangChain，再学习 Mastra 或 CrewAI，重点应该补什么？",
+        "questionDriver": "resume",
+        "resumeSignals": [],
+        "jobDescriptionSignals": [],
+        "selectionReason": "No generation trace was available for this question.",
+        "score": null,
+        "strengths": [],
+        "missingPoints": [],
+        "incorrectPoints": [],
+        "improvementAdvice": [],
+        "evidence": []
+      },
+      {
+        "roundType": "professional-skills",
+        "topic": "在 Agent 系统中",
+        "question": "在 Agent 系统中，RAG 检索到的外部知识是如何喂给模型并尽量避免干扰主任务的？",
+        "questionDriver": "resume",
+        "resumeSignals": [],
+        "jobDescriptionSignals": [],
+        "selectionReason": "No generation trace was available for this question.",
+        "score": null,
+        "strengths": [],
+        "missingPoints": [],
+        "incorrectPoints": [],
+        "improvementAdvice": [],
+        "evidence": []
+      },
+      {
+        "roundType": "professional-skills",
+        "topic": "你会如何在 LangChain、Mastra、CrewAI 之间",
+        "question": "你会如何在 LangChain、Mastra、CrewAI 之间做技术选型？",
+        "questionDriver": "resume",
+        "resumeSignals": [],
+        "jobDescriptionSignals": [],
+        "selectionReason": "No generation trace was available for this question.",
+        "score": null,
+        "strengths": [],
+        "missingPoints": [],
+        "incorrectPoints": [],
+        "improvementAdvice": [],
+        "evidence": []
+      },
+      {
+        "roundType": "professional-skills",
+        "topic": "如果让你用 TypeScript 或 C# 设计一个 Agent",
+        "question": "如果让你用 TypeScript 或 C# 设计一个 Agent 平台的模块分层，你会怎么拆？",
+        "questionDriver": "resume",
+        "resumeSignals": [],
+        "jobDescriptionSignals": [],
+        "selectionReason": "No generation trace was available for this question.",
+        "score": null,
+        "strengths": [],
+        "missingPoints": [],
+        "incorrectPoints": [],
+        "improvementAdvice": [],
+        "evidence": []
+      },
+      {
+        "roundType": "project-experience",
+        "topic": "结合一个你负责过的项目",
+        "question": "请结合一个你负责过的项目，说明项目背景、你的职责、关键决策、遇到的挑战以及最终结果。",
+        "questionDriver": "resume",
+        "resumeSignals": [],
+        "jobDescriptionSignals": [],
+        "selectionReason": "No generation trace was available for this question.",
+        "score": null,
+        "strengths": [],
+        "missingPoints": [],
+        "incorrectPoints": [],
+        "improvementAdvice": [],
+        "evidence": []
+      },
+      {
+        "roundType": "project-experience",
+        "topic": "通用技术岗位 project experience 2",
+        "question": "请结合你做过的项目，详细说明“通用技术岗位 project experience 2”相关经历中的背景、目标、你的职责、关键决策和最终结果。",
+        "questionDriver": "resume",
+        "resumeSignals": [],
+        "jobDescriptionSignals": [],
+        "selectionReason": "No generation trace was available for this question.",
+        "score": null,
+        "strengths": [],
+        "missingPoints": [],
+        "incorrectPoints": [],
+        "improvementAdvice": [],
+        "evidence": []
+      }
+    ],
+    "report": {
+      "finalReport": null,
+      "lastCorrectionSummary": null
+    },
+    "feedback": {
+      "status": "pending",
+      "submittedAt": null,
+      "overallExperienceScore": null,
+      "questionFitScore": null,
+      "difficultyScore": null,
+      "comment": null
+    }
+  }
+}
