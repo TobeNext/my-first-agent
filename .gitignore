@@ -1,10 +1,37 @@
-output.txt 
-node_modules 
-dist 
-.mastra 
-.env.development 
-.env 
-*.db 
-*.db-* 
-.netlify 
-.vercel 
+# Dependencies
+node_modules/
+**/node_modules/
+
+# Build output and caches
+dist/
+**/dist/
+.vite/
+**/.vite/
+*.tsbuildinfo
+
+# Mastra local runtime state
+.mastra/
+.mastra-watch-repro/output/
+.tmp-mastra-watch-repro.mjs
+
+# Environment and local databases
+.env
+.env.*
+!.env.example
+*.db
+*.db-*
+
+# Logs and coverage
+*.log
+coverage/
+**/coverage/
+output.txt
+
+# Generated interview/RAG artifacts
+Interview outcome/
+RAG LOG INFO/
+src/mastra/public/RAG LOG INFO/
+
+# Hosting output
+.netlify/
+.vercel/
