@@ -326,6 +326,7 @@ export async function queryInterviewQuestions(
           role: (result.metadata?.['role'] as string) ?? undefined,
           company: (result.metadata?.['company'] as string) ?? undefined,
           skillArea: formatSkillArea(result.metadata?.['skillArea']),
+          answer: (result.metadata?.['answer'] as string) ?? undefined,
           tags: formatTags(result.metadata?.['tags']),
         }),
       ),

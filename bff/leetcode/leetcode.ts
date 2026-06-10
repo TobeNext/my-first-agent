@@ -743,3 +743,573 @@ function preorderTraversal(root: TreeNode | null, list: TreeNode[]): void {
         preorderTraversal(root.right, list);
     }
 }
+
+var indexMap: Map<number, number>;
+
+function buildTree(preorder: number[], inorder: number[]): TreeNode | null {
+    var n = preorder.length;
+    indexMap = new Map();
+    for (let i = 0; i  < n; i++) {
+        indexMap.set(inorder[i], i);
+    }
+    return buildTreeCore(preorder, inorder, 0, n-1, 0, n-1);
+};
+
+function buildTreeCore(preorder: number[], inorder: number[], preorderLeft: number, preorderRight: number, inorderLeft: number, inorderRight: number): TreeNode | null {
+    if (preorderLeft > preorderRight) {
+        return null;
+    }
+
+    var preorderRoot = preorderLeft;
+    var inorderRoot: number = indexMap.get(preorder[preorderRoot])!;
+
+    var leftTreeSize = inorderRoot - inorderLeft;
+    var newNode = new TreeNode(preorder[preorderRoot]);
+    
+    newNode.left = buildTreeCore(preorder, inorder, preorderLeft + 1, preorderLeft + leftTreeSize, inorderLeft, inorderRoot - 1);
+    newNode.right = buildTreeCore(preorder, inorder, preorderLeft + leftTreeSize + 1, preorderRight, inorderRoot + 1, inorderRight);
+
+    return newNode;
+};
+
+var LowestCommonAncestor: TreeNode | null = null;
+
+function lowestCommonAncestor(root: TreeNode | null, p: TreeNode | null, q: TreeNode | null): TreeNode | null {
+    lowestCommonAncestorCore(root, p, q);
+    return LowestCommonAncestor;
+};
+
+function lowestCommonAncestorCore(root: TreeNode | null, p: TreeNode | null, q: TreeNode | null): boolean {
+	if (root === null) {
+        return false;
+    }
+    var l = lowestCommonAncestorCore(root.left, p , q);
+    var r = lowestCommonAncestorCore(root.right, p , q);
+    if ((l && r) || ((root.val === p!.val || root.val === q!.val) && (l || r))) {
+        LowestCommonAncestor = root;
+    }
+    return l || r || (root.val === p!.val || root.val === q!.val)
+};
+
+
+
+function pathSum(root: TreeNode | null, targetSum: number): number {
+    var map = new Map();
+    map.set(0, 1);
+    return pathSumCore(root, targetSum, map, 0);
+};
+
+function pathSumCore(root: TreeNode | null, targetSum: number, map: Map<number, number>, curr: number): number {
+    if (root === null) {
+        return 0;
+    }
+
+    var ret = 0;
+    curr += root.val;
+
+    ret = map.get(curr - targetSum) || 0;
+    map.set(curr, (map.get(curr) || 0) + 1);
+    ret += pathSumCore(root.left, targetSum, map, curr);
+    ret += pathSumCore(root.right, targetSum, map, curr);
+    map.set(curr, (map.get(curr) || 0) - 1);
+
+    return ret;
+};
+
+function numIslands(grid: string[][]): number {
+    if (grid === null || grid.length === 0) {
+        return 0;
+    }
+
+    const nr = grid.length;
+    const nc = grid[0].length;
+    let numIslands = 0;
+
+    function dfs(r: number, c: number): void {
+        if (
+            r < 0 ||
+            c < 0 ||
+            r >= nr ||
+            c >= nc ||
+            grid[r][c] === '0'
+        ) {
+            return;
+        }
+
+        grid[r][c] = '0';
+
+        dfs(r - 1, c);
+        dfs(r + 1, c);
+        dfs(r, c - 1);
+        dfs(r, c + 1);
+    }
+
+    for (let r = 0; r < nr; r++) {
+        for (let c = 0; c < nc; c++) {
+            if (grid[r][c] === '1') {
+                numIslands++;
+                dfs(r, c);
+            }
+        }
+    }
+
+    return numIslands;
+}
+
+function orangesRotting(grid: number[][]): number {
+    const rows = grid.length;
+    const cols = grid[0].length;
+
+    const queue: { row: number; col: number; minute: number }[] = [];
+    let freshCount = 0;
+
+    // 1. 先遍历整个网格
+    // 找到所有腐烂橘子，放入队列
+    // 同时统计新鲜橘子的数量
+    for (let row = 0; row < rows; row++) {
+        for (let col = 0; col < cols; col++) {
+            if (grid[row][col] === 2) {
+                queue.push({
+                    row,
+                    col,
+                    minute: 0
+                });
+            }
+
+            if (grid[row][col] === 1) {
+                freshCount++;
+            }
+        }
+    }
+
+    const directions = [
+        [-1, 0], // 上
+        [1, 0],  // 下
+        [0, -1], // 左
+        [0, 1]   // 右
+    ];
+
+    let maxMinute = 0;
+
+    // 2. BFS 扩散腐烂过程
+    while (queue.length > 0) {
+        const current = queue.shift()!;
+
+        const currentRow = current.row;
+        const currentCol = current.col;
+        const currentMinute = current.minute;
+
+        for (const [rowOffset, colOffset] of directions) {
+            const nextRow = currentRow + rowOffset;
+            const nextCol = currentCol + colOffset;
+
+            const isInGrid =
+                nextRow >= 0 &&
+                nextRow < rows &&
+                nextCol >= 0 &&
+                nextCol < cols;
+
+            if (!isInGrid) {
+                continue;
+            }
+
+            const isFreshOrange = grid[nextRow][nextCol] === 1;
+
+            if (!isFreshOrange) {
+                continue;
+            }
+
+            // 3. 新鲜橘子被感染
+            grid[nextRow][nextCol] = 2;
+            freshCount--;
+
+            const nextMinute = currentMinute + 1;
+            maxMinute = Math.max(maxMinute, nextMinute);
+
+            queue.push({
+                row: nextRow,
+                col: nextCol,
+                minute: nextMinute
+            });
+        }
+    }
+
+    // 4. 如果还有新鲜橘子，说明无法全部腐烂
+    if (freshCount > 0) {
+        return -1;
+    }
+
+    return maxMinute;
+}
+
+class TrieNode {
+    children: Map<string, TrieNode>;
+    isEnd: boolean;
+
+    constructor() {
+        this.children = new Map();
+        this.isEnd = false;
+    }
+}
+
+class Trie {
+    private root: TrieNode;
+
+    constructor() {
+        this.root = new TrieNode();
+    }
+
+    insert(word: string): void {
+        let node = this.root;
+
+        for (const char of word) {
+            if (!node.children.has(char)) {
+                node.children.set(char, new TrieNode());
+            }
+
+            node = node.children.get(char)!;
+        }
+
+        node.isEnd = true;
+    }
+
+    search(word: string): boolean {
+        let node = this.root;
+
+        for (const char of word) {
+            if (!node.children.has(char)) {
+                return false;
+            }
+
+            node = node.children.get(char)!;
+        }
+
+        return node.isEnd;
+    }
+
+    startsWith(prefix: string): boolean {
+        let node = this.root;
+
+        for (const char of prefix) {
+            if (!node.children.has(char)) {
+                return false;
+            }
+
+            node = node.children.get(char)!;
+        }
+
+        return true;
+    }
+}
+
+
+function canFinish(numCourses: number, prerequisites: number[][]): boolean {
+    var graph: number[][] = Array.from({length: numCourses}, () => []);
+    var inDegree = new Array(numCourses).fill(0);
+
+    for (const [course, pre] of prerequisites) {
+        graph[pre].push(course);
+        inDegree[course]++;
+    }
+
+    var queue: number[] = [];
+
+    for (let i = 0; i < inDegree.length; i++) {
+        if (inDegree[i] === 0) {
+            queue.push(i);
+        }
+    }
+
+    var learnCount = 0, index = 0;
+    while(queue.length > index){
+        var cur = queue[index];
+        index++;
+        learnCount++;
+
+        for (const next of graph[cur]) {
+            inDegree[next]--;
+            if (inDegree[next] === 0) {
+                queue.push(next);
+            }
+        }
+    }
+
+    return learnCount === numCourses;
+};
+
+var permuteRes: number[][];
+var permutePath: number[];
+function permute(nums: number[]): number[][] {
+    permuteRes = [];
+    permutePath = [];
+    var used: boolean[] = new Array(nums.length).fill(false);
+    function permuteCore(){
+        if (nums.length === permutePath.length) {
+            permuteRes.push([...permutePath]);
+            return;
+        }  
+        for (let i = 0; i < nums.length; i++) {
+            if (used[i]) {
+                continue;
+            }
+
+            permutePath.push(nums[i]);
+            used[i] = true;
+            permuteCore();
+            permutePath.pop();
+            used[i] = false;
+        }
+    }
+    permuteCore();
+    return permuteRes;
+};
+
+function subsets(nums: number[]): number[][] {
+    var res: number[][] = [];
+    var subsetsPath: number[] = [];
+    function subsetsCore(index: number){
+        res.push([...subsetsPath]);
+        for (let i = index; i < nums.length; i++) {
+            subsetsPath.push(nums[i]);
+            subsetsCore(i + 1);
+            subsetsPath.pop();
+        }
+    }
+    subsetsCore(0);
+    return res;
+};
+
+
+function letterCombinations(digits: string): string[] {
+    const combinations: string[] = [];
+
+    if (digits.length === 0) {
+        return combinations;
+    }
+
+    const phoneMap = new Map<string, string>([
+        ["2", "abc"],
+        ["3", "def"],
+        ["4", "ghi"],
+        ["5", "jkl"],
+        ["6", "mno"],
+        ["7", "pqrs"],
+        ["8", "tuv"],
+        ["9", "wxyz"],
+    ]);
+
+    function backtrack(index: number, combination: string[]): void {
+        if (index === digits.length) {
+            combinations.push(combination.join(""));
+            return;
+        }
+
+        const digit = digits[index];
+        const letters = phoneMap.get(digit)!;
+
+        for (let i = 0; i < letters.length; i++) {
+            combination.push(letters[i]);
+            backtrack(index + 1, combination);
+            combination.pop();
+        }
+    }
+
+    backtrack(0, []);
+    return combinations;
+}
+
+
+function combinationSum(candidates: number[], target: number): number[][] {
+    var combinationSumRes: number[][] = [];
+    var combinationSumPath: number[] = [];
+    candidates.sort();
+
+    function backtrack(sum: number, index: number): void {
+        if (sum === target) {
+            combinationSumRes.push([...combinationSumPath]);
+            return;
+        }
+        if (sum > target) {
+            return;
+        }
+        for (let i = index; i < candidates.length; i++) {
+            sum += candidates[i];
+            combinationSumPath.push(candidates[i]);
+
+            backtrack(sum, i);
+
+            sum -= candidates[i];
+            combinationSumPath.pop();
+        }
+    }
+    backtrack(0, 0);
+    return combinationSumRes;
+};
+
+function generateParenthesis(n: number): string[] {
+    const ans: string[] = [];
+    const cur: string[] = [];
+
+    function backtrack(open: number, close: number): void {
+        if (cur.length === n * 2) {
+            ans.push(cur.join(""));
+            return;
+        }
+
+        if (open < n) {
+            cur.push("(");
+            backtrack(open + 1, close);
+            cur.pop();
+        }
+
+        if (close < open) {
+            cur.push(")");
+            backtrack(open, close + 1);
+            cur.pop();
+        }
+    }
+
+    backtrack(0, 0);
+    return ans;
+}
+
+function exist(board: string[][], word: string): boolean {
+    const h: number = board.length;
+    const w: number = board[0].length;
+
+    const directions: number[][] = [
+        [0, 1],
+        [0, -1],
+        [1, 0],
+        [-1, 0],
+    ];
+
+    const visited: boolean[][] = new Array(h)
+        .fill(0)
+        .map(() => new Array(w).fill(false));
+
+    function check(i: number, j: number, k: number): boolean {
+        if (board[i][j] !== word.charAt(k)) {
+            return false;
+        }
+
+        if (k === word.length - 1) {
+            return true;
+        }
+
+        visited[i][j] = true;
+
+        for (const [dx, dy] of directions) {
+            const newI = i + dx;
+            const newJ = j + dy;
+
+            if (
+                newI >= 0 &&
+                newI < h &&
+                newJ >= 0 &&
+                newJ < w &&
+                !visited[newI][newJ]
+            ) {
+                if (check(newI, newJ, k + 1)) {
+                    visited[i][j] = false;
+                    return true;
+                }
+            }
+        }
+
+        visited[i][j] = false;
+        return false;
+    }
+
+    for (let i = 0; i < h; i++) {
+        for (let j = 0; j < w; j++) {
+            if (check(i, j, 0)) {
+                return true;
+            }
+        }
+    }
+
+    return false;
+}
+
+function partition(s: string): string[][] {
+    const result: string[][] = [];
+    const path: string[] = [];
+
+    function isPalindrome(left: number, right: number): boolean {
+        while (left < right) {
+            if (s[left] !== s[right]) {
+                return false;
+            }
+            left++;
+            right--;
+        }
+        return true;
+    }
+
+    function backtrack(startIndex: number): void {
+        if (startIndex === s.length) {
+            result.push([...path]);
+            return;
+        }
+
+        for (let i = startIndex; i < s.length; i++) {
+            if (!isPalindrome(startIndex, i)) {
+                continue;
+            }
+
+            const str = s.slice(startIndex, i + 1);
+            path.push(str);
+
+            backtrack(i + 1);
+
+            path.pop();
+        }
+    }
+
+    backtrack(0);
+    return result;
+}
+
+function searchInsert(nums: number[], target: number): number {
+    var left = 0, right = nums.length - 1;
+    while (left <= right) {
+        var mid = left + Math.floor((right - left) / 2);
+
+        if (nums[mid] === target) {
+            return mid;
+        } else if (nums[mid] > target) {
+            right = mid - 1;
+        } else {
+            left = mid + 1;
+        }
+    }
+    return left;
+};
+
+function searchMatrix(matrix: number[][], target: number): boolean {
+    const m: number = matrix.length;
+    const n: number = matrix[0].length;
+
+    let low: number = 0;
+    let high: number = m * n - 1;
+
+    while (low <= high) {
+        const mid: number = low + Math.floor((high - low) / 2);
+
+        const row: number = Math.floor(mid / n);
+        const col: number = mid % n;
+
+        const x: number = matrix[row][col];
+
+        if (x < target) {
+            low = mid + 1;
+        } else if (x > target) {
+            high = mid - 1;
+        } else {
+            return true;
+        }
+    }
+
+    return false;
+}

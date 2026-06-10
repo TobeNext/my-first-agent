@@ -3,11 +3,12 @@ import { Mastra } from '@mastra/core/mastra';
 import { LibSQLStore } from '@mastra/libsql';
 import { Observability, DefaultExporter, CloudExporter, SensitiveDataFilter } from '@mastra/observability';
 
+import { answerEvaluationAgent } from './agents/answer-evaluation-agent';
 import { interviewAgent } from './agents/interview-agent';
 import { mastraLogger } from './lib/logger';
 
 export const mastra = new Mastra({
-  agents: { interviewAgent },
+  agents: { interviewAgent, answerEvaluationAgent },
   bundler: {
     sourcemap: true,
     externals: ['@zilliz/milvus2-sdk-node'],

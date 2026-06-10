@@ -3,6 +3,7 @@ import { z } from 'zod';
 
 import {
   applyUserReply,
+  buildFinalInterviewStateFromEvaluations,
   buildInterviewProgressSummary,
   classifyByRules,
   validateInterviewState,
@@ -24,8 +25,16 @@ import {
 } from '../lib/interview-state-machine-schema';
 import { ensureGeneratedFollowUpQuestion } from '../lib/interview-question-generator';
 import { resolveInterviewInitializationResources } from '../lib/interview-initialization-pipeline';
+import { evaluateReferenceAnswerCoverage } from '../lib/interview-answer-evaluation';
+import { enqueueAnswerEvaluationTaskBestEffort } from '../lib/answer-evaluation-task-enqueue';
+import { createRedisAnswerEvaluationStore, createRedisEvaluationClient } from '../lib/redis-client';
+import type { AnswerEvaluationStore } from '../lib/redis-evaluation-store';
 import { mastraLogger } from '../lib/logger';
 import { updateRagRecallSampleAnswerPerformance, writeInitializationRagRecallSample } from '../lib/rag-recall-sample';
+import {
+  waitAndReadInterviewEvaluations,
+  type WaitAndReadInterviewEvaluationsOutput,
+} from './interview-evaluation-report-tool';
 
 const TOOL_MEMORY_CONFIG = {
   workingMemory: {
@@ -40,6 +49,8 @@ const INTERVIEW_OUTCOME_PATH_KEY = 'interviewOutcomeFilePath';
 const stateManagerLogger = mastraLogger.child({
   module: 'interview-state-manager-tool',
 });
+const REPORT_EVALUATION_POLL_INTERVAL_MS = 1000;
+const REPORT_EVALUATION_MAX_WAIT_MS = 120000;
 
 const initializationInputSchema = z.object({
   action: z.literal('initialize-session'),
@@ -539,33 +550,59 @@ function buildFallbackAnswerAnalysis(options: {
   const shouldCompleteNode =
     options.activeNode.currentTargetType === 'follow-up' &&
     (options.activeNode.followUpCount >= 2 || (options.activeRound.type === 'project-experience' && looksSubstantial));
+  const referenceEvaluation = evaluateReferenceAnswerCoverage({
+    referenceAnswer: options.activeNode.referenceAnswer,
+    evaluationPoints: options.activeNode.evaluationPoints,
+    userAnswer: options.userMessage,
+  });
+  const referenceMissingPoints = referenceEvaluation.hasReferenceAnswer
+    ? referenceEvaluation.missingPoints.slice(0, 3).map((point) =>
+        isChinese ? `未覆盖参考要点：${point}` : `Missing reference point: ${point}`,
+      )
+    : [];
+  const referenceStrengths = referenceEvaluation.coveredPoints.slice(0, 2).map((point) =>
+    isChinese ? `覆盖了参考要点：${point}` : `Covered reference point: ${point}`,
+  );
+  const referenceAwareAccuracy = referenceEvaluation.hasReferenceAnswer
+    ? Math.max(5.4, Math.min(9.2, 5.4 + referenceEvaluation.coverageRatio * 4))
+    : looksSubstantial ? 7.4 : 6.2;
+  const referenceAwareDepth = referenceEvaluation.hasReferenceAnswer
+    ? Math.max(5.2, Math.min(9.0, 5.2 + referenceEvaluation.coverageRatio * 3.8 + (looksSubstantial ? 0.4 : 0)))
+    : looksSubstantial ? 7.2 : 5.8;
+  const referenceAwareSpecificity = referenceEvaluation.hasReferenceAnswer
+    ? Math.max(5.2, Math.min(8.8, 5.2 + referenceEvaluation.coverageRatio * 3.2 + (looksSubstantial ? 0.3 : 0)))
+    : looksSubstantial ? 7.0 : 5.9;
 
   return {
     classification,
     score: buildAnswerScore({
       relevance: looksSubstantial ? 7.8 : 6.6,
-      accuracy: looksSubstantial ? 7.4 : 6.2,
-      depth: looksSubstantial ? 7.2 : 5.8,
-      specificity: looksSubstantial ? 7.0 : 5.9,
+      accuracy: referenceAwareAccuracy,
+      depth: referenceAwareDepth,
+      specificity: referenceAwareSpecificity,
       clarity: looksSubstantial ? 7.8 : 6.8,
     }),
     strengths: [
       isChinese ? `回答基本围绕“${focusLabel}”展开` : `The answer stayed broadly focused on ${focusLabel}.`,
+      ...referenceStrengths,
     ],
     missingPoints: shouldCompleteNode
-      ? []
+      ? referenceMissingPoints
       : [
+          ...referenceMissingPoints,
           isChinese
             ? `还需要继续补充“${focusLabel}”的实现细节、关键取舍或真实案例`
             : `The answer still needs more implementation detail, trade-offs, or a real example for ${focusLabel}.`,
         ],
     incorrectPoints: [],
     recommendedIntent,
-    followUpFocus: [focusLabel],
+    followUpFocus: referenceEvaluation.missingPoints.slice(0, 2).length > 0
+      ? referenceEvaluation.missingPoints.slice(0, 2)
+      : [focusLabel],
     followUpQuestion: null,
     detourReply: null,
     clarificationReply: null,
-    shouldCompleteNode,
+    shouldCompleteNode: shouldCompleteNode && (!referenceEvaluation.hasReferenceAnswer || referenceEvaluation.coverageRatio >= 0.5),
     earlyCompletionReason: shouldCompleteNode
       ? isChinese
         ? '回答分析降级为规则兜底后，当前节点已满足推进条件。'
@@ -661,6 +698,196 @@ function buildStateManagerOutput(options: {
     finalReportReady: options.state.finalReportReady,
     progress: buildInterviewProgressSummary(options.state),
   };
+}
+
+function buildEvaluationWaitBlockedReply(
+  state: InterviewSessionState,
+  waitResult: WaitAndReadInterviewEvaluationsOutput,
+): string {
+  if (state.responseLanguage === 'zh') {
+    if (waitResult.blockingReason === 'failed') {
+      return `面试题目已经完成，但异步评分中有 ${waitResult.failedCount} 个任务失败，暂时不能生成最终报告。请稍后重试或让系统重新处理失败任务。`;
+    }
+
+    return `面试题目已经完成，我正在等待异步评分完成后生成最终报告。当前进度：${waitResult.completedCount}/${waitResult.expectedCount}。请稍后再发送一条消息获取报告。`;
+  }
+
+  if (waitResult.blockingReason === 'failed') {
+    return `The interview questions are complete, but ${waitResult.failedCount} async evaluation task(s) failed, so I cannot generate the final report yet. Please retry after the failed task is reprocessed.`;
+  }
+
+  return `The interview questions are complete. I am waiting for async evaluations before generating the final report. Current progress: ${waitResult.completedCount}/${waitResult.expectedCount}. Please send another message shortly to fetch the report.`;
+}
+
+function buildPendingFinalReportState(state: InterviewSessionState): InterviewSessionState {
+  return validateInterviewState({
+    ...state,
+    phase: 'wrap-up',
+    activeRoundId: null,
+    finalReportReady: false,
+    finalReport: null,
+  });
+}
+
+function countExpectedEvaluationAttempts(state: InterviewSessionState): number {
+  return state.rounds.reduce(
+    (total, round) =>
+      total +
+      round.nodes.reduce(
+        (nodeTotal, node) =>
+          nodeTotal + node.answerAttempts.filter((attempt) => attempt.score !== null && !attempt.isDetour).length,
+        0,
+      ),
+    0,
+  );
+}
+
+export async function completeFinalReportWithAsyncEvaluations(options: {
+  readonly state: InterviewSessionState;
+  readonly store: AnswerEvaluationStore;
+  readonly pollIntervalMs?: number;
+  readonly maxWaitMs?: number;
+}): Promise<{
+  readonly state: InterviewSessionState;
+  readonly assistantReply: string;
+  readonly ready: boolean;
+}> {
+  const expectedEvaluationAttemptCount = countExpectedEvaluationAttempts(options.state);
+  const manifest = await options.store.readManifest(options.state.threadId);
+  if (!manifest) {
+    if (expectedEvaluationAttemptCount === 0) {
+      return {
+        state: options.state,
+        assistantReply: options.state.finalReport ?? '',
+        ready: true,
+      };
+    }
+
+    const pendingState = buildPendingFinalReportState(options.state);
+    return {
+      state: pendingState,
+      assistantReply: buildEvaluationWaitBlockedReply(pendingState, {
+        ready: false,
+        sealed: false,
+        expectedCount: expectedEvaluationAttemptCount,
+        completedCount: 0,
+        failedCount: 0,
+        evaluations: [],
+        waitElapsedMs: 0,
+        blockingReason: 'manifest-missing',
+      }),
+      ready: false,
+    };
+  }
+
+  if (manifest.expectedTaskIds.length < expectedEvaluationAttemptCount) {
+    const pendingState = buildPendingFinalReportState(options.state);
+    return {
+      state: pendingState,
+      assistantReply: buildEvaluationWaitBlockedReply(pendingState, {
+        ready: false,
+        sealed: manifest.sealed,
+        expectedCount: expectedEvaluationAttemptCount,
+        completedCount: manifest.completedTaskIds.length,
+        failedCount: manifest.failedTaskIds.length,
+        evaluations: [],
+        waitElapsedMs: 0,
+        blockingReason: 'pending',
+      }),
+      ready: false,
+    };
+  }
+
+  await options.store.sealInterview(options.state.threadId);
+  const waitResult = await waitAndReadInterviewEvaluations(
+    {
+      interviewId: options.state.threadId,
+      threadId: options.state.threadId,
+      pollIntervalMs: options.pollIntervalMs ?? REPORT_EVALUATION_POLL_INTERVAL_MS,
+      maxWaitMs: options.maxWaitMs ?? REPORT_EVALUATION_MAX_WAIT_MS,
+    },
+    { store: options.store },
+  );
+
+  if (!waitResult.ready) {
+    const pendingState = buildPendingFinalReportState(options.state);
+    return {
+      state: pendingState,
+      assistantReply: buildEvaluationWaitBlockedReply(pendingState, waitResult),
+      ready: false,
+    };
+  }
+
+  const finalState = buildFinalInterviewStateFromEvaluations(options.state, waitResult.evaluations);
+
+  return {
+    state: finalState,
+    assistantReply: finalState.finalReport ?? '',
+    ready: true,
+  };
+}
+
+async function maybeFinalizeReportWithAsyncEvaluations(options: {
+  readonly beforeState: InterviewSessionState;
+  readonly resultState: InterviewSessionState;
+  readonly userMessage: string;
+  readonly resourceId?: string;
+  readonly isFlowTestSkip: boolean;
+}): Promise<{
+  readonly state: InterviewSessionState;
+  readonly assistantReply: string | null;
+}> {
+  if (!options.resultState.finalReportReady) {
+    if (!options.isFlowTestSkip) {
+      void enqueueAnswerEvaluationTaskBestEffort(
+        {
+          beforeState: options.beforeState,
+          afterState: options.resultState,
+          userMessage: options.userMessage,
+          resourceId: options.resourceId,
+        },
+        {
+          logger: stateManagerLogger,
+        },
+      );
+    }
+
+    return { state: options.resultState, assistantReply: null };
+  }
+
+  if (options.isFlowTestSkip) {
+    return {
+      state: options.resultState,
+      assistantReply: options.resultState.finalReport ?? '',
+    };
+  }
+
+  const redisClient = await createRedisEvaluationClient();
+  const store = createRedisAnswerEvaluationStore(redisClient);
+
+  try {
+    if (!options.isFlowTestSkip) {
+      await enqueueAnswerEvaluationTaskBestEffort(
+        {
+          beforeState: options.beforeState,
+          afterState: options.resultState,
+          userMessage: options.userMessage,
+          resourceId: options.resourceId,
+        },
+        {
+          store,
+          logger: stateManagerLogger,
+        },
+      );
+    }
+
+    return await completeFinalReportWithAsyncEvaluations({
+      state: options.resultState,
+      store,
+    });
+  } finally {
+    await redisClient.disconnect();
+  }
 }
 
 export const interviewStateManagerTool = createTool({
@@ -802,19 +1029,29 @@ export const interviewStateManagerTool = createTool({
       userMessage: storedUserMessage,
       evaluation,
     });
-    await writeState(memory, result.state, threadId, resourceId);
+    const finalizedResult = await maybeFinalizeReportWithAsyncEvaluations({
+      beforeState: currentState,
+      resultState: result.state,
+      userMessage: storedUserMessage,
+      resourceId,
+      isFlowTestSkip,
+    });
+    const nextState = finalizedResult.state;
+    const assistantReply = finalizedResult.assistantReply ?? result.assistantReply;
+
+    await writeState(memory, nextState, threadId, resourceId);
 
     try {
       const outcomeFilePath = await readThreadMetadataValue(memory, threadId, INTERVIEW_OUTCOME_PATH_KEY);
       if (outcomeFilePath) {
         await updateInterviewOutcomeSnapshot({
           filePath: outcomeFilePath,
-          state: result.state,
+          state: nextState,
         });
       } else {
         const createdOutcomeFilePath = await createInterviewOutcomeSnapshot({
           threadId,
-          state: result.state,
+          state: nextState,
           recallTraces: [],
         });
         await writeThreadMetadataValue(memory, threadId, INTERVIEW_OUTCOME_PATH_KEY, createdOutcomeFilePath);
@@ -830,7 +1067,7 @@ export const interviewStateManagerTool = createTool({
     try {
       const sampleFilePath = await readThreadMetadataValue(memory, threadId, RAG_RECALL_SAMPLE_PATH_KEY);
       if (sampleFilePath) {
-        await updateRagRecallSampleAnswerPerformance(sampleFilePath, result.state);
+        await updateRagRecallSampleAnswerPerformance(sampleFilePath, nextState);
       }
     } catch (error) {
       stateManagerLogger.warn('Failed to update RAG recall sample answer performance', {
@@ -845,14 +1082,14 @@ export const interviewStateManagerTool = createTool({
       threadId,
       classification: evaluation.classification,
       flowTestSkip: isFlowTestSkip,
-      phase: result.state.phase,
-      currentStage: result.state.finalReportReady ? 'completed' : result.state.phase,
-      remainingQuestionCount: buildInterviewProgressSummary(result.state).remainingQuestionCount,
+      phase: nextState.phase,
+      currentStage: nextState.finalReportReady ? 'completed' : nextState.phase,
+      remainingQuestionCount: buildInterviewProgressSummary(nextState).remainingQuestionCount,
     });
 
     return buildStateManagerOutput({
-      state: result.state,
-      assistantReply: result.assistantReply,
+      state: nextState,
+      assistantReply,
       flowTestMockUserReply,
     });
   },

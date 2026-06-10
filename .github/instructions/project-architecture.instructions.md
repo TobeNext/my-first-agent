@@ -17,16 +17,17 @@ description: "Use when coding in the Mastra TypeScript source tree. Captures the
 
 ## Current Runtime Snapshot
 
-- `src/mastra/index.ts` 是当前 Mastra 运行入口，负责注册 `interview-agent`、logger、storage 和 observability。
+- `src/mastra/index.ts` 是当前 Mastra 运行入口，负责注册 `interview-agent`、`answer-evaluation-agent`、logger、storage 和 observability。
 - `src/mastra/index.ts` 的 bundler 配置会把 `@zilliz/milvus2-sdk-node` 作为 external 处理；Milvus SDK 不应被 Mastra build 内联打包。
-- 当前运行时只保留 `interview-agent` 作为对外启用的 agent。
+- 当前 Mastra runtime 注册了两个 agent：`interview-agent` 负责主面试对话，`answer-evaluation-agent` 负责异步答题评分 worker 的结构化 LLM 评分。
 - 当前 Mastra 运行时的环境变量不再只依赖 CLI 隐式加载；`src/mastra/lib/load-env.ts` 会在读取模型 API key 和向量库配置前，显式尝试加载仓库根目录下的 `.env.local` 和 `.env`，以兼容直接执行构建产物的场景。
+- 当前 Docker Compose 运行环境包含独立 `redis` service；Mastra 服务通过 `REDIS_URL` 连接该 Redis，用于后续异步 LLM 答题评分任务、状态和结果存储。
 - 仓库现在新增了独立的 `frontend/` Vue 3 + TypeScript 应用，用于承载面向用户的交互页面。当前它已经接入 BFF，提供“简历必传 + 职位 JD 选填”的信息上传页：简历在前端只做文件类型与大小校验，经由 BFF 做大小、类型和结构的二次校验；职位 JD 只做前端文件校验和内容保留、简历模板仍可下载；由 BFF 返回权威专业技能组数量，前端按该数量默认把专业技能轮题数设置为“每个技能组一题”，再结合项目经历轮题数、逐题纠错、轮次跳过和 flow-test mode 等系统设置正式开始流式面试。当前前端配置页和开始前状态文案已经明确说明：上传 JD 后，下游会提取职责、技术要求、优先技能与领域词，并用于专业技能轮权重、项目经历交叉验证和缺口能力检查，而不再只是“透传待扩展”的上下文。
 - 上述 interview 页面现在还包含一个仅用于联调的 flow-test mode 设置；开启后，前端会暴露“跳过本次回答”按钮，并把保留标记传给下游 interview 状态机，由状态机 mock 回答评分、追问与流程推进，而不是只在 UI 层本地跳过。
 - 上述 interview 页面现在还会在浏览器本地持久化最近一次面试会话的 `threadId`、系统设置和阶段摘要；刷新或中断后，前端路由会允许用户重新进入 interview 页面，由页面显式提供“恢复上次面试 / 放弃并重新开始”的入口，并在后端 thread 失效时清理本地状态后回退到上传页。
 - 仓库现在新增了独立的 `bff/` NestJS 中间层，用于承接前端请求、执行登录和输入验证、处理上传校验、返回权威专业技能组数量，并把基于 `threadId` 的 `interview-agent` SSE 流式响应代理到 Mastra；在正式启动前，BFF 会校验专业技能轮自动/自定义题数模式、逐题纠错、轮次跳过和两轮分别配置的题数设置，并在默认模式下把专业技能轮题数归一到技能组数量，不再单独提供面试方向 setup 接口。当前启动态已经从自然语言 kickoff 文案切换为结构化 JSON 启动 payload：BFF 复用统一 contract 透传 `threadId`、`resumeMarkdown`、`jobDescriptionMarkdown`、`settings`，并在代理前通过 `bff/src/modules/resume/resume-parser.ts` 这个 canonical parser 补齐标准化 `resumeSections`。
 - BFF 现在还会校验并透传 flow-test mode 设置，在启动和答题流转时补充关键日志，便于前端联调 interview 流程。
-- 当前 interview 能力已经引入显式状态机：专业技能轮按 6 个节点推进，项目经历轮按 2 个节点推进；每个节点都记录主问题、追问槽位、回答尝试、评分、漏答点、错误点和偏题恢复计数。
+- 当前 interview 能力已经引入显式状态机：专业技能轮按 6 个节点推进，项目经历轮按 2 个节点推进；每个节点都记录主问题、可选参考答案 `referenceAnswer`、参考答案拆分出的 `evaluationPoints`、追问槽位、回答尝试、评分、漏答点、错误点和偏题恢复计数。
 - 当前 interview 状态管理工具除了返回下一条 interviewer reply，也会返回结构化进度摘要（总题数、已完成题数、当前题号、当前是否处于追问）以及模板化最终报告所需的聚合信息，供前端侧边栏和结束报告直接消费。
 - 当前 interview 还会把每场面试的结构化 outcome 以时间戳目录的形式落盘到仓库根目录下的 `Interview outcome/`：Mastra 在初始化和每轮答题后持续写入两类目的不同的数据结构。其一是 `selectorTraining`，专门记录召回 trace、候选题排序信号和被选题目的结果标签，用于后续 lightweight selector / reranker 训练；其二是 `candidateImprovement`，专门记录逐题表现、优势信号、聚合后的知识薄弱点、改进建议和最终评分，供用户复盘与持续提升。BFF 在面试结束后把前端提交的用户反馈回写到 `candidateImprovement.feedback`。
 - 仓库根目录现在还提供了独立的 live interview E2E harness：`vitest.e2e.config.ts` 负责统一 Node 环境与 alias，`e2e/**` 负责最小全链路回归场景，根命令 `npm run test:e2e:interview:smoke` / `npm run test:e2e:interview` 作为本地与 CI 共同入口，`.github/workflows/interview-e2e.yml` 复用同一 root 命令在 workflow_dispatch 下执行 Docker Compose 版回归。
@@ -39,7 +40,8 @@ description: "Use when coding in the Mastra TypeScript source tree. Captures the
 - `src/mastra/workflows`: 多步骤编排。适合封装稳定的流程，而不是把所有流程逻辑都堆进 agent prompt。
 - `src/mastra/lib`: 共享基础设施与库代码，例如向量存储、索引初始化、RAG 分块与嵌入。
 - `src/mastra/lib/load-env.ts` 属于运行时基础设施的一部分，专门负责把仓库根目录环境变量文件加载进 Node 进程，避免不同启动方式下的行为漂移。
-- `src/mastra/scripts`: 手动执行、导入、验证、E2E 测试脚本。脚本是验证流程的一部分，不应混入运行时入口；LibSQL 向量数据迁移到 Milvus、Milvus metadata backfill/rebuild 等一次性脚本也放在这里。
+- `src/mastra/lib/answer-evaluation-schemas.ts`、`src/mastra/lib/redis-config.ts`、`src/mastra/lib/redis-client.ts`、`src/mastra/lib/redis-evaluation-store.ts`、`src/mastra/lib/answer-evaluation-task-enqueue.ts` 与 `src/mastra/lib/answer-evaluation-runner.ts` 是异步 LLM 答题评分的 Redis 任务/状态/结果基础层；Redis 配置来自 `REDIS_URL`，真实客户端由 `redis` npm 包创建，业务 store 通过构造函数注入 Redis client。当前主 interview state manager 已在真实答题后 fire-and-forget 写入 Redis 评估任务；最后一题完成时会先同步确保该轮 task 已写入 manifest，再 seal interview evaluation manifest，并通过 wait/read 流程等待完整 evaluation results。`answer-evaluation-agent` 可由独立 worker 消费 pending queue 并写入 LLM evaluation result；worker 默认最多尝试 3 次，前置失败会重新入队，最终失败会写入 task status 与 manifest 的 `failedTaskIds`；`waitAndReadInterviewEvaluationsTool` 已注册到 `interview-agent`，会等待 manifest sealed 且全部任务完成后才读取完整 evaluation results，遇到 failed task 或 timeout 不返回 partial report data；最终报告会用 Redis 中的 LLM evaluation result 覆盖本地规则评分后重新计算 node summary 和 report。
+- `src/mastra/scripts`: 手动执行、导入、验证、E2E 测试脚本。脚本是验证流程的一部分，不应混入运行时入口；LibSQL 向量数据迁移到 Milvus、Milvus metadata backfill/rebuild、异步 answer evaluation worker 启动脚本等也放在这里。
 - `src/mastra/scorers`: 评估/打分逻辑预留目录。当前 runtime 未注册 scorer；新增 interview scorer 时保持同样的职责边界。
 - `src/mastra/data`: 预留数据目录。若新增样例或导入源，优先保持原始数据与运行时代码分离。
 - `src/mastra/public`: 运行时静态资源目录，仅放需要被构建产物带出的内容。
@@ -49,8 +51,8 @@ description: "Use when coding in the Mastra TypeScript source tree. Captures the
 
 ## Interview Feature Flow
 
-- `interview-agent.ts` 现在只负责把初始化和后续回复统一委托给 `interviewStateManagerTool`；启动时不再由模型串行编排简历解析和两轮题库检索。
-- `interview-state-manager-tool.ts` 是 interview 链路的状态拥有者，但当前它在初始化阶段只负责编排与持久化：结构化 kickoff 解析、主问题规划、召回、生成和裁决已经下沉到独立的 initialization pipeline 与 stage 模块；state manager 主要负责调用该 pipeline、恢复/持久化与当前会话 `resourceId` 绑定的 working memory、处理后续答题推进，并在需要时调用 generator 生成追问。
+- `interview-agent.ts` 现在主要把初始化和后续回复统一委托给 `interviewStateManagerTool`，并暴露 `waitAndReadInterviewEvaluationsTool` 供最终报告前等待 Redis 异步评分结果；启动时不再由模型串行编排简历解析和两轮题库检索。
+- `interview-state-manager-tool.ts` 是 interview 链路的状态拥有者，但当前它在初始化阶段只负责编排与持久化：结构化 kickoff 解析、主问题规划、召回、生成和裁决已经下沉到独立的 initialization pipeline 与 stage 模块；state manager 主要负责调用该 pipeline、恢复/持久化与当前会话 `resourceId` 绑定的 working memory、处理后续答题推进，并在需要时调用 generator 生成追问。答题分析的规则兜底现在会读取当前节点的 `referenceAnswer` / `evaluationPoints`，用参考要点覆盖度调整 accuracy/depth/specificity、missingPoints 和 follow-up focus；没有参考答案的旧节点仍沿用原有启发式评分。对真实、已评分的用户回答，state manager 会异步 enqueue answer evaluation task 到 Redis，Redis 写入失败只记录日志，不阻塞当前面试回复。
 - `interview-outcome.ts` 负责把 interview outcome 拆成 `selectorTraining` 和 `candidateImprovement` 两块结构化数据，并维护 `Interview outcome/index` 下基于 `threadId` 的索引文件。其中 `selectorTraining` 面向选题训练，`candidateImprovement` 面向用户提升与知识薄弱点沉淀。
 - `interview-state-manager-tool.ts` 在初始化分支里会优先识别结构化 JSON 启动 payload，并在兼容分支中继续支持旧版 kickoff 文本恢复；`resumeMarkdown`、`jobDescriptionMarkdown` 和可选的 `resumeSections` 都会被解包为初始化上下文。初始化时显式忽略模型传入的题目数组或派生段落，只允许 tool 根据 payload 内的简历内容自行做主问题规划与 RAG 检索。专业技能轮和项目经历轮不再各自重复切字符串，而是统一消费 canonical parser 产出的标准化 section 结果、`normalizedSkills` 和 `normalizedProjectTopics`；默认模式按标准化技能组逐条执行题库检索，自定义题数时优先保证每个技能组最多命中一次，若题数超过技能组数量则补充跨技能或综合场景题；项目经历轮则复用标准化项目主题作为 fallback topic，再按项目经历上下文检索并一次性建立首轮状态，从而避免启动阶段额外的多次 tool orchestration 开销。
 - `interview-initialization-pipeline.ts` 现在是 kickoff 初始化主链路的唯一编排入口：它统一负责解析 structured / legacy kickoff、生成专业技能轮 question plan、调用 retriever 收集候选题、调用 generator 产出最终题目文案，并在进入状态机前调用 critic/judge 做最小质量闸门和 deterministic fallback。
@@ -58,7 +60,7 @@ description: "Use when coding in the Mastra TypeScript source tree. Captures the
 - `interview-question-generator.ts` 负责两类生成行为：一类是把召回结果适配成初始化主问题集合与 generation trace，另一类是基于当前题、对话记录和回答分析生成追问文案。
 - `interview-question-critic.ts` 负责初始化主问题的最小质量闸门，当前会检查空题、重复题、明显目标错位、scenario 形状不匹配和项目题形状不匹配；不通过时以 deterministic fallback 替换，避免低质量题进入状态机。
 - `interview-state-manager-tool.ts` 现在还负责返回结构化 progress 摘要；前端会从同一条 SSE 流里的 `tool-result` 事件读取这个摘要，并驱动侧边栏与最终权威回复展示。
-- `interview-state-machine-schema.ts` 定义结构化 working memory schema；`interview-state-machine.ts` 负责纯 reducer/helper 逻辑，包括节点初始化、按 setup 中的专业技能轮 / 项目经历轮独立题数建立两轮题目、偏题恢复、追问推进、纠错信息汇总和最终报告生成。
+- `interview-state-machine-schema.ts` 定义结构化 working memory schema；`interview-state-machine.ts` 负责纯 reducer/helper 逻辑，包括节点初始化、按 setup 中的专业技能轮 / 项目经历轮独立题数建立两轮题目、偏题恢复、追问推进、纠错信息汇总、基于本地规则的临时报告生成，以及把 Redis LLM evaluation result 映射回 attempt/node 后重算最终报告。
 - `professional-question-query.ts` 负责把专业技能选题计划转换为 RAG 查询文本、召回日志 skill 标签和题目 lens 描述；`interview-state-manager-tool.ts` 只调用该 helper，不再内联维护专业技能查询拼接细节。
 - `read-only-thread-memory.ts` 是对当前 Mastra memory 行为的兼容封装，用于让 interview agent 读取 thread working memory 上下文，但不直接暴露给模型自行更新。
 - `resume-parser-tool.ts` 负责暴露 canonical parser 的结果，除“专业技能”和“项目经历”两段上下文外，还会返回 `normalizedSkills`、`normalizedProjectTopics`、`warnings` 和 `validationErrors` 供下游复用。
@@ -92,7 +94,7 @@ description: "Use when coding in the Mastra TypeScript source tree. Captures the
 - `.github/instructions/frontend-architecture.instructions.md`: 前端页面、组件、store、service 分层约定。
 - `.github/instructions/bff-architecture.instructions.md`: BFF 的 NestJS 模块、验证与代理边界约定。
 - `README.md` 与 `package.json`: 常用命令、Node/Mastra 运行方式、依赖边界。
-- `vitest.e2e.config.ts` 与 `e2e/**`: live interview E2E harness、场景拆分与 outcome 断言入口。
+- `vitest.e2e.config.ts` 与 `e2e/**`: live interview E2E harness、场景拆分与 outcome 断言入口。`src/mastra/lib/async-answer-evaluation-e2e-smoke.test.ts` 是不依赖真实 Redis/LLM 的 deterministic async evaluation smoke，覆盖 task enqueue、worker mock scoring、wait/read 和最终报告使用 LLM evaluation result 的闭环。
 
 ## Required Post-Edit Skill
 

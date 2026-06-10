@@ -1,4 +1,7 @@
 import {
+  type LlmAnswerEvaluationResult,
+} from './answer-evaluation-schemas';
+import {
   answerClassificationSchema,
   answerAttemptStateSchema,
   type AnswerAttemptState,
@@ -26,6 +29,7 @@ import {
 } from './interview-state-machine-schema';
 import { parseInterviewStartRequest } from '../../../bff/src/modules/agent/interview-start-contract';
 import { extractNormalizedResumeTopics } from '../../../bff/src/modules/resume/resume-parser';
+import { extractEvaluationPoints } from './interview-answer-evaluation';
 
 interface KickoffConfig {
   readonly targetRole: string;
@@ -342,13 +346,22 @@ function createNode(options: {
   readonly source: 'resume' | 'knowledge-base' | 'setup' | 'generated';
   readonly topic: string;
   readonly mainQuestion: string;
+  readonly referenceAnswer?: string;
+  readonly evaluationPoints?: readonly string[];
   readonly maxFollowUps: number;
 }): InterviewTopicNodeState {
+  const referenceAnswer = options.referenceAnswer?.trim();
+  const evaluationPoints = options.evaluationPoints?.length
+    ? [...options.evaluationPoints]
+    : extractEvaluationPoints(referenceAnswer);
+
   return {
     id: createId('topic-node'),
     topic: options.topic,
     source: options.source,
     mainQuestion: options.mainQuestion,
+    referenceAnswer: referenceAnswer && referenceAnswer.length > 0 ? referenceAnswer : undefined,
+    evaluationPoints: evaluationPoints.length > 0 ? evaluationPoints : undefined,
     status: 'pending',
     currentTargetType: 'main-question',
     currentFollowUpId: null,
@@ -386,6 +399,8 @@ function buildNodesFromQuestions(options: {
         source: 'knowledge-base',
         topic: inferTopicFromQuestion(question.text, options.targetRole),
         mainQuestion: question.text,
+        referenceAnswer: question.answer,
+        evaluationPoints: extractEvaluationPoints(question.answer),
         maxFollowUps: options.maxFollowUps,
       }),
     );
@@ -891,6 +906,56 @@ function finalizeInterview(state: InterviewSessionState): InterviewSessionState 
     finalReportReady: true,
     finalReport: renderInterviewReportFromTemplate(state, completedNodes),
   };
+}
+
+export function buildFinalInterviewStateFromEvaluations(
+  state: InterviewSessionState,
+  evaluations: readonly LlmAnswerEvaluationResult[],
+): InterviewSessionState {
+  const evaluationByAttemptId = new Map(evaluations.map((evaluation) => [evaluation.attemptId, evaluation]));
+  const rounds = state.rounds.map((round) => ({
+    ...round,
+    nodes: round.nodes.map((node) => {
+      const answerAttempts = node.answerAttempts.map((attempt) => {
+        const evaluation = evaluationByAttemptId.get(attempt.id);
+        if (!evaluation) {
+          return attempt;
+        }
+
+        return answerAttemptStateSchema.parse({
+          ...attempt,
+          classification: evaluation.classification,
+          score: evaluation.score,
+          strengths: evaluation.strengths,
+          missingPoints: evaluation.missingPoints,
+          incorrectPoints: evaluation.incorrectPoints,
+        });
+      });
+      const nextNode = {
+        ...node,
+        answerAttempts,
+      };
+
+      return node.status === 'completed'
+        ? summarizeNode(nextNode, state.responseLanguage)
+        : nextNode;
+    }),
+  }));
+  const evaluatedState = interviewSessionStateSchema.parse({
+    ...state,
+    rounds,
+  });
+  const completedNodes = evaluatedState.rounds
+    .flatMap((round) => round.nodes)
+    .filter((node) => node.status === 'completed');
+
+  return interviewSessionStateSchema.parse({
+    ...evaluatedState,
+    phase: 'completed',
+    activeRoundId: null,
+    finalReportReady: true,
+    finalReport: renderInterviewReportFromTemplate(evaluatedState, completedNodes),
+  });
 }
 
 function hasOpenNode(node: InterviewTopicNodeState): boolean {

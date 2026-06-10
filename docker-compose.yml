@@ -37,6 +37,14 @@ services:
       - etcd
       - minio
 
+  redis:
+    image: redis:8.0-alpine
+    ports:
+      - '6379:6379'
+    volumes:
+      - redis-data:/data
+    command: ['redis-server', '--appendonly', 'yes']
+
   mastra:
     build:
       context: .
@@ -47,8 +55,10 @@ services:
       - .env
     environment:
       MILVUS_ADDRESS: milvus:19530
+      REDIS_URL: redis://redis:6379
     depends_on:
       - milvus
+      - redis
 
   bff:
     build:
@@ -78,3 +88,4 @@ volumes:
   milvus-etcd:
   milvus-minio:
   milvus-data:
+  redis-data:

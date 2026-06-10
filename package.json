@@ -13,6 +13,7 @@
     "dev": "mastra dev",
     "build": "mastra build",
     "start": "mastra start",
+    "worker:answer-evaluation": "tsx src/mastra/scripts/run-answer-evaluation-worker.ts",
     "migrate:vectors:milvus": "tsx src/mastra/scripts/migrate-libsql-vectors-to-milvus.ts --recreate",
     "backfill:vectors:milvus-metadata": "tsx src/mastra/scripts/backfill-milvus-interview-question-metadata.ts",
     "start:local": "powershell -ExecutionPolicy Bypass -File ./scripts/start-local.ps1"
@@ -36,6 +37,7 @@
     "@mastra/rag": "^2.2.0",
     "@zilliz/milvus2-sdk-node": "^3.0.1",
     "ai": "^6.0.161",
+    "redis": "^6.0.0",
     "zod": "^4.3.6"
   },
   "devDependencies": {

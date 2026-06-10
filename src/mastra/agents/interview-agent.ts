@@ -3,6 +3,7 @@ import { Agent } from '@mastra/core/agent';
 import { ReadOnlyThreadMemory } from '../lib/read-only-thread-memory';
 import { interviewWorkingMemorySchema } from '../lib/interview-state-machine-schema';
 import { glmAirModel } from '../lib/zhipu-model';
+import { waitAndReadInterviewEvaluationsTool } from '../tools/interview-evaluation-report-tool';
 import { interviewStateManagerTool } from '../tools/interview-state-manager-tool';
 
 const SYSTEM_PROMPT = `You are a professional yet friendly technical interviewer conducting a mock interview. Your goal is to help candidates practice and improve.
@@ -49,7 +50,7 @@ export const interviewAgent = new Agent({
   name: 'Interview Agent',
   instructions: SYSTEM_PROMPT,
   model: glmAirModel,
-  tools: { interviewStateManagerTool },
+  tools: { interviewStateManagerTool, waitAndReadInterviewEvaluationsTool },
   memory: new ReadOnlyThreadMemory({
     options: {
       lastMessages: 40,

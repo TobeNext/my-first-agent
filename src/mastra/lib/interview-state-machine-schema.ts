@@ -55,6 +55,7 @@ export const interviewQuestionCandidateSchema = z.object({
   questionType: z.string().optional(),
   difficulty: z.string().optional(),
   skillArea: z.array(z.string()).optional(),
+  answer: z.string().optional(),
   tags: z.string().optional(),
 });
 
@@ -115,6 +116,8 @@ export const interviewTopicNodeStateSchema = z.object({
   topic: z.string(),
   source: topicSourceSchema,
   mainQuestion: z.string(),
+  referenceAnswer: z.string().optional(),
+  evaluationPoints: z.array(z.string()).optional(),
   status: topicNodeStatusSchema,
   currentTargetType: answerTargetTypeSchema,
   currentFollowUpId: z.string().nullable(),
