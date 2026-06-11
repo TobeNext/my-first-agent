@@ -212,18 +212,26 @@ function mergeScalarFields(row: Record<string, unknown>): Record<string, unknown
 }
 
 export class MilvusVectorStore extends MastraVector<MilvusMetadataFilter> {
-  private readonly client: MilvusClient;
+  private client: MilvusClient | null = null;
+  private readonly config: Omit<MilvusVectorConfig, 'id'>;
   private readonly collectionMetrics = new Map<string, IndexStats['metric']>();
   private readonly collectionFields = new Map<string, Set<string>>();
 
   constructor({ id, ...config }: MilvusVectorConfig) {
     super({ id });
-    this.client = new MilvusClient(config);
+    this.config = config;
+  }
+
+  private getClient(): MilvusClient {
+    this.client ??= new MilvusClient(this.config);
+    return this.client;
   }
 
   async createIndex({ indexName, dimension, metric }: CreateIndexParams): Promise<void> {
-    await this.client.connectPromise;
-    const exists = await this.client.hasCollection({ collection_name: indexName });
+    const client = this.getClient();
+
+    await client.connectPromise;
+    const exists = await client.hasCollection({ collection_name: indexName });
     if ('value' in exists && exists.value) {
       this.collectionMetrics.set(indexName, metric ?? 'cosine');
       await this.cacheCollectionFields(indexName);
@@ -246,7 +254,7 @@ export class MilvusVectorStore extends MastraVector<MilvusMetadataFilter> {
     ];
 
     ensureMilvusSuccess(
-      await this.client.createCollection({
+      await client.createCollection({
         collection_name: indexName,
         fields,
         index_params: [
@@ -260,7 +268,7 @@ export class MilvusVectorStore extends MastraVector<MilvusMetadataFilter> {
       }),
       'createCollection',
     );
-    ensureMilvusSuccess(await this.client.loadCollection({ collection_name: indexName }), 'loadCollection');
+    ensureMilvusSuccess(await client.loadCollection({ collection_name: indexName }), 'loadCollection');
     this.collectionMetrics.set(indexName, metric ?? 'cosine');
     this.collectionFields.set(indexName, new Set(fields.map((field) => field.name)));
   }
@@ -271,7 +279,7 @@ export class MilvusVectorStore extends MastraVector<MilvusMetadataFilter> {
       return cached;
     }
 
-    const collection = await this.client.describeCollection({ collection_name: indexName });
+    const collection = await this.getClient().describeCollection({ collection_name: indexName });
     const fields = 'schema' in collection ? collection.schema.fields : [];
     const fieldNames = new Set(fields.map((field) => field.name));
     this.collectionFields.set(indexName, fieldNames);
@@ -292,18 +300,22 @@ export class MilvusVectorStore extends MastraVector<MilvusMetadataFilter> {
   }
 
   async listIndexes(): Promise<string[]> {
-    await this.client.connectPromise;
-    const result = await this.client.showCollections();
+    const client = this.getClient();
+
+    await client.connectPromise;
+    const result = await client.showCollections();
     const data = 'data' in result ? result.data : [];
 
     return Array.isArray(data) ? data.map((collection) => String(collection.name)) : [];
   }
 
   async describeIndex({ indexName }: DescribeIndexParams): Promise<IndexStats> {
-    await this.client.connectPromise;
+    const client = this.getClient();
+
+    await client.connectPromise;
     const [collection, count] = await Promise.all([
-      this.client.describeCollection({ collection_name: indexName }),
-      this.client.count({ collection_name: indexName }),
+      client.describeCollection({ collection_name: indexName }),
+      client.count({ collection_name: indexName }),
     ]);
     const fields = 'schema' in collection ? collection.schema.fields : [];
     const vectorField = fields.find((field) => field.name === VECTOR_FIELD);
@@ -316,7 +328,9 @@ export class MilvusVectorStore extends MastraVector<MilvusMetadataFilter> {
   }
 
   async upsert({ indexName, vectors, metadata = [], ids, deleteFilter }: UpsertVectorParams<MilvusMetadataFilter>): Promise<string[]> {
-    await this.client.connectPromise;
+    const client = this.getClient();
+
+    await client.connectPromise;
 
     if (deleteFilter) {
       await this.deleteVectors({ indexName, filter: deleteFilter });
@@ -340,9 +354,9 @@ export class MilvusVectorStore extends MastraVector<MilvusMetadataFilter> {
       return [];
     }
 
-    ensureMilvusSuccess(await this.client.upsert({ collection_name: indexName, data }), 'upsert');
-    ensureMilvusSuccess(await this.client.flushSync({ collection_names: [indexName] }), 'flushSync');
-    ensureMilvusSuccess(await this.client.loadCollection({ collection_name: indexName }), 'loadCollection');
+    ensureMilvusSuccess(await client.upsert({ collection_name: indexName, data }), 'upsert');
+    ensureMilvusSuccess(await client.flushSync({ collection_names: [indexName] }), 'flushSync');
+    ensureMilvusSuccess(await client.loadCollection({ collection_name: indexName }), 'loadCollection');
 
     return vectorIds;
   }
@@ -354,12 +368,14 @@ export class MilvusVectorStore extends MastraVector<MilvusMetadataFilter> {
     filter,
     includeVector = false,
   }: QueryVectorParams<MilvusMetadataFilter>): Promise<QueryResult[]> {
-    await this.client.connectPromise;
+    const client = this.getClient();
+
+    await client.connectPromise;
     const outputFields = await this.buildOutputFields(indexName, includeVector);
     const filterExpression = toFilterExpression(filter);
 
     if (!queryVector) {
-      const result = await this.client.query({
+      const result = await client.query({
         collection_name: indexName,
         filter: filterExpression ?? `${ID_FIELD} != ""`,
         output_fields: outputFields,
@@ -374,7 +390,7 @@ export class MilvusVectorStore extends MastraVector<MilvusMetadataFilter> {
       }));
     }
 
-    const result = await this.client.search({
+    const result = await client.search({
       collection_name: indexName,
       data: [queryVector],
       anns_field: VECTOR_FIELD,
@@ -401,7 +417,7 @@ export class MilvusVectorStore extends MastraVector<MilvusMetadataFilter> {
     const rows = id
       ? [{ id }]
       : normalizeQueryRows(
-          await this.client.query({
+          await this.getClient().query({
             collection_name: indexName,
             filter: toFilterExpression(filter) ?? `${ID_FIELD} != ""`,
             output_fields: await this.buildOutputFields(indexName, true),
@@ -422,17 +438,17 @@ export class MilvusVectorStore extends MastraVector<MilvusMetadataFilter> {
     });
 
     if (data.length > 0) {
-      ensureMilvusSuccess(await this.client.upsert({ collection_name: indexName, data }), 'updateVector');
+      ensureMilvusSuccess(await this.getClient().upsert({ collection_name: indexName, data }), 'updateVector');
     }
   }
 
   async deleteVector({ indexName, id }: DeleteVectorParams): Promise<void> {
-    ensureMilvusSuccess(await this.client.delete({ collection_name: indexName, ids: [id] }), 'deleteVector');
+    ensureMilvusSuccess(await this.getClient().delete({ collection_name: indexName, ids: [id] }), 'deleteVector');
   }
 
   async deleteVectors({ indexName, ids, filter }: DeleteVectorsParams<MilvusMetadataFilter>): Promise<void> {
     if (ids?.length) {
-      ensureMilvusSuccess(await this.client.delete({ collection_name: indexName, ids }), 'deleteVectors');
+      ensureMilvusSuccess(await this.getClient().delete({ collection_name: indexName, ids }), 'deleteVectors');
       return;
     }
 
@@ -441,22 +457,24 @@ export class MilvusVectorStore extends MastraVector<MilvusMetadataFilter> {
       throw new Error('MilvusVectorStore.deleteVectors requires ids or filter.');
     }
 
-    ensureMilvusSuccess(await this.client.delete({ collection_name: indexName, filter: filterExpression }), 'deleteVectors');
+    ensureMilvusSuccess(await this.getClient().delete({ collection_name: indexName, filter: filterExpression }), 'deleteVectors');
   }
 
   async deleteIndex({ indexName }: DeleteIndexParams): Promise<void> {
-    await this.client.connectPromise;
-    const exists = await this.client.hasCollection({ collection_name: indexName });
+    const client = this.getClient();
+
+    await client.connectPromise;
+    const exists = await client.hasCollection({ collection_name: indexName });
     if ('value' in exists && !exists.value) {
       return;
     }
 
-    ensureMilvusSuccess(await this.client.dropCollection({ collection_name: indexName }), 'dropCollection');
+    ensureMilvusSuccess(await client.dropCollection({ collection_name: indexName }), 'dropCollection');
     this.collectionMetrics.delete(indexName);
     this.collectionFields.delete(indexName);
   }
 
   async truncateIndex({ indexName }: DeleteIndexParams): Promise<void> {
-    ensureMilvusSuccess(await this.client.truncateCollection({ collection_name: indexName }), 'truncateCollection');
+    ensureMilvusSuccess(await this.getClient().truncateCollection({ collection_name: indexName }), 'truncateCollection');
   }
 }

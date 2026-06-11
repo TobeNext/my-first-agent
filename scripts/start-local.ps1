@@ -1,3 +1,7 @@
+param(
+  [switch]$StartDockerDependencies
+)
+
 $ErrorActionPreference = 'Stop'
 
 $scriptRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
@@ -33,6 +37,36 @@ function Escape-SingleQuotedString {
   param([string]$Value)
 
   return $Value -replace "'", "''"
+}
+
+function Start-DockerDependencies {
+  Write-Host '[Docker] starting dependency services (etcd, minio, milvus, redis)...' -ForegroundColor Cyan
+
+  docker compose up -d etcd minio milvus redis
+
+  Write-Host '[Docker] dependency services requested.' -ForegroundColor Green
+}
+
+function Wait-ForTcpPort {
+  param(
+    [string]$ServiceName,
+    [int]$Port,
+    [int]$TimeoutSeconds = 90
+  )
+
+  $stopwatch = [System.Diagnostics.Stopwatch]::StartNew()
+
+  while ($stopwatch.Elapsed.TotalSeconds -lt $TimeoutSeconds) {
+    $connection = Get-NetTCPConnection -LocalPort $Port -State Listen -ErrorAction SilentlyContinue
+    if ($connection) {
+      Write-Host "[$ServiceName] port $Port is listening." -ForegroundColor Green
+      return
+    }
+
+    Start-Sleep -Seconds 2
+  }
+
+  throw "Timed out waiting for $ServiceName on port $Port after $TimeoutSeconds seconds."
 }
 
 function Get-PortListenerInfos {
@@ -144,6 +178,12 @@ function Start-ServiceWindow {
 
 $envFilePath = Join-Path $projectRoot '.env'
 Ensure-PathExists -Path $envFilePath -Description '.env file'
+
+if ($StartDockerDependencies) {
+  Start-DockerDependencies
+  Wait-ForTcpPort -ServiceName 'Redis' -Port 6379 -TimeoutSeconds 60
+  Wait-ForTcpPort -ServiceName 'Milvus' -Port 19530 -TimeoutSeconds 120
+}
 
 $services = @(
   @{

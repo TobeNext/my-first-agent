@@ -16,7 +16,8 @@
     "worker:answer-evaluation": "tsx src/mastra/scripts/run-answer-evaluation-worker.ts",
     "migrate:vectors:milvus": "tsx src/mastra/scripts/migrate-libsql-vectors-to-milvus.ts --recreate",
     "backfill:vectors:milvus-metadata": "tsx src/mastra/scripts/backfill-milvus-interview-question-metadata.ts",
-    "start:local": "powershell -ExecutionPolicy Bypass -File ./scripts/start-local.ps1"
+    "start:local": "powershell -ExecutionPolicy Bypass -File ./scripts/start-local.ps1",
+    "start:all": "powershell -ExecutionPolicy Bypass -File ./scripts/start-local.ps1 -StartDockerDependencies"
   },
   "keywords": [],
   "author": "",

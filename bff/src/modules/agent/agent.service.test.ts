@@ -3,6 +3,8 @@ import 'reflect-metadata';
 import assert from 'node:assert/strict';
 import test from 'node:test';
 
+import { BadGatewayException } from '@nestjs/common';
+
 import { AgentService } from './agent.service';
 import { parseInterviewStartRequest } from './interview-start-contract';
 
@@ -89,4 +91,34 @@ test('AgentService.createChatBody includes uploaded JD as extension context', ()
   assert.equal(parsed?.jobDescriptionMarkdown, '### 岗位职责\n- 负责 AI 面试系统');
   assert.equal(parsed?.resumeSections?.professionalSkills, '- TypeScript');
   assert.equal(parsed?.settings.projectQuestionCount, 2);
+});
+
+test('AgentService.streamChat returns a Bad Gateway error when Mastra is unreachable', async () => {
+  const service = new AgentService();
+  const originalFetch = globalThis.fetch;
+
+  globalThis.fetch = (async () => {
+    throw new Error('connect ECONNREFUSED 127.0.0.1:4111');
+  }) as typeof fetch;
+
+  try {
+    await assert.rejects(
+      service.streamChat(
+        {
+          threadId: 'thread-unreachable',
+          message: '你好',
+          startInterview: false,
+        },
+        {} as Parameters<AgentService['streamChat']>[1],
+      ),
+      (error: unknown) => {
+        assert.ok(error instanceof BadGatewayException);
+        assert.match(error.message, /Unable to connect to Mastra runtime/);
+        assert.match(error.message, /ECONNREFUSED/);
+        return true;
+      },
+    );
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
 });

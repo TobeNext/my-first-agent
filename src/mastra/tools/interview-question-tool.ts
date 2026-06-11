@@ -338,7 +338,25 @@ export async function queryInterviewQuestions(
       queryPreview: buildQueryPreview(embeddingQueryText),
       err: error,
     });
-    throw error;
+
+    if (options.onRecallTrace) {
+      await options.onRecallTrace(
+        createRagRecallTrace({
+          timestamp: new Date().toISOString(),
+          roundType: options.roundType ?? null,
+          skill: options.skill ?? 'unknown-skill',
+          queryText: embeddingQueryText,
+          logContext,
+          candidates: [],
+          finalSelectedQuestions: [],
+        }),
+      );
+    }
+
+    return {
+      count: 0,
+      questions: [],
+    };
   }
 }
 

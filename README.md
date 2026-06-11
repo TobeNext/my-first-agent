@@ -73,13 +73,19 @@ For local Windows development:
 npm run start:local
 ```
 
+To start Docker dependencies first, then launch the local Mastra/BFF/frontend dev services:
+
+```powershell
+npm run start:all
+```
+
 This starts three PowerShell windows:
 
 - Mastra Studio and API: `http://localhost:4111`
 - BFF API: `http://localhost:3000`
 - Frontend: `http://localhost:4173`
 
-The frontend proxies `/api` requests to the BFF. The startup script also frees the required ports before launching services.
+The frontend proxies `/api` requests to the BFF. The startup script also frees the required app ports before launching services. `start:all` additionally starts the Docker Compose dependency services `etcd`, `minio`, `milvus`, and `redis`, then waits for Redis and Milvus ports before opening the app service windows.
 
 You can also run services manually:
 

@@ -80,14 +80,22 @@ export class AgentService {
         `).`,
     );
 
-    const upstreamResponse = await fetch(`${appConfig.mastraBaseUrl}/api/agents/interview-agent/stream`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'text/event-stream',
-      },
-      body: JSON.stringify(this.createChatBody(input)),
-    });
+    let upstreamResponse: globalThis.Response;
+
+    try {
+      upstreamResponse = await fetch(`${appConfig.mastraBaseUrl}/api/agents/interview-agent/stream`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'text/event-stream',
+        },
+        body: JSON.stringify(this.createChatBody(input)),
+      });
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'Unknown network error';
+      this.logger.error(`Mastra stream request failed for thread ${input.threadId}: ${message}`);
+      throw new BadGatewayException(`Unable to connect to Mastra runtime at ${appConfig.mastraBaseUrl}: ${message}`);
+    }
 
     if (!upstreamResponse.ok || !upstreamResponse.body) {
       const errorText = await upstreamResponse.text();
