@@ -1,14 +1,15 @@
 # my-first-agent
 
-AI interview practice system built on Mastra, with a Vue frontend, a NestJS BFF, and a Mastra runtime that manages interview state, RAG question selection, async answer evaluation, and final reports.
+AI interview practice system with a Vue frontend, a NestJS BFF, and a Python LangGraph interview runtime. The legacy Mastra runtime remains in the repository as a rollback provider during the cutover window.
 
 ## Architecture
 
 The project is split into three runtime layers:
 
 - `frontend/`: Vue 3 + TypeScript app for resume upload, interview setup, streaming chat, session recovery, progress display, and feedback submission.
-- `bff/`: NestJS backend-for-frontend. It validates uploads, normalizes resume sections, owns the frontend API contract, and proxies streaming interview traffic to Mastra by `threadId`.
-- `src/mastra/`: Mastra runtime. It registers `interview-agent` and `answer-evaluation-agent`, stores runtime state with LibSQL, retrieves interview questions from Milvus, queues async answer evaluations in Redis, and writes structured interview outcomes.
+- `bff/`: NestJS backend-for-frontend. It validates uploads, normalizes resume sections, owns the frontend API contract, and proxies streaming interview traffic to the configured agent runtime by `threadId`.
+- `../my-first-agent-langgraph/`: default Python LangGraph runtime. It accepts the same structured interview start/reply contract, checkpoints interview state, returns Mastra-compatible SSE, and writes compatible outcome/RAG artifacts.
+- `src/mastra/`: legacy Mastra runtime. It remains available for rollback only while the Python provider stabilizes.
 
 Supporting services:
 
@@ -22,10 +23,9 @@ Supporting services:
 2. The frontend performs local file checks, then sends the resume to the BFF.
 3. The BFF validates size, type, and structure, then uses its canonical resume parser to extract normalized skill groups and project topics.
 4. The frontend builds a structured interview start request with resume Markdown, optional JD Markdown, and interview settings.
-5. The BFF normalizes defaults, fills `resumeSections`, and forwards the structured payload to `interview-agent`.
-6. Mastra delegates setup to `interviewStateManagerTool`, which runs the initialization pipeline: JD signal extraction, question planning, RAG retrieval, generation, critic checks, fallback, and state-machine initialization.
-7. During the interview, the state manager advances professional-skill and project-experience rounds, creates follow-ups, returns progress summaries, writes outcome artifacts, and enqueues async Redis answer-evaluation tasks.
-8. At wrap-up, Mastra waits for complete evaluation results and uses them to produce the final report. User feedback is later written back through the BFF.
+5. The BFF normalizes defaults, fills `resumeSections`, and forwards the structured payload to the configured agent runtime.
+6. By default, the Python LangGraph runtime initializes the session, retrieves or falls back to interview questions, checkpoints state, advances follow-ups, returns progress summaries, and writes outcome/RAG artifacts.
+7. User feedback is later written back through the BFF using the unchanged outcome index and feedback shape.
 
 Generated local artifacts such as `Interview outcome/`, RAG recall samples, logs, coverage, databases, and build outputs are intentionally ignored by Git.
 
@@ -43,15 +43,24 @@ OPENAI_API_KEY=your-api-key
 MILVUS_ADDRESS=localhost:19530
 LIBSQL_VECTOR_DB_URL=file:./interview-vectors.db
 REDIS_URL=redis://localhost:6379
+EMBEDDING_PROVIDER=hash
 ```
 
 BFF defaults are defined in `bff/src/config.ts`:
 
 - `PORT=3000`
+- `AGENT_RUNTIME_PROVIDER=python`
 - `MASTRA_BASE_URL=http://localhost:4111`
+- `PY_AGENT_BASE_URL=http://localhost:8011`
 - `RESUME_MAX_FILE_SIZE_BYTES=2097152`
 - `DEMO_USERNAME=demo`
 - `DEMO_PASSWORD=demo123`
+
+Python embedding defaults are `EMBEDDING_PROVIDER=hash`,
+`EMBEDDING_MODEL=text-embedding-3-small`, and `EMBEDDING_DIMENSION=384`.
+Set `EMBEDDING_PROVIDER=openai` plus `EMBEDDING_API_KEY` or `OPENAI_API_KEY`
+to query Milvus with provider-backed embeddings; no-key local startup keeps the
+deterministic hash fallback.
 
 ## Install
 
@@ -73,15 +82,15 @@ For local Windows development:
 npm run start:local
 ```
 
-To start Docker dependencies first, then launch the local Mastra/BFF/frontend dev services:
+To start Docker dependencies first, then launch the local Python/BFF/frontend dev services:
 
 ```powershell
 npm run start:all
 ```
 
-This starts three PowerShell windows:
+This starts three PowerShell windows by default:
 
-- Mastra Studio and API: `http://localhost:4111`
+- Python LangGraph runtime: `http://localhost:8011`
 - BFF API: `http://localhost:3000`
 - Frontend: `http://localhost:4173`
 
@@ -90,9 +99,17 @@ The frontend proxies `/api` requests to the BFF. The startup script also frees t
 You can also run services manually:
 
 ```powershell
-npm run dev
+Set-Location ../my-first-agent-langgraph
+$env:PYTHONPATH='src'; python -m uvicorn app.main:app --host 0.0.0.0 --port 8011
+Set-Location ../my-first-agent
 npm --prefix bff run start:dev
 npm --prefix frontend run dev
+```
+
+To force the rollback provider locally:
+
+```powershell
+npm run start:local:mastra
 ```
 
 ## Run With Docker
@@ -107,18 +124,21 @@ Docker Compose starts:
 
 - etcd, MinIO, and Milvus
 - Redis
+- Python LangGraph runtime on `http://localhost:8011`
 - Mastra on `http://localhost:4111`
 - BFF on `http://localhost:3000`
 - Frontend on `http://localhost:8080`
 
-The Mastra container reads the root `.env`; Compose overrides `MILVUS_ADDRESS` and `REDIS_URL` for in-network service names.
+The BFF defaults to `AGENT_RUNTIME_PROVIDER=python`. Set `AGENT_RUNTIME_PROVIDER=mastra` before `docker compose up` to roll back to Mastra without code changes.
 
 ## Useful Commands
 
 ```powershell
-npm run dev                         # Mastra dev server
+npm run dev                         # Default local Python/BFF/frontend stack
+npm run dev:mastra                  # Mastra dev server
 npm run build                       # Mastra production build
-npm run start                       # Start built Mastra server
+npm run start                       # Default local Python/BFF/frontend stack
+npm run start:mastra                # Start built Mastra server
 npm run worker:answer-evaluation    # Run async answer evaluation worker
 npm run migrate:vectors:milvus      # Recreate Milvus question vectors from LibSQL source
 npm run backfill:vectors:milvus-metadata
@@ -141,10 +161,14 @@ Start the full stack first with Docker or `npm run start:local`, then run:
 ```powershell
 npm run test:e2e:interview:smoke
 npm run test:e2e:interview
+npm run test:e2e:interview:smoke:mastra
+npm run test:e2e:interview:rollback-smoke
 ```
 
-- `test:e2e:interview:smoke`: environment readiness plus the minimal upload-resume-to-start-interview path.
-- `test:e2e:interview`: full live suite covering completion, outcome persistence, edge scenarios, and feedback submission.
+- `test:e2e:interview:smoke`: Python provider readiness plus the minimal upload-resume-to-start-interview path.
+- `test:e2e:interview`: Python provider full live suite covering completion, outcome persistence, edge scenarios, and feedback submission.
+- `test:e2e:interview:smoke:mastra`: rollback smoke against the legacy provider.
+- `test:e2e:interview:rollback-smoke`: starts the stack with Python, runs smoke, restarts with Mastra, and runs the same smoke again.
 
 Override service targets when needed:
 
@@ -152,6 +176,7 @@ Override service targets when needed:
 $env:INTERVIEW_E2E_FRONTEND_URL = 'http://localhost:8080'
 $env:INTERVIEW_E2E_BFF_URL = 'http://localhost:3000'
 $env:INTERVIEW_E2E_MASTRA_URL = 'http://localhost:4111'
+$env:INTERVIEW_E2E_PY_AGENT_URL = 'http://localhost:8011'
 npm run test:e2e:interview
 ```
 
@@ -171,7 +196,9 @@ The manual GitHub Actions workflow at `.github/workflows/interview-e2e.yml` writ
 ## Development Notes
 
 - Load the Mastra skill before editing or answering Mastra-specific questions; Mastra APIs change frequently.
+- New interview runtime features belong in `../my-first-agent-langgraph`; `src/mastra/**` is frozen except for rollback blockers, security fixes, build breakages, and compatibility fixes.
 - Keep resume parsing rules centralized in `bff/src/modules/resume/resume-parser.ts`.
 - Keep interview progression in the state machine and state manager instead of scattering flow rules into prompts.
 - Do not commit generated artifacts, local databases, `.env` files, coverage, logs, or build outputs.
 - After code changes that affect architecture, update `.github/instructions/project-architecture.instructions.md` and record the project-architecture-sync check.
+- See `docs/RUNTIME_PROVIDER_CUTOVER.md` for provider rollback steps, Mastra freeze rules, and the Mastra decommission gate.

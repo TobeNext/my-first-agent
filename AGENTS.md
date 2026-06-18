@@ -10,7 +10,9 @@ See [Mastra Skills section](#mastra-skills) for loading instructions.
 
 ## Project Overview
 
-This is a **Mastra** project written in TypeScript. Mastra is a framework for building AI-powered applications and agents with a modern TypeScript stack.
+This repository is now the frontend/BFF host for an interview system whose default runtime provider is the sibling Python LangGraph project at `../my-first-agent-langgraph`.
+
+The legacy **Mastra** runtime under `src/mastra/**` remains available only as a rollback provider during the cutover window. New interview runtime features must be implemented in the LangGraph repository. Mastra source changes should be limited to rollback blockers, security fixes, build breakages, or compatibility fixes that keep the fallback provider usable.
 
 ## Commands
 
@@ -24,10 +26,22 @@ npm install
 
 ### Development
 
-Start the Mastra Studio at localhost:4111 by running the `dev` script:
+Start the default local stack with the Python runtime, BFF, and frontend:
 
 ```bash
-npm run dev
+npm run start:local
+```
+
+To force the rollback provider locally:
+
+```bash
+npm run start:local:mastra
+```
+
+Start the legacy Mastra Studio at localhost:4111 explicitly:
+
+```bash
+npm run dev:mastra
 ```
 
 ### Build
@@ -51,6 +65,7 @@ Folders organize your agent's resources, like agents, tools, and workflows.
 | `src/mastra/mcp`       | (Optional) Implement custom MCP servers to share your tools with external agents                                                         |
 | `src/mastra/scorers`   | (Optional) Define scorers for evaluating agent performance over time                                                                     |
 | `src/mastra/public`    | (Optional) Contents are copied into the `.build/output` directory during the build process, making them available for serving at runtime |
+| `../my-first-agent-langgraph` | Default Python LangGraph interview runtime. New interview runtime features go here.                                               |
 
 ### Top-level files
 

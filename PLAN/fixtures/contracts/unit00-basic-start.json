@@ -1,0 +1,33 @@
+{
+  "name": "basic-start",
+  "runtimeRequest": {
+    "messages": [
+      {
+        "role": "user",
+        "content": "{\"requestKind\":\"interview-start\",\"protocolVersion\":\"2026-05-structured-start-v1\",\"startInterview\":true,\"threadId\":\"golden-basic-start\",\"resumeMarkdown\":\"### 专业技能\\n- TypeScript\\n- RAG\\n\\n### 项目经历\\n- 搭建 BFF\",\"jobDescriptionMarkdown\":\"\",\"settings\":{\"reviewIncorrectOrMissingPoints\":true,\"skipProfessionalSkillsRound\":false,\"skipProjectExperienceRound\":false,\"enableFlowTestMode\":false,\"professionalQuestionMode\":\"per-skill-default\",\"professionalQuestionCount\":2,\"projectQuestionCount\":1},\"resumeSections\":{\"professionalSkills\":\"- TypeScript\\n- RAG\",\"projectExperience\":\"- 搭建 BFF\"}}"
+      }
+    ],
+    "memory": {
+      "thread": "golden-basic-start",
+      "resource": "frontend-interview-golden-basic-start"
+    },
+    "maxSteps": 5
+  },
+  "userReplies": [
+    "我会先解析问题，再根据简历和题库做向量召回，最后让模型结合上下文生成回答。"
+  ],
+  "expectedSnapshotSummary": {
+    "phase": "professional-skills-round",
+    "activeRoundType": "professional-skills",
+    "finalReportReady": false,
+    "progress": {
+      "currentStage": "main-question",
+      "currentQuestionIndex": 1
+    }
+  },
+  "expectedOutcomeKeyFields": {
+    "threadId": "golden-basic-start",
+    "hasSelectorTraining": true,
+    "hasCandidateImprovement": true
+  }
+}

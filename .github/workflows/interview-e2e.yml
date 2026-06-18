@@ -10,6 +10,9 @@ jobs:
       INTERVIEW_E2E_FRONTEND_URL: http://localhost:8080
       INTERVIEW_E2E_BFF_URL: http://localhost:3000
       INTERVIEW_E2E_MASTRA_URL: http://localhost:4111
+      INTERVIEW_E2E_PY_AGENT_URL: http://localhost:8011
+      INTERVIEW_E2E_AGENT_RUNTIME_PROVIDER: python
+      AGENT_RUNTIME_PROVIDER: python
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
@@ -43,7 +46,7 @@ jobs:
 
       - name: Wait for live services
         run: |
-          for url in http://localhost:8080 http://localhost:3000 http://localhost:4111/api; do
+          for url in http://localhost:8080 http://localhost:3000 http://localhost:8011/health; do
             for attempt in $(seq 1 60); do
               status=$(curl -s -o /dev/null -w '%{http_code}' "$url" || true)
               if [ "$status" != "000" ] && [ "$status" -lt 500 ]; then

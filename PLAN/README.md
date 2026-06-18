@@ -10,6 +10,10 @@
 
 当前计划：
 
+- `2026-06-18-opentelemetry-tempo-grafana-langsmith-plan.md`
+- `2026-06-14-langgraph-migration-gap-audit-and-replan.md`
+- `2026-06-11-langgraph-migration-minimal-verifiable-units-plan.md`
+- `2026-06-11-python-langgraph-mastra-migration-plan.md`
 - `2026-04-15-cloud-native-architecture-plan.md`
 - `2026-04-15-bff-nestjs-plan.md`
 - `2026-04-15-mvp-frontend-bff-mastra-plan.md`

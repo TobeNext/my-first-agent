@@ -1,0 +1,33 @@
+{
+  "name": "flow-test-skip",
+  "runtimeRequest": {
+    "messages": [
+      {
+        "role": "user",
+        "content": "{\"requestKind\":\"interview-start\",\"protocolVersion\":\"2026-05-structured-start-v1\",\"startInterview\":true,\"threadId\":\"golden-flow-test-skip\",\"resumeMarkdown\":\"### 专业技能\\n- TypeScript\\n\\n### 项目经历\\n- 面试流程测试\",\"jobDescriptionMarkdown\":\"\",\"settings\":{\"reviewIncorrectOrMissingPoints\":true,\"skipProfessionalSkillsRound\":false,\"skipProjectExperienceRound\":true,\"enableFlowTestMode\":true,\"professionalQuestionMode\":\"custom-count\",\"professionalQuestionCount\":1,\"projectQuestionCount\":0},\"resumeSections\":{\"professionalSkills\":\"- TypeScript\",\"projectExperience\":\"- 面试流程测试\"}}"
+      }
+    ],
+    "memory": {
+      "thread": "golden-flow-test-skip",
+      "resource": "frontend-interview-golden-flow-test-skip"
+    },
+    "maxSteps": 5
+  },
+  "userReplies": [
+    "[FLOW_TEST_SKIP]"
+  ],
+  "expectedSnapshotSummary": {
+    "phase": "professional-skills-round",
+    "activeRoundType": "professional-skills",
+    "flowTestMockUserReplyCanBePresent": true,
+    "progress": {
+      "currentStage": "main-question",
+      "totalQuestionCount": 1
+    }
+  },
+  "expectedOutcomeKeyFields": {
+    "threadId": "golden-flow-test-skip",
+    "hasSelectorTraining": true,
+    "hasCandidateImprovement": true
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "name": "start-with-jd",
+  "runtimeRequest": {
+    "messages": [
+      {
+        "role": "user",
+        "content": "{\"requestKind\":\"interview-start\",\"protocolVersion\":\"2026-05-structured-start-v1\",\"startInterview\":true,\"threadId\":\"golden-start-with-jd\",\"resumeMarkdown\":\"### 专业技能\\n- Node.js\\n- Redis\\n\\n### 项目经历\\n- 异步评分队列\",\"jobDescriptionMarkdown\":\"### 岗位职责\\n- 负责 AI 面试系统和 RAG 质量优化\",\"settings\":{\"reviewIncorrectOrMissingPoints\":true,\"skipProfessionalSkillsRound\":false,\"skipProjectExperienceRound\":false,\"enableFlowTestMode\":false,\"professionalQuestionMode\":\"custom-count\",\"professionalQuestionCount\":2,\"projectQuestionCount\":1},\"resumeSections\":{\"professionalSkills\":\"- Node.js\\n- Redis\",\"projectExperience\":\"- 异步评分队列\"}}"
+      }
+    ],
+    "memory": {
+      "thread": "golden-start-with-jd",
+      "resource": "frontend-interview-golden-start-with-jd"
+    },
+    "maxSteps": 5
+  },
+  "userReplies": [
+    "这个岗位需要稳定的流式接口和后台任务，我会把 Redis 队列、状态机和结果落盘分开设计。"
+  ],
+  "expectedSnapshotSummary": {
+    "phase": "professional-skills-round",
+    "activeRoundType": "professional-skills",
+    "activeNodeTopicContainsAny": [
+      "Node.js",
+      "Redis",
+      "RAG"
+    ],
+    "finalReportReady": false
+  },
+  "expectedOutcomeKeyFields": {
+    "threadId": "golden-start-with-jd",
+    "hasSelectorTraining": true,
+    "hasCandidateImprovement": true
+  }
+}

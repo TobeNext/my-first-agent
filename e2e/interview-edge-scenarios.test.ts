@@ -41,7 +41,7 @@ async function startInterviewScenario(options: {
 }
 
 describe('interview E2E edge scenarios', () => {
-  it('returns structured validation errors for a non-standard resume sample', async () => {
+  it('accepts a non-standard resume sample through the compatible parser path', async () => {
     await assertInterviewE2eEnvironmentReady();
 
     const resumeFile = createE2eMarkdownFile(
@@ -50,16 +50,13 @@ describe('interview E2E edge scenarios', () => {
     );
     const validationResult = await withBffRelativeApiBase(() => validateResumeViaBff(resumeFile));
 
-    expect(validationResult.success).toBe(false);
-    if (validationResult.success) {
+    expect(validationResult.success).toBe(true);
+    if (!validationResult.success) {
       return;
     }
 
-    expect(validationResult.message).toBe('BFF 校验失败，请根据以下问题修改简历。');
-    expect(validationResult.details).toEqual([
-      '缺少章节：### 专业技能。',
-      '缺少章节：### 项目经历。',
-    ]);
+    expect(validationResult.professionalSkillGroupCount).toBe(3);
+    expect(validationResult.message).toBe('文件已通过 BFF 大小、类型、结构校验，并完成技能组计数。');
   });
 
   it('persists the project-experience round as skipped when that round is disabled', async () => {

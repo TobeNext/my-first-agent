@@ -17,6 +17,8 @@ describe('interview E2E harness', () => {
     expect(environment.frontend.url).toContain('localhost');
     expect(environment.bff.url).toContain('localhost');
     expect(environment.mastra.url).toContain('localhost');
+    expect(environment.agentRuntime.url).toContain('localhost');
+    expect(['mastra', 'python']).toContain(environment.agentRuntime.provider);
     expect(STANDARD_INTERVIEW_FIXTURE.resumeMarkdown).toContain('### 专业技能');
     expect(STANDARD_INTERVIEW_FIXTURE.jobDescriptionMarkdown).toContain('### 岗位职责');
     expect(NON_STANDARD_RESUME_FIXTURE.resumeMarkdown).toContain('Professional Skills');

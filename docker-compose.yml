@@ -60,6 +60,44 @@ services:
       - milvus
       - redis
 
+  python-agent:
+    build:
+      context: ../my-first-agent-langgraph
+      dockerfile: Dockerfile
+    ports:
+      - '8011:8011'
+    environment:
+      APP_ENV: docker
+      MODEL_PROVIDER: ${MODEL_PROVIDER:-mock}
+      MODEL_NAME: ${MODEL_NAME:-mock/interview-runtime}
+      MODEL_API_KEY: ${MODEL_API_KEY:-}
+      MODEL_BASE_URL: ${MODEL_BASE_URL:-}
+      DEEPSEEK_API_KEY: ${DEEPSEEK_API_KEY:-}
+      MODEL_TIMEOUT_SECONDS: ${MODEL_TIMEOUT_SECONDS:-20}
+      MODEL_MAX_RETRIES: ${MODEL_MAX_RETRIES:-2}
+      MODEL_TEMPERATURE: ${MODEL_TEMPERATURE:-0.2}
+      EMBEDDING_PROVIDER: ${EMBEDDING_PROVIDER:-hash}
+      EMBEDDING_MODEL: ${EMBEDDING_MODEL:-text-embedding-3-small}
+      EMBEDDING_API_KEY: ${EMBEDDING_API_KEY:-}
+      EMBEDDING_BASE_URL: ${EMBEDDING_BASE_URL:-}
+      EMBEDDING_DIMENSION: ${EMBEDDING_DIMENSION:-384}
+      ZHIPU_API_KEY: ${ZHIPU_API_KEY:-}
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      REDIS_URL: redis://redis:6379
+      REDIS_CONNECT_TIMEOUT_SECONDS: ${REDIS_CONNECT_TIMEOUT_SECONDS:-0.2}
+      REDIS_SOCKET_TIMEOUT_SECONDS: ${REDIS_SOCKET_TIMEOUT_SECONDS:-0.2}
+      MILVUS_ADDRESS: http://milvus:19530
+      CHECKPOINT_URL: /data/checkpoints.db
+      OUTCOME_ROOT: /app/Interview outcome
+      RAG_LOG_ROOT: /app/RAG LOG INFO
+    volumes:
+      - python-agent-data:/data
+      - './Interview outcome:/app/Interview outcome'
+      - './RAG LOG INFO:/app/RAG LOG INFO'
+    depends_on:
+      - milvus
+      - redis
+
   bff:
     build:
       context: ./bff
@@ -68,12 +106,15 @@ services:
       - '3000:3000'
     environment:
       PORT: 3000
+      AGENT_RUNTIME_PROVIDER: ${AGENT_RUNTIME_PROVIDER:-python}
       MASTRA_BASE_URL: http://mastra:4111
+      PY_AGENT_BASE_URL: http://python-agent:8011
       RESUME_MAX_FILE_SIZE_BYTES: 2097152
       DEMO_USERNAME: demo
       DEMO_PASSWORD: demo123
     depends_on:
       - mastra
+      - python-agent
 
   frontend:
     build:
@@ -89,3 +130,4 @@ volumes:
   milvus-minio:
   milvus-data:
   redis-data:
+  python-agent-data:

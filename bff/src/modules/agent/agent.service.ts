@@ -67,12 +67,30 @@ export class AgentService {
     };
   }
 
+  private resolveRuntime(): { readonly provider: 'mastra' | 'python'; readonly baseUrl: string; readonly label: string } {
+    if (appConfig.agentRuntimeProvider === 'python') {
+      return {
+        provider: 'python',
+        baseUrl: appConfig.pyAgentBaseUrl,
+        label: 'Python agent runtime',
+      };
+    }
+
+    return {
+      provider: 'mastra',
+      baseUrl: appConfig.mastraBaseUrl,
+      label: 'Mastra runtime',
+    };
+  }
+
   async streamChat(input: StreamInterviewInput, response: Response): Promise<void> {
     const isStartInterview = this.isStartInterviewInput(input);
+    const runtime = this.resolveRuntime();
 
     this.logger.log(
       `Proxying ${isStartInterview ? 'startup' : 'reply'} stream for thread ${input.threadId} ` +
         `(` +
+        `provider=${runtime.provider}, ` +
         `protocol=${isStartInterview ? 'structured-start-v1' : 'reply'}, ` +
         `flowTestMode=${isStartInterview ? input.settings.enableFlowTestMode : false}, ` +
         `hasJobDescription=${isStartInterview ? Boolean(input.jobDescriptionMarkdown.trim()) : false}, ` +
@@ -83,7 +101,7 @@ export class AgentService {
     let upstreamResponse: globalThis.Response;
 
     try {
-      upstreamResponse = await fetch(`${appConfig.mastraBaseUrl}/api/agents/interview-agent/stream`, {
+      upstreamResponse = await fetch(`${runtime.baseUrl}/api/agents/interview-agent/stream`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -93,19 +111,19 @@ export class AgentService {
       });
     } catch (error) {
       const message = error instanceof Error ? error.message : 'Unknown network error';
-      this.logger.error(`Mastra stream request failed for thread ${input.threadId}: ${message}`);
-      throw new BadGatewayException(`Unable to connect to Mastra runtime at ${appConfig.mastraBaseUrl}: ${message}`);
+      this.logger.error(`${runtime.label} stream request failed for thread ${input.threadId}: ${message}`);
+      throw new BadGatewayException(`Unable to connect to ${runtime.label} at ${runtime.baseUrl}: ${message}`);
     }
 
     if (!upstreamResponse.ok || !upstreamResponse.body) {
       const errorText = await upstreamResponse.text();
       this.logger.error(
-        `Mastra stream request failed for thread ${input.threadId} with status ${upstreamResponse.status}: ${errorText}`,
+        `${runtime.label} stream request failed for thread ${input.threadId} with status ${upstreamResponse.status}: ${errorText}`,
       );
-      throw new BadGatewayException(`Mastra stream request failed with status ${upstreamResponse.status}: ${errorText}`);
+      throw new BadGatewayException(`${runtime.label} stream request failed with status ${upstreamResponse.status}: ${errorText}`);
     }
 
-    this.logger.log(`Mastra stream connected for thread ${input.threadId}.`);
+    this.logger.log(`${runtime.label} stream connected for thread ${input.threadId}.`);
 
     response.setHeader('Content-Type', 'text/event-stream; charset=utf-8');
     response.setHeader('Cache-Control', 'no-cache, no-transform');
@@ -124,7 +142,7 @@ export class AgentService {
         response.write(Buffer.from(value));
       }
     } finally {
-      this.logger.log(`Mastra stream finished for thread ${input.threadId}.`);
+      this.logger.log(`${runtime.label} stream finished for thread ${input.threadId}.`);
       response.end();
       reader.releaseLock();
     }

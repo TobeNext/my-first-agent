@@ -1,5 +1,7 @@
 param(
-  [switch]$StartDockerDependencies
+  [switch]$StartDockerDependencies,
+  [ValidateSet('mastra', 'python')]
+  [string]$AgentRuntimeProvider = 'python'
 )
 
 $ErrorActionPreference = 'Stop'
@@ -178,6 +180,7 @@ function Start-ServiceWindow {
 
 $envFilePath = Join-Path $projectRoot '.env'
 Ensure-PathExists -Path $envFilePath -Description '.env file'
+$pythonAgentRoot = Join-Path (Split-Path -Parent $projectRoot) 'my-first-agent-langgraph'
 
 if ($StartDockerDependencies) {
   Start-DockerDependencies
@@ -185,20 +188,38 @@ if ($StartDockerDependencies) {
   Wait-ForTcpPort -ServiceName 'Milvus' -Port 19530 -TimeoutSeconds 120
 }
 
-$services = @(
-  @{
+$services = @()
+
+if ($AgentRuntimeProvider -eq 'mastra') {
+  $services += @{
     Name = 'Mastra';
     Path = [string]$projectRoot;
-    Command = 'npm run dev';
+    Command = 'npm run dev:mastra';
     Port = 4111;
     Url = 'http://localhost:4111';
-  },
+    Runtime = 'node';
+  }
+}
+
+if ($AgentRuntimeProvider -eq 'python') {
+  $services += @{
+    Name = 'Python Agent';
+    Path = $pythonAgentRoot;
+    Command = '$env:PYTHONPATH=''src''; python -m uvicorn app.main:app --host 0.0.0.0 --port 8011';
+    Port = 8011;
+    Url = 'http://localhost:8011';
+    Runtime = 'python';
+  }
+}
+
+$services += @(
   @{
     Name = 'BFF';
     Path = Join-Path $projectRoot 'bff';
-    Command = 'npm run start:dev';
+    Command = "`$env:AGENT_RUNTIME_PROVIDER='$AgentRuntimeProvider'; `$env:PY_AGENT_BASE_URL='http://localhost:8011'; npm run start:dev";
     Port = 3000;
     Url = 'http://localhost:3000';
+    Runtime = 'node';
   },
   @{
     Name = 'Frontend';
@@ -206,6 +227,7 @@ $services = @(
     Command = 'npm run dev';
     Port = 4173;
     Url = 'http://localhost:4173';
+    Runtime = 'node';
   }
 )
 
@@ -213,7 +235,9 @@ $serviceResults = @()
 
 foreach ($service in $services) {
   Ensure-PathExists -Path $service.Path -Description "$($service.Name) directory"
-  Install-DependenciesIfNeeded -ServicePath $service.Path -ServiceName $service.Name
+  if ($service.Runtime -eq 'node') {
+    Install-DependenciesIfNeeded -ServicePath $service.Path -ServiceName $service.Name
+  }
 }
 
 foreach ($service in $services) {
@@ -232,5 +256,6 @@ Write-Host 'Local development service status:' -ForegroundColor Cyan
 foreach ($serviceResult in $serviceResults) {
   Write-Host $serviceResult
 }
+Write-Host "- Agent runtime provider: $AgentRuntimeProvider" -ForegroundColor Cyan
 Write-Host ''
 Write-Host 'Any process that was occupying a required port was terminated before startup.' -ForegroundColor DarkYellow

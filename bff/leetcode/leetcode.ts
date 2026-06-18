@@ -1313,3 +1313,300 @@ function searchMatrix(matrix: number[][], target: number): boolean {
 
     return false;
 }
+
+
+function binarySearch(nums: number[], target: number, lower: boolean): number {
+    let left = 0;
+    let right = nums.length - 1;
+    let ans = nums.length;
+
+    while (left <= right) {
+        const mid = Math.floor(left + (right - left) / 2);
+
+        if (nums[mid] > target || (lower && nums[mid] >= target)) {
+            right = mid - 1;
+            ans = mid;
+        } else {
+            left = mid + 1;
+        }
+    }
+
+    return ans;
+}
+
+function searchRange(nums: number[], target: number): number[] {
+    let ans: number[] = [-1, -1];
+
+    const leftIdx = binarySearch(nums, target, true);
+    const rightIdx = binarySearch(nums, target, false) - 1;
+
+    if (
+        leftIdx <= rightIdx &&
+        rightIdx < nums.length &&
+        nums[leftIdx] === target &&
+        nums[rightIdx] === target
+    ) {
+        ans = [leftIdx, rightIdx];
+    }
+
+    return ans;
+}
+
+function search(nums: number[], target: number): number {
+    let left = 0;
+    let right = nums.length - 1;
+
+    while (left <= right) {
+        const mid = Math.floor(left + (right - left) / 2);
+
+        if (nums[mid] === target) {
+            return mid;
+        }
+
+        // 左半边有序
+        if (nums[left] <= nums[mid]) {
+            // target 在左半边有序区间里
+            if (nums[left] <= target && target < nums[mid]) {
+                right = mid - 1;
+            } else {
+                left = mid + 1;
+            }
+        } 
+        
+        // 右半边有序
+        else {
+            // target 在右半边有序区间里
+            if (nums[mid] < target && target <= nums[right]) {
+                left = mid + 1;
+            } else {
+                right = mid - 1;
+            }
+        }
+    }
+
+    return -1;
+}
+
+function findMin(nums: number[]): number {
+    let left: number = 0;
+    let right: number = nums.length - 1;
+    var ans: number = nums[0];
+
+        while (left <= right) {
+        const mid = Math.floor(left + (right - left) / 2);
+
+        // 左半边有序
+        if (nums[left] <= nums[mid]) {
+            ans = Math.min(ans, nums[left]);
+            left = mid + 1;
+        } 
+        
+        // 右半边有序
+        else {
+            ans = Math.min(nums[mid], ans);
+            right = mid - 1;
+        }
+    }
+    return ans;
+};
+
+function isValid(s: string): boolean {
+    const stack: string[] = [];
+
+    const map: Record<string, string> = {
+        ')': '(',
+        ']': '[',
+        '}': '{'
+    };
+
+    for (const ch of s) {
+        if (ch === '(' || ch === '[' || ch === '{') {
+            stack.push(ch);
+        } else {
+            if (stack.length === 0 || stack.pop() !== map[ch]) {
+                return false;
+            }
+        }
+    }
+
+    return stack.length === 0;
+}
+
+class MinStack {
+    private x_stack: number[];
+    private min_stack: number[];
+
+    constructor() {
+        this.x_stack = [];
+        this.min_stack = [Infinity];
+    }
+
+    push(x: number): void {
+        this.x_stack.push(x);
+        this.min_stack.push(
+            Math.min(this.min_stack[this.min_stack.length - 1], x)
+        );
+    }
+
+    pop(): void {
+        this.x_stack.pop();
+        this.min_stack.pop();
+    }
+
+    top(): number | undefined {
+        return this.x_stack[this.x_stack.length - 1];
+    }
+
+    getMin(): number {
+        return this.min_stack[this.min_stack.length - 1];
+    }
+}
+
+function decodeString(s: string): string {
+    const stk: string[] = [];
+    let ptr = 0;
+
+    const isDigit = (c: string): boolean => c >= '0' && c <= '9';
+    const isLetter = (c: string): boolean =>
+        (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z');
+
+    const getDigits = (): string => {
+        let ret = '';
+        while (ptr < s.length && isDigit(s.charAt(ptr))) {
+            ret += s.charAt(ptr++);
+        }
+        return ret;
+    };
+
+    while (ptr < s.length) {
+        const cur = s.charAt(ptr);
+        if (isDigit(cur)) {
+            stk.push(getDigits());
+        } else if (isLetter(cur) || cur === '[') {
+            stk.push(s.charAt(ptr++));
+        } else {
+            // 遇到 ']' 时 ptr 指向它，先跳过
+            ptr++;
+            const sub: string[] = [];
+            while (stk[stk.length - 1] !== '[') {
+                sub.push(stk.pop()!);
+            }
+            sub.reverse();
+            stk.pop(); // 弹出 '['
+            const repTime = parseInt(stk.pop()!, 10);
+            const repeatedStr = sub.join('');
+            let t = '';
+            for (let i = 0; i < repTime; i++) {
+                t += repeatedStr;
+            }
+            stk.push(t);
+        }
+    }
+
+    return stk.join('');
+}
+
+function dailyTemperatures(temperatures: number[]): number[] {
+    if (temperatures.length === 0) {
+        return [0];
+    }
+    var ans: number[] = new Array(temperatures.length).fill(0);
+    var stack: number[][] = [];
+    var index = 0;
+
+    for (const cur of temperatures) {
+        while(stack.length !== 0 && stack[stack.length-1][0] < cur){
+            var tmp = stack.pop()!;
+            ans[tmp[1]] = index - tmp[1];
+        }        
+        stack.push([cur, index]);
+        index++;
+    }
+
+    return ans;
+};
+
+class MinHeap {
+    private heap: number[];
+
+    constructor() {
+        this.heap = [];
+    }
+
+    private parent(i: number): number {
+        return Math.floor((i - 1) / 2);
+    }
+
+    private leftChild(i: number): number {
+        return 2 * i + 1;
+    }
+
+    private rightChild(i: number): number {
+        return 2 * i + 2;
+    }
+
+    private swap(i: number, j: number): void {
+        [this.heap[i], this.heap[j]] = [this.heap[j], this.heap[i]];
+    }
+
+    private siftUp(i: number): void {
+        while (i > 0 && this.heap[this.parent(i)] > this.heap[i]) {
+            this.swap(i, this.parent(i));
+            i = this.parent(i);
+        }
+    }
+
+    private siftDown(i: number): void {
+        let minIndex = i;
+        const left = this.leftChild(i);
+        if (left < this.heap.length && this.heap[left] < this.heap[minIndex]) {
+            minIndex = left;
+        }
+        const right = this.rightChild(i);
+        if (right < this.heap.length && this.heap[right] < this.heap[minIndex]) {
+            minIndex = right;
+        }
+        if (minIndex !== i) {
+            this.swap(i, minIndex);
+            this.siftDown(minIndex);
+        }
+    }
+
+    public push(val: number): void {
+        this.heap.push(val);
+        this.siftUp(this.heap.length - 1);
+    }
+
+    public pop(): number | undefined {
+        if (this.heap.length === 0) return undefined;
+        const result = this.heap[0];
+        this.heap[0] = this.heap[this.heap.length - 1];
+        this.heap.pop();
+        if (this.heap.length > 0) {
+            this.siftDown(0);
+        }
+        return result;
+    }
+
+    public peek(): number | undefined {
+        return this.heap[0];
+    }
+
+    public size(): number {
+        return this.heap.length;
+    }
+}
+
+function findKthLargest(nums: number[], k: number): number {
+    const heap = new MinHeap();
+       for (const num of nums) {
+        if (heap.size() < k) {
+            heap.push(num);
+        } else if (num > heap.peek()!) {
+            heap.pop();
+            heap.push(num);
+        }
+    }
+
+    return heap.peek()!;
+};

@@ -5,6 +5,7 @@ import test from 'node:test';
 
 import { BadGatewayException } from '@nestjs/common';
 
+import { appConfig } from '../../config';
 import { AgentService } from './agent.service';
 import { parseInterviewStartRequest } from './interview-start-contract';
 
@@ -96,6 +97,14 @@ test('AgentService.createChatBody includes uploaded JD as extension context', ()
 test('AgentService.streamChat returns a Bad Gateway error when Mastra is unreachable', async () => {
   const service = new AgentService();
   const originalFetch = globalThis.fetch;
+  const originalConfig = {
+    agentRuntimeProvider: appConfig.agentRuntimeProvider,
+    mastraBaseUrl: appConfig.mastraBaseUrl,
+  };
+
+  (appConfig as { agentRuntimeProvider: 'mastra' | 'python'; mastraBaseUrl: string }).agentRuntimeProvider = 'mastra';
+  (appConfig as { agentRuntimeProvider: 'mastra' | 'python'; mastraBaseUrl: string }).mastraBaseUrl =
+    'http://localhost:4111';
 
   globalThis.fetch = (async () => {
     throw new Error('connect ECONNREFUSED 127.0.0.1:4111');
@@ -120,5 +129,137 @@ test('AgentService.streamChat returns a Bad Gateway error when Mastra is unreach
     );
   } finally {
     globalThis.fetch = originalFetch;
+    (appConfig as { agentRuntimeProvider: 'mastra' | 'python'; mastraBaseUrl: string }).agentRuntimeProvider =
+      originalConfig.agentRuntimeProvider;
+    (appConfig as { agentRuntimeProvider: 'mastra' | 'python'; mastraBaseUrl: string }).mastraBaseUrl =
+      originalConfig.mastraBaseUrl;
+  }
+});
+
+test('AgentService defaults to the Python runtime provider', async () => {
+  const service = new AgentService();
+  const originalFetch = globalThis.fetch;
+  const originalConfig = {
+    agentRuntimeProvider: appConfig.agentRuntimeProvider,
+    pyAgentBaseUrl: appConfig.pyAgentBaseUrl,
+  };
+  const requested: string[] = [];
+  const encoded = new TextEncoder().encode('data: [DONE]\n\n');
+
+  (appConfig as { agentRuntimeProvider: 'mastra' | 'python'; pyAgentBaseUrl: string }).agentRuntimeProvider =
+    'python';
+  (appConfig as { agentRuntimeProvider: 'mastra' | 'python'; pyAgentBaseUrl: string }).pyAgentBaseUrl =
+    'http://localhost:8011';
+
+  globalThis.fetch = (async (input: RequestInfo | URL) => {
+    requested.push(String(input));
+
+    return new Response(
+      new ReadableStream({
+        start(controller) {
+          controller.enqueue(encoded);
+          controller.close();
+        },
+      }),
+      {
+        status: 200,
+        headers: {
+          'Content-Type': 'text/event-stream',
+        },
+      },
+    );
+  }) as typeof fetch;
+
+  try {
+    await service.streamChat(
+      {
+        threadId: 'thread-python-default',
+        message: '继续',
+        startInterview: false,
+      },
+      {
+        setHeader() {},
+        flushHeaders() {},
+        write() {},
+        end() {},
+      } as unknown as Parameters<AgentService['streamChat']>[1],
+    );
+
+    assert.equal(requested[0], 'http://localhost:8011/api/agents/interview-agent/stream');
+  } finally {
+    globalThis.fetch = originalFetch;
+    (appConfig as { agentRuntimeProvider: 'mastra' | 'python'; pyAgentBaseUrl: string }).agentRuntimeProvider =
+      originalConfig.agentRuntimeProvider;
+    (appConfig as { agentRuntimeProvider: 'mastra' | 'python'; pyAgentBaseUrl: string }).pyAgentBaseUrl =
+      originalConfig.pyAgentBaseUrl;
+  }
+});
+
+test('AgentService.streamChat uses the Python runtime URL when provider is python', async () => {
+  const service = new AgentService();
+  const originalFetch = globalThis.fetch;
+  const originalConfig = {
+    agentRuntimeProvider: appConfig.agentRuntimeProvider,
+    pyAgentBaseUrl: appConfig.pyAgentBaseUrl,
+  };
+  const requested: Array<{ readonly url: string; readonly body: unknown }> = [];
+  const encoded = new TextEncoder().encode('data: [DONE]\n\n');
+
+  (appConfig as { agentRuntimeProvider: 'mastra' | 'python'; pyAgentBaseUrl: string }).agentRuntimeProvider = 'python';
+  (appConfig as { agentRuntimeProvider: 'mastra' | 'python'; pyAgentBaseUrl: string }).pyAgentBaseUrl =
+    'http://localhost:8011';
+
+  globalThis.fetch = (async (input: RequestInfo | URL, init?: RequestInit) => {
+    requested.push({
+      url: String(input),
+      body: JSON.parse(String(init?.body ?? '{}')) as unknown,
+    });
+
+    return new Response(
+      new ReadableStream({
+        start(controller) {
+          controller.enqueue(encoded);
+          controller.close();
+        },
+      }),
+      {
+        status: 200,
+        headers: {
+          'Content-Type': 'text/event-stream',
+        },
+      },
+    );
+  }) as typeof fetch;
+
+  try {
+    await service.streamChat(
+      {
+        threadId: 'thread-python',
+        message: '你好',
+        startInterview: false,
+      },
+      {
+        setHeader() {},
+        flushHeaders() {},
+        write() {},
+        end() {},
+      } as unknown as Parameters<AgentService['streamChat']>[1],
+    );
+
+    assert.equal(requested[0]?.url, 'http://localhost:8011/api/agents/interview-agent/stream');
+    assert.deepEqual(requested[0]?.body, {
+      messages: [{ role: 'user', content: '你好' }],
+      memory: {
+        thread: 'thread-python',
+        resource: 'frontend-interview-thread-python',
+      },
+      maxSteps: 5,
+    });
+  } finally {
+    globalThis.fetch = originalFetch;
+    (appConfig as { agentRuntimeProvider: 'mastra' | 'python'; pyAgentBaseUrl: string }).agentRuntimeProvider =
+      originalConfig.agentRuntimeProvider;
+    (appConfig as { agentRuntimeProvider: 'mastra' | 'python'; pyAgentBaseUrl: string }).pyAgentBaseUrl =
+      originalConfig.pyAgentBaseUrl;
   }
 });

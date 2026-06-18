@@ -8,9 +8,31 @@ export interface InterviewE2eEnvironment {
   readonly frontend: InterviewE2eServiceTarget;
   readonly bff: InterviewE2eServiceTarget;
   readonly mastra: InterviewE2eServiceTarget;
+  readonly agentRuntime: InterviewE2eServiceTarget & {
+    readonly provider: 'mastra' | 'python';
+  };
 }
 
 export function resolveInterviewE2eEnvironment(): InterviewE2eEnvironment {
+  const mastraUrl = process.env.INTERVIEW_E2E_MASTRA_URL ?? 'http://localhost:4111';
+  const pythonUrl = process.env.INTERVIEW_E2E_PY_AGENT_URL ?? 'http://localhost:8011';
+  const provider =
+    process.env.INTERVIEW_E2E_AGENT_RUNTIME_PROVIDER === 'python' ? 'python' : 'mastra';
+  const agentRuntime =
+    provider === 'python'
+      ? {
+          name: 'python-agent',
+          provider,
+          url: pythonUrl,
+          probeUrl: `${pythonUrl}/health`,
+        }
+      : {
+          name: 'mastra',
+          provider,
+          url: mastraUrl,
+          probeUrl: `${mastraUrl}/api`,
+        };
+
   return {
     frontend: {
       name: 'frontend',
@@ -22,16 +44,17 @@ export function resolveInterviewE2eEnvironment(): InterviewE2eEnvironment {
     },
     mastra: {
       name: 'mastra',
-      url: process.env.INTERVIEW_E2E_MASTRA_URL ?? 'http://localhost:4111',
-      probeUrl: `${process.env.INTERVIEW_E2E_MASTRA_URL ?? 'http://localhost:4111'}/api`,
+      url: mastraUrl,
+      probeUrl: `${mastraUrl}/api`,
     },
+    agentRuntime,
   };
 }
 
 export async function assertInterviewE2eEnvironmentReady(
   environment: InterviewE2eEnvironment = resolveInterviewE2eEnvironment(),
 ): Promise<void> {
-  for (const target of [environment.frontend, environment.bff, environment.mastra]) {
+  for (const target of [environment.frontend, environment.bff, environment.agentRuntime]) {
     await assertServiceReachable(target);
   }
 }
