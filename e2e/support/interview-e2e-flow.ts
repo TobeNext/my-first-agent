@@ -8,7 +8,7 @@ import type {
 import type { InterviewE2eFixture } from './interview-e2e-fixtures';
 import { withBffRelativeApiBase } from './interview-e2e-client';
 
-export async function completeInterviewToFinalReport(options: {
+export async function completeInterviewToReportGeneration(options: {
   readonly threadId: string;
   readonly fixture: InterviewE2eFixture;
   readonly settings: InterviewSystemSettings;
@@ -24,7 +24,11 @@ export async function completeInterviewToFinalReport(options: {
   const maxTurns = 16;
 
   for (let turnIndex = 0; turnIndex < maxTurns; turnIndex += 1) {
-    if (latestResult.interviewState?.finalReportReady) {
+    if (
+      latestResult.interviewState?.progress.currentStage === 'completed' ||
+      latestResult.interviewState?.phase === 'completed' ||
+      latestResult.interviewState?.phase === 'wrap-up'
+    ) {
       break;
     }
 
@@ -42,12 +46,18 @@ export async function completeInterviewToFinalReport(options: {
     );
   }
 
-  if (!latestResult.interviewState?.finalReportReady) {
-    throw new Error(`Interview thread ${options.threadId} did not reach the final report stage within ${maxTurns} turns.`);
+  if (
+    latestResult.interviewState?.progress.currentStage !== 'completed' &&
+    latestResult.interviewState?.phase !== 'completed' &&
+    latestResult.interviewState?.phase !== 'wrap-up'
+  ) {
+    throw new Error(`Interview thread ${options.threadId} did not reach the report generation stage within ${maxTurns} turns.`);
   }
 
   return latestResult;
 }
+
+export const completeInterviewToFinalReport = completeInterviewToReportGeneration;
 
 export async function startInterviewSession(options: {
   readonly threadId: string;

@@ -72,3 +72,25 @@ export interface InterviewFeedbackResponse {
   readonly success: true;
   readonly savedAt: string;
 }
+
+export type InterviewReportState = 'not-started' | 'generating' | 'ready' | 'failed';
+export type InterviewReportBlockingReason = 'manifest-missing' | 'not-sealed' | 'pending' | 'failed' | 'timeout';
+
+export interface InterviewReportStatus {
+  readonly threadId: string;
+  readonly reportState: InterviewReportState;
+  readonly sealed: boolean;
+  readonly expectedCount: number;
+  readonly completedCount: number;
+  readonly failedCount: number;
+  readonly unreadCount: number;
+  readonly markdownAvailable: boolean;
+  readonly reportId: string | null;
+  readonly updatedAt: string | null;
+  readonly blockingReason?: InterviewReportBlockingReason | null;
+}
+
+export interface InterviewReportMarkdownDownload {
+  readonly blob: Blob;
+  readonly fileName: string;
+}

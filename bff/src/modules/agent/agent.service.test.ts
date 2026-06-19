@@ -3,7 +3,7 @@ import 'reflect-metadata';
 import assert from 'node:assert/strict';
 import test from 'node:test';
 
-import { BadGatewayException } from '@nestjs/common';
+import { BadGatewayException, NotFoundException } from '@nestjs/common';
 
 import { appConfig } from '../../config';
 import { AgentService } from './agent.service';
@@ -261,5 +261,212 @@ test('AgentService.streamChat uses the Python runtime URL when provider is pytho
       originalConfig.agentRuntimeProvider;
     (appConfig as { agentRuntimeProvider: 'mastra' | 'python'; pyAgentBaseUrl: string }).pyAgentBaseUrl =
       originalConfig.pyAgentBaseUrl;
+  }
+});
+
+test('AgentService.fetchInterviewReportStatus proxies to the Python runtime', async () => {
+  const service = new AgentService();
+  const originalFetch = globalThis.fetch;
+  const originalConfig = {
+    agentRuntimeProvider: appConfig.agentRuntimeProvider,
+    pyAgentBaseUrl: appConfig.pyAgentBaseUrl,
+  };
+  const requested: string[] = [];
+
+  (appConfig as { agentRuntimeProvider: 'mastra' | 'python'; pyAgentBaseUrl: string }).agentRuntimeProvider = 'python';
+  (appConfig as { agentRuntimeProvider: 'mastra' | 'python'; pyAgentBaseUrl: string }).pyAgentBaseUrl =
+    'http://localhost:8011';
+
+  globalThis.fetch = (async (input: RequestInfo | URL) => {
+    requested.push(String(input));
+    return Response.json({
+      threadId: 'thread-report',
+      reportState: 'generating',
+      sealed: true,
+      expectedCount: 6,
+      completedCount: 3,
+      failedCount: 0,
+      unreadCount: 0,
+      markdownAvailable: false,
+      reportId: null,
+      updatedAt: '2026-06-19T00:00:00Z',
+      blockingReason: 'pending',
+    });
+  }) as typeof fetch;
+
+  try {
+    const status = await service.fetchInterviewReportStatus('thread-report');
+
+    assert.equal(requested[0], 'http://localhost:8011/api/interviews/thread-report/report/status');
+    assert.equal(status.reportState, 'generating');
+    assert.equal(status.completedCount, 3);
+  } finally {
+    globalThis.fetch = originalFetch;
+    (appConfig as { agentRuntimeProvider: 'mastra' | 'python'; pyAgentBaseUrl: string }).agentRuntimeProvider =
+      originalConfig.agentRuntimeProvider;
+    (appConfig as { agentRuntimeProvider: 'mastra' | 'python'; pyAgentBaseUrl: string }).pyAgentBaseUrl =
+      originalConfig.pyAgentBaseUrl;
+  }
+});
+
+test('AgentService.downloadInterviewReportMarkdown rebuilds markdown download headers', async () => {
+  const service = new AgentService();
+  const originalFetch = globalThis.fetch;
+  const originalConfig = {
+    agentRuntimeProvider: appConfig.agentRuntimeProvider,
+    pyAgentBaseUrl: appConfig.pyAgentBaseUrl,
+  };
+
+  (appConfig as { agentRuntimeProvider: 'mastra' | 'python'; pyAgentBaseUrl: string }).agentRuntimeProvider = 'python';
+  (appConfig as { agentRuntimeProvider: 'mastra' | 'python'; pyAgentBaseUrl: string }).pyAgentBaseUrl =
+    'http://localhost:8011';
+
+  globalThis.fetch = (async () =>
+    new Response('## Report', {
+      status: 200,
+      headers: { 'Content-Type': 'text/markdown; charset=utf-8' },
+    })) as typeof fetch;
+
+  try {
+    const download = await service.downloadInterviewReportMarkdown('thread-report');
+
+    assert.equal(download.content, '## Report');
+    assert.equal(download.contentType, 'text/markdown; charset=utf-8');
+    assert.equal(download.contentDisposition, 'attachment; filename="interview-report-thread-report.md"');
+  } finally {
+    globalThis.fetch = originalFetch;
+    (appConfig as { agentRuntimeProvider: 'mastra' | 'python'; pyAgentBaseUrl: string }).agentRuntimeProvider =
+      originalConfig.agentRuntimeProvider;
+    (appConfig as { agentRuntimeProvider: 'mastra' | 'python'; pyAgentBaseUrl: string }).pyAgentBaseUrl =
+      originalConfig.pyAgentBaseUrl;
+  }
+});
+
+test('AgentService.downloadInterviewReportMarkdown maps Python 404 to Not Found', async () => {
+  const service = new AgentService();
+  const originalFetch = globalThis.fetch;
+  const originalConfig = {
+    agentRuntimeProvider: appConfig.agentRuntimeProvider,
+    pyAgentBaseUrl: appConfig.pyAgentBaseUrl,
+  };
+
+  (appConfig as { agentRuntimeProvider: 'mastra' | 'python'; pyAgentBaseUrl: string }).agentRuntimeProvider = 'python';
+  (appConfig as { agentRuntimeProvider: 'mastra' | 'python'; pyAgentBaseUrl: string }).pyAgentBaseUrl =
+    'http://localhost:8011';
+
+  globalThis.fetch = (async () =>
+    new Response(JSON.stringify({ detail: 'missing' }), {
+      status: 404,
+      headers: { 'Content-Type': 'application/json' },
+    })) as typeof fetch;
+
+  try {
+    await assert.rejects(service.downloadInterviewReportMarkdown('thread-missing'), (error: unknown) => {
+      assert.ok(error instanceof NotFoundException);
+      assert.match(error.message, /markdown was not found/);
+      return true;
+    });
+  } finally {
+    globalThis.fetch = originalFetch;
+    (appConfig as { agentRuntimeProvider: 'mastra' | 'python'; pyAgentBaseUrl: string }).agentRuntimeProvider =
+      originalConfig.agentRuntimeProvider;
+    (appConfig as { agentRuntimeProvider: 'mastra' | 'python'; pyAgentBaseUrl: string }).pyAgentBaseUrl =
+      originalConfig.pyAgentBaseUrl;
+  }
+});
+
+test('AgentService.markInterviewReportRead proxies read receipt to the Python runtime', async () => {
+  const service = new AgentService();
+  const originalFetch = globalThis.fetch;
+  const originalConfig = {
+    agentRuntimeProvider: appConfig.agentRuntimeProvider,
+    pyAgentBaseUrl: appConfig.pyAgentBaseUrl,
+  };
+  const requested: Array<{ readonly url: string; readonly method: string | undefined }> = [];
+
+  (appConfig as { agentRuntimeProvider: 'mastra' | 'python'; pyAgentBaseUrl: string }).agentRuntimeProvider = 'python';
+  (appConfig as { agentRuntimeProvider: 'mastra' | 'python'; pyAgentBaseUrl: string }).pyAgentBaseUrl =
+    'http://localhost:8011';
+
+  globalThis.fetch = (async (input: RequestInfo | URL, init?: RequestInit) => {
+    requested.push({ url: String(input), method: init?.method });
+    return Response.json({ threadId: 'thread-report', readAt: '2026-06-19T00:00:00Z' });
+  }) as typeof fetch;
+
+  try {
+    const receipt = await service.markInterviewReportRead('thread-report');
+
+    assert.deepEqual(requested[0], {
+      url: 'http://localhost:8011/api/interviews/thread-report/report/read',
+      method: 'POST',
+    });
+    assert.equal(receipt.readAt, '2026-06-19T00:00:00Z');
+  } finally {
+    globalThis.fetch = originalFetch;
+    (appConfig as { agentRuntimeProvider: 'mastra' | 'python'; pyAgentBaseUrl: string }).agentRuntimeProvider =
+      originalConfig.agentRuntimeProvider;
+    (appConfig as { agentRuntimeProvider: 'mastra' | 'python'; pyAgentBaseUrl: string }).pyAgentBaseUrl =
+      originalConfig.pyAgentBaseUrl;
+  }
+});
+
+test('AgentService report APIs return Bad Gateway when Python runtime is unreachable', async () => {
+  const service = new AgentService();
+  const originalFetch = globalThis.fetch;
+  const originalConfig = {
+    agentRuntimeProvider: appConfig.agentRuntimeProvider,
+    pyAgentBaseUrl: appConfig.pyAgentBaseUrl,
+  };
+
+  (appConfig as { agentRuntimeProvider: 'mastra' | 'python'; pyAgentBaseUrl: string }).agentRuntimeProvider = 'python';
+  (appConfig as { agentRuntimeProvider: 'mastra' | 'python'; pyAgentBaseUrl: string }).pyAgentBaseUrl =
+    'http://localhost:8011';
+
+  globalThis.fetch = (async () => {
+    throw new Error('connect ECONNREFUSED 127.0.0.1:8011');
+  }) as typeof fetch;
+
+  try {
+    await assert.rejects(service.fetchInterviewReportStatus('thread-report'), (error: unknown) => {
+      assert.ok(error instanceof BadGatewayException);
+      assert.match(error.message, /Unable to connect to Python agent runtime/);
+      assert.match(error.message, /ECONNREFUSED/);
+      return true;
+    });
+  } finally {
+    globalThis.fetch = originalFetch;
+    (appConfig as { agentRuntimeProvider: 'mastra' | 'python'; pyAgentBaseUrl: string }).agentRuntimeProvider =
+      originalConfig.agentRuntimeProvider;
+    (appConfig as { agentRuntimeProvider: 'mastra' | 'python'; pyAgentBaseUrl: string }).pyAgentBaseUrl =
+      originalConfig.pyAgentBaseUrl;
+  }
+});
+
+test('AgentService report status returns a compatible fallback for Mastra rollback provider', async () => {
+  const service = new AgentService();
+  const originalConfig = {
+    agentRuntimeProvider: appConfig.agentRuntimeProvider,
+  };
+
+  (appConfig as { agentRuntimeProvider: 'mastra' | 'python' }).agentRuntimeProvider = 'mastra';
+
+  try {
+    const status = await service.fetchInterviewReportStatus('thread-mastra');
+
+    assert.deepEqual(status, {
+      threadId: 'thread-mastra',
+      reportState: 'not-started',
+      sealed: false,
+      expectedCount: 0,
+      completedCount: 0,
+      failedCount: 0,
+      unreadCount: 0,
+      markdownAvailable: false,
+      reportId: null,
+      updatedAt: null,
+      blockingReason: 'manifest-missing',
+    });
+  } finally {
+    (appConfig as { agentRuntimeProvider: 'mastra' | 'python' }).agentRuntimeProvider = originalConfig.agentRuntimeProvider;
   }
 });

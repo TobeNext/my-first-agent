@@ -91,7 +91,7 @@ describe('parseHttpErrorPayload', () => {
       text: async () => {
         throw new Error('body locked');
       },
-    } as Response;
+    } as unknown as Response;
 
     await expect(parseHttpErrorPayload(response)).resolves.toEqual({
       message: 'Request failed with status 503.',

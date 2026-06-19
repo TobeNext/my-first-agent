@@ -1,6 +1,12 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
-import { submitInterviewFeedbackViaBff, validateResumeViaBff } from './bff-api';
+import {
+  downloadInterviewReportMarkdown,
+  fetchInterviewReportStatus,
+  markInterviewReportRead,
+  submitInterviewFeedbackViaBff,
+  validateResumeViaBff,
+} from './bff-api';
 
 describe('validateResumeViaBff', () => {
   afterEach(() => {
@@ -155,5 +161,108 @@ describe('validateResumeViaBff', () => {
         comment: 'too short',
       }),
     ).rejects.toThrow('feedback rejected');
+  });
+
+  it('fetches interview report status through the BFF', async () => {
+    const fetchMock = vi.fn().mockResolvedValue(
+      new Response(
+        JSON.stringify({
+          threadId: 'thread-1',
+          reportState: 'ready',
+          sealed: true,
+          expectedCount: 6,
+          completedCount: 6,
+          failedCount: 0,
+          unreadCount: 1,
+          markdownAvailable: true,
+          reportId: 'report-1',
+          updatedAt: '2026-06-19T00:00:00Z',
+        }),
+        {
+          status: 200,
+          headers: { 'Content-Type': 'application/json' },
+        },
+      ),
+    );
+
+    vi.stubGlobal('fetch', fetchMock);
+
+    await expect(fetchInterviewReportStatus('thread 1')).resolves.toMatchObject({
+      reportState: 'ready',
+      unreadCount: 1,
+      markdownAvailable: true,
+      reportId: 'report-1',
+    });
+    expect(fetchMock).toHaveBeenCalledWith('/api/agents/interviews/thread%201/report/status', {
+      method: 'GET',
+      headers: { Accept: 'application/json' },
+    });
+  });
+
+  it('throws the first report status detail when the BFF rejects the request', async () => {
+    const fetchMock = vi.fn().mockResolvedValue(
+      new Response(JSON.stringify({ message: ['runtime unavailable'] }), {
+        status: 502,
+        headers: { 'Content-Type': 'application/json' },
+      }),
+    );
+
+    vi.stubGlobal('fetch', fetchMock);
+
+    await expect(fetchInterviewReportStatus('thread-1')).rejects.toThrow('runtime unavailable');
+  });
+
+  it('downloads interview report markdown as a blob', async () => {
+    const fetchMock = vi.fn().mockResolvedValue(
+      new Response('## Report', {
+        status: 200,
+        headers: { 'Content-Type': 'text/markdown; charset=utf-8' },
+      }),
+    );
+
+    vi.stubGlobal('fetch', fetchMock);
+
+    const download = await downloadInterviewReportMarkdown('thread-1');
+
+    expect(download.fileName).toBe('interview-report-thread-1.md');
+    expect(download.blob).toBeInstanceOf(Blob);
+    expect(download.blob.size).toBeGreaterThan(0);
+    expect(fetchMock).toHaveBeenCalledWith('/api/agents/interviews/thread-1/report/markdown', {
+      method: 'GET',
+      headers: { Accept: 'text/markdown' },
+    });
+  });
+
+  it('throws the markdown download error returned by the BFF', async () => {
+    const fetchMock = vi.fn().mockResolvedValue(
+      new Response(JSON.stringify({ message: 'report not found' }), {
+        status: 404,
+        headers: { 'Content-Type': 'application/json' },
+      }),
+    );
+
+    vi.stubGlobal('fetch', fetchMock);
+
+    await expect(downloadInterviewReportMarkdown('thread-missing')).rejects.toThrow('report not found');
+  });
+
+  it('marks an interview report as read through the BFF', async () => {
+    const fetchMock = vi.fn().mockResolvedValue(
+      new Response(JSON.stringify({ threadId: 'thread-1', readAt: '2026-06-19T00:00:00Z' }), {
+        status: 200,
+        headers: { 'Content-Type': 'application/json' },
+      }),
+    );
+
+    vi.stubGlobal('fetch', fetchMock);
+
+    await expect(markInterviewReportRead('thread-1')).resolves.toEqual({
+      threadId: 'thread-1',
+      readAt: '2026-06-19T00:00:00Z',
+    });
+    expect(fetchMock).toHaveBeenCalledWith('/api/agents/interviews/thread-1/report/read', {
+      method: 'POST',
+      headers: { Accept: 'application/json' },
+    });
   });
 });

@@ -1,8 +1,17 @@
 import { createPinia, setActivePinia } from 'pinia';
 import { flushPromises, mount } from '@vue/test-utils';
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-const { pushMock, streamChatWithAgentMock } = vi.hoisted(() => ({
+const {
+  downloadInterviewReportMarkdownMock,
+  fetchInterviewReportStatusMock,
+  markInterviewReportReadMock,
+  pushMock,
+  streamChatWithAgentMock,
+} = vi.hoisted(() => ({
+  downloadInterviewReportMarkdownMock: vi.fn(),
+  fetchInterviewReportStatusMock: vi.fn(),
+  markInterviewReportReadMock: vi.fn(),
   pushMock: vi.fn(),
   streamChatWithAgentMock: vi.fn(),
 }));
@@ -19,6 +28,9 @@ vi.mock('@/services/agent-stream', () => ({
 }));
 
 vi.mock('@/services/bff-api', () => ({
+  downloadInterviewReportMarkdown: downloadInterviewReportMarkdownMock,
+  fetchInterviewReportStatus: fetchInterviewReportStatusMock,
+  markInterviewReportRead: markInterviewReportReadMock,
   submitInterviewFeedbackViaBff: vi.fn(),
 }));
 
@@ -43,9 +55,38 @@ describe('AgentChatView', () => {
     pushMock.mockReset();
     pushMock.mockResolvedValue(undefined);
     streamChatWithAgentMock.mockReset();
+    fetchInterviewReportStatusMock.mockReset();
+    fetchInterviewReportStatusMock.mockResolvedValue({
+      threadId: 'thread-1',
+      reportState: 'generating',
+      sealed: true,
+      expectedCount: 1,
+      completedCount: 0,
+      failedCount: 0,
+      unreadCount: 0,
+      markdownAvailable: false,
+      reportId: null,
+      updatedAt: '2026-06-19T00:00:00Z',
+      blockingReason: 'pending',
+    });
+    markInterviewReportReadMock.mockReset();
+    markInterviewReportReadMock.mockResolvedValue({
+      threadId: 'thread-1',
+      readAt: '2026-06-19T00:00:00Z',
+    });
+    downloadInterviewReportMarkdownMock.mockReset();
+    downloadInterviewReportMarkdownMock.mockResolvedValue({
+      blob: new Blob(['## Report'], { type: 'text/markdown' }),
+      fileName: 'interview-report-thread-1.md',
+    });
     window.localStorage.clear();
     vi.spyOn(console, 'info').mockImplementation(() => undefined);
     vi.spyOn(console, 'error').mockImplementation(() => undefined);
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
+    vi.restoreAllMocks();
   });
 
   it('persists the latest interview session snapshot after the interview starts', async () => {
@@ -287,5 +328,441 @@ describe('AgentChatView', () => {
     expect(readPersistedInterviewSession()).toBeNull();
     expect(pushMock).toHaveBeenCalledWith({ name: 'resume-upload' });
     expect(wrapper.text()).toContain('未能恢复上次面试，会话可能已在后端失效。');
+  });
+
+  it('starts report status polling when the interview reaches completed stage', async () => {
+    vi.useFakeTimers();
+    const pinia = createPinia();
+    setActivePinia(pinia);
+    const store = useResumeUploadStore();
+    store.bffResult = {
+      success: true,
+      fileName: 'resume.md',
+      fileSize: 512,
+      message: '文件已通过 BFF 校验。',
+      professionalSkillGroupCount: 1,
+      source: 'bff',
+    };
+    store.interviewResume = {
+      fileName: 'resume.md',
+      markdown: '### 专业技能\n- TypeScript\n\n### 项目经历\n- 搭建 BFF',
+      professionalSkillGroupCount: 1,
+      jobDescriptionFileName: null,
+      jobDescriptionMarkdown: '',
+    };
+    streamChatWithAgentMock.mockResolvedValue({
+      authoritativeAssistantReply: '面试已结束，报告生成中。生成进度和最终报告可在右上角通知中查看。',
+      flowTestMockUserReply: null,
+      interviewState: {
+        assistantReply: '面试已结束，报告生成中。生成进度和最终报告可在右上角通知中查看。',
+        flowTestMockUserReply: null,
+        phase: 'wrap-up',
+        activeRoundType: null,
+        activeNodeTopic: null,
+        finalReportReady: false,
+        progress: {
+          totalQuestionCount: 1,
+          completedQuestionCount: 1,
+          remainingQuestionCount: 0,
+          currentQuestionIndex: null,
+          currentRoundType: null,
+          currentRoundLabel: null,
+          currentStage: 'completed',
+          currentFollowUpIndex: null,
+          currentQuestionText: null,
+          currentNodeTopic: null,
+        },
+      },
+    });
+
+    const wrapper = mount(AgentChatView, {
+      global: {
+        plugins: [pinia],
+      },
+    });
+
+    await wrapper.get('.upload-card__button--primary').trigger('click');
+    await flushPromises();
+
+    expect(fetchInterviewReportStatusMock).toHaveBeenCalledTimes(1);
+    expect(wrapper.find('.agent-card__composer').exists()).toBe(false);
+
+    await vi.advanceTimersByTimeAsync(2000);
+
+    expect(fetchInterviewReportStatusMock).toHaveBeenCalledTimes(2);
+    vi.useRealTimers();
+  });
+
+  it('stops polling after report status is ready', async () => {
+    vi.useFakeTimers();
+    const pinia = createPinia();
+    setActivePinia(pinia);
+    const store = useResumeUploadStore();
+    store.bffResult = {
+      success: true,
+      fileName: 'resume.md',
+      fileSize: 512,
+      message: '文件已通过 BFF 校验。',
+      professionalSkillGroupCount: 1,
+      source: 'bff',
+    };
+    store.interviewResume = {
+      fileName: 'resume.md',
+      markdown: '### 专业技能\n- TypeScript\n\n### 项目经历\n- 搭建 BFF',
+      professionalSkillGroupCount: 1,
+      jobDescriptionFileName: null,
+      jobDescriptionMarkdown: '',
+    };
+    fetchInterviewReportStatusMock.mockResolvedValue({
+      threadId: 'thread-1',
+      reportState: 'ready',
+      sealed: true,
+      expectedCount: 1,
+      completedCount: 1,
+      failedCount: 0,
+      unreadCount: 1,
+      markdownAvailable: true,
+      reportId: 'report-1',
+      updatedAt: '2026-06-19T00:00:00Z',
+    });
+    streamChatWithAgentMock.mockResolvedValue({
+      authoritativeAssistantReply: '面试已结束，报告生成中。生成进度和最终报告可在右上角通知中查看。',
+      flowTestMockUserReply: null,
+      interviewState: {
+        assistantReply: '面试已结束，报告生成中。生成进度和最终报告可在右上角通知中查看。',
+        flowTestMockUserReply: null,
+        phase: 'wrap-up',
+        activeRoundType: null,
+        activeNodeTopic: null,
+        finalReportReady: false,
+        progress: {
+          totalQuestionCount: 1,
+          completedQuestionCount: 1,
+          remainingQuestionCount: 0,
+          currentQuestionIndex: null,
+          currentRoundType: null,
+          currentRoundLabel: null,
+          currentStage: 'completed',
+          currentFollowUpIndex: null,
+          currentQuestionText: null,
+          currentNodeTopic: null,
+        },
+      },
+    });
+
+    const wrapper = mount(AgentChatView, {
+      global: {
+        plugins: [pinia],
+      },
+    });
+
+    await wrapper.get('.upload-card__button--primary').trigger('click');
+    await flushPromises();
+    await vi.advanceTimersByTimeAsync(4000);
+
+    expect(fetchInterviewReportStatusMock).toHaveBeenCalledTimes(1);
+    expect(wrapper.get('[data-test="report-unread-badge"]').text()).toBe('1');
+    vi.useRealTimers();
+  });
+
+  it('marks ready report as read when the bell opens', async () => {
+    const pinia = createPinia();
+    setActivePinia(pinia);
+    const store = useResumeUploadStore();
+    store.bffResult = {
+      success: true,
+      fileName: 'resume.md',
+      fileSize: 512,
+      message: '文件已通过 BFF 校验。',
+      professionalSkillGroupCount: 1,
+      source: 'bff',
+    };
+    store.interviewResume = {
+      fileName: 'resume.md',
+      markdown: '### 专业技能\n- TypeScript\n\n### 项目经历\n- 搭建 BFF',
+      professionalSkillGroupCount: 1,
+      jobDescriptionFileName: null,
+      jobDescriptionMarkdown: '',
+    };
+    fetchInterviewReportStatusMock
+      .mockResolvedValueOnce({
+        threadId: 'thread-1',
+        reportState: 'ready',
+        sealed: true,
+        expectedCount: 1,
+        completedCount: 1,
+        failedCount: 0,
+        unreadCount: 1,
+        markdownAvailable: true,
+        reportId: 'report-1',
+        updatedAt: '2026-06-19T00:00:00Z',
+      })
+      .mockResolvedValue({
+        threadId: 'thread-1',
+        reportState: 'ready',
+        sealed: true,
+        expectedCount: 1,
+        completedCount: 1,
+        failedCount: 0,
+        unreadCount: 0,
+        markdownAvailable: true,
+        reportId: 'report-1',
+        updatedAt: '2026-06-19T00:00:00Z',
+      });
+    streamChatWithAgentMock.mockResolvedValue({
+      authoritativeAssistantReply: '面试已结束，报告生成中。生成进度和最终报告可在右上角通知中查看。',
+      flowTestMockUserReply: null,
+      interviewState: {
+        assistantReply: '面试已结束，报告生成中。生成进度和最终报告可在右上角通知中查看。',
+        flowTestMockUserReply: null,
+        phase: 'wrap-up',
+        activeRoundType: null,
+        activeNodeTopic: null,
+        finalReportReady: false,
+        progress: {
+          totalQuestionCount: 1,
+          completedQuestionCount: 1,
+          remainingQuestionCount: 0,
+          currentQuestionIndex: null,
+          currentRoundType: null,
+          currentRoundLabel: null,
+          currentStage: 'completed',
+          currentFollowUpIndex: null,
+          currentQuestionText: null,
+          currentNodeTopic: null,
+        },
+      },
+    });
+
+    const wrapper = mount(AgentChatView, {
+      global: {
+        plugins: [pinia],
+      },
+    });
+
+    await wrapper.get('.upload-card__button--primary').trigger('click');
+    await flushPromises();
+    await wrapper.get('[data-test="interview-report-bell"] button').trigger('click');
+    await flushPromises();
+
+    expect(markInterviewReportReadMock).toHaveBeenCalledTimes(1);
+    expect(wrapper.find('[data-test="report-unread-badge"]').exists()).toBe(false);
+  });
+
+  it('downloads markdown report from the bell and marks it as read', async () => {
+    const createObjectUrlMock = vi.fn(() => 'blob:report');
+    const revokeObjectUrlMock = vi.fn();
+    const anchorClickMock = vi.fn();
+    const originalCreateObjectURL = URL.createObjectURL;
+    const originalRevokeObjectURL = URL.revokeObjectURL;
+    const originalCreateElement = document.createElement.bind(document);
+    URL.createObjectURL = createObjectUrlMock;
+    URL.revokeObjectURL = revokeObjectUrlMock;
+    vi.spyOn(document, 'createElement').mockImplementation(((tagName: string) => {
+      const element = originalCreateElement(tagName);
+      if (tagName === 'a') {
+        element.click = anchorClickMock;
+      }
+      return element;
+    }) as typeof document.createElement);
+    const pinia = createPinia();
+    setActivePinia(pinia);
+    const store = useResumeUploadStore();
+    store.bffResult = {
+      success: true,
+      fileName: 'resume.md',
+      fileSize: 512,
+      message: '文件已通过 BFF 校验。',
+      professionalSkillGroupCount: 1,
+      source: 'bff',
+    };
+    store.interviewResume = {
+      fileName: 'resume.md',
+      markdown: '### 专业技能\n- TypeScript\n\n### 项目经历\n- 搭建 BFF',
+      professionalSkillGroupCount: 1,
+      jobDescriptionFileName: null,
+      jobDescriptionMarkdown: '',
+    };
+    fetchInterviewReportStatusMock.mockResolvedValue({
+      threadId: 'thread-1',
+      reportState: 'ready',
+      sealed: true,
+      expectedCount: 1,
+      completedCount: 1,
+      failedCount: 0,
+      unreadCount: 0,
+      markdownAvailable: true,
+      reportId: 'report-1',
+      updatedAt: '2026-06-19T00:00:00Z',
+    });
+    streamChatWithAgentMock.mockResolvedValue({
+      authoritativeAssistantReply: '面试已结束，报告生成中。生成进度和最终报告可在右上角通知中查看。',
+      flowTestMockUserReply: null,
+      interviewState: {
+        assistantReply: '面试已结束，报告生成中。生成进度和最终报告可在右上角通知中查看。',
+        flowTestMockUserReply: null,
+        phase: 'wrap-up',
+        activeRoundType: null,
+        activeNodeTopic: null,
+        finalReportReady: false,
+        progress: {
+          totalQuestionCount: 1,
+          completedQuestionCount: 1,
+          remainingQuestionCount: 0,
+          currentQuestionIndex: null,
+          currentRoundType: null,
+          currentRoundLabel: null,
+          currentStage: 'completed',
+          currentFollowUpIndex: null,
+          currentQuestionText: null,
+          currentNodeTopic: null,
+        },
+      },
+    });
+
+    try {
+      const wrapper = mount(AgentChatView, {
+        global: {
+          plugins: [pinia],
+        },
+      });
+
+      await wrapper.get('.upload-card__button--primary').trigger('click');
+      await flushPromises();
+      await wrapper.get('[data-test="interview-report-bell"] button').trigger('click');
+      await flushPromises();
+      await wrapper.get('.report-bell__action--primary').trigger('click');
+      await flushPromises();
+
+      expect(downloadInterviewReportMarkdownMock).toHaveBeenCalledTimes(1);
+      expect(anchorClickMock).toHaveBeenCalledTimes(1);
+      expect(markInterviewReportReadMock).toHaveBeenCalledTimes(1);
+      expect(revokeObjectUrlMock).toHaveBeenCalledWith('blob:report');
+    } finally {
+      URL.createObjectURL = originalCreateObjectURL;
+      URL.revokeObjectURL = originalRevokeObjectURL;
+    }
+  });
+
+  it('stops report polling and resets bell status when conversation is cleared', async () => {
+    vi.useFakeTimers();
+    const pinia = createPinia();
+    setActivePinia(pinia);
+    const store = useResumeUploadStore();
+    store.bffResult = {
+      success: true,
+      fileName: 'resume.md',
+      fileSize: 512,
+      message: '文件已通过 BFF 校验。',
+      professionalSkillGroupCount: 1,
+      source: 'bff',
+    };
+    store.interviewResume = {
+      fileName: 'resume.md',
+      markdown: '### 专业技能\n- TypeScript\n\n### 项目经历\n- 搭建 BFF',
+      professionalSkillGroupCount: 1,
+      jobDescriptionFileName: null,
+      jobDescriptionMarkdown: '',
+    };
+    streamChatWithAgentMock.mockResolvedValue({
+      authoritativeAssistantReply: '面试已结束，报告生成中。生成进度和最终报告可在右上角通知中查看。',
+      flowTestMockUserReply: null,
+      interviewState: {
+        assistantReply: '面试已结束，报告生成中。生成进度和最终报告可在右上角通知中查看。',
+        flowTestMockUserReply: null,
+        phase: 'wrap-up',
+        activeRoundType: null,
+        activeNodeTopic: null,
+        finalReportReady: false,
+        progress: {
+          totalQuestionCount: 1,
+          completedQuestionCount: 1,
+          remainingQuestionCount: 0,
+          currentQuestionIndex: null,
+          currentRoundType: null,
+          currentRoundLabel: null,
+          currentStage: 'completed',
+          currentFollowUpIndex: null,
+          currentQuestionText: null,
+          currentNodeTopic: null,
+        },
+      },
+    });
+
+    const wrapper = mount(AgentChatView, {
+      global: {
+        plugins: [pinia],
+      },
+    });
+
+    await wrapper.get('.upload-card__button--primary').trigger('click');
+    await flushPromises();
+    const secondaryButtons = wrapper.findAll('.upload-card__button--secondary');
+    await secondaryButtons[secondaryButtons.length - 1]?.trigger('click');
+    await vi.advanceTimersByTimeAsync(2000);
+
+    expect(fetchInterviewReportStatusMock).toHaveBeenCalledTimes(1);
+    expect(wrapper.find('[data-test="interview-report-bell"]').exists()).toBe(false);
+    vi.useRealTimers();
+  });
+
+  it('hides legacy async report waiting text from assistant messages', async () => {
+    const pinia = createPinia();
+    setActivePinia(pinia);
+    const store = useResumeUploadStore();
+    store.bffResult = {
+      success: true,
+      fileName: 'resume.md',
+      fileSize: 512,
+      message: '文件已通过 BFF 校验。',
+      professionalSkillGroupCount: 1,
+      source: 'bff',
+    };
+    store.interviewResume = {
+      fileName: 'resume.md',
+      markdown: '### 专业技能\n- TypeScript\n\n### 项目经历\n- 搭建 BFF',
+      professionalSkillGroupCount: 1,
+      jobDescriptionFileName: null,
+      jobDescriptionMarkdown: '',
+    };
+    streamChatWithAgentMock.mockResolvedValue({
+      authoritativeAssistantReply:
+        '面试题目已经完成，我正在等待异步评分完成后生成最终报告。当前进度：0/6。请稍后再发送一条消息获取报告。',
+      flowTestMockUserReply: null,
+      interviewState: {
+        assistantReply:
+          '面试题目已经完成，我正在等待异步评分完成后生成最终报告。当前进度：0/6。请稍后再发送一条消息获取报告。',
+        flowTestMockUserReply: null,
+        phase: 'wrap-up',
+        activeRoundType: null,
+        activeNodeTopic: null,
+        finalReportReady: false,
+        progress: {
+          totalQuestionCount: 1,
+          completedQuestionCount: 1,
+          remainingQuestionCount: 0,
+          currentQuestionIndex: null,
+          currentRoundType: null,
+          currentRoundLabel: null,
+          currentStage: 'completed',
+          currentFollowUpIndex: null,
+          currentQuestionText: null,
+          currentNodeTopic: null,
+        },
+      },
+    });
+
+    const wrapper = mount(AgentChatView, {
+      global: {
+        plugins: [pinia],
+      },
+    });
+
+    await wrapper.get('.upload-card__button--primary').trigger('click');
+    await flushPromises();
+
+    expect(wrapper.text()).not.toContain('等待异步评分完成');
+    expect(wrapper.text()).not.toContain('当前进度');
+    expect(wrapper.text()).not.toContain('稍后再发送一条消息');
   });
 });

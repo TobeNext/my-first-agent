@@ -26,7 +26,12 @@ export const feedbackRequestSchema = z.object({
   comment: z.string().trim().max(2000).optional().default(''),
 });
 
+export const reportThreadParamsSchema = z.object({
+  threadId: z.string().min(1, 'Thread ID is required.'),
+});
+
 export type StreamInterviewInput = InterviewStartRequest | z.infer<typeof continueInterviewRequestSchema>;
+export type ReportThreadParams = z.infer<typeof reportThreadParamsSchema>;
 
 export function parseRequestBody<T>(schema: ZodType<T>, body: unknown): T {
   const parsed = schema.safeParse(body);

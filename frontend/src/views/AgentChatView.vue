@@ -33,8 +33,19 @@
 
       <section class="agent-card">
       <div class="agent-card__header">
-        <p class="upload-card__eyebrow">AI 面试</p>
-        <h1>模拟面试</h1>
+        <div>
+          <p class="upload-card__eyebrow">AI 面试</p>
+          <h1>模拟面试</h1>
+        </div>
+        <InterviewReportBell
+          v-if="hasInterviewStarted"
+          :status="reportStatus"
+          :loading="isReportStatusLoading"
+          :error-message="reportStatusError"
+          @opened="handleReportBellOpened"
+          @refresh="refreshReportStatus"
+          @download="downloadReportMarkdown"
+        />
       </div>
 
       <p v-if="!hasInterviewStarted" class="agent-card__status-text">
@@ -244,7 +255,7 @@
         </div>
       </section>
 
-      <div v-if="hasInterviewStarted && !isInterviewCompleted" class="agent-card__composer">
+      <div v-if="hasInterviewStarted && !isInterviewEnded" class="agent-card__composer">
         <textarea
           v-model="message"
           class="agent-card__textarea"
@@ -334,7 +345,13 @@ import {
   INTERVIEW_FEEDBACK_SCORE_OPTIONS,
 } from '@/schemas/interview-feedback';
 import { FLOW_TEST_SKIP_MARKER, streamChatWithAgent } from '@/services/agent-stream';
-import { submitInterviewFeedbackViaBff } from '@/services/bff-api';
+import {
+  downloadInterviewReportMarkdown,
+  fetchInterviewReportStatus,
+  markInterviewReportRead,
+  submitInterviewFeedbackViaBff,
+} from '@/services/bff-api';
+import { sanitizeAssistantContent } from '@/services/assistant-content';
 import {
   buildPersistedInterviewSession,
   clearPersistedInterviewSession,
@@ -367,17 +384,19 @@ import {
   type SpeechRecognitionTranscript,
 } from '@/services/speech-recognition';
 import { createStartInterviewRequest } from '@/services/interview-start-request';
+import InterviewReportBell from '@/components/InterviewReportBell.vue';
 import { useResumeUploadStore } from '@/stores/upload';
 import type {
   AgentChatMessage,
   ProfessionalQuestionMode,
   InterviewRoundPreference,
   InterviewSystemSettings,
+  InterviewReportStatus,
   InterviewStateSnapshot,
 } from '@/types/agent';
 
-const HIDDEN_ASSISTANT_TEXT = "I'll parse your resume first to understand your professional skills and project experience before starting the interview.";
 const FLOW_TEST_SKIP_DISPLAY_TEXT = '流程测试已跳过手动作答，系统正在生成示例回答...';
+const REPORT_STATUS_POLL_INTERVAL_MS = 2000;
 
 type PendingAction = 'start-interview' | 'send-answer' | null;
 type FeedbackSubmitState = 'idle' | 'submitting' | 'submitted';
@@ -412,11 +431,22 @@ const difficultyScore = ref(4);
 const feedbackComment = ref('');
 const feedbackErrorMessage = ref('');
 const feedbackSubmitState = ref<FeedbackSubmitState>('idle');
+const reportStatus = ref<InterviewReportStatus | null>(null);
+const reportStatusError = ref('');
+const reportStatusPollTimer = ref<number | null>(null);
+const isReportStatusLoading = ref(false);
 const supportsSpeechRecognition = detectSpeechRecognitionSupport();
 const speechRecognitionProfile = getInterviewSpeechRecognitionProfile();
 
 const hasInterviewStarted = computed(() => interviewThreadId.value !== null);
 const isInterviewCompleted = computed(() => interviewState.value?.finalReportReady ?? false);
+const isInterviewEnded = computed(
+  () =>
+    isInterviewCompleted.value ||
+    interviewState.value?.phase === 'wrap-up' ||
+    interviewState.value?.phase === 'completed' ||
+    interviewState.value?.progress.currentStage === 'completed',
+);
 const isLoading = computed(() => pendingAction.value !== null);
 const interviewEntryState = computed(() => uploadStore.interviewEntryState);
 const canRestoreRecentSession = computed(() => canRestorePersistedInterviewSession(recentInterviewSession.value));
@@ -480,7 +510,7 @@ const primaryButtonLabel = computed(() => {
     return '开始面试';
   }
 
-  if (isInterviewCompleted.value) {
+  if (isInterviewEnded.value) {
     return '面试已完成';
   }
 
@@ -506,7 +536,7 @@ const isPrimaryButtonDisabled = computed(() => {
     return !interviewEntryState.value.canStartInterview || interviewSettingsValidationError.value !== null;
   }
 
-  if (isInterviewCompleted.value) {
+  if (isInterviewEnded.value) {
     return true;
   }
 
@@ -589,13 +619,6 @@ function createMessage(role: AgentChatMessage['role'], content: string): AgentCh
     role,
     content,
   };
-}
-
-function sanitizeAssistantContent(content: string): string {
-  return content
-    .replaceAll(HIDDEN_ASSISTANT_TEXT, '')
-    .replace(/\n{3,}/g, '\n\n')
-    .trim();
 }
 
 function isStreamingEntry(messageId: string): boolean {
@@ -692,6 +715,7 @@ async function scrollConversationToBottom(): Promise<void> {
 }
 
 function clearConversation(): void {
+  stopReportStatusPolling();
   stopSpeechRecognition();
   clearPersistedInterviewSession();
   recentInterviewSession.value = null;
@@ -710,6 +734,9 @@ function clearConversation(): void {
   feedbackComment.value = '';
   feedbackErrorMessage.value = '';
   feedbackSubmitState.value = 'idle';
+  reportStatus.value = null;
+  reportStatusError.value = '';
+  isReportStatusLoading.value = false;
 }
 
 function restoreRecentInterviewSession(): void {
@@ -728,10 +755,88 @@ function restoreRecentInterviewSession(): void {
   errorMessage.value = '';
   feedbackErrorMessage.value = '';
   feedbackSubmitState.value = 'idle';
+  reportStatus.value = null;
+  reportStatusError.value = '';
   logInterviewEvent('interview:restore', {
     threadId: session.threadId,
     updatedAt: session.updatedAt,
   });
+}
+
+async function refreshReportStatus(): Promise<void> {
+  if (!interviewThreadId.value || isReportStatusLoading.value) {
+    return;
+  }
+
+  isReportStatusLoading.value = true;
+  reportStatusError.value = '';
+
+  try {
+    const status = await fetchInterviewReportStatus(interviewThreadId.value);
+    reportStatus.value = status;
+
+    if (status.reportState === 'ready' || status.reportState === 'failed') {
+      stopReportStatusPolling();
+    }
+  } catch (error: unknown) {
+    reportStatusError.value = error instanceof Error ? error.message : '报告状态获取失败。';
+  } finally {
+    isReportStatusLoading.value = false;
+  }
+}
+
+function startReportStatusPolling(): void {
+  if (!interviewThreadId.value || reportStatusPollTimer.value !== null) {
+    return;
+  }
+
+  void refreshReportStatus();
+  reportStatusPollTimer.value = window.setInterval(() => {
+    void refreshReportStatus();
+  }, REPORT_STATUS_POLL_INTERVAL_MS);
+}
+
+function stopReportStatusPolling(): void {
+  if (reportStatusPollTimer.value === null) {
+    return;
+  }
+
+  window.clearInterval(reportStatusPollTimer.value);
+  reportStatusPollTimer.value = null;
+}
+
+async function handleReportBellOpened(): Promise<void> {
+  if (!interviewThreadId.value) {
+    return;
+  }
+
+  if (reportStatus.value?.reportState === 'ready' && reportStatus.value.unreadCount > 0) {
+    await markInterviewReportRead(interviewThreadId.value);
+    await refreshReportStatus();
+    return;
+  }
+
+  await refreshReportStatus();
+}
+
+async function downloadReportMarkdown(): Promise<void> {
+  if (!interviewThreadId.value) {
+    return;
+  }
+
+  try {
+    const download = await downloadInterviewReportMarkdown(interviewThreadId.value);
+    const url = URL.createObjectURL(download.blob);
+    const anchor = document.createElement('a');
+    anchor.href = url;
+    anchor.download = download.fileName;
+    anchor.click();
+    URL.revokeObjectURL(url);
+    await markInterviewReportRead(interviewThreadId.value);
+    await refreshReportStatus();
+  } catch (error: unknown) {
+    reportStatusError.value = error instanceof Error ? error.message : '报告下载失败。';
+  }
 }
 
 async function discardRecentInterviewSession(): Promise<void> {
@@ -1053,7 +1158,20 @@ watch(
   { deep: true },
 );
 
+watch(
+  () => [interviewThreadId.value, isInterviewEnded.value, reportStatus.value?.reportState] as const,
+  ([threadId, ended, state]) => {
+    if (!threadId || !ended || state === 'ready' || state === 'failed') {
+      stopReportStatusPolling();
+      return;
+    }
+
+    startReportStatusPolling();
+  },
+);
+
 onBeforeUnmount(() => {
+  stopReportStatusPolling();
   speechRecognitionSession.value?.abort();
 });
 </script>

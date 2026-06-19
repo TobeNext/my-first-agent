@@ -22,12 +22,16 @@ description: "Use when coding in the Vue frontend. Captures the frontend archite
 - Agent 对话页当前定位为 interview 页面：通过 `frontend/src/services` 调用 BFF，再由 BFF 代理到 Mastra `interview-agent`；当前要求先上传并校验简历，然后直接在页面上确认系统设置。专业技能轮默认按 BFF 返回的专业技能组数量自动设置题数，并在开始面试前按“每个技能组一题”触发 RAG 召回；如果用户切换为自定义题数，则会优先覆盖不同技能组，题数超过技能组数量时再补充跨技能或综合场景题。项目经历轮仍由页面单独配置题数，另有逐题纠错开关和轮次跳过设置。若上传职位 JD，前端会在启动面试时通过共享 start contract 生成结构化请求，并把 JD Markdown 交给 BFF；当前下游已经会把 JD 用于提取职责、技术要求、优先技能与领域词，并参与专业技能轮权重、项目经历交叉验证和缺口能力检查，因此页面文案不能再把 JD 描述为“未来待扩展”的保留上下文。
 - Agent 对话页现在还包含 flow-test mode 开关；只有在该模式开启且 interview 已启动后，页面才显示“跳过本次回答”按钮，并通过 service 层发送专用 skip marker，让下游状态机 mock 评分和追问行为。
 - interview 页面现在还会从现有 SSE 流里解析 `interviewStateManagerTool` 的 `tool-result` 事件，提取结构化进度信息，并在聊天区旁边显示“剩余题数 / 当前题号 / 当前是否处于追问环节”的侧边栏。面试报告生成后，页面会切换到 feedback 闭环表单，通过 schema/service 层把用户对题目贴合度、难度匹配度、整体体验和文本意见提交给 BFF。
+- `frontend/src/services/bff-api.ts` 现在还提供 interview report status、markdown 下载和 read receipt client 方法；前端报告通知/bell UI 必须通过这些 BFF client 访问 `/api/agents/interviews/:threadId/report/*`，不要直接访问 Python runtime 或 Redis。
+- `frontend/src/services/assistant-content.ts` 负责 assistant 文案兼容清理；旧 runtime 返回“等待异步评分完成/当前进度/稍后再发送一条消息”这类报告等待文案时，页面应在 service 层过滤，正常短提示和普通面试问题不受影响。
+- interview 页面 header 现在包含 `InterviewReportBell.vue` 报告通知入口；面试进入 wrap-up/completed 后页面会轮询 BFF report status，ready/failed 后停止轮询，打开 ready 通知或下载 markdown 后会调用 read receipt 让未读角标消失。
 - interview 页面现在还会通过 `frontend/src/services/interview-session-storage.ts` 和 `frontend/src/services/interview-session-recovery.ts` 在浏览器本地持久化最近一次面试的 `threadId`、系统设置和阶段摘要；刷新或中断后，路由会允许用户重新进入 interview 页面，并由页面显式提供“恢复上次面试 / 放弃并重新开始”的入口。若恢复后的首轮续答被后端判定为失效 thread，前端会清理本地无效状态并回退到上传页重新开始。
 
 ## Folder Responsibilities
 
 - `frontend/src/views`: 页面级组件，负责页面布局和组合，不承载底层校验细节。
 - `frontend/src/components`: 可复用交互组件，聚焦展示和用户动作。
+- `frontend/src/components/InterviewReportBell.vue`: 面试报告通知组件，只负责 bell、角标、popup 状态展示和用户动作事件；轮询、下载和 read receipt 调用由页面/service 层处理。
 - `frontend/src/stores`: Pinia 状态容器，负责页面共享状态与动作协调。
 - `frontend/src/services`: 服务层与纯逻辑函数。校验、API 封装和格式化优先放这里，不要直接塞进组件模板逻辑。
 - HTTP 错误解析、SSE 流事件整理和 interview 进度显示文案这类跨页面/跨 service 的纯逻辑也放在 `frontend/src/services`，页面组件只消费整理后的结果。

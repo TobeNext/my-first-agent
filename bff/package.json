@@ -7,7 +7,7 @@
     "start:dev": "ts-node --project tsconfig.json src/main.ts",
     "build": "tsc -p tsconfig.json",
     "test": "npm run test:unit",
-    "test:unit": "node --test --require ts-node/register src/modules/auth/auth.service.test.ts src/modules/resume/resume-parser.test.ts src/modules/resume/resume-markdown.test.ts src/modules/resume/resume.service.test.ts src/modules/agent/interview-start-contract.test.ts src/modules/agent/agent.schemas.test.ts src/modules/agent/agent.service.test.ts",
+    "test:unit": "node --test --require ts-node/register src/modules/auth/auth.service.test.ts src/modules/resume/resume-parser.test.ts src/modules/resume/resume-markdown.test.ts src/modules/resume/resume.service.test.ts src/modules/agent/interview-start-contract.test.ts src/modules/agent/agent.schemas.test.ts src/modules/agent/agent.controller.test.ts src/modules/agent/agent.service.test.ts",
     "test:coverage": "c8 --reporter=text --check-coverage --lines 95 --functions 95 --branches 95 --statements 95 --include=src/modules/auth/auth.service.ts --include=src/modules/resume/resume-parser.ts --include=src/modules/resume/resume-markdown.ts --include=src/modules/resume/resume.service.ts --include=src/modules/agent/agent.schemas.ts --include=src/modules/agent/interview-start-contract.ts node --test --require ts-node/register src/modules/auth/auth.service.test.ts src/modules/resume/resume-parser.test.ts src/modules/resume/resume-markdown.test.ts src/modules/resume/resume.service.test.ts src/modules/agent/interview-start-contract.test.ts src/modules/agent/agent.schemas.test.ts src/modules/agent/agent.service.test.ts",
     "start": "node dist/main.js"
   },

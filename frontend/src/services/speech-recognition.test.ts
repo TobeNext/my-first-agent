@@ -118,14 +118,15 @@ describe('speech-recognition', () => {
 
     expect(session).not.toBeNull();
     expect(recognitionInstance).not.toBeNull();
-    expect(recognitionInstance?.continuous).toBe(true);
-    expect(recognitionInstance?.interimResults).toBe(true);
-    expect(recognitionInstance?.maxAlternatives).toBe(3);
-    expect(recognitionInstance?.lang).toBe('en-US');
+    const recognition = recognitionInstance as unknown as MockRecognitionInstance;
+    expect(recognition.continuous).toBe(true);
+    expect(recognition.interimResults).toBe(true);
+    expect(recognition.maxAlternatives).toBe(3);
+    expect(recognition.lang).toBe('en-US');
 
     expect(session?.start()).toBe(true);
-    recognitionInstance?.onstart?.();
-    recognitionInstance?.onresult?.({
+    recognition.onstart?.();
+    recognition.onresult?.({
       results: createIndexedCollection([
         {
           isFinal: true,
@@ -140,9 +141,9 @@ describe('speech-recognition', () => {
         },
       ]),
     });
-    recognitionInstance?.onerror?.({ error: 'network' });
-    recognitionInstance?.onerror?.({ error: 'aborted' });
-    recognitionInstance?.onend?.();
+    recognition.onerror?.({ error: 'network' });
+    recognition.onerror?.({ error: 'aborted' });
+    recognition.onend?.();
     session?.stop();
     session?.abort();
 
@@ -153,8 +154,8 @@ describe('speech-recognition', () => {
       finalTranscript: 'AI Agent with TypeScript and Node.js',
       interimTranscript: 'RAG follow up',
     });
-    expect(recognitionInstance?.stop).toHaveBeenCalledTimes(1);
-    expect(recognitionInstance?.abort).toHaveBeenCalledTimes(1);
+    expect(recognition.stop).toHaveBeenCalledTimes(1);
+    expect(recognition.abort).toHaveBeenCalledTimes(1);
   });
 
   it('surfaces a startup error when recognition.start throws', () => {

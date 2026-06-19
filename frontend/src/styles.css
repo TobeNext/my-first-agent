@@ -215,8 +215,14 @@ select {
 
 .upload-card__header,
 .agent-card__header {
-  display: grid;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
   gap: 10px;
+}
+
+.upload-card__header {
+  display: grid;
 }
 
 .upload-card__eyebrow {
@@ -233,6 +239,140 @@ select {
   margin: 0;
   font-size: clamp(2rem, 4vw, 3.2rem);
   line-height: 1;
+}
+
+.report-bell {
+  position: relative;
+  flex: 0 0 auto;
+}
+
+.report-bell__button {
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border: 1px solid rgba(11, 110, 79, 0.16);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.66);
+  color: var(--accent-strong);
+  cursor: pointer;
+}
+
+.report-bell__icon {
+  position: relative;
+  width: 16px;
+  height: 18px;
+  border: 2px solid currentColor;
+  border-bottom-width: 3px;
+  border-radius: 10px 10px 5px 5px;
+}
+
+.report-bell__icon::before {
+  content: '';
+  position: absolute;
+  top: -5px;
+  left: 50%;
+  width: 6px;
+  height: 5px;
+  border: 2px solid currentColor;
+  border-bottom: 0;
+  border-radius: 8px 8px 0 0;
+  transform: translateX(-50%);
+}
+
+.report-bell__icon::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  left: 50%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: currentColor;
+  transform: translateX(-50%);
+}
+
+.report-bell__badge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: 999px;
+  background: var(--error);
+  color: white;
+  font-size: 0.72rem;
+  font-weight: 700;
+  line-height: 18px;
+  text-align: center;
+}
+
+.report-bell__popup {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  z-index: 5;
+  width: min(320px, calc(100vw - 48px));
+  padding: 16px;
+  border: 1px solid rgba(11, 110, 79, 0.14);
+  border-radius: 18px;
+  background: rgba(255, 252, 246, 0.98);
+  box-shadow: var(--shadow);
+}
+
+.report-bell__header,
+.report-bell__actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.report-bell__close {
+  display: inline-grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border: 0;
+  border-radius: 999px;
+  background: rgba(11, 110, 79, 0.08);
+  color: var(--accent-strong);
+  cursor: pointer;
+}
+
+.report-bell__status,
+.report-bell__meta,
+.report-bell__error {
+  margin: 10px 0 0;
+}
+
+.report-bell__meta {
+  color: var(--muted);
+}
+
+.report-bell__error {
+  color: var(--error);
+}
+
+.report-bell__actions {
+  justify-content: flex-end;
+  margin-top: 14px;
+}
+
+.report-bell__action {
+  border: 0;
+  border-radius: 999px;
+  padding: 8px 12px;
+  background: rgba(11, 110, 79, 0.08);
+  color: var(--accent-strong);
+  cursor: pointer;
+}
+
+.report-bell__action--primary {
+  background: var(--accent);
+  color: white;
 }
 
 .upload-card__description {

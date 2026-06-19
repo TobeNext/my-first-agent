@@ -16,7 +16,7 @@ description: "Use when coding in the NestJS BFF layer. Captures the BFF architec
 
 - `auth`: 登录相关接口与输入校验
 - `resume`: 文件上传、`.md` 校验、大小校验，以及返回供前端展示和后续启动态默认题数使用的权威专业技能组数量；技能语义拆解不再由 BFF 负责，而是保留原始 Markdown 给 Mastra 处理
-- `agent`: 前端 interview 启动 / 答题请求验证；负责校验专业技能轮自动/自定义题数模式、专业技能轮 / 项目经历轮各自题数、逐题纠错/轮次跳过/flow-test mode 等系统设置，并把基于 `threadId` 的 SSE 流式响应转发到 Mastra。当前启动态已经收敛到统一的结构化 start contract：前端和 BFF 复用同一份 Zod schema，BFF 在默认模式下归一题数并补齐 `resumeSections` 后，将同一份 payload 以 JSON 形式继续透传给下游。面试结束后，BFF 还会接收用户反馈评分与文本意见，并把它写回 Mastra 已经落盘的 `Interview outcome` 结构化 outcome 记录。
+- `agent`: 前端 interview 启动 / 答题请求验证；负责校验专业技能轮自动/自定义题数模式、专业技能轮 / 项目经历轮各自题数、逐题纠错/轮次跳过/flow-test mode 等系统设置，并把基于 `threadId` 的 SSE 流式响应转发到当前 agent runtime。当前启动态已经收敛到统一的结构化 start contract：前端和 BFF 复用同一份 Zod schema，BFF 在默认模式下归一题数并补齐 `resumeSections` 后，将同一份 payload 以 JSON 形式继续透传给下游。面试结束后，BFF 还会接收用户反馈评分与文本意见，并把它写回已落盘的 `Interview outcome` 结构化 outcome 记录。BFF 现在还暴露 `GET /api/agents/interviews/:threadId/report/status`、`GET /api/agents/interviews/:threadId/report/markdown` 和 `POST /api/agents/interviews/:threadId/report/read`，默认 Python provider 下代理到 Python runtime 的 report API，Mastra rollback provider 下 status/read 返回兼容兜底、markdown 返回不可用。
 
 ## Module Boundaries
 
@@ -37,6 +37,7 @@ description: "Use when coding in the NestJS BFF layer. Captures the BFF architec
 - BFF 还必须对 interview 结束后的反馈提交做二次校验，包括 `threadId`、反馈分值范围和反馈文本长度；前端不能直接假定 outcome 文件一定存在。
 - 对于职位 JD 这类选填上下文字段，BFF 负责把“未上传为空、已上传则透传”的边界语义固定下来；在扩展策略真正落地前，不要让这个字段替代现有的简历驱动链路或在 BFF 内硬编码新的检索逻辑。
 - 需要转发到 Mastra 的请求，先在 BFF 内校验，再发给下游
+- 需要转发到当前 agent runtime 的报告状态、markdown 下载和已读回执请求，先在 BFF 内校验 `threadId`，再按 `AGENT_RUNTIME_PROVIDER` 处理；默认 Python provider 代理到 Python runtime，Mastra rollback provider 不应因为新报告轮询接口破坏旧面试启动和构建。
 - 需要转发的流式响应优先保持为流，不要在 BFF 内先聚合成完整文本再返回给前端
 - 如果前端维护本地会话历史，BFF 仍需单独校验 `threadId`、启动态和当前轮次输入，而不是把前端本地状态当成可信来源
 

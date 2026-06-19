@@ -7,6 +7,28 @@ import { saveInterviewFeedback, type InterviewFeedbackInput } from './agent-outc
 import type { StreamInterviewInput } from './agent.schemas';
 import { buildInterviewStartRequest, serializeInterviewStartRequest } from './interview-start-contract';
 
+export type InterviewReportState = 'not-started' | 'generating' | 'ready' | 'failed';
+
+export interface InterviewReportStatus {
+  readonly threadId: string;
+  readonly reportState: InterviewReportState;
+  readonly sealed: boolean;
+  readonly expectedCount: number;
+  readonly completedCount: number;
+  readonly failedCount: number;
+  readonly unreadCount: number;
+  readonly markdownAvailable: boolean;
+  readonly reportId: string | null;
+  readonly updatedAt: string | null;
+  readonly blockingReason?: 'manifest-missing' | 'not-sealed' | 'pending' | 'failed' | 'timeout' | null;
+}
+
+export interface InterviewReportMarkdownDownload {
+  readonly content: string;
+  readonly contentType: string;
+  readonly contentDisposition: string;
+}
+
 @Injectable()
 export class AgentService {
   private readonly logger = new Logger(AgentService.name);
@@ -162,5 +184,119 @@ export class AgentService {
       this.logger.error(`Interview feedback persistence failed for thread ${input.threadId}: ${message}`);
       throw new NotFoundException(message);
     }
+  }
+
+  async fetchInterviewReportStatus(threadId: string): Promise<InterviewReportStatus> {
+    const runtime = this.resolveRuntime();
+    if (runtime.provider === 'mastra') {
+      return this.createMastraFallbackReportStatus(threadId);
+    }
+
+    const upstreamResponse = await this.fetchReportRuntime(
+      `${runtime.baseUrl}/api/interviews/${encodeURIComponent(threadId)}/report/status`,
+      {
+        method: 'GET',
+        headers: { Accept: 'application/json' },
+      },
+      runtime,
+      threadId,
+      'report status',
+    );
+
+    return (await upstreamResponse.json()) as InterviewReportStatus;
+  }
+
+  async downloadInterviewReportMarkdown(threadId: string): Promise<InterviewReportMarkdownDownload> {
+    const runtime = this.resolveRuntime();
+    if (runtime.provider === 'mastra') {
+      throw new NotFoundException('Interview report markdown is not available from the Mastra rollback provider.');
+    }
+
+    const upstreamResponse = await this.fetchReportRuntime(
+      `${runtime.baseUrl}/api/interviews/${encodeURIComponent(threadId)}/report/markdown`,
+      {
+        method: 'GET',
+        headers: { Accept: 'text/markdown' },
+      },
+      runtime,
+      threadId,
+      'report markdown',
+      [404],
+    );
+
+    if (upstreamResponse.status === 404) {
+      throw new NotFoundException('Interview report markdown was not found.');
+    }
+
+    return {
+      content: await upstreamResponse.text(),
+      contentType: upstreamResponse.headers.get('content-type') ?? 'text/markdown; charset=utf-8',
+      contentDisposition: `attachment; filename="interview-report-${threadId}.md"`,
+    };
+  }
+
+  async markInterviewReportRead(threadId: string): Promise<{ readonly threadId: string; readonly readAt: string }> {
+    const runtime = this.resolveRuntime();
+    if (runtime.provider === 'mastra') {
+      return { threadId, readAt: new Date().toISOString() };
+    }
+
+    const upstreamResponse = await this.fetchReportRuntime(
+      `${runtime.baseUrl}/api/interviews/${encodeURIComponent(threadId)}/report/read`,
+      {
+        method: 'POST',
+        headers: { Accept: 'application/json' },
+      },
+      runtime,
+      threadId,
+      'report read receipt',
+    );
+
+    return (await upstreamResponse.json()) as { readonly threadId: string; readonly readAt: string };
+  }
+
+  private async fetchReportRuntime(
+    url: string,
+    init: RequestInit,
+    runtime: { readonly provider: 'mastra' | 'python'; readonly baseUrl: string; readonly label: string },
+    threadId: string,
+    operation: string,
+    passthroughStatuses: readonly number[] = [],
+  ): Promise<globalThis.Response> {
+    let upstreamResponse: globalThis.Response;
+
+    try {
+      upstreamResponse = await fetch(url, init);
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'Unknown network error';
+      this.logger.error(`${runtime.label} ${operation} request failed for thread ${threadId}: ${message}`);
+      throw new BadGatewayException(`Unable to connect to ${runtime.label} at ${runtime.baseUrl}: ${message}`);
+    }
+
+    if (!upstreamResponse.ok && !passthroughStatuses.includes(upstreamResponse.status)) {
+      const errorText = await upstreamResponse.text();
+      this.logger.error(
+        `${runtime.label} ${operation} request failed for thread ${threadId} with status ${upstreamResponse.status}: ${errorText}`,
+      );
+      throw new BadGatewayException(`${runtime.label} ${operation} request failed with status ${upstreamResponse.status}: ${errorText}`);
+    }
+
+    return upstreamResponse;
+  }
+
+  private createMastraFallbackReportStatus(threadId: string): InterviewReportStatus {
+    return {
+      threadId,
+      reportState: 'not-started',
+      sealed: false,
+      expectedCount: 0,
+      completedCount: 0,
+      failedCount: 0,
+      unreadCount: 0,
+      markdownAvailable: false,
+      reportId: null,
+      updatedAt: null,
+      blockingReason: 'manifest-missing',
+    };
   }
 }
