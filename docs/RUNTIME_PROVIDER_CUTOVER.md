@@ -21,11 +21,13 @@ As of the Phase A baseline:
 - Python now has a LangChain chat model factory and can use a configured
   OpenAI-compatible provider for LLM-generated follow-up questions. The default
   mock/no-key path and model failures still use deterministic fallback logic.
-- Python now has Redis-compatible async evaluation schemas/store key layout, main
-  graph best-effort enqueue, a LangChain structured-output worker loop, wait/read,
-  and final report reduction from complete LLM evaluation results. Failed, pending,
-  or timed-out evaluations block final report readiness instead of returning partial
-  local rule-based reports.
+- Python now owns the report flow without external workers. When the interview
+  reaches wrap-up, the stream response returns the report-generating message
+  immediately, then a Python background task runs answer evaluation, report
+  generation, and report DB persistence; report status and markdown APIs read
+  from the report DB.
+  Redis-compatible async evaluation/report workers are no longer part of the
+  default Python provider flow.
 - Python now has metadata normalization and hybrid rerank parity tests for the
   existing Mastra RAG path. `bm25Score` remains the legacy trace field name, but
   currently records skillArea match score rather than a true lexical BM25 score.
@@ -44,11 +46,20 @@ npm run test:e2e:interview:rollback-smoke
 ```
 
 Phase G local verification on 2026-06-15 passed the Python provider smoke,
-Python full E2E suite, Python complete flow with the answer-evaluation worker,
-and the Mastra provider smoke. Docker rollback smoke was not executed in that
+Python full E2E suite, the Python complete flow with the legacy answer-evaluation
+worker, and the Mastra provider smoke. After the background report migration, rerun
+the Python complete flow without Redis/worker and confirm report status becomes
+ready from the Python report DB. Docker rollback smoke was not executed in that
 environment because Docker Desktop was not running and `docker compose` could not
 connect to `npipe:////./pipe/dockerDesktopLinuxEngine`; rerun the command above
 in a Docker-enabled environment before treating rollback as release-proven.
+
+Background report local verification on 2026-06-20 passed with only the Python agent,
+BFF, and frontend services running. `npm run test:e2e:interview:complete:python`
+completed the interview, observed `finalReportReady=true`, waited for BFF report
+status `ready`, downloaded markdown, marked the report read, and confirmed the
+Python report DB contained the succeeded report and report items. No Redis
+service or Python answer/report worker was started for this verification.
 
 The script starts the stack with `AGENT_RUNTIME_PROVIDER=python`, runs the Python smoke, restarts the stack with `AGENT_RUNTIME_PROVIDER=mastra`, and runs the same smoke against Mastra.
 

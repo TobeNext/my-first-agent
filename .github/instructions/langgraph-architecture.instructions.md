@@ -23,15 +23,14 @@ description: "Use when coding in the sibling Python LangGraph runtime. Captures 
 
 ## Current Responsibilities
 
-- `app.main`: FastAPI 入口；暴露 `/health`、`/api/agents/interview-agent/stream` 和 interview report status/markdown/read API；把 BFF 传入的 Mastra-style stream request 转成 LangGraph 调用，并为报告通知/下载提供 Python runtime 侧 HTTP 边界。
-- `app.graphs.interview_graph`: LangGraph 编排入口；按 checkpoint 中是否存在 session 路由到初始化或用户答题处理，并统一产出 snapshot。
-- `app.graphs.nodes`: LangGraph 节点实现；当前 `process_user_reply` 负责后续答题推进。
+- `app.main`: FastAPI 入口；暴露 `/health`、`/api/agents/interview-agent/stream` 和 interview report status/markdown/read API；把 BFF 传入的 Mastra-style stream request 转成 LangGraph 调用，并为报告通知/下载提供 Python runtime 侧 HTTP 边界。Report status、markdown 和 read receipt API 只依赖 `InterviewReportRepository` / report DB。Stream 请求命中 `wrap-up` / `finalReportReady=false` 时会先返回“报告生成中”snapshot，再通过 FastAPI `BackgroundTasks` 触发后台报告生成。
+- `app.graphs.interview_graph`: LangGraph 编排入口；按 checkpoint 中是否存在 session 路由到初始化或用户答题处理，并统一产出 snapshot。用户答题后如果进入 `wrap-up`，stream graph 不同步执行报告生成，而是立即 emit snapshot；`run_report_generation_for_thread` 会从 checkpoint 读取 session，后台依次执行 `evaluate_answers -> generate_report -> persist_report` 并把结果回写 checkpoint/report DB。
+- `app.graphs.nodes`: LangGraph 节点实现；当前 `process_user_reply` 负责后续答题推进，并在状态机给出本地 completed/final report 时把 session 转成 `wrap-up` / `finalReportReady=false`，让 stream 立即返回报告生成中提示；它不写队列、不 seal manifest。`report_generation` 提供 `evaluate_answers_node`、`generate_report_node` 和 `persist_report_node`，由后台 runner 调用。
 - `app.schemas`: Pydantic contract；维护 Mastra stream request、interview start、state、snapshot、answer evaluation、interview report 和 report generation 等结构化边界。
-- `app.domain`: 面试业务逻辑；包含 kickoff recovery、简历/JD 信号解析、问题规划、RAG 召回、问题生成/裁决、状态机、追问、outcome、RAG sample、异步答题评分 enqueue/read、report generation enqueue/prompt/status 解析。
-- `app.integrations`: 外部基础设施适配；包含模型、embedding、Milvus、Redis、checkpoint store、Redis evaluation store、report DB repository 和 Redis report generation store。
+- `app.domain`: 面试业务逻辑；包含 kickoff recovery、简历/JD 信号解析、问题规划、RAG 召回、问题生成/裁决、状态机、追问、outcome、RAG sample、answer evaluation runtime、report generation prompt/runtime 和 report status 解析。`answer_evaluation_runtime` 用于从 session answer attempts 构造同步评分 context 并批量生成 `LlmAnswerEvaluationResult`；`report_generation_runtime` 用于基于 session、评分 context 和评分结果同步生成 `ReportGenerationOutput` 并构造 `InterviewReportWrite`。
+- `app.integrations`: 外部基础设施适配；包含模型、embedding、Milvus、checkpoint store 和 report DB repository。
 - `app.sse`: Mastra-compatible SSE 编码；输出 `text-delta`、`tool-result` 和 `[DONE]`，供现有 BFF/frontend 继续复用同一消费路径。
-- `app.workers` 与 `scripts/run_answer_evaluation_worker.py`: 异步答题评分 worker；从 Redis-compatible store 消费任务并写回结构化评估结果。
-- `app.workers.report_generation_worker` 与 `scripts/run_report_generation_worker.py`: report-generation worker；当前负责 claim report-generation task、等待 evaluation manifest sealed 且全部 expected task 有 result、遇到 failed evaluation task 时标记 report failed、构造 report prompt、调用模型生成 `ReportGenerationOutput`、事务写入 report DB，并且只在 DB 写入成功后把 Redis report manifest 标记为 succeeded。输出校验失败、evaluation pending 或 DB 写入失败会进入 retry/failed 路径，避免 Redis 提前显示 `markdownAvailable=true`。
+- `app.workers`: 当前不承载报告生成主流程 worker；answer evaluation 和 report generation 已迁移到 FastAPI background task 调用的 LangGraph report runner。`scripts/` 不再包含 answer/report worker 启动脚本。
 
 ## Module Boundaries
 
@@ -47,7 +46,7 @@ description: "Use when coding in the sibling Python LangGraph runtime. Captures 
 
 - BFF 仍负责登录、上传、结构化 start payload 归一和前置校验；Python runtime 仍必须用 Pydantic 对收到的 Mastra-style request 做自己的边界解析。
 - `/api/agents/interview-agent/stream` 当前接收 `messages`、`memory.thread`、`memory.resource` 和可选 `maxSteps`；业务 thread id 以 `memory.thread` 为准。
-- `/api/interviews/{thread_id}/report/status`、`/api/interviews/{thread_id}/report/markdown` 和 `/api/interviews/{thread_id}/report/read` 是 Python runtime 侧报告状态、markdown 下载和已读回执 API；status 读取 Redis report manifest、answer evaluation manifest、DB report 和 DB read receipt，markdown 只从 report DB 读取。
+- `/api/interviews/{thread_id}/report/status`、`/api/interviews/{thread_id}/report/markdown` 和 `/api/interviews/{thread_id}/report/read` 是 Python runtime 侧报告状态、markdown 下载和已读回执 API；status 只读取 report DB 和 DB read receipt，markdown 只从 report DB 读取，read receipt 只写 report DB。
 - 初始化时，最后一条 user message 包含 BFF 透传的 structured kickoff payload；runtime 负责恢复 structured / legacy kickoff，并自行完成题目规划、召回、生成、裁决和状态初始化。
 - 后续答题时，runtime 通过 checkpoint 中的 thread state 恢复 session；前端本地历史和 BFF 转发内容不能替代 checkpoint state。
 - SSE 必须保持 Mastra-compatible：先逐段输出 `text-delta`，再输出 tool name 为 `interviewStateManagerTool` 的 `tool-result` snapshot，最后输出 `[DONE]`。
@@ -60,7 +59,7 @@ description: "Use when coding in the sibling Python LangGraph runtime. Captures 
 - Outcome 默认写入 host repo 的 `../my-first-agent/Interview outcome`，RAG recall sample 默认写入 `../my-first-agent/RAG LOG INFO`；路径来自 `OUTCOME_ROOT` 和 `RAG_LOG_ROOT`。
 - 初始化阶段会写入 outcome snapshot 和 RAG recall sample；写 artifact 失败不应阻断基本面试响应，但需要保持可观测性和测试覆盖。
 - Report DB 由 `REPORT_DATABASE_URL` 配置，当前默认 SQLite 文件为 `./interview_reports.db`；`app.integrations.report_repository` 负责自动初始化 `interview_reports`、`interview_report_items` 和 `interview_report_reads`，最终 markdown 与结构化 report JSON 以 DB 为持久化真源，不应写入 checkpoint DB。
-- Redis 由 `REDIS_URL` 及超时配置控制，用于异步 answer evaluation task/status/result，以及 report-generation task/status/manifest/read notification 状态；worker 和 enqueue/read 逻辑必须保持 Redis-compatible store 边界。当前 report-generation Redis 基础层已落地在 `app.integrations.redis_report_generation_store`，使用 `report-generation:pending` 和 `interview:{interviewId}:report:*` key 空间；`app.domain.report_generation_enqueue` 负责构造 report-generation task，`process_user_reply` 在面试完成时 seal evaluation manifest、enqueue report task，并向前端返回“报告生成中”的短提示。report-generation worker 会先读取 answer-evaluation manifest/results/tasks，未完成时不生成 partial report，有 failed evaluation task 时标记 report failed，DB 写入成功后才更新 Redis succeeded manifest。
+- 报告生成主流程不依赖 Redis、外部 worker、queue task 或 manifest。面试完成后 stream graph 先进入 `wrap-up` 并立即返回报告生成中提示，再由 FastAPI background task 调用 LangGraph report runner 执行 answer evaluation、report generation 和 DB persistence；report status API 只读取 report DB。
 - Milvus 由 `MILVUS_ADDRESS` 和 embedding 配置驱动；默认 hash embedding 允许无 key 启动，真实 provider embedding 必须与 collection dimension 匹配。
 - 模型 provider 默认 `mock`，真实 follow-up / evaluation 生成通过 OpenAI-compatible LangChain factory；模型失败应保留 deterministic fallback，不应让本地无 key 开发流程崩溃。
 
@@ -76,7 +75,7 @@ description: "Use when coding in the sibling Python LangGraph runtime. Captures 
   - `.venv\Scripts\pytest`
   - `.venv\Scripts\ruff check .`
   - `.venv\Scripts\uvicorn app.main:app --host 0.0.0.0 --port 8011`
-  - `.venv\Scripts\python scripts\run_answer_evaluation_worker.py`
+  - `.venv\Scripts\python -m pytest tests\integration\test_report_api.py`
 
 ## Shared Governance
 

@@ -14,6 +14,23 @@ This repository is now the frontend/BFF host for an interview system whose defau
 
 The legacy **Mastra** runtime under `src/mastra/**` remains available only as a rollback provider during the cutover window. New interview runtime features must be implemented in the LangGraph repository. Mastra source changes should be limited to rollback blockers, security fixes, build breakages, or compatibility fixes that keep the fallback provider usable.
 
+## CRITICAL: LangGraph Architecture Instruction Required
+
+**BEFORE reading implementation files, executing a plan step, or editing anything under `../my-first-agent-langgraph`, first load and read `.github/instructions/langgraph-architecture.instructions.md` from this host repository.**
+
+This requirement applies even when the user points directly to a plan file or a specific Python source file. If a single request advances multiple numbered plan steps, reload/recheck the LangGraph architecture instruction before each step. After making LangGraph runtime changes, run the `project-architecture-sync` skill and record the guard as instructed there.
+
+### LangGraph / Python Guidance
+
+The sibling project `../my-first-agent-langgraph` is the default Python runtime for the interview system. Treat it as the primary place for new interview runtime features, while this host repository owns the frontend, BFF, local stack orchestration, and Mastra rollback provider.
+
+1. **Load the LangGraph architecture instruction FIRST** - Read `.github/instructions/langgraph-architecture.instructions.md` before inspecting Python runtime implementation, answering LangGraph runtime design questions, or editing `../my-first-agent-langgraph`.
+2. **Never rely on cached LangGraph or LangChain knowledge** - APIs and project wiring can change quickly. Verify behavior against the installed project code, `pyproject.toml`, and the architecture instruction before choosing an implementation.
+3. **Keep changes inside the established Python layers** - FastAPI handlers stay at HTTP/SSE boundaries; LangGraph graph files own routing/checkpoint orchestration; business logic goes in `src/app/domain`; external clients and persistence adapters go in `src/app/integrations`; contracts stay in `src/app/schemas`.
+4. **Preserve the BFF/frontend contract** - SSE must remain Mastra-compatible, and report/status/markdown/read APIs must keep the shapes consumed by the BFF and frontend unless those layers are intentionally updated in the same change.
+5. **Use the Python project tooling** - The runtime targets Python 3.12+, Pydantic v2, FastAPI, LangGraph, LangChain, pytest, and Ruff with 100-column lines. Prefer focused unit tests for domain changes, contract tests for stream/API shape, and integration tests for runtime wiring.
+6. **Run scoped verification** - For LangGraph changes, run the most relevant `python -m pytest ...` and `python -m ruff check ...` commands from `../my-first-agent-langgraph`. Broaden to full tests when changing graph routing, schemas, persistence, or API behavior.
+
 ## Commands
 
 Use these commands to interact with the project.

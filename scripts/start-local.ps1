@@ -42,9 +42,19 @@ function Escape-SingleQuotedString {
 }
 
 function Start-DockerDependencies {
-  Write-Host '[Docker] starting dependency services (etcd, minio, milvus, redis)...' -ForegroundColor Cyan
+  param(
+    [ValidateSet('mastra', 'python')]
+    [string]$Provider
+  )
 
-  docker compose up -d etcd minio milvus redis
+  if ($Provider -eq 'mastra') {
+    Write-Host '[Docker] starting dependency services (etcd, minio, milvus, redis)...' -ForegroundColor Cyan
+    docker compose up -d etcd minio milvus redis
+  } else {
+    Write-Host '[Docker] starting dependency services (etcd, minio, milvus)...' -ForegroundColor Cyan
+    docker compose up -d etcd minio milvus
+  }
+
 
   Write-Host '[Docker] dependency services requested.' -ForegroundColor Green
 }
@@ -183,8 +193,10 @@ Ensure-PathExists -Path $envFilePath -Description '.env file'
 $pythonAgentRoot = Join-Path (Split-Path -Parent $projectRoot) 'my-first-agent-langgraph'
 
 if ($StartDockerDependencies) {
-  Start-DockerDependencies
-  Wait-ForTcpPort -ServiceName 'Redis' -Port 6379 -TimeoutSeconds 60
+  Start-DockerDependencies -Provider $AgentRuntimeProvider
+  if ($AgentRuntimeProvider -eq 'mastra') {
+    Wait-ForTcpPort -ServiceName 'Redis' -Port 6379 -TimeoutSeconds 60
+  }
   Wait-ForTcpPort -ServiceName 'Milvus' -Port 19530 -TimeoutSeconds 120
 }
 

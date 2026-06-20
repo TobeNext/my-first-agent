@@ -1,9 +1,7 @@
-import { spawn, type ChildProcessWithoutNullStreams } from 'node:child_process';
+import { spawn } from 'node:child_process';
 import { existsSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-
-import { createClient } from 'redis';
 
 import {
   downloadInterviewReportMarkdown,
@@ -17,26 +15,6 @@ import { withBffRelativeApiBase } from './interview-e2e-client';
 const E2E_DIR = dirname(fileURLToPath(import.meta.url));
 const PROJECT_ROOT = resolve(E2E_DIR, '..', '..');
 const LANGGRAPH_ROOT = resolve(PROJECT_ROOT, '..', 'my-first-agent-langgraph');
-const DEFAULT_E2E_REDIS_URL = 'redis://127.0.0.1:6379';
-
-export interface StartedInterviewReportWorkers {
-  readonly stop: () => Promise<void>;
-}
-
-export async function startInterviewReportWorkers(): Promise<StartedInterviewReportWorkers> {
-  const children = [
-    startPythonWorker('answer-evaluation-worker', 'scripts/run_answer_evaluation_worker.py'),
-    startPythonWorker('report-generation-worker', 'scripts/run_report_generation_worker.py'),
-  ];
-
-  await new Promise((resolveReady) => setTimeout(resolveReady, 1_500));
-
-  return {
-    async stop() {
-      await Promise.all(children.map((child) => stopWorker(child)));
-    },
-  };
-}
 
 export async function waitForReportStatus(
   threadId: string,
@@ -71,19 +49,6 @@ export async function markReportRead(threadId: string): Promise<InterviewReportS
   return await withBffRelativeApiBase(() => fetchInterviewReportStatus(threadId));
 }
 
-export async function readReportManifestFromRedis(threadId: string): Promise<Record<string, unknown> | null> {
-  const client = createClient({
-    url: process.env.INTERVIEW_E2E_REDIS_URL ?? process.env.REDIS_URL ?? DEFAULT_E2E_REDIS_URL,
-  });
-  await client.connect();
-  try {
-    const raw = await client.get(`interview:${threadId}:report:manifest`);
-    return raw ? (JSON.parse(raw) as Record<string, unknown>) : null;
-  } finally {
-    client.destroy();
-  }
-}
-
 export async function readReportDbSummary(threadId: string): Promise<{
   readonly reportCount: number;
   readonly itemCount: number;
@@ -116,52 +81,6 @@ export async function readReportDbSummary(threadId: string): Promise<{
     readonly itemCount: number;
     readonly markdown: string;
   };
-}
-
-function startPythonWorker(name: string, scriptPath: string): ChildProcessWithoutNullStreams {
-  const child = spawn('python', [scriptPath], {
-    cwd: LANGGRAPH_ROOT,
-    env: {
-      ...process.env,
-      PYTHONPATH: 'src',
-      MODEL_PROVIDER: process.env.MODEL_PROVIDER ?? 'mock',
-      REDIS_URL: process.env.INTERVIEW_E2E_REDIS_URL ?? process.env.REDIS_URL ?? DEFAULT_E2E_REDIS_URL,
-    },
-    stdio: 'pipe',
-    windowsHide: true,
-  });
-  child.stdout.on('data', (chunk: Buffer) => {
-    console.info(`[${name}] ${chunk.toString('utf8').trim()}`);
-  });
-  child.stderr.on('data', (chunk: Buffer) => {
-    console.error(`[${name}] ${chunk.toString('utf8').trim()}`);
-  });
-  child.on('exit', (code, signal) => {
-    if (code !== null && code !== 0) {
-      console.error(`[${name}] exited with code ${code}.`);
-    }
-    if (signal) {
-      console.info(`[${name}] stopped by ${signal}.`);
-    }
-  });
-  return child;
-}
-
-async function stopWorker(child: ChildProcessWithoutNullStreams): Promise<void> {
-  if (child.exitCode !== null || child.killed) {
-    return;
-  }
-
-  await new Promise<void>((resolveStopped) => {
-    child.once('exit', () => resolveStopped());
-    child.kill();
-    setTimeout(() => {
-      if (child.exitCode === null && !child.killed) {
-        child.kill('SIGKILL');
-      }
-      resolveStopped();
-    }, 2_000);
-  });
 }
 
 async function runPythonInline(script: string, args: readonly string[]): Promise<string> {

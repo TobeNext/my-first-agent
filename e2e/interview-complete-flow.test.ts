@@ -10,17 +10,14 @@ import {
   downloadReportMarkdown,
   markReportRead,
   readReportDbSummary,
-  readReportManifestFromRedis,
-  startInterviewReportWorkers,
   waitForReportStatus,
 } from './support/interview-report-e2e';
 
 describe('interview E2E completion flow', () => {
-  it('covers async report generation, markdown download, read receipt, Redis, and DB persistence', async () => {
+  it('covers background report generation, markdown download, read receipt, and DB persistence', async () => {
     await assertInterviewE2eEnvironmentReady();
 
     const threadId = `e2e-complete-${Date.now()}`;
-    const workers = await startInterviewReportWorkers();
     const settings = buildInterviewSystemSettings({
       reviewIncorrectOrMissingPoints: true,
       roundPreference: 'skip-professional-skills',
@@ -30,62 +27,46 @@ describe('interview E2E completion flow', () => {
       projectQuestionCount: 1,
     });
 
-    try {
-      const latestResult = await completeInterviewToReportGeneration({
-        threadId,
-        fixture: STANDARD_INTERVIEW_FIXTURE,
-        settings,
-      });
+    const latestResult = await completeInterviewToReportGeneration({
+      threadId,
+      fixture: STANDARD_INTERVIEW_FIXTURE,
+      settings,
+    });
 
-      expect(latestResult.interviewState).not.toBeNull();
-      expect(latestResult.interviewState?.finalReportReady).toBe(false);
-      expect(latestResult.interviewState?.progress.currentStage).toBe('completed');
-      expect(latestResult.authoritativeAssistantReply).toBe(
-        '面试已结束，报告生成中。生成进度和最终报告可在右上角通知中查看。',
-      );
-      expect(latestResult.authoritativeAssistantReply).not.toContain('等待异步评分完成');
-      expect(latestResult.authoritativeAssistantReply).not.toContain('当前进度');
+    expect(latestResult.interviewState).not.toBeNull();
+    expect(latestResult.interviewState?.phase).toBe('wrap-up');
+    expect(latestResult.interviewState?.finalReportReady).toBe(false);
+    expect(latestResult.interviewState?.progress.currentStage).toBe('completed');
+    expect(latestResult.authoritativeAssistantReply).toBe(
+      '面试已结束，报告生成中。生成进度和最终报告可在右上角通知中查看。',
+    );
+    expect(latestResult.authoritativeAssistantReply).not.toContain('等待异步评分完成');
+    expect(latestResult.authoritativeAssistantReply).not.toContain('当前进度');
 
-      const generatingStatus = await waitForReportStatus(
-        threadId,
-        (status) => status.reportState === 'generating' || status.reportState === 'ready',
-        { timeoutMs: 30_000, intervalMs: 1_000 },
-      );
-      expect(['generating', 'ready']).toContain(generatingStatus.reportState);
+    const readyStatus = await waitForReportStatus(
+      threadId,
+      (status) => status.reportState === 'ready' && status.markdownAvailable && status.unreadCount === 1,
+    );
+    expect(readyStatus.completedCount).toBe(readyStatus.expectedCount);
+    expect(readyStatus.reportId).toBeTruthy();
 
-      const readyStatus = await waitForReportStatus(
-        threadId,
-        (status) => status.reportState === 'ready' && status.markdownAvailable && status.unreadCount === 1,
-      );
-      expect(readyStatus.completedCount).toBe(readyStatus.expectedCount);
-      expect(readyStatus.reportId).toBeTruthy();
+    const markdown = await downloadReportMarkdown(threadId);
+    expect(markdown).toMatch(/模拟面试报告|Interview/i);
+    expect(markdown).not.toContain('referenceAnswer');
 
-      const markdown = await downloadReportMarkdown(threadId);
-      expect(markdown).toMatch(/模拟面试报告|Interview/i);
-      expect(markdown).not.toContain('referenceAnswer');
+    const readStatus = await markReportRead(threadId);
+    expect(readStatus.reportState).toBe('ready');
+    expect(readStatus.unreadCount).toBe(0);
 
-      const readStatus = await markReportRead(threadId);
-      expect(readStatus.reportState).toBe('ready');
-      expect(readStatus.unreadCount).toBe(0);
+    const dbSummary = await readReportDbSummary(threadId);
+    expect(dbSummary.reportCount).toBe(1);
+    expect(dbSummary.itemCount).toBeGreaterThanOrEqual(1);
+    expect(dbSummary.markdown).toContain(markdown.slice(0, 20));
 
-      const dbSummary = await readReportDbSummary(threadId);
-      expect(dbSummary.reportCount).toBe(1);
-      expect(dbSummary.itemCount).toBeGreaterThanOrEqual(1);
-      expect(dbSummary.markdown).toContain(markdown.slice(0, 20));
+    const { indexRecord, outcomeRecord } = await readInterviewOutcomeArtifacts(threadId);
 
-      const redisManifest = await readReportManifestFromRedis(threadId);
-      expect(redisManifest?.status).toBe('succeeded');
-      expect(redisManifest?.markdownAvailable).toBe(true);
-      expect(redisManifest?.reportId).toBe(readyStatus.reportId);
-
-      const { indexRecord, outcomeRecord } = await readInterviewOutcomeArtifacts(threadId);
-
-      expect(indexRecord.threadId).toBe(threadId);
-      expect(indexRecord.outcomeFilePath).toContain(threadId);
-      expect(outcomeRecord.threadId).toBe(threadId);
-      expect(outcomeRecord.session.finalReportReady).toBe(false);
-    } finally {
-      await workers.stop();
-    }
+    expect(indexRecord.threadId).toBe(threadId);
+    expect(indexRecord.outcomeFilePath).toContain(threadId);
+    expect(outcomeRecord.threadId).toBe(threadId);
   });
 });

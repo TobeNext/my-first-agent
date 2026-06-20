@@ -14,8 +14,9 @@ The project is split into three runtime layers:
 Supporting services:
 
 - Milvus stores embedded interview questions and scalar metadata such as `role`, `difficulty`, and `skillArea`.
-- Redis stores async answer evaluation tasks, manifests, statuses, and LLM scoring results.
+- Redis is only needed for the legacy Mastra rollback provider's async answer evaluation path. The default Python LangGraph provider does not use Redis for answer evaluation, report generation, or report status.
 - LibSQL stores Mastra runtime persistence such as traces and memory.
+- The Python report DB stores generated markdown reports, structured report JSON, and read receipts.
 
 ## Interview Flow
 
@@ -25,7 +26,8 @@ Supporting services:
 4. The frontend builds a structured interview start request with resume Markdown, optional JD Markdown, and interview settings.
 5. The BFF normalizes defaults, fills `resumeSections`, and forwards the structured payload to the configured agent runtime.
 6. By default, the Python LangGraph runtime initializes the session, retrieves or falls back to interview questions, checkpoints state, advances follow-ups, returns progress summaries, and writes outcome/RAG artifacts.
-7. User feedback is later written back through the BFF using the unchanged outcome index and feedback shape.
+7. When the interview reaches wrap-up, LangGraph returns the report-generating message immediately, then a Python background task runs answer evaluation, report generation, and report DB persistence. The frontend bell short-polls the BFF report status API until the Python report DB shows the report is ready or failed.
+8. User feedback is later written back through the BFF using the unchanged outcome index and feedback shape.
 
 Generated local artifacts such as `Interview outcome/`, RAG recall samples, logs, coverage, databases, and build outputs are intentionally ignored by Git.
 
@@ -45,6 +47,8 @@ LIBSQL_VECTOR_DB_URL=file:./interview-vectors.db
 REDIS_URL=redis://localhost:6379
 EMBEDDING_PROVIDER=hash
 ```
+
+`REDIS_URL` is only required when running the Mastra rollback provider or its legacy async answer-evaluation worker. The default Python provider can complete the report flow without Redis.
 
 BFF defaults are defined in `bff/src/config.ts`:
 
@@ -94,7 +98,7 @@ This starts three PowerShell windows by default:
 - BFF API: `http://localhost:3000`
 - Frontend: `http://localhost:4173`
 
-The frontend proxies `/api` requests to the BFF. The startup script also frees the required app ports before launching services. `start:all` additionally starts the Docker Compose dependency services `etcd`, `minio`, `milvus`, and `redis`, then waits for Redis and Milvus ports before opening the app service windows.
+The frontend proxies `/api` requests to the BFF. The startup script also frees the required app ports before launching services. `start:local` starts only the Python agent, BFF, and frontend; it does not start Redis or any answer/report worker. `start:all` additionally starts the Docker Compose dependency services `etcd`, `minio`, and `milvus`, then waits for Milvus before opening the app service windows. Redis is started only by the Mastra rollback variant, `start:all:mastra`.
 
 You can also run services manually:
 
@@ -139,7 +143,7 @@ npm run dev:mastra                  # Mastra dev server
 npm run build                       # Mastra production build
 npm run start                       # Default local Python/BFF/frontend stack
 npm run start:mastra                # Start built Mastra server
-npm run worker:answer-evaluation    # Run async answer evaluation worker
+npm run worker:answer-evaluation    # Legacy Mastra rollback async evaluation worker
 npm run migrate:vectors:milvus      # Recreate Milvus question vectors from LibSQL source
 npm run backfill:vectors:milvus-metadata
 ```
@@ -166,7 +170,7 @@ npm run test:e2e:interview:rollback-smoke
 ```
 
 - `test:e2e:interview:smoke`: Python provider readiness plus the minimal upload-resume-to-start-interview path.
-- `test:e2e:interview`: Python provider full live suite covering completion, outcome persistence, edge scenarios, and feedback submission.
+- `test:e2e:interview`: Python provider full live suite covering completion, outcome persistence, report status readiness, edge scenarios, and feedback submission.
 - `test:e2e:interview:smoke:mastra`: rollback smoke against the legacy provider.
 - `test:e2e:interview:rollback-smoke`: starts the stack with Python, runs smoke, restarts with Mastra, and runs the same smoke again.
 
@@ -186,8 +190,8 @@ The manual GitHub Actions workflow at `.github/workflows/interview-e2e.yml` writ
 
 - `src/mastra/agents`: agent definitions and tool/model composition.
 - `src/mastra/tools`: Mastra tools with Zod input/output boundaries.
-- `src/mastra/lib`: shared runtime infrastructure, state machine helpers, RAG, vector store, Redis evaluation store, and parsers/adapters.
-- `src/mastra/scripts`: manual scripts for migration, workers, imports, and local verification.
+- `src/mastra/lib`: legacy rollback runtime infrastructure, state machine helpers, RAG, vector store, Redis evaluation store, and parsers/adapters.
+- `src/mastra/scripts`: manual scripts for migration, legacy rollback workers, imports, and local verification.
 - `frontend/src`: Vue views, components, services, stores, schemas, and router.
 - `bff/src/modules`: NestJS modules for auth, resume validation, and agent proxy APIs.
 - `e2e/`: live interview E2E harness.
