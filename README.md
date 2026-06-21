@@ -100,6 +100,8 @@ This starts three PowerShell windows by default:
 
 The frontend proxies `/api` requests to the BFF. The startup script also frees the required app ports before launching services. `start:local` starts only the Python agent, BFF, and frontend; it does not start Redis or any answer/report worker. `start:all` additionally starts the Docker Compose dependency services `etcd`, `minio`, and `milvus`, then waits for Milvus before opening the app service windows. Redis is started only by the Mastra rollback variant, `start:all:mastra`.
 
+For Grafana Tempo, OpenTelemetry Collector, and optional LangSmith tracing, see [docs/observability.md](docs/observability.md).
+
 You can also run services manually:
 
 ```powershell

@@ -45,6 +45,37 @@ services:
       - redis-data:/data
     command: ['redis-server', '--appendonly', 'yes']
 
+  tempo:
+    image: grafana/tempo:2.8.1
+    user: "0:0"
+    command: ['-config.file=/etc/tempo.yml']
+    ports:
+      - '3200:3200'
+    volumes:
+      - ./ops/observability/tempo.yml:/etc/tempo.yml:ro
+      - tempo-data:/tmp/tempo
+
+  otel-collector:
+    image: otel/opentelemetry-collector-contrib:0.128.0
+    command: ['--config=/etc/otelcol-contrib/config.yml']
+    ports:
+      - '4317:4317'
+      - '4318:4318'
+    volumes:
+      - ./ops/observability/otel-collector-config.yml:/etc/otelcol-contrib/config.yml:ro
+    depends_on:
+      - tempo
+
+  grafana:
+    image: grafana/grafana:12.0.2
+    ports:
+      - '3001:3000'
+    volumes:
+      - grafana-data:/var/lib/grafana
+      - ./ops/observability/grafana/provisioning/datasources:/etc/grafana/provisioning/datasources:ro
+    depends_on:
+      - tempo
+
   mastra:
     build:
       context: .
@@ -87,6 +118,18 @@ services:
       CHECKPOINT_URL: /data/checkpoints.db
       OUTCOME_ROOT: /app/Interview outcome
       RAG_LOG_ROOT: /app/RAG LOG INFO
+      OTEL_SERVICE_NAME: interview-python-agent
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://otel-collector:4318
+      OTEL_EXPORTER_OTLP_PROTOCOL: http/protobuf
+      OTEL_TRACES_EXPORTER: otlp
+      OTEL_TRACES_SAMPLER: ${OTEL_TRACES_SAMPLER:-always_on}
+      OTEL_TRACES_SAMPLER_ARG: ${OTEL_TRACES_SAMPLER_ARG:-1}
+      OTEL_PROPAGATORS: tracecontext,baggage
+      OTEL_RESOURCE_ATTRIBUTES: deployment.environment=docker
+      LANGSMITH_TRACING: ${LANGSMITH_TRACING:-false}
+      LANGSMITH_API_KEY: ${LANGSMITH_API_KEY:-}
+      LANGSMITH_PROJECT: ${LANGSMITH_PROJECT:-my-first-agent-local}
+      LANGSMITH_DATA_MODE: ${LANGSMITH_DATA_MODE:-standard}
     volumes:
       - python-agent-data:/data
       - './Interview outcome:/app/Interview outcome'
@@ -108,6 +151,14 @@ services:
       RESUME_MAX_FILE_SIZE_BYTES: 2097152
       DEMO_USERNAME: demo
       DEMO_PASSWORD: demo123
+      OTEL_SERVICE_NAME: interview-bff
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://otel-collector:4318
+      OTEL_EXPORTER_OTLP_PROTOCOL: http/protobuf
+      OTEL_TRACES_EXPORTER: otlp
+      OTEL_TRACES_SAMPLER: ${OTEL_TRACES_SAMPLER:-always_on}
+      OTEL_TRACES_SAMPLER_ARG: ${OTEL_TRACES_SAMPLER_ARG:-1}
+      OTEL_PROPAGATORS: tracecontext,baggage
+      OTEL_RESOURCE_ATTRIBUTES: deployment.environment=docker
     depends_on:
       - mastra
       - python-agent
@@ -127,3 +178,5 @@ volumes:
   milvus-data:
   redis-data:
   python-agent-data:
+  tempo-data:
+  grafana-data:
