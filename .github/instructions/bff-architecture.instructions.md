@@ -16,7 +16,7 @@ description: "Use when coding in the NestJS BFF layer. Captures the BFF architec
 
 - `auth`: 登录相关接口与输入校验
 - `resume`: 文件上传、`.md` 校验、大小校验，以及返回供前端展示和后续启动态默认题数使用的权威专业技能组数量；技能语义拆解不再由 BFF 负责，而是保留原始 Markdown 给 Mastra 处理
-- `agent`: 前端 interview 启动 / 答题请求验证；负责校验专业技能轮自动/自定义题数模式、专业技能轮 / 项目经历轮各自题数、逐题纠错/轮次跳过/flow-test mode 等系统设置，并把基于 `threadId` 的 SSE 流式响应转发到当前 agent runtime。当前启动态已经收敛到统一的结构化 start contract：前端和 BFF 复用同一份 Zod schema，BFF 在默认模式下归一题数并补齐 `resumeSections` 后，将同一份 payload 以 JSON 形式继续透传给下游。面试结束后，BFF 还会接收用户反馈评分与文本意见，并把它写回已落盘的 `Interview outcome` 结构化 outcome 记录。BFF 现在还暴露 `GET /api/agents/interviews/:threadId/report/status`、`GET /api/agents/interviews/:threadId/report/markdown` 和 `POST /api/agents/interviews/:threadId/report/read`，默认 Python provider 下代理到 Python runtime 的 report API，Mastra rollback provider 下 status/read 返回兼容兜底、markdown 返回不可用。
+- `agent`: 前端 interview 启动 / 答题请求验证；负责校验专业技能轮自动/自定义题数模式、专业技能轮 / 项目经历轮各自题数、逐题纠错/轮次跳过/flow-test mode / historical memory 等系统设置，并把基于 `threadId` 的 SSE 流式响应转发到当前 agent runtime。当前启动态已经收敛到统一的结构化 start contract：前端和 BFF 复用同一份 Zod schema，BFF 在默认模式下归一题数、补齐 `resumeSections`，settings 默认携带 `enableHistoricalMemory=true`，并在 `INTERVIEW_MEMORY_USER_ID` 存在时透传可选 `userId`，随后将同一份 payload 以 JSON 形式继续透传给下游。面试结束后，BFF 还会接收用户反馈评分与文本意见，并把它写回已落盘的 `Interview outcome` 结构化 outcome 记录。BFF 现在还暴露 `GET /api/agents/interviews/:threadId/report/status`、`GET /api/agents/interviews/:threadId/report/markdown` 和 `POST /api/agents/interviews/:threadId/report/read`，默认 Python provider 下代理到 Python runtime 的 report API，Mastra rollback provider 下 status/read 返回兼容兜底、markdown 返回不可用。
 
 ## Module Boundaries
 

@@ -62,6 +62,7 @@ export class AgentService {
       ? serializeInterviewStartRequest(
           buildInterviewStartRequest({
             threadId: input.threadId,
+            userId: appConfig.interviewMemoryUserId,
             resumeMarkdown: input.resumeMarkdown,
             jobDescriptionMarkdown: input.jobDescriptionMarkdown,
             settings: {

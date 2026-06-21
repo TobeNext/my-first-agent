@@ -34,6 +34,7 @@ const baseSettings = {
   skipProfessionalSkillsRound: false,
   skipProjectExperienceRound: false,
   enableFlowTestMode: false,
+  enableHistoricalMemory: true,
   professionalQuestionMode: 'per-skill-default' as const,
   professionalQuestionCount: 3,
   projectQuestionCount: 2,
@@ -149,6 +150,35 @@ describe('interview-session-storage', () => {
 
     expect(readPersistedInterviewSession()).toBeNull();
     expect(window.localStorage.getItem('frontend.recent-interview-session')).toBeNull();
+  });
+
+  it('fills historical memory settings when reading older persisted sessions', () => {
+    const legacySettings = { ...baseSettings };
+    delete (legacySettings as { enableHistoricalMemory?: boolean }).enableHistoricalMemory;
+    window.localStorage.setItem(
+      'frontend.recent-interview-session',
+      JSON.stringify({
+        threadId: 'thread-legacy',
+        settings: legacySettings,
+        summary: {
+          phase: 'professional-skills-round',
+          activeRoundType: 'professional-skills',
+          finalReportReady: false,
+          totalQuestionCount: 4,
+          completedQuestionCount: 1,
+          currentStage: 'main-question',
+          currentQuestionIndex: 2,
+          currentRoundType: 'professional-skills',
+          currentFollowUpIndex: null,
+          remainingQuestionCount: 3,
+          currentQuestionText: '请继续说明你的 RAG 链路。',
+          assistantReply: '请继续说明你的 RAG 链路。',
+        },
+        updatedAt: '2026-05-17T08:00:00.000Z',
+      }),
+    );
+
+    expect(readPersistedInterviewSession()?.settings.enableHistoricalMemory).toBe(true);
   });
 
   it('drops malformed JSON payloads from localStorage', () => {

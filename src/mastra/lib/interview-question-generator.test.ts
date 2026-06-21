@@ -1,8 +1,10 @@
 import { describe, expect, it, vi } from 'vitest';
 
 import {
+  buildDedicatedFollowUpQuestionPrompt,
   ensureGeneratedFollowUpQuestion,
   generateInitializationQuestionSet,
+  normalizeFollowUpQuestionText,
 } from './interview-question-generator';
 import { planProfessionalQuestionQueries } from './interview-question-planner';
 import {
@@ -174,6 +176,86 @@ describe('generateInitializationQuestionSet', () => {
 });
 
 describe('ensureGeneratedFollowUpQuestion', () => {
+  it('builds the follow-up prompt with bounded memory and without candidate answer transcript', () => {
+    const state = createSessionState();
+    const activeNode = {
+      ...state.rounds[0].nodes[0],
+      followUps: [
+        {
+          id: 'follow-up-1',
+          index: 1,
+          intent: 'depth' as const,
+          question: '你如何判断 query rewrite 是否需要触发？',
+          status: 'asked' as const,
+          linkedAnswerId: null,
+        },
+      ],
+      answerAttempts: [
+        {
+          id: 'attempt-1',
+          targetType: 'main-question' as const,
+          targetId: 'node-1',
+          userMessage: '候选人回答原文不能出现在追问记忆 prompt。',
+          classification: 'direct-answer' as const,
+          score: null,
+          strengths: [],
+          missingPoints: [],
+          incorrectPoints: [],
+          isDetour: false,
+          createdAt: '2026-06-19T00:00:00.000Z',
+        },
+      ],
+    };
+    const activeRound = {
+      ...state.rounds[0],
+      nodes: [activeNode],
+    };
+    const stateWithMemory = {
+      ...state,
+      rounds: [activeRound],
+    };
+
+    const prompt = buildDedicatedFollowUpQuestionPrompt({
+      state: stateWithMemory,
+      activeRound,
+      activeNode,
+      currentQuestion: activeNode.mainQuestion,
+      userMessage: '候选人回答原文不能出现在追问记忆 prompt。',
+      analysis: {
+        classification: 'direct-answer',
+        recommendedIntent: 'depth',
+        followUpFocus: ['query rewrite'],
+        followUpQuestion: null,
+        missingPoints: ['缺少失败降级'],
+        incorrectPoints: [],
+      },
+    });
+    const orderedLabels = [
+      'Return exactly this shape',
+      'User historical interview reports',
+      'User resume information',
+      'Job description information',
+      'Previous weak areas and improvement targets',
+      'Asked follow-up questions in current interview',
+      'Current main question',
+    ];
+
+    expect(orderedLabels.map((label) => prompt.indexOf(label))).toEqual(
+      [...orderedLabels.map((label) => prompt.indexOf(label))].sort((left, right) => left - right),
+    );
+    expect(prompt).toContain('TypeScript\nMastra');
+    expect(prompt).toContain('Build agent systems');
+    expect(prompt).toContain('你如何判断 query rewrite 是否需要触发？');
+    expect(prompt).not.toContain('候选人回答原文');
+    expect(prompt).not.toContain('Current question dialogue record');
+  });
+
+  it('normalizes follow-up question text for duplicate checks', () => {
+    expect(normalizeFollowUpQuestionText(' 你如何判断 query rewrite 是否需要触发？ ')).toBe(
+      normalizeFollowUpQuestionText('你如何判断 query rewrite 是否需要触发?'),
+    );
+  });
+
   it('fills the follow-up question through the generator stage when the analysis needs deepening', async () => {
     const state = createSessionState();
     const activeRound = state.rounds[0];
@@ -338,6 +420,54 @@ describe('ensureGeneratedFollowUpQuestion', () => {
       },
       {
         generateFollowUpQuestion: async () => null,
+      },
+    );
+
+    expect(result.followUpQuestion).toBeNull();
+  });
+
+  it('keeps the original analysis when the injected generator repeats an asked follow-up', async () => {
+    const state = createSessionState();
+    const activeNode = {
+      ...state.rounds[0].nodes[0],
+      followUps: [
+        {
+          id: 'follow-up-1',
+          index: 1,
+          intent: 'depth' as const,
+          question: '你如何判断 query rewrite 是否需要触发？',
+          status: 'asked' as const,
+          linkedAnswerId: null,
+        },
+      ],
+    };
+    const activeRound = {
+      ...state.rounds[0],
+      nodes: [activeNode],
+    };
+    const stateWithAskedFollowUp = {
+      ...state,
+      rounds: [activeRound],
+    };
+
+    const result = await ensureGeneratedFollowUpQuestion(
+      {
+        state: stateWithAskedFollowUp,
+        activeRound,
+        activeNode,
+        currentQuestion: activeNode.mainQuestion,
+        userMessage: '我会先拆分接口层和领域层的类型。',
+        analysis: {
+          classification: 'direct-answer',
+          recommendedIntent: 'depth',
+          followUpFocus: ['类型边界'],
+          followUpQuestion: null,
+          missingPoints: [],
+          incorrectPoints: [],
+        },
+      },
+      {
+        generateFollowUpQuestion: async () => '你如何判断 query rewrite 是否需要触发?',
       },
     );
 

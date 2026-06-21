@@ -21,6 +21,7 @@ interface StreamInterviewInput {
     readonly skipProfessionalSkillsRound: boolean;
     readonly skipProjectExperienceRound: boolean;
     readonly enableFlowTestMode: boolean;
+    readonly enableHistoricalMemory: boolean;
     readonly professionalQuestionMode: 'per-skill-default' | 'custom-count';
     readonly professionalQuestionCount: number;
     readonly projectQuestionCount: number;
@@ -51,6 +52,7 @@ test('AgentService.createChatBody keeps the existing resume flow when no JD is u
       skipProfessionalSkillsRound: false,
       skipProjectExperienceRound: false,
       enableFlowTestMode: false,
+      enableHistoricalMemory: true,
       professionalQuestionMode: 'per-skill-default',
       professionalQuestionCount: 6,
       projectQuestionCount: 2,
@@ -80,6 +82,7 @@ test('AgentService.createChatBody includes uploaded JD as extension context', ()
       skipProfessionalSkillsRound: false,
       skipProjectExperienceRound: false,
       enableFlowTestMode: false,
+      enableHistoricalMemory: true,
       professionalQuestionMode: 'per-skill-default',
       professionalQuestionCount: 6,
       projectQuestionCount: 2,
@@ -92,6 +95,37 @@ test('AgentService.createChatBody includes uploaded JD as extension context', ()
   assert.equal(parsed?.jobDescriptionMarkdown, '### 岗位职责\n- 负责 AI 面试系统');
   assert.equal(parsed?.resumeSections?.professionalSkills, '- TypeScript');
   assert.equal(parsed?.settings.projectQuestionCount, 2);
+});
+
+test('AgentService.createChatBody includes configured interview memory user id', () => {
+  const originalUserId = appConfig.interviewMemoryUserId;
+  (appConfig as { interviewMemoryUserId: string | undefined }).interviewMemoryUserId = 'user-a';
+
+  try {
+    const body = createChatBody({
+      threadId: 'thread-memory',
+      requestKind: 'interview-start',
+      protocolVersion: '2026-05-structured-start-v1',
+      startInterview: true,
+      resumeMarkdown: '### 专业技能\n- TypeScript',
+      settings: {
+        reviewIncorrectOrMissingPoints: true,
+        skipProfessionalSkillsRound: false,
+        skipProjectExperienceRound: false,
+        enableFlowTestMode: false,
+        enableHistoricalMemory: true,
+        professionalQuestionMode: 'per-skill-default',
+        professionalQuestionCount: 6,
+        projectQuestionCount: 2,
+      },
+    });
+    const parsed = parseInterviewStartRequest(body.messages[0]?.content ?? '');
+
+    assert.equal(parsed?.userId, 'user-a');
+  } finally {
+    (appConfig as { interviewMemoryUserId: string | undefined }).interviewMemoryUserId =
+      originalUserId;
+  }
 });
 
 test('AgentService.streamChat returns a Bad Gateway error when Mastra is unreachable', async () => {

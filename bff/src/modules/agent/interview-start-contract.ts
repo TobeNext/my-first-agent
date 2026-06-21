@@ -15,6 +15,7 @@ export const interviewSystemSettingsSchema = z
     skipProfessionalSkillsRound: z.boolean(),
     skipProjectExperienceRound: z.boolean(),
     enableFlowTestMode: z.boolean(),
+    enableHistoricalMemory: z.boolean().default(true),
     professionalQuestionMode: z.enum(['per-skill-default', 'custom-count']),
     professionalQuestionCount: z.number().int().min(0).max(MAX_INTERVIEW_TOTAL_QUESTION_COUNT),
     projectQuestionCount: z.number().int().min(0).max(MAX_INTERVIEW_TOTAL_QUESTION_COUNT),
@@ -74,6 +75,7 @@ export const interviewStartRequestSchema = z.object({
   protocolVersion: z.literal(INTERVIEW_START_PROTOCOL_VERSION),
   startInterview: z.literal(true),
   threadId: z.string().min(1, 'Thread ID is required.'),
+  userId: z.string().trim().min(1).optional(),
   resumeMarkdown: z.string().trim().min(1, 'Resume markdown is required to start the interview.'),
   jobDescriptionMarkdown: z.string().trim().default(''),
   settings: interviewSystemSettingsSchema,
@@ -86,6 +88,7 @@ export type InterviewStartRequest = z.infer<typeof interviewStartRequestSchema>;
 
 export function buildInterviewStartRequest(input: {
   readonly threadId: string;
+  readonly userId?: string;
   readonly resumeMarkdown: string;
   readonly jobDescriptionMarkdown?: string;
   readonly settings: InterviewSystemSettings;
@@ -96,6 +99,7 @@ export function buildInterviewStartRequest(input: {
     protocolVersion: INTERVIEW_START_PROTOCOL_VERSION,
     startInterview: true,
     threadId: input.threadId,
+    userId: input.userId,
     resumeMarkdown: input.resumeMarkdown,
     jobDescriptionMarkdown: input.jobDescriptionMarkdown ?? '',
     settings: input.settings,

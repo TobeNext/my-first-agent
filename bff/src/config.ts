@@ -8,6 +8,7 @@ const envSchema = z.object({
   RESUME_MAX_FILE_SIZE_BYTES: z.coerce.number().int().positive().default(2 * 1024 * 1024),
   DEMO_USERNAME: z.string().default('demo'),
   DEMO_PASSWORD: z.string().default('demo123'),
+  INTERVIEW_MEMORY_USER_ID: z.string().trim().min(1).optional(),
 });
 
 const parsedEnv = envSchema.parse({
@@ -18,6 +19,7 @@ const parsedEnv = envSchema.parse({
   RESUME_MAX_FILE_SIZE_BYTES: process.env['RESUME_MAX_FILE_SIZE_BYTES'],
   DEMO_USERNAME: process.env['DEMO_USERNAME'],
   DEMO_PASSWORD: process.env['DEMO_PASSWORD'],
+  INTERVIEW_MEMORY_USER_ID: process.env['INTERVIEW_MEMORY_USER_ID'],
 });
 
 export const appConfig = {
@@ -28,4 +30,5 @@ export const appConfig = {
   resumeMaxFileSizeBytes: parsedEnv.RESUME_MAX_FILE_SIZE_BYTES,
   demoUsername: parsedEnv.DEMO_USERNAME,
   demoPassword: parsedEnv.DEMO_PASSWORD,
+  interviewMemoryUserId: parsedEnv.INTERVIEW_MEMORY_USER_ID,
 } as const;

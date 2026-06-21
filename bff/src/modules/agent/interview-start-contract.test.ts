@@ -15,6 +15,7 @@ const validSettings = {
   skipProfessionalSkillsRound: false,
   skipProjectExperienceRound: false,
   enableFlowTestMode: false,
+  enableHistoricalMemory: true,
   professionalQuestionMode: 'per-skill-default' as const,
   professionalQuestionCount: 2,
   projectQuestionCount: 2,
@@ -23,6 +24,7 @@ const validSettings = {
 test('buildInterviewStartRequest fills the structured defaults and parses back from JSON', () => {
   const request = buildInterviewStartRequest({
     threadId: 'thread-1',
+    userId: 'user-a',
     resumeMarkdown: '### 专业技能\n- TypeScript\n\n### 项目经历\n- 搭建 BFF',
     settings: validSettings,
     resumeSections: {
@@ -32,6 +34,7 @@ test('buildInterviewStartRequest fills the structured defaults and parses back f
   });
 
   assert.equal(request.jobDescriptionMarkdown, '');
+  assert.equal(request.userId, 'user-a');
   assert.deepEqual(parseInterviewStartRequest(serializeInterviewStartRequest(request)), request);
 });
 

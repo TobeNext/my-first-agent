@@ -58,6 +58,7 @@ describe('app router', () => {
           skipProfessionalSkillsRound: false,
           skipProjectExperienceRound: false,
           enableFlowTestMode: false,
+        enableHistoricalMemory: true,
           professionalQuestionMode: 'per-skill-default',
           professionalQuestionCount: 2,
           projectQuestionCount: 2,

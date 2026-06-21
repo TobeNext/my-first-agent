@@ -34,6 +34,7 @@ export function buildInterviewSystemSettings(options: {
     skipProfessionalSkillsRound,
     skipProjectExperienceRound,
     enableFlowTestMode: options.enableFlowTestMode,
+    enableHistoricalMemory: true,
     professionalQuestionMode: options.professionalQuestionMode,
     professionalQuestionCount: skipProfessionalSkillsRound ? 0 : options.professionalQuestionCount,
     projectQuestionCount: skipProjectExperienceRound ? 0 : options.projectQuestionCount,

@@ -155,42 +155,61 @@ function buildProjectGenerationTrace(options: {
   }));
 }
 
-function buildNodeConversationRecord(options: {
+export function normalizeFollowUpQuestionText(value: string | null | undefined): string {
+  return (value ?? '')
+    .toLowerCase()
+    .replace(/？/g, '?')
+    .replace(/[\s?？！!。.,，;；:：'"“”‘’（）()[\]【】{}<>《》、]+/g, '')
+    .trim();
+}
+
+function collectAskedFollowUpQuestions(state: InterviewSessionState): string[] {
+  return state.rounds.flatMap((round) =>
+    round.nodes.flatMap((node) =>
+      node.followUps
+        .filter((followUp) => followUp.status === 'asked' || followUp.status === 'answered')
+        .map((followUp) => followUp.question.trim())
+        .filter((question) => question.length > 0),
+    ),
+  );
+}
+
+function isDuplicateFollowUpQuestion(question: string | null, state: InterviewSessionState): boolean {
+  const normalizedQuestion = normalizeFollowUpQuestionText(question);
+  if (!normalizedQuestion) {
+    return false;
+  }
+
+  return collectAskedFollowUpQuestions(state).some(
+    (askedQuestion) => normalizeFollowUpQuestionText(askedQuestion) === normalizedQuestion,
+  );
+}
+
+function formatMemoryList(values: readonly string[]): string {
+  const normalized = values.map((value) => value.trim()).filter((value) => value.length > 0);
+  return normalized.length > 0 ? normalized.map((value) => `- ${value}`).join('\n') : '- none';
+}
+
+function buildFollowUpMemoryContext(options: {
+  readonly state: InterviewSessionState;
   readonly activeNode: InterviewTopicNodeState;
-  readonly userMessage: string;
 }): string {
-  const lines = [`Interviewer main question: ${options.activeNode.mainQuestion}`];
-  const answerAttemptsByTargetId = new Map<string, string>();
-
-  for (const attempt of options.activeNode.answerAttempts) {
-    answerAttemptsByTargetId.set(attempt.targetId, attempt.userMessage);
-  }
-
-  const mainAnswer = options.activeNode.answerAttempts.find((attempt) => attempt.targetType === 'main-question')?.userMessage;
-  if (mainAnswer) {
-    lines.push(`Candidate answer #1: ${mainAnswer}`);
-  }
-
-  for (const followUp of options.activeNode.followUps) {
-    if (followUp.status === 'pending' || !followUp.question.trim()) {
-      continue;
-    }
-
-    lines.push(`Interviewer follow-up #${followUp.index}: ${followUp.question}`);
-    const linkedAnswer = followUp.linkedAnswerId
-      ? options.activeNode.answerAttempts.find((attempt) => attempt.id === followUp.linkedAnswerId)?.userMessage
-      : answerAttemptsByTargetId.get(followUp.id);
-    if (linkedAnswer) {
-      lines.push(`Candidate answer #${followUp.index + 1}: ${linkedAnswer}`);
-    }
-  }
-
-  const lastRecordedAnswer = options.activeNode.answerAttempts.at(-1)?.userMessage?.trim();
-  if (options.userMessage.trim() !== lastRecordedAnswer) {
-    lines.push(`Candidate latest answer: ${options.userMessage}`);
-  }
-
-  return lines.join('\n');
+  return [
+    'Follow-up memory context:',
+    'User historical interview reports:',
+    '- none',
+    'User resume information:',
+    `- Professional skills: ${options.state.resumeContext.professionalSkills.trim() || 'not provided'}`,
+    `- Project experience: ${options.state.resumeContext.projectExperience.trim() || 'not provided'}`,
+    'Job description information:',
+    `- ${options.state.resumeContext.jobDescription.trim() || 'not provided'}`,
+    'Previous weak areas and improvement targets:',
+    '- none',
+    'Asked follow-up questions in current interview:',
+    formatMemoryList(collectAskedFollowUpQuestions(options.state)),
+    'Current main question:',
+    `- ${options.activeNode.mainQuestion}`,
+  ].join('\n');
 }
 
 function shouldGenerateDedicatedFollowUpQuestion<TAnalysis extends FollowUpGenerationAnalysis>(options: {
@@ -212,13 +231,19 @@ function shouldGenerateDedicatedFollowUpQuestion<TAnalysis extends FollowUpGener
   );
 }
 
-function buildDedicatedFollowUpQuestionPrompt<TAnalysis extends FollowUpGenerationAnalysis>(
+export function buildDedicatedFollowUpQuestionPrompt<TAnalysis extends FollowUpGenerationAnalysis>(
   options: EnsureGeneratedFollowUpQuestionOptions<TAnalysis>,
 ): string {
   return [
     'You are writing the next interviewer follow-up question for a mock interview.',
     'Return JSON only. Do not add markdown.',
     'Return exactly this shape: {"followUpQuestion":"..."}.',
+    '',
+    buildFollowUpMemoryContext({
+      state: options.state,
+      activeNode: options.activeNode,
+    }),
+    '',
     `Interview language: ${options.state.responseLanguage}`,
     `Target role: ${options.state.targetRole}`,
     `Round type: ${options.activeRound.type}`,
@@ -227,12 +252,6 @@ function buildDedicatedFollowUpQuestionPrompt<TAnalysis extends FollowUpGenerati
     `Current question: ${options.currentQuestion}`,
     `Main question: ${options.activeNode.mainQuestion}`,
     `Next follow-up index: ${options.activeNode.followUpCount + 1}`,
-    `Job description context: ${options.state.resumeContext.jobDescription.trim() || 'not provided'}`,
-    'Current question dialogue record:',
-    buildNodeConversationRecord({
-      activeNode: options.activeNode,
-      userMessage: options.userMessage,
-    }),
     `Answer classification: ${options.analysis.classification}`,
     `Recommended intent: ${options.analysis.recommendedIntent}`,
     `Follow-up focus: ${options.analysis.followUpFocus.join(' | ') || options.activeNode.topic}`,
@@ -240,6 +259,9 @@ function buildDedicatedFollowUpQuestionPrompt<TAnalysis extends FollowUpGenerati
     `Incorrect points: ${options.analysis.incorrectPoints.join(' | ') || 'none'}`,
     'Write exactly one short interviewer question that stays on the same topic as the current question and the candidate answer.',
     'Deepen naturally. Do not jump to a much broader topic.',
+    'Do not repeat any question in Asked follow-up questions in current interview.',
+    'Use resume/JD only as grounding context.',
+    'Do not include or rely on a current dialogue transcript made from candidate answers.',
     'Use this simple deepening pattern:',
     '- index 1: ask the candidate to explain the mentioned concept in more detail',
     '- index 2: ask for concrete use cases, implementation approach, or internal distinctions',
@@ -361,7 +383,7 @@ export async function ensureGeneratedFollowUpQuestion<TAnalysis extends FollowUp
 
   const generateFollowUpQuestion = deps.generateFollowUpQuestion ?? generateFollowUpQuestionWithModel;
   const followUpQuestion = await generateFollowUpQuestion(options);
-  if (!followUpQuestion) {
+  if (!followUpQuestion || isDuplicateFollowUpQuestion(followUpQuestion, options.state)) {
     return options.analysis;
   }
 
