@@ -10,7 +10,7 @@ description: "Use when coding in the Vue frontend. Captures the frontend archite
 ## Source Of Truth
 
 - 前端运行时现状以 `frontend/src/**`、`frontend/package.json` 和 `frontend/vite.config.ts` 为准。
-- 前端是独立于 `src/mastra` 的交互层，不应把前端状态、视图逻辑或样式塞回 Mastra runtime 目录。
+- 前端是独立于 agent runtime 的交互层；`src/mastra/**` 已归档，不应把前端状态、视图逻辑或样式塞回 legacy Mastra runtime 目录，后续 runtime 方案只考虑同级 Python LangGraph 项目。
 - 如果前端计划文档与代码不一致，优先按已落地代码理解，再决定是否回写 instruction 或 plan。
 
 ## Current Frontend Snapshot
@@ -19,7 +19,7 @@ description: "Use when coding in the Vue frontend. Captures the frontend archite
 - 路由由 `frontend/src/router` 管理，状态由 Pinia store 管理。
 - 当前包含两个页面：信息上传页和 interview 对话页。
 - 信息上传页当前同时支持“简历必传 + 职位 JD 选填”两类 Markdown 文件上传：简历在前端只做文件类型和大小校验，经由 BFF 做大小、类型和结构的二次校验，并提供静态模板下载；职位 JD 只做前端文件校验与内容保留，未上传时默认为空。前端不再接收 BFF 拆出的结构化技能对象，而是只消费 BFF 返回的权威专业技能组数量，不再自行从简历 Markdown 中提取技能语义。
-- Agent 对话页当前定位为 interview 页面：通过 `frontend/src/services` 调用 BFF，再由 BFF 代理到 Mastra `interview-agent`；当前要求先上传并校验简历，然后直接在页面上确认系统设置。专业技能轮默认按 BFF 返回的专业技能组数量自动设置题数，并在开始面试前按“每个技能组一题”触发 RAG 召回；如果用户切换为自定义题数，则会优先覆盖不同技能组，题数超过技能组数量时再补充跨技能或综合场景题。项目经历轮仍由页面单独配置题数，另有逐题纠错开关和轮次跳过设置。若上传职位 JD，前端会在启动面试时通过共享 start contract 生成结构化请求，并把 JD Markdown 交给 BFF；当前下游已经会把 JD 用于提取职责、技术要求、优先技能与领域词，并参与专业技能轮权重、项目经历交叉验证和缺口能力检查，因此页面文案不能再把 JD 描述为“未来待扩展”的保留上下文。
+- Agent 对话页当前定位为 interview 页面：通过 `frontend/src/services` 调用 BFF，再由 BFF 代理到 Python LangGraph runtime；当前要求先上传并校验简历，然后直接在页面上确认系统设置。专业技能轮默认按 BFF 返回的专业技能组数量自动设置题数，并在开始面试前按“每个技能组一题”触发 RAG 召回；如果用户切换为自定义题数，则会优先覆盖不同技能组，题数超过技能组数量时再补充跨技能或综合场景题。项目经历轮仍由页面单独配置题数，另有逐题纠错开关和轮次跳过设置。若上传职位 JD，前端会在启动面试时通过共享 start contract 生成结构化请求，并把 JD Markdown 交给 BFF；当前下游已经会把 JD 用于提取职责、技术要求、优先技能与领域词，并参与专业技能轮权重、项目经历交叉验证和缺口能力检查，因此页面文案不能再把 JD 描述为“未来待扩展”的保留上下文。
 - Agent 对话页现在还包含 flow-test mode 开关；只有在该模式开启且 interview 已启动后，页面才显示“跳过本次回答”按钮，并通过 service 层发送专用 skip marker，让下游状态机 mock 评分和追问行为。
 - interview 页面现在还会从现有 SSE 流里解析 `interviewStateManagerTool` 的 `tool-result` 事件，提取结构化进度信息，并在聊天区旁边显示“剩余题数 / 当前题号 / 当前是否处于追问环节”的侧边栏。面试报告生成后，页面会切换到 feedback 闭环表单，通过 schema/service 层把用户对题目贴合度、难度匹配度、整体体验和文本意见提交给 BFF。
 - `frontend/src/services/bff-api.ts` 现在还提供 interview report status、markdown 下载和 read receipt client 方法；前端报告通知/bell UI 必须通过这些 BFF client 访问 `/api/agents/interviews/:threadId/report/*`，不要直接访问 Python runtime 或 Redis。

@@ -212,6 +212,19 @@ describe('validateResumeViaBff', () => {
     await expect(fetchInterviewReportStatus('thread-1')).rejects.toThrow('runtime unavailable');
   });
 
+  it('throws the top-level report status error when there are no details', async () => {
+    const fetchMock = vi.fn().mockResolvedValue(
+      new Response(JSON.stringify({ message: 'status rejected' }), {
+        status: 500,
+        headers: { 'Content-Type': 'application/json' },
+      }),
+    );
+
+    vi.stubGlobal('fetch', fetchMock);
+
+    await expect(fetchInterviewReportStatus('thread-1')).rejects.toThrow('status rejected');
+  });
+
   it('downloads interview report markdown as a blob', async () => {
     const fetchMock = vi.fn().mockResolvedValue(
       new Response('## Report', {
@@ -246,6 +259,19 @@ describe('validateResumeViaBff', () => {
     await expect(downloadInterviewReportMarkdown('thread-missing')).rejects.toThrow('report not found');
   });
 
+  it('throws the first markdown download detail when the BFF returns details', async () => {
+    const fetchMock = vi.fn().mockResolvedValue(
+      new Response(JSON.stringify({ message: ['markdown unavailable'] }), {
+        status: 503,
+        headers: { 'Content-Type': 'application/json' },
+      }),
+    );
+
+    vi.stubGlobal('fetch', fetchMock);
+
+    await expect(downloadInterviewReportMarkdown('thread-1')).rejects.toThrow('markdown unavailable');
+  });
+
   it('marks an interview report as read through the BFF', async () => {
     const fetchMock = vi.fn().mockResolvedValue(
       new Response(JSON.stringify({ threadId: 'thread-1', readAt: '2026-06-19T00:00:00Z' }), {
@@ -264,5 +290,31 @@ describe('validateResumeViaBff', () => {
       method: 'POST',
       headers: { Accept: 'application/json' },
     });
+  });
+
+  it('throws the read receipt error returned by the BFF', async () => {
+    const fetchMock = vi.fn().mockResolvedValue(
+      new Response(JSON.stringify({ message: 'read receipt failed' }), {
+        status: 500,
+        headers: { 'Content-Type': 'application/json' },
+      }),
+    );
+
+    vi.stubGlobal('fetch', fetchMock);
+
+    await expect(markInterviewReportRead('thread-1')).rejects.toThrow('read receipt failed');
+  });
+
+  it('throws the first read receipt detail when the BFF returns details', async () => {
+    const fetchMock = vi.fn().mockResolvedValue(
+      new Response(JSON.stringify({ message: ['read receipt unavailable'] }), {
+        status: 503,
+        headers: { 'Content-Type': 'application/json' },
+      }),
+    );
+
+    vi.stubGlobal('fetch', fetchMock);
+
+    await expect(markInterviewReportRead('thread-1')).rejects.toThrow('read receipt unavailable');
   });
 });

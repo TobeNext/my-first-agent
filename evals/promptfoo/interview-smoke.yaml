@@ -1,0 +1,115 @@
+description: Interview agent black-box SSE smoke
+
+prompts:
+  - '{{message}}'
+
+providers:
+  - id: file://./evals/promptfoo/sse-provider.js
+    label: interview-sse
+
+defaultTest:
+  assert:
+    - type: is-json
+    - type: javascript
+      value: |
+        const parsed = JSON.parse(output);
+        return typeof parsed.assistantReply === 'string'
+          && typeof parsed.phase === 'string'
+          && typeof parsed.finalReportReady === 'boolean'
+          && parsed.progress
+          && typeof parsed.progress.currentStage === 'string';
+    - type: javascript
+      value: |
+        const forbidden = (context.vars.must_not_claim || []);
+        return forbidden.every((claim) => !output.includes(claim));
+
+tests:
+  - description: basic start
+    vars:
+      message: basic start
+      request:
+        requestKind: interview-start
+        protocolVersion: 2026-05-structured-start-v1
+        startInterview: true
+        threadId: promptfoo-basic-start
+        resumeMarkdown: |
+          # Candidate
+
+          ## Skills
+          Python, FastAPI, SQL.
+
+          ## Projects
+          Built a streaming interview service.
+        jobDescriptionMarkdown: ''
+        settings:
+          reviewIncorrectOrMissingPoints: false
+          skipProfessionalSkillsRound: false
+          skipProjectExperienceRound: true
+          enableFlowTestMode: true
+          professionalQuestionMode: custom-count
+          professionalQuestionCount: 1
+          projectQuestionCount: 0
+          enableHistoricalMemory: false
+      must_not_claim:
+        - Redis manifest is required
+
+  - description: start with JD
+    vars:
+      message: start with JD
+      request:
+        requestKind: interview-start
+        protocolVersion: 2026-05-structured-start-v1
+        startInterview: true
+        threadId: promptfoo-start-with-jd
+        resumeMarkdown: |
+          # Candidate
+
+          ## Skills
+          Vue, TypeScript, SSE, OpenTelemetry.
+
+          ## Projects
+          Built a browser interview client backed by a BFF stream proxy.
+        jobDescriptionMarkdown: |
+          Frontend platform role requiring Vue, SSE handling, API integration, and safe telemetry metadata.
+        settings:
+          reviewIncorrectOrMissingPoints: false
+          skipProfessionalSkillsRound: false
+          skipProjectExperienceRound: true
+          enableFlowTestMode: true
+          professionalQuestionMode: custom-count
+          professionalQuestionCount: 1
+          projectQuestionCount: 0
+          enableHistoricalMemory: false
+      must_not_claim:
+        - logs raw resume text
+
+  - description: flow-test skip answer
+    vars:
+      message: flow-test skip answer
+      requests:
+        - requestKind: interview-start
+          protocolVersion: 2026-05-structured-start-v1
+          startInterview: true
+          threadId: promptfoo-flow-test-skip
+          resumeMarkdown: |
+            # Candidate
+
+            ## Skills
+            LangGraph, state machines, testing.
+
+            ## Projects
+            Migrated an interview runtime to Python.
+          jobDescriptionMarkdown: ''
+          settings:
+            reviewIncorrectOrMissingPoints: false
+            skipProfessionalSkillsRound: false
+            skipProjectExperienceRound: true
+            enableFlowTestMode: true
+            professionalQuestionMode: custom-count
+            professionalQuestionCount: 1
+            projectQuestionCount: 0
+            enableHistoricalMemory: false
+        - threadId: promptfoo-flow-test-skip
+          message: '[FLOW_TEST_SKIP]'
+      must_not_claim:
+        - frontend simulated the skip locally

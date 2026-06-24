@@ -1,0 +1,29 @@
+﻿{
+    "case_id":  "draft-86081d54-da6a-4684-a162-82d39c23028f",
+    "redaction_version":  "v1",
+    "source_type":  "redacted-production",
+    "source_thread_id_hash":  "sha256:7ed69ce473d89fb6e95df00a259440bd7791384fd286b1b093360f38a164dc23",
+    "resume_markdown":  "",
+    "job_description_markdown":  "",
+    "settings":  {
+
+                 },
+    "turns":  [
+
+              ],
+    "expected_stage_path":  [
+                                "initialization"
+                            ],
+    "expected_required_skills":  [
+
+                                 ],
+    "must_not_claim":  [
+
+                       ],
+    "rubric":  {
+                   "review_required":  true,
+                   "source_artifact":  "G:\\project\\my-first-agent\\my-first-agent\\Interview outcome\\2026-05-03T13-01-51-119Z-86081d54-da6a-4684-a162-82d39c23028f\\interview-outcome.json",
+                   "parse_error":  "Invalid object passed in, \u0027:\u0027 or \u0027}\u0027 expected. (216): {"
+               },
+    "review_required":  true
+}

@@ -17,6 +17,9 @@
     "test:e2e:interview:rollback-smoke": "powershell -ExecutionPolicy Bypass -File ./scripts/run-provider-rollback-smoke.ps1",
     "test:e2e:interview": "node scripts/run-interview-e2e-provider.mjs all python",
     "test:workspace": "npm run test:coverage && npm --prefix bff run test:coverage && npm --prefix frontend run test:coverage",
+    "test:evaluation:baseline": "powershell -ExecutionPolicy Bypass -File ./scripts/run-evaluation-baseline.ps1",
+    "test:evaluation:ci-gate": "powershell -ExecutionPolicy Bypass -File ./scripts/run-evaluation-ci-gate.ps1",
+    "eval:export-case": "powershell -ExecutionPolicy Bypass -File ./scripts/export-eval-case-from-outcome.ps1",
     "dev": "npm run start:local",
     "dev:mastra": "mastra dev",
     "build": "mastra build",
@@ -48,7 +51,7 @@
     "@mastra/observability": "^1.3.1",
     "@mastra/rag": "^2.2.0",
     "@zilliz/milvus2-sdk-node": "^3.0.1",
-    "ai": "^6.0.161",
+    "ai": "6.0.161",
     "redis": "^6.0.0",
     "zod": "^4.3.6"
   },

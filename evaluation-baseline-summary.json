@@ -1,0 +1,36 @@
+﻿{
+    "runId":  "20260622-142412",
+    "generatedAt":  "2026-06-22T06:24:12.5415313Z",
+    "status":  "passed",
+    "logRoot":  "G:\\project\\my-first-agent\\my-first-agent\\.tmp\\evaluation-baseline\\20260622-142412",
+    "results":  [
+                    {
+                        "name":  "workspace-tests",
+                        "status":  "skipped",
+                        "durationSeconds":  0,
+                        "logPath":  null,
+                        "skippedReason":  "Skipped by -SkipWorkspaceTests."
+                    },
+                    {
+                        "name":  "python-pytest",
+                        "status":  "skipped",
+                        "durationSeconds":  0,
+                        "logPath":  null,
+                        "skippedReason":  "Skipped by -SkipPythonTests."
+                    },
+                    {
+                        "name":  "python-e2e-smoke",
+                        "status":  "skipped",
+                        "durationSeconds":  0,
+                        "logPath":  null,
+                        "skippedReason":  "Skipped by -SkipPythonSmoke."
+                    },
+                    {
+                        "name":  "rollback-smoke",
+                        "status":  "skipped",
+                        "durationSeconds":  0,
+                        "logPath":  null,
+                        "skippedReason":  "Skipped by -SkipRollbackSmoke."
+                    }
+                ]
+}

@@ -1,0 +1,20 @@
+[
+  {
+    "Name": "python-agent",
+    "Id": 10772,
+    "Stdout": "G:\\project\\my-first-agent\\my-first-agent\\.tmp\\e2e-local-stack\\python-agent.out.log",
+    "Stderr": "G:\\project\\my-first-agent\\my-first-agent\\.tmp\\e2e-local-stack\\python-agent.err.log"
+  },
+  {
+    "Name": "bff",
+    "Id": 20604,
+    "Stdout": "G:\\project\\my-first-agent\\my-first-agent\\.tmp\\e2e-local-stack\\bff.out.log",
+    "Stderr": "G:\\project\\my-first-agent\\my-first-agent\\.tmp\\e2e-local-stack\\bff.err.log"
+  },
+  {
+    "Name": "frontend",
+    "Id": 25460,
+    "Stdout": "G:\\project\\my-first-agent\\my-first-agent\\.tmp\\e2e-local-stack\\frontend.out.log",
+    "Stderr": "G:\\project\\my-first-agent\\my-first-agent\\.tmp\\e2e-local-stack\\frontend.err.log"
+  }
+]

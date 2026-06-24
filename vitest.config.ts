@@ -2,7 +2,11 @@ import { defineConfig } from 'vitest/config';
 
 export default defineConfig({
   test: {
-    include: ['src/mastra/lib/**/*.test.ts', 'src/mastra/tools/**/*.test.ts'],
+    include: [
+      'src/mastra/lib/**/*.test.ts',
+      'src/mastra/tools/**/*.test.ts',
+      'evals/**/*.test.ts',
+    ],
     environment: 'node',
     coverage: {
       provider: 'v8',

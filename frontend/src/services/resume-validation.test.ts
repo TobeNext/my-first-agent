@@ -9,8 +9,10 @@ import {
 
 describe('resume-validation', () => {
   it('formats file sizes in bytes, kilobytes, and megabytes', () => {
+    expect(formatFileSize(1023)).toBe('1023 B');
     expect(formatFileSize(512)).toBe('512 B');
     expect(formatFileSize(1024)).toBe('1.0 KB');
+    expect(formatFileSize(1024 * 1024 - 1)).toBe('1024.0 KB');
     expect(formatFileSize(1024 * 1024)).toBe('1.00 MB');
   });
 
@@ -34,6 +36,18 @@ describe('resume-validation', () => {
       fileName: 'job.txt',
       fileSize: file.size,
       message: '仅支持上传 .md 格式的职位 JD文件。',
+      source: 'frontend',
+    });
+  });
+
+  it('accepts markdown job descriptions within the configured size limit', () => {
+    const file = new File(['job'], 'job.md', { type: 'text/markdown' });
+
+    expect(validateJobDescriptionFile(file)).toEqual({
+      success: true,
+      fileName: 'job.md',
+      fileSize: file.size,
+      message: '文件格式与大小校验通过，job.md 可以继续用于后续流程。',
       source: 'frontend',
     });
   });

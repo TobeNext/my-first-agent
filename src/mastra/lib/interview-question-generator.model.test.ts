@@ -129,9 +129,12 @@ describe('ensureGeneratedFollowUpQuestion default model path', () => {
 
     expect(generateTextMock).toHaveBeenCalledTimes(1);
     const prompt = generateTextMock.mock.calls[0]?.[0]?.prompt as string;
-    expect(prompt).toContain('Interviewer follow-up #1: 你刚才提到类型边界，能展开说说吗？');
-    expect(prompt).toContain('Candidate answer #2: 我会先拆分接口层和领域层的类型。');
+    expect(prompt).toContain('Follow-up memory context:');
+    expect(prompt).toContain('Asked follow-up questions in current interview:');
+    expect(prompt).toContain('- 你刚才提到类型边界，能展开说说吗？');
+    expect(prompt).toContain('Current question: 你刚才提到类型边界，能展开说说吗？');
     expect(prompt).not.toContain('Candidate latest answer: 我会先拆分接口层和领域层的类型。');
+    expect(prompt).not.toContain('Candidate answer #2: 我会先拆分接口层和领域层的类型。');
     expect(result.followUpQuestion).toBe('你能具体说说 DTO 和领域对象如何隔离吗？');
   });
 
@@ -224,9 +227,10 @@ describe('ensureGeneratedFollowUpQuestion default model path', () => {
     });
 
     const emptyPrompt = generateTextMock.mock.calls[0]?.[0]?.prompt as string;
-    expect(emptyPrompt).toContain('Job description context: not provided');
+    expect(emptyPrompt).toContain('Job description information:');
+    expect(emptyPrompt).toContain('- not provided');
     expect(emptyPrompt).toContain('Follow-up focus: TypeScript');
-    expect(emptyPrompt).toContain('Candidate latest answer: 我会先拆分接口层和领域层的类型。');
+    expect(emptyPrompt).not.toContain('Candidate latest answer: 我会先拆分接口层和领域层的类型。');
     expect(emptyResult.followUpQuestion).toBeNull();
     expect(nullResult.followUpQuestion).toBeNull();
   });

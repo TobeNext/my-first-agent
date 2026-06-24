@@ -48,6 +48,20 @@ describe('parseHttpErrorPayload', () => {
     });
   });
 
+  it('falls back to the status message for an empty message array without explicit fallback', async () => {
+    const response = new Response(JSON.stringify({ message: [] }), {
+      status: 400,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    await expect(parseHttpErrorPayload(response)).resolves.toEqual({
+      message: 'Request failed with status 400.',
+      details: [],
+    });
+  });
+
   it('falls back to the status message when the JSON payload does not include a message', async () => {
     const response = new Response(JSON.stringify({}), {
       status: 401,
@@ -82,6 +96,20 @@ describe('parseHttpErrorPayload', () => {
 
     await expect(parseHttpErrorPayload(response)).resolves.toEqual({
       message: 'Request failed with status 500.',
+    });
+  });
+
+  it('falls back to the status message for an empty raw text payload', async () => {
+    const response = new Response('', {
+      status: 502,
+    });
+
+    await expect(
+      parseHttpErrorPayload(response, {
+        includeRawTextFallback: true,
+      }),
+    ).resolves.toEqual({
+      message: 'Request failed with status 502.',
     });
   });
 

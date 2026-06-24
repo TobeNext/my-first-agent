@@ -1,11 +1,11 @@
 ---
 applyTo: "../my-first-agent-langgraph/src/**/*.py,../my-first-agent-langgraph/tests/**/*.py,../my-first-agent-langgraph/scripts/**/*.py"
-description: "Use when coding in the sibling Python LangGraph runtime. Captures the default interview runtime architecture, FastAPI/LangGraph boundaries, Mastra-compatible contract, persistence/artifact responsibilities, and the required post-edit project-architecture-sync skill in the frontend/BFF host."
+description: "Use when coding in the sibling Python LangGraph runtime. Captures the maintained interview runtime architecture, FastAPI/LangGraph boundaries, frontend/BFF contract, persistence/artifact responsibilities, and the required post-edit project-architecture-sync skill in the frontend/BFF host."
 ---
 
 # LangGraph Runtime Architecture
 
-本 instruction 适用于同级仓库 `../my-first-agent-langgraph` 下的 Python 代码。该仓库是 interview system 的默认 agent runtime provider，负责承接 BFF 透传的结构化 interview contract，运行 LangGraph 面试状态机，并输出与 legacy Mastra provider 兼容的 SSE、checkpoint、outcome 和 RAG artifact。
+本 instruction 适用于同级仓库 `../my-first-agent-langgraph` 下的 Python 代码。该仓库是 interview system 唯一维护的 agent runtime provider，负责承接 BFF 透传的结构化 interview contract，运行 LangGraph 面试状态机，并输出前端/BFF 既有消费路径所需的 SSE、checkpoint、outcome 和 RAG artifact。
 
 ## Mandatory Pre-Edit Load
 
@@ -17,20 +17,20 @@ description: "Use when coding in the sibling Python LangGraph runtime. Captures 
 ## Source Of Truth
 
 - LangGraph 运行时现状以 `../my-first-agent-langgraph/src/app/**`、`../my-first-agent-langgraph/pyproject.toml` 和 `../my-first-agent-langgraph/README.md` 为准。
-- 默认 provider 切换与前端/BFF 编排以本仓库 `bff/**`、`frontend/**`、`docker-compose.yml` 和 `docs/RUNTIME_PROVIDER_CUTOVER.md` 为参考。
-- legacy Mastra runtime under `src/mastra/**` 只作为 rollback provider 保留；新的 interview runtime 能力应优先在 `../my-first-agent-langgraph` 实现。
+- 维护中的 provider 与前端/BFF 编排以本仓库 `bff/**`、`frontend/**`、`docker-compose.yml` 和 `docs/RUNTIME_PROVIDER_CUTOVER.md` 为参考。
+- legacy Mastra runtime under `src/mastra/**` 已归档，不再作为后续维护、回滚或方案设计目标；新的 interview runtime 能力必须在 `../my-first-agent-langgraph` 实现。
 - 如果 Python runtime 代码、host repo 文档和历史规划冲突，先按代码理解当前可运行能力，再决定是否同步 instruction 或架构文档。
 
 ## Current Responsibilities
 
 - `app.main`: FastAPI 入口；创建 app 后调用 `instrument_fastapi(app)` 接入 OpenTelemetry FastAPI instrumentation；暴露 `/health`、`/api/agents/interview-agent/stream` 和 interview report status/markdown/read API；把 BFF 传入的 Mastra-style stream request 转成 LangGraph 调用，并用 `python_agent.stream_interview_agent` span 记录 thread/protocol/provider/model 等安全元数据，为报告通知/下载提供 Python runtime 侧 HTTP 边界。Report status、markdown 和 read receipt API 只依赖 `InterviewReportRepository` / report DB。Stream 请求命中 `wrap-up` / `finalReportReady=false` 时会先返回“报告生成中”snapshot，再通过 FastAPI `BackgroundTasks` 触发后台报告生成。
-- `app.graphs.interview_graph`: LangGraph 编排入口；`invoke_interview_graph` 用 `langgraph.invoke_interview_graph` span 包裹 graph invoke，并只记录 thread/resource/protocol 等安全元数据；按 checkpoint 中是否存在 session 路由到初始化或用户答题处理，并统一产出 snapshot。用户答题后如果进入 `wrap-up`，stream graph 不同步执行报告生成，而是立即 emit snapshot；`run_report_generation_for_thread` 会从 checkpoint 读取 session，后台依次执行 `evaluate_answers -> generate_report -> persist_report` 并把结果回写 checkpoint/report DB。
-- `app.graphs.nodes`: LangGraph 节点实现；主流程节点和报告生成节点使用 `langgraph.node.*` spans 记录 thread/resource、阶段、数量和状态等安全元数据，不记录回答、prompt、response、报告正文或简历/JD 原文。当前 `process_user_reply` 负责后续答题推进，并在状态机给出本地 completed/final report 时把 session 转成 `wrap-up` / `finalReportReady=false`，让 stream 立即返回报告生成中提示；它不写队列、不 seal manifest。`report_generation` 提供 `evaluate_answers_node`、`generate_report_node` 和 `persist_report_node`，由后台 runner 调用；`persist_report_node` 在 report DB 写入成功后会在 `INTERVIEW_MEMORY_USER_ID` 存在时 best-effort 调用 memory summary + `update_interview_memory_tool()`，memory 失败不得把 succeeded report 改为 failed。
-- `app.schemas`: Pydantic contract；维护 Mastra stream request、interview start、state、snapshot、answer evaluation、interview report 和 report generation 等结构化边界。
-- `app.domain`: 面试业务逻辑；包含 kickoff recovery、简历/JD 信号解析、问题规划、RAG 召回、问题生成/裁决、状态机、追问记忆、长期面试记忆工具/摘要/召回、outcome、RAG sample、answer evaluation runtime、report generation prompt/runtime 和 report status 解析。追问生成通过 `follow_up_memory` 从 `InterviewSessionState.followUpMemory` 优先构建有界 memory snapshot，并兼容扫描 nodes 中已问追问；同一 snapshot 还会读取 `InterviewSessionState.historicalMemory` 的 weaknesses、missing points、improvement advice 和 reinforcement hints，作为仅在当前 topic / main question 相关时使用的强化目标；不把候选人当前回答原文作为长期追问记忆注入。长期用户面试记忆写入必须通过 `interview_memory_tool.update_interview_memory_tool()` 收敛，tool 负责幂等、用户容量上限、profile 聚合和 markdown excerpt 裁剪；`interview_memory_summary` 使用独立 memory-summary prompt，只消费结构化 report summary / question reviews，并按 `score < 7.0` 或 `missingPoints` 非空筛选弱项，不复制候选人完整回答原文；`interview_memory_retriever` 负责同用户 DB-backed lightweight retrieval、关键词 fallback、topK 排序和 profile 加载。`question_retriever` 用 `rag.question_retrieval.*` spans 记录 round/skill/top_k/query_count/result_count 等安全元数据，不记录 query、题目正文、简历或 JD 原文。`answer_evaluation_runtime` 用于从 session answer attempts 构造同步评分 context 并批量生成 `LlmAnswerEvaluationResult`；`report_generation_runtime` 用于基于 session、评分 context 和评分结果同步生成 `ReportGenerationOutput` 并构造 `InterviewReportWrite`。
+- `app.graphs.interview_graph`: LangGraph 编排入口；`invoke_interview_graph` 用 `langgraph.invoke_interview_graph` span 包裹 graph invoke，并只记录 thread/resource/protocol 等安全元数据；按 checkpoint 中是否存在 session 路由到初始化或用户答题处理，并统一产出 snapshot。用户答题后如果进入 `wrap-up`，stream graph 不同步执行报告生成，而是立即 emit snapshot；`run_report_generation_for_thread` 会从 checkpoint 读取 session，后台 report graph 依次执行 `evaluate_answers -> generate_report -> persist_report -> persist_user_memory -> emit_report_snapshot` 并把结果回写 checkpoint/report DB。
+- `app.graphs.nodes`: LangGraph 节点实现；主流程节点和报告生成节点使用 `langgraph.node.*` spans 记录 thread/resource、阶段、数量和状态等安全元数据，不记录回答、prompt、response、报告正文或简历/JD 原文。当前 `process_user_reply` 负责后续答题推进，并在状态机给出本地 completed/final report 时把 session 转成 `wrap-up` / `finalReportReady=false`，让 stream 立即返回报告生成中提示；它不写队列、不 seal manifest。`report_generation` 提供 `evaluate_answers_node`、`generate_report_node`、`persist_report_node` 和 `persist_user_memory_node`，由后台 runner 调用；`persist_report_node` 只负责 report DB 和 completed session 状态，`persist_user_memory_node` 在 report DB 写入成功后会在 `INTERVIEW_MEMORY_USER_ID` 存在时 best-effort 调用 memory summary + `update_interview_memory_tool()`，memory 失败不得把 succeeded report 改为 failed。
+- `app.schemas`: Pydantic contract；维护 legacy stream request shape、interview start、state、snapshot、answer evaluation、interview report 和 report generation 等结构化边界。
+- `app.domain`: 面试业务逻辑；包含 kickoff recovery、简历/JD 信号解析、LLM 三段简历-JD 匹配分析、问题规划、RAG 召回、问题生成/裁决、状态机、追问记忆、长期面试记忆工具/摘要/召回、outcome、RAG sample、answer evaluation runtime、report generation prompt/runtime 和 report status 解析。初始化阶段先由 `resume_jd_match` 产出 `resumeJdMatch`、`resumeOnly`、`jdOnly` 三段结构；JD 非空且 `resumeJdMatch` 为空时直接进入非报告终止状态并说明岗位不匹配，不进入 RAG、题目生成、裁决或报告生成。专业题召回由 `question_retriever` 按三段结构驱动：匹配段可召回多题，resume-only 和 jd-only 段各最多召回一题，空段不召回；初始化阶段维护内部 selection context，按 question id 和文本 token overlap 避免重复选题，重复候选会在 trace 中以 `isDuplicate=true` 和 `filterReason=duplicate-veto` 解释。multi-query 召回接口支持可选 `KeywordQuestionStore`，可把 vector hits 与 keyword hits 一起做 RRF merge，当前生产默认仍可只使用 Milvus vector recall。metadata rerank 不调用 LLM，RAG recall trace 和 sample artifact 保留 `scoreBreakdown`（当前为 `rrf` / `questionType`）、`matchedMetadata` 和 duplicate 标记，便于解释最终选择。追问生成通过 `follow_up_memory` 从 `InterviewSessionState.followUpMemory` 优先构建有界 memory snapshot，并兼容扫描 nodes 中已问追问；同一 snapshot 还会读取 `InterviewSessionState.historicalMemory` 的 weaknesses、missing points、improvement advice 和 reinforcement hints，作为仅在当前 topic / main question 相关时使用的强化目标；不把候选人当前回答原文作为长期追问记忆注入。长期用户面试记忆写入必须通过 `interview_memory_tool.update_interview_memory_tool()` 收敛，tool 负责幂等、用户容量上限、profile 聚合和 markdown excerpt 裁剪；`interview_memory_summary` 使用独立 memory-summary prompt，只消费结构化 report summary / question reviews，并按 `score < 7.0` 或 `missingPoints` 非空筛选弱项，不复制候选人完整回答原文；`interview_memory_retriever` 负责同用户 DB-backed lightweight retrieval、关键词 fallback、topK 排序和 profile 加载。`question_retriever` 用 `rag.question_retrieval.*` spans 记录 round/skill/top_k/query_count/result_count 等安全元数据，不记录 query、题目正文、简历或 JD 原文。`answer_evaluation_runtime` 用于从 session answer attempts 构造同步评分 context 并批量生成 `LlmAnswerEvaluationResult`；`report_generation_runtime` 用于基于 session、评分 context 和评分结果同步生成 `ReportGenerationOutput` 并构造 `InterviewReportWrite`。
 - `app.integrations`: 外部基础设施适配；包含模型、embedding、Milvus、checkpoint store 和 report DB repository。`models` 在 chat model `invoke()` 边界使用 `llm.chat_completion` span，`embeddings.embed_query_text()` 使用 `embedding.create` span；两者只记录 provider/model/dimension/timeout/retry/response type 等元数据，不记录 prompt、response、query、简历、JD 或回答正文。`MilvusQuestionStore.search` 用 `milvus.question_retrieval.search` span 记录 collection、round_type、top_k、result_count、filter presence 和错误状态，不记录检索向量、query 文本或候选题正文。
 - `app.langsmith_tracing`: LangSmith tracing 门禁与 metadata helper；`LANGSMITH_TRACING=true` 且 `LANGSMITH_API_KEY` 存在时启用完整 LangSmith tracing。`LANGSMITH_DATA_MODE` 只作为 metadata 标记当前数据模式，不再阻止真实使用场景启用 LangSmith；metadata 只包含 thread id、runtime provider、app env、model provider/name 和 OTel trace id。
-- `app.sse`: Mastra-compatible SSE 编码；输出 `text-delta`、`tool-result` 和 `[DONE]`，供现有 BFF/frontend 继续复用同一消费路径。
+- `app.sse`: 前端/BFF 既有 SSE 编码；输出 `text-delta`、`tool-result` 和 `[DONE]`，供现有 BFF/frontend 继续复用同一消费路径。
 - `app.telemetry`: Python runtime OpenTelemetry bootstrap；负责懒初始化 TracerProvider、Resource、OTLP HTTP exporter、BatchSpanProcessor 和环境变量驱动的 sampler，并暴露 `instrument_fastapi(app)` 供 FastAPI 入口接入，同时提供不泄露正文的 stream protocol 分类 helper。`OTEL_SDK_DISABLED=true` 时应短路，不连接 Collector；`OTEL_TRACES_SAMPLER` / `OTEL_TRACES_SAMPLER_ARG` 控制 local 全量采样与 staging/prod parent-based ratio sampling。
 - `app.workers`: 当前不承载报告生成主流程 worker；answer evaluation 和 report generation 已迁移到 FastAPI background task 调用的 LangGraph report runner。`scripts/` 不再包含 answer/report worker 启动脚本。
 
@@ -42,18 +42,18 @@ description: "Use when coding in the sibling Python LangGraph runtime. Captures 
 - `app.domain.interview_state_machine` 应保持为主要的纯状态推进层；流程推进、切题、追问槽位、flow-test skip、最终报告聚合等规则优先放在这里或相邻 domain helper。
 - RAG 查询构造、召回 trace、问题生成和质量闸门应分别放在 `question_query`、`question_retriever`、`question_generator`、`question_critic` 等 domain 模块，避免重新塞回 graph 或 API handler。
 - 外部系统连接统一通过 `app.integrations` 和 `app.config.Settings` 管理；不要在 domain 逻辑中散落读取环境变量或直接创建长期客户端。
-- `tests/contract` 保护与 host repo / legacy Mastra 的 stream contract；`tests/unit` 保护 domain 和 schema；`tests/integration` 保护 runtime dependency smoke 和短流程。
+- `tests/contract` 保护与 host repo 前端/BFF 的 stream contract；`tests/unit` 保护 domain 和 schema；`tests/integration` 保护 runtime dependency smoke 和短流程。
 
 ## Contract And Validation Boundaries
 
 - BFF 仍负责登录、上传、结构化 start payload 归一和前置校验；Python runtime 仍必须用 Pydantic 对收到的 Mastra-style request 做自己的边界解析。
 - `/api/agents/interview-agent/stream` 当前接收 `messages`、`memory.thread`、`memory.resource` 和可选 `maxSteps`；业务 thread id 以 `memory.thread` 为准。
 - `/api/interviews/{thread_id}/report/status`、`/api/interviews/{thread_id}/report/markdown` 和 `/api/interviews/{thread_id}/report/read` 是 Python runtime 侧报告状态、markdown 下载和已读回执 API；status 只读取 report DB 和 DB read receipt，markdown 只从 report DB 读取，read receipt 只写 report DB。
-- 初始化时，最后一条 user message 包含 BFF 透传的 structured kickoff payload；runtime 负责恢复 structured / legacy kickoff，并自行完成历史 memory 召回、题目规划、RAG 召回、生成、裁决和状态初始化。Structured start payload 可包含可选 `userId`，runtime 用它优先召回同用户历史 memory；缺失时可回退到 `INTERVIEW_MEMORY_USER_ID`。Structured settings 的 `enableHistoricalMemory` 默认开启；显式为 `false` 时跳过历史 memory 召回、planner 强化和 follow-up 历史弱项注入。历史 memory 会在主问题规划前加载，planner 可把 weaknesses、missing points 和 reinforcement hints 转为 `review-weakness` 强化 plan，query 构造会把这些弱项写入 `capability_probe`，但不得增加主问题总数。
+- 初始化时，最后一条 user message 包含 BFF 透传的 structured kickoff payload；runtime 负责恢复 structured / legacy kickoff，并先由 LLM 生成三段 `ResumeJdMatchAnalysis` 作为后续召回输入。JD 非空且匹配段为空时，runtime 直接返回 `completed` 的岗位不匹配 snapshot，不进入 `wrap-up`，也不触发后台报告生成；非空匹配时继续完成历史 memory 召回、题目规划、按三段结构 RAG 召回、生成、裁决和状态初始化。Structured start payload 可包含可选 `userId`，runtime 用它优先召回同用户历史 memory；缺失时可回退到 `INTERVIEW_MEMORY_USER_ID`。Structured settings 的 `enableHistoricalMemory` 默认开启；显式为 `false` 时跳过历史 memory 召回、planner 强化和 follow-up 历史弱项注入。历史 memory 会在主问题规划前加载，planner 可把 weaknesses、missing points 和 reinforcement hints 转为 `review-weakness` 强化 plan，query 构造会把这些弱项写入 `capability_probe`，但不得增加主问题总数。
 - 后续答题时，runtime 通过 checkpoint 中的 thread state 恢复 session；前端本地历史和 BFF 转发内容不能替代 checkpoint state。
 - `InterviewSessionState.followUpMemory` 是 checkpoint state 的轻量追问记忆字段，保存已问追问、简历摘要、JD 摘要和更新时间；旧 checkpoint 缺少该字段时必须通过 schema 默认值兼容。
 - `InterviewSessionState.historicalMemory` 是 checkpoint state 的历史面试记忆召回字段，保存同用户 lightweight retrieval 摘要和 profile；旧 checkpoint 缺少该字段时必须通过 schema 默认值兼容。
-- SSE 必须保持 Mastra-compatible：先逐段输出 `text-delta`，再输出 tool name 为 `interviewStateManagerTool` 的 `tool-result` snapshot，最后输出 `[DONE]`。
+- SSE 必须保持前端/BFF 既有 contract：先逐段输出 `text-delta`，再输出 tool name 为 `interviewStateManagerTool` 的 `tool-result` snapshot，最后输出 `[DONE]`。
 - `tool-result.result` 必须继续包含前端依赖的 `assistantReply`、`phase`、`activeRoundType`、`activeNodeTopic`、`finalReportReady` 和 `progress` 等字段。
 - flow-test mode 的 skip marker 应在状态机/domain 内被识别和推进，不应只在 API 层或前端模拟完成。
 
@@ -66,7 +66,7 @@ description: "Use when coding in the sibling Python LangGraph runtime. Captures 
 - 每用户长期面试 memory 数量由 `MAX_USER_INTERVIEW_MEMORY_COUNT` 控制；写入新摘要达到上限时，只删除同一用户最旧 memory，不删除原始 report 和其他用户 memory。
 - 当前长期 memory owner 由 `INTERVIEW_MEMORY_USER_ID` 提供；缺失时关闭持久化 user memory，只保留 session memory 和 report DB。
 - 历史 memory 召回数量由 `USER_MEMORY_RETRIEVAL_TOP_K` 控制，prompt 预算由 `USER_MEMORY_PROMPT_BUDGET_CHARS` 控制；召回必须同用户过滤，先按 normalized weakness key 做 canonical merge（同一弱项保留最新 `summaryGeneratedAt` / `sourceReportCompletedAt`），embedding 不可用时使用关键词 fallback 和时间排序。返回前按预算裁剪低优先级 hints/advice/missing/weakness 列表，不能裁掉用户边界和 profile 结构。无 memory 时可 best-effort 触发 lazy backfill，不能阻塞初始化。
-- 报告生成主流程不依赖 Redis、外部 worker、queue task 或 manifest。面试完成后 stream graph 先进入 `wrap-up` 并立即返回报告生成中提示，再由 FastAPI background task 调用 LangGraph report runner 执行 answer evaluation、report generation 和 DB persistence；report status API 只读取 report DB。
+- 报告生成主流程不依赖 Redis、外部 worker、queue task 或 manifest。面试完成后 stream graph 先进入 `wrap-up` 并立即返回报告生成中提示，再由 FastAPI background task 调用 LangGraph report runner 执行 answer evaluation、report generation、DB persistence 和 best-effort user memory persistence；report status API 只读取 report DB。
 - Milvus 由 `MILVUS_ADDRESS` 和 embedding 配置驱动；默认 hash embedding 允许无 key 启动，真实 provider embedding 必须与 collection dimension 匹配。
 - 模型 provider 默认 `mock`，真实 follow-up / evaluation 生成通过 OpenAI-compatible LangChain factory；模型失败应保留 deterministic fallback，不应让本地无 key 开发流程崩溃。
 
@@ -74,7 +74,7 @@ description: "Use when coding in the sibling Python LangGraph runtime. Captures 
 
 - 开始任何 `../my-first-agent-langgraph` 代码或逻辑改动前，先加载本 instruction；这是前置步骤，不是收尾检查。
 - 新的 interview runtime 能力优先放在 `../my-first-agent-langgraph/src/app/domain`、`graphs`、`schemas` 或 `integrations` 的既有分层中。
-- 不要把新的 Python runtime 行为实现回 host repo 的 `src/mastra/**`；Mastra 只接受 rollback blocker、安全、构建或兼容性修复。
+- 不要把新的 Python runtime 行为实现回 host repo 的 `src/mastra/**`；Mastra 已归档，不再接受后续 runtime 方案、回滚维护或兼容性维护。
 - 修改 stream contract、snapshot 字段、artifact shape、evaluation result shape 或 checkpoint state 时，同时检查 `tests/contract/**`、host BFF 代理和前端 SSE 消费逻辑。
 - 修改问题规划、RAG、JD 信号或评分逻辑时，优先补充 unit test；修改 provider wiring 或 FastAPI endpoint 时，优先补充 contract/integration test。
 - Python 代码遵循 `pyproject.toml`：Python `>=3.12`、Ruff line length 100、pytest `tests`、`pythonpath = ["src"]`。
@@ -86,8 +86,8 @@ description: "Use when coding in the sibling Python LangGraph runtime. Captures 
 
 ## Shared Governance
 
-- LangGraph runtime 是 host repo 的默认 provider，但 instruction 文件维护在 host repo 的 `.github/instructions/` 下，便于前端、BFF、Mastra rollback 和 Python runtime 共用同一套架构约束。
-- 涉及默认 provider、BFF proxy、Docker Compose、E2E harness 或 rollback gate 的改动，需要同时检查本仓库 `.github/instructions/project-architecture.instructions.md` 是否仍准确。
+- LangGraph runtime 是 host repo 唯一维护的 provider，但 instruction 文件维护在 host repo 的 `.github/instructions/` 下，便于前端、BFF 和 Python runtime 共用同一套架构约束。
+- 涉及 provider、BFF proxy、Docker Compose 或 E2E harness 的改动，需要同时检查本仓库 `.github/instructions/project-architecture.instructions.md` 是否仍准确。
 - 涉及 Python runtime 内部模块职责、contract、artifact 或数据流的改动，需要同步检查本文件是否仍准确。
 
 ## Required Post-Edit Skill
