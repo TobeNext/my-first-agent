@@ -1,6 +1,6 @@
 # my-first-agent
 
-AI interview practice system with a Vue frontend, a NestJS BFF, and a Python LangGraph interview runtime. The legacy Mastra runtime remains in the repository as a rollback provider during the cutover window.
+AI interview practice system with a Vue frontend, a NestJS BFF, and a Python LangGraph interview runtime. The legacy Mastra runtime under `src/mastra/` is archived and no longer part of future development.
 
 ## Architecture
 
@@ -9,7 +9,7 @@ The project is split into three runtime layers:
 - `frontend/`: Vue 3 + TypeScript app for resume upload, interview setup, streaming chat, session recovery, progress display, and feedback submission.
 - `bff/`: NestJS backend-for-frontend. It validates uploads, normalizes resume sections, owns the frontend API contract, and proxies streaming interview traffic to the configured agent runtime by `threadId`.
 - `../my-first-agent-langgraph/`: default Python LangGraph runtime. It accepts the same structured interview start/reply contract, checkpoints interview state, returns Mastra-compatible SSE, and writes compatible outcome/RAG artifacts.
-- `src/mastra/`: legacy Mastra runtime. It remains available for rollback only while the Python provider stabilizes.
+- `src/mastra/`: archived legacy Mastra runtime. It is kept for reference only and is not a target for new features, rollback, or maintenance.
 
 Supporting services:
 
@@ -190,10 +190,10 @@ The manual GitHub Actions workflow at `.github/workflows/interview-e2e.yml` writ
 
 ## Key Directories
 
-- `src/mastra/agents`: agent definitions and tool/model composition.
-- `src/mastra/tools`: Mastra tools with Zod input/output boundaries.
-- `src/mastra/lib`: legacy rollback runtime infrastructure, state machine helpers, RAG, vector store, Redis evaluation store, and parsers/adapters.
-- `src/mastra/scripts`: manual scripts for migration, legacy rollback workers, imports, and local verification.
+- `src/mastra/agents`: archived agent definitions and tool/model composition.
+- `src/mastra/tools`: archived Mastra tools with Zod input/output boundaries.
+- `src/mastra/lib`: archived runtime infrastructure, state machine helpers, RAG, vector store, Redis evaluation store, and parsers/adapters.
+- `src/mastra/scripts`: archived manual scripts for migration, legacy rollback workers, imports, and local verification.
 - `frontend/src`: Vue views, components, services, stores, schemas, and router.
 - `bff/src/modules`: NestJS modules for auth, resume validation, and agent proxy APIs.
 - `e2e/`: live interview E2E harness.
@@ -201,10 +201,10 @@ The manual GitHub Actions workflow at `.github/workflows/interview-e2e.yml` writ
 
 ## Development Notes
 
-- Load the Mastra skill before editing or answering Mastra-specific questions; Mastra APIs change frequently.
-- New interview runtime features belong in `../my-first-agent-langgraph`; `src/mastra/**` is frozen except for rollback blockers, security fixes, build breakages, and compatibility fixes.
+- The Mastra runtime is archived; see `AGENTS.md` for LangGraph development guidance.
+- New interview runtime features belong in `../my-first-agent-langgraph`; `src/mastra/**` is archived and no longer maintained. Do not add new features, rollback work, or compatibility work in Mastra.
 - Keep resume parsing rules centralized in `bff/src/modules/resume/resume-parser.ts`.
 - Keep interview progression in the state machine and state manager instead of scattering flow rules into prompts.
 - Do not commit generated artifacts, local databases, `.env` files, coverage, logs, or build outputs.
 - After code changes that affect architecture, update `.github/instructions/project-architecture.instructions.md` and record the project-architecture-sync check.
-- See `docs/RUNTIME_PROVIDER_CUTOVER.md` for provider rollback steps, Mastra freeze rules, and the Mastra decommission gate.
+- See `docs/RUNTIME_PROVIDER_CUTOVER.md` for the historical provider cutover record and the Mastra decommission gate.

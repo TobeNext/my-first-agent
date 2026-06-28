@@ -27,6 +27,17 @@ coverage/
 **/coverage/
 output.txt
 
+# Generated evaluation artifacts
+evaluation-baseline-summary.json
+evaluation-ci-gate-summary.json
+
+# Auto-generated lock files
+skills-lock.json
+
+# Temp and test data
+test-resume.md
+tt
+
 # Generated interview/RAG artifacts
 Interview outcome/
 RAG LOG INFO/
